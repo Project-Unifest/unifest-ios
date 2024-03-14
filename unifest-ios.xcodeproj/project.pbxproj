@@ -11,6 +11,9 @@
 		0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5D2BA19DFE00156763 /* ContentView.swift */; };
 		0C9D0A602BA19DFF00156763 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */; };
 		0C9D0A632BA19DFF00156763 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */; };
+		0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */; };
+		0C9D0A6F2BA1A46A00156763 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6E2BA1A46A00156763 /* MapView.swift */; };
+		0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		0C9D0A5D2BA19DFE00156763 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		0C9D0A6E2BA1A46A00156763 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,10 +57,14 @@
 		0C9D0A5A2BA19DFE00156763 /* unifest-ios */ = {
 			isa = PBXGroup;
 			children = (
+				0C9D0A6B2BA1A43900156763 /* Models */,
+				0C9D0A6A2BA1A43300156763 /* Data */,
+				0C9D0A692BA1A42600156763 /* Views */,
 				0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */,
 				0C9D0A5D2BA19DFE00156763 /* ContentView.swift */,
 				0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */,
 				0C9D0A612BA19DFF00156763 /* Preview Content */,
+				0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */,
 			);
 			path = "unifest-ios";
 			sourceTree = "<group>";
@@ -65,6 +75,29 @@
 				0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0C9D0A692BA1A42600156763 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0C9D0A6E2BA1A46A00156763 /* MapView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0C9D0A6A2BA1A43300156763 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		0C9D0A6B2BA1A43900156763 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +171,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */,
+				0C9D0A6F2BA1A46A00156763 /* MapView.swift in Sources */,
 				0C9D0A5C2BA19DFE00156763 /* unifest_iosApp.swift in Sources */,
+				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
+				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +311,7 @@
 				DEVELOPMENT_TEAM = NCLJJYF4QS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도에서 사용자의 실시간 위치를 파악하기 위해 위치 정보를 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -304,6 +341,7 @@
 				DEVELOPMENT_TEAM = NCLJJYF4QS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도에서 사용자의 실시간 위치를 파악하기 위해 위치 정보를 사용합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
