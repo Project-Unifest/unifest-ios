@@ -15,7 +15,7 @@ struct MapView: View {
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
     @State var mapCameraPosition = MapCameraPosition.region(MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_870), span: MKCoordinateSpan(latitudeDelta: 0.015, longitudeDelta: 0.015)))
     
-    let polygonKonkuk: [CLLocationCoordinate2D] = [
+    let polygonKonkuk = PolygonCoordinateList(data: [
         CLLocationCoordinate2D(latitude: 37.54472, longitude: 127.07665),
         CLLocationCoordinate2D(latitude: 37.54458, longitude: 127.07498),
         CLLocationCoordinate2D(latitude: 37.54468, longitude: 127.07382),
@@ -44,29 +44,22 @@ struct MapView: View {
         CLLocationCoordinate2D(latitude: 37.54484, longitude: 127.07782),
         CLLocationCoordinate2D(latitude: 37.54493, longitude: 127.07689),
         CLLocationCoordinate2D(latitude: 37.54490, longitude: 127.07661)
-    ]
-    
-    let polygonCoordinates: [CLLocationCoordinate2D] = [
-        CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_870),
-        CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_970),
-        CLLocationCoordinate2D(latitude: 37.542_680, longitude: 127.077_020),
-        CLLocationCoordinate2D(latitude: 37.542_730, longitude: 127.076_970),
-        CLLocationCoordinate2D(latitude: 37.542_730, longitude: 127.076_870)
-    ]
+    ])
     
     var body: some View {
         ZStack {
             Map(initialPosition: mapCameraPosition) {
                 UserAnnotation()
                 
-                MapPolygon(coordinates: polygonCoordinates)
-                    .foregroundStyle(.red.opacity(0.1))
-                    .stroke(.red, lineWidth: 1)
-                
                 // Add School Boundaries
-                MapPolygon(coordinates: polygonKonkuk)
-                    .foregroundStyle(.gray.opacity(0.0))
-                    .stroke(.blue.opacity(0.5), lineWidth: 3)
+                if let boxCoordinate = makeBoundaries(coordinates: polygonKonkuk.data) {
+                    MapPolygon(coordinates: boxCoordinate)
+                        .foregroundStyle(.gray.opacity(0.5))
+                }
+                
+                MapPolygon(coordinates: polygonKonkuk.data)
+                    .foregroundStyle(.black.opacity(0.0))
+                    .stroke(.black.opacity(0.8), lineWidth: 0.5)
             }
             // .ignoresSafeArea()
             .mapControls {
@@ -84,6 +77,48 @@ struct MapView: View {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
     }
+
+    func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
+        // 위도 기준 정렬
+        let sortedLatitudes = coordinates.sorted(by: { $0.latitude > $1.latitude })
+        let padding: Double = 10
+        
+        // 위도가 가장 큰 값
+        let maxItem: CLLocationCoordinate2D = sortedLatitudes[0]
+        let maxLatitude = maxItem.latitude
+        let maxLongitude = maxItem.longitude
+        
+        // maxLatitude가 첫 번째 값이 되도록 리스트를 조정
+        var rearrangedCoordinate = coordinates
+        if let maxIndex = rearrangedCoordinate.firstIndex(where: { $0.latitude == maxLatitude && $0.longitude == maxLongitude }) {
+            rearrangedCoordinate.rotateLeft(amount: maxIndex)
+            
+            // 박스를 감싸는 5개의 점 추가
+            let topCenterPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude)
+            let topLeftPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude - padding)
+            let bottomLeftPoint = CLLocationCoordinate2D(latitude: maxLatitude - padding, longitude: maxLongitude - padding)
+            let bottomRightPoint = CLLocationCoordinate2D(latitude: maxLatitude - padding, longitude: maxLongitude + padding)
+            let topRightPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude + padding)
+            
+            let boxCoordinates: [CLLocationCoordinate2D] = [maxItem, topCenterPoint, topRightPoint, bottomRightPoint, bottomLeftPoint, topLeftPoint, topCenterPoint]
+            
+            return boxCoordinates + rearrangedCoordinate
+        } else {
+            print("unknown error")
+            return nil
+        }
+    }
+}
+
+extension Array {
+    mutating func rotateLeft(amount: Int) {
+        let amount = amount % count
+        self = Array(self[amount ..< count] + self[0 ..< amount])
+    }
+}
+
+struct PolygonCoordinateList {
+    var data: [CLLocationCoordinate2D]
 }
 
 struct MapPolygonAnnotation {
