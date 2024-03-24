@@ -16,7 +16,8 @@ struct unifest_iosApp: App {
     var body: some Scene {
         WindowGroup {
             // ContentView()
-            MapView(mapViewModel: mapViewModel)
+            // MapView(mapViewModel: mapViewModel)
+            IntroView()
         }
     }
 }
