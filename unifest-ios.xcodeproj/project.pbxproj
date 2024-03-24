@@ -13,6 +13,9 @@
 		0C9D0A632BA19DFF00156763 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */; };
 		0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */; };
 		0C9D0A6F2BA1A46A00156763 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6E2BA1A46A00156763 /* MapView.swift */; };
+		0CE965042BAD668D00539E8C /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE965032BAD668D00539E8C /* IntroView.swift */; };
+		0CE965072BAD66BA00539E8C /* StringLiterals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE965062BAD66BA00539E8C /* StringLiterals.swift */; };
+		0CE965042BAD668D00539E8C /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE965032BAD668D00539E8C /* IntroView.swift */; };
 		0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +27,9 @@
 		0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		0C9D0A6E2BA1A46A00156763 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		0CE965032BAD668D00539E8C /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
+		0CE965062BAD66BA00539E8C /* StringLiterals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringLiterals.swift; sourceTree = "<group>"; };
+		0CE965032BAD668D00539E8C /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +63,8 @@
 		0C9D0A5A2BA19DFE00156763 /* unifest-ios */ = {
 			isa = PBXGroup;
 			children = (
+				0CE965082BAD678F00539E8C /* Extensions */,
+				0CE965052BAD66AC00539E8C /* Text */,
 				0C9D0A6B2BA1A43900156763 /* Models */,
 				0C9D0A6A2BA1A43300156763 /* Data */,
 				0C9D0A692BA1A42600156763 /* Views */,
@@ -80,7 +88,9 @@
 		0C9D0A692BA1A42600156763 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0CE965022BAD664300539E8C /* Intro */,
 				0C9D0A6E2BA1A46A00156763 /* MapView.swift */,
+				0CE965022BAD664300539E8C /* Intro */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -96,6 +106,38 @@
 			isa = PBXGroup;
 			children = (
 				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0CE965022BAD664300539E8C /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				0CE965032BAD668D00539E8C /* IntroView.swift */,
+			);
+			path = Intro;
+			sourceTree = "<group>";
+		};
+		0CE965052BAD66AC00539E8C /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				0CE965062BAD66BA00539E8C /* StringLiterals.swift */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		0CE965082BAD678F00539E8C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0CE9650A2BAD67A400539E8C /* Models */,
+			);
+			name = Extensions;
+			path = Text/Extensions;
+			sourceTree = "<group>";
+		};
+		0CE9650A2BAD67A400539E8C /* Models */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -170,7 +212,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CE965042BAD668D00539E8C /* IntroView.swift in Sources */,
 				0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */,
+				0CE965072BAD66BA00539E8C /* StringLiterals.swift in Sources */,
+				0CE965042BAD668D00539E8C /* IntroView.swift in Sources */,
 				0C9D0A6F2BA1A46A00156763 /* MapView.swift in Sources */,
 				0C9D0A5C2BA19DFE00156763 /* unifest_iosApp.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
