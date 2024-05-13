@@ -12,7 +12,7 @@ enum StringLiterals {
         static let searchPlaceholder = "학교를 검색해보세요"
         static let myFestivalTitle = "나의 관심 축제"
         static let discardAll = "모두 선택 해제"
-        static let number = "총%@개"
+        static let number = "총 %@개"
         static let complete = "추가 완료"
     }
 }

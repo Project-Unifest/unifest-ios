@@ -11,12 +11,13 @@ import MapKit
 
 struct MapView: View {
     @ObservedObject var mapViewModel: MapViewModel
+    @ObservedObject var boothModel: BoothModel
     
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
-    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_870), distance: 4000, heading: 0.0, pitch: 0))
+    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 4000, heading: 0.0, pitch: 0))
     
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
-    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_870), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     let polygonKonkuk: [CLLocationCoordinate2D] = [
         CLLocationCoordinate2D(latitude: 37.54472, longitude: 127.07665),
@@ -80,7 +81,7 @@ struct MapView: View {
                 }
                 
                 Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.543_02, longitude: 127.076_65)) {
-                    BoothAnnotation(number: 13, boothType: .drinking, isSelected: $isBoothSelected[1])
+                    BoothAnnotation(number: 13, boothType: .drink, isSelected: $isBoothSelected[1])
                 }
                 
                 Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.542_18, longitude: 127.078_40)) {
@@ -152,6 +153,38 @@ struct MapView: View {
             return nil
         }
     }
+    
+    func clusterAnnotations(clusterRadius: Double) -> [Cluster] {
+        
+        
+        return []
+    }
+}
+
+class Cluster: Identifiable {
+    var id: UUID
+    var center: CLLocationCoordinate2D
+    var points: [CLLocationCoordinate2D]
+    
+    init(center: CLLocationCoordinate2D, points: [CLLocationCoordinate2D]) {
+        self.id = UUID()
+        self.center = center
+        self.points = points
+    }
+    
+    func updateCenter() {
+        var latMean: CLLocationDegrees = 0
+        var longMean: CLLocationDegrees = 0
+        
+        for point in points {
+            latMean += point.latitude
+            longMean += point.longitude
+        }
+        
+        var newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
+        print("center updated from: \(center) \nto: \(newCenter)")
+        center = newCenter
+    }
 }
 
 extension Array {
@@ -170,26 +203,38 @@ struct BoothAnnotation: View {
     var body: some View {
         ZStack {
             switch boothType {
-            case .drinking:
-                Image(isSelected ? .drinking : .drinking2)
+            case .drink:
+                Image(isSelected ? .drinkBooth1 : .drinkBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .toilet:
-                Image(isSelected ? .toilet : .toilet2)
+                Image(isSelected ? .toiletBooth1 : .toiletBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(isSelected ? .booth : .booth2)
+                Image(isSelected ? .generalBooth1 : .generalBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .hospital:
-                Image(isSelected ? .hospital : .hospital2)
+                Image(isSelected ? .hospitalBooth1 : .hospitalBooth2)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: annotationSize, height: annotationSize)
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
+            case .food:
+                Image(isSelected ? .foodBooth1 : .foodBooth2)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: annotationSize, height: annotationSize)
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
+            case .event:
+                Image(isSelected ? .eventBooth1 : .eventBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -231,17 +276,19 @@ struct BoothAnnotation: View {
 }
 
 enum BoothType: String {
-    case drinking = "주점"
-    case toilet = "화장실"
-    case booth = "부스"
+    case drink = "주점"
+    case food = "먹거리"
+    case event = "이벤트"
+    case booth = "일반"
     case hospital = "의무실"
+    case toilet = "화장실"
 }
 
 #Preview {
     @ObservedObject var mapViewModel = MapViewModel()
     
     return Group {
-        MapView(mapViewModel: mapViewModel)
+        MapView(mapViewModel: mapViewModel, boothModel: BoothModel())
     }
 }
 
@@ -250,6 +297,6 @@ enum BoothType: String {
         BoothAnnotation(number: 1, boothType: .booth, isSelected: .constant(true))
         BoothAnnotation(number: 3, boothType: .toilet, isSelected: .constant(false))
         BoothAnnotation(number: 5, boothType: .hospital, isSelected: .constant(false))
-        BoothAnnotation(number: 7, boothType: .drinking, isSelected: .constant(false))
+        BoothAnnotation(number: 7, boothType: .drink, isSelected: .constant(false))
     }
 }

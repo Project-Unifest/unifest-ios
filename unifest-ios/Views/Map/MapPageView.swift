@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MapPageView: View {
-    @ObservedObject var mapViewModel: MapViewModel = MapViewModel()
+    @ObservedObject var mapViewModel: MapViewModel
+    @ObservedObject var boothModel: BoothModel
+    
     @State private var isPopularBoothPresented: Bool = false
     
     @State private var isSearchSchoolViewPresented: Bool = false
@@ -18,7 +20,7 @@ struct MapPageView: View {
         ZStack {
             VStack {
                 Spacer()
-                MapView(mapViewModel: mapViewModel)
+                MapView(mapViewModel: mapViewModel, boothModel: boothModel)
             }
             
             VStack {
@@ -95,7 +97,7 @@ struct MapPageView: View {
 
 #Preview {
     TabView {
-        MapPageView()
+        MapPageView(mapViewModel: MapViewModel(), boothModel: BoothModel())
             .tabItem {
                 Image(.tabMapSelected)
                 Text("지도")
@@ -106,7 +108,7 @@ struct MapPageView: View {
 struct MapPageHeaderView: View {
     @State private var isInfoTextPresented: Bool = true
     @State private var searchText: String = ""
-    @State private var isTagSelected: [Bool] = [true, true, false, false]
+    @State private var isTagSelected: [Bool] = [true, true, false, false, false, false]
     
     @Binding var isSearchSchoolViewPresented: Bool
     
@@ -177,7 +179,7 @@ struct MapPageHeaderView: View {
                     
                     Image(isTagSelected[1] ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("부스")
+                            Text("먹거리")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
                                 .foregroundStyle(isTagSelected[1] ? .defaultPink : .defaultBlack)
@@ -190,7 +192,7 @@ struct MapPageHeaderView: View {
                     
                     Image(isTagSelected[2] ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("의무실")
+                            Text("이벤트")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
                                 .foregroundStyle(isTagSelected[2] ? .defaultPink : .defaultBlack)
@@ -203,7 +205,7 @@ struct MapPageHeaderView: View {
                     
                     Image(isTagSelected[3] ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("화장실")
+                            Text("일반")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
                                 .foregroundStyle(isTagSelected[3] ? .defaultPink : .defaultBlack)
@@ -211,6 +213,32 @@ struct MapPageHeaderView: View {
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[3].toggle()
+                            }
+                        }
+                    
+                    Image(isTagSelected[4] ? .selectedTagBox : .nonselectedTagBox)
+                        .overlay {
+                            Text("의무실")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[4] ? .defaultPink : .defaultBlack)
+                        }
+                        .onTapGesture {
+                            withAnimation(.spring(duration: 0.2)) {
+                                isTagSelected[4].toggle()
+                            }
+                        }
+                    
+                    Image(isTagSelected[5] ? .selectedTagBox : .nonselectedTagBox)
+                        .overlay {
+                            Text("화장실")
+                                .fontWeight(.semibold)
+                                .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[5] ? .defaultPink : .defaultBlack)
+                        }
+                        .onTapGesture {
+                            withAnimation(.spring(duration: 0.2)) {
+                                isTagSelected[5].toggle()
                             }
                         }
                 }

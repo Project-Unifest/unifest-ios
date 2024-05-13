@@ -77,7 +77,7 @@ struct OneMapView: View {
                 }
                 
                 Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.542_18, longitude: 127.078_40)) {
-                    OneBoothAnnotation(boothType: .drinking)
+                    OneBoothAnnotation(boothType: .drink)
                 }
                 
             }
@@ -180,26 +180,38 @@ struct OneBoothAnnotation: View {
     var body: some View {
         ZStack {
             switch boothType {
-            case .drinking:
-                Image(.drinking)
+            case .drink:
+                Image(.drinkBooth1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .toilet:
-                Image(.toilet)
+                Image(.toiletBooth1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(.booth)
+                Image(.generalBooth1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .hospital:
-                Image(.hospital)
+                Image(.hospitalBooth1)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 70, height: 70)
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
+            case .food:
+                Image(.foodBooth1)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 70, height: 70)
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
+            case .event:
+                Image(.eventBooth1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)

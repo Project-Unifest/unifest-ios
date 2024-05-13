@@ -17,6 +17,7 @@ final class APIManager: ObservableObject {
     // API 서버 종류별 address
     enum ServerType: String {
         case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
+        case prod = "http://ec2-54-180-210-67.ap-northeast-2.compute.amazonaws.com:9090"
     }
     
     // API Error 종류
@@ -27,8 +28,8 @@ final class APIManager: ObservableObject {
     }
     
     // 현재 APIManager가 사용할 서버 종류 및 주소
-    private var serverType: ServerType
-    private var baseURL: String
+    var serverType: ServerType
+    var baseURL: String
     
     // API 요청 반환 종류
     enum APIResponseResult {
@@ -65,7 +66,8 @@ final class APIManager: ObservableObject {
         self.baseURL = serverType.rawValue
     }
     
-    static func fetchDataGET(_ endpoint: APICollections,
+    static func fetchDataGET(_ endpoint: String,
+                                     api: APICollections,
                                      apiType: APIType,
                                      querys: [String: Any]? = nil,
                                      landmarkID: Int? = nil,
@@ -74,7 +76,9 @@ final class APIManager: ObservableObject {
         var urlComponents: URLComponents
         
         // URL String
-        var urlString = APIManager.shared.serverType.rawValue + endpoint.rawValue
+        var urlString = APIManager.shared.serverType.rawValue + endpoint // endpoint.rawValue
+        
+        print("API Manager: " + urlString)
         
         // URL Component 생성
         if let component = URLComponents(string: urlString) {
@@ -141,11 +145,28 @@ final class APIManager: ObservableObject {
                 // let apiResponse = try decoder.decode([String: String].self, from: data)
                 
                 // MARK: 반환 결과가 특수한 API들 예외 처리
-                let apiResponse = try decoder.decode(APIResponse.self, from: data)
-                completion(.success(apiResponse))
+                if api == .booth_all {
+                    let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
+                    print("API Manager Recived Data \(apiResponse)")
+                    completion(.success(apiResponse))
+                }
+                
+                if api == .fest_all {
+                    let apiResponse = try decoder.decode(APIResponse.self, from: data)
+                    print("API Manager Recived Data \(apiResponse)")
+                    completion(.success(apiResponse))
+                }
+                
+                if api == .fest_today {
+                    let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
+                    print("API Manager Recived Data \(apiResponse)")
+                    completion(.success(apiResponse))
+                }
+                
                 
             } catch {
                 // JSON 디코딩 오류 처리
+                print(data)
                 completion(.failure(error))
             }
         }
@@ -155,42 +176,12 @@ final class APIManager: ObservableObject {
     }
 }
 
-struct APIResponse: Codable {
-    var code: String?
-    var message: String?
-    var data: [FestivalData]?
-}
-
-struct FestivalData: Codable {
-    var festivalId: Int?
-    var schoolId: Int?
-    var thumbnail: String?
-    var schoolName: String?
-    var region: String?
-    var festivalName: String?
-    var beginDate: String?
-    var endDate: String?
-    var latitude: Double?
-    var longitude: Double?
-}
-
-struct BoothData: Codable {
-    var id: Int
-    var name: String
-    var category: String
-    var description: String
-    var thumbnail: String
-    var location: String
-    var latitude: Double
-    var longitude: Double
-}
-
 struct APITestView: View {
     var body: some View {
         VStack {
             List {
                 Button("가장 가까운 랜드마크 - /api/landmarks") {
-                    APIManager.fetchDataGET(.fest_all, apiType: .GET) { result in
+                    APIManager.fetchDataGET("/festival/today?date=2024-05-22", api: .fest_today, apiType: .GET) { result in
                         switch result {
                         case .success(let data):
                             print("Data received in View: \(data)")
@@ -198,6 +189,21 @@ struct APITestView: View {
                             print("Error in View: \(error)")
                         }
                     }
+                }
+                
+                Button("test") {
+                    var request = URLRequest(url: URL(string: "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090/festival/today?date=2024-05-22")!,timeoutInterval: Double.infinity)
+                    request.httpMethod = "GET"
+
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                      guard let data = data else {
+                        print(String(describing: error))
+                        return
+                      }
+                      print(String(data: data, encoding: .utf8)!)
+                    }
+
+                    task.resume()
                 }
             }
         }

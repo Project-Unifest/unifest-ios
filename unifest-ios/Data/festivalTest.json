@@ -1,0 +1,126 @@
+{
+  "code": "200",
+  "message": "OK",
+  "data": [
+    {
+      "festivalId": 1,
+      "schoolId": 2,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/konkuk_mark.jpg",
+      "schoolName": "건국대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-21",
+      "endDate": "2024-05-24",
+      "latitude": 37.5423265,
+      "longitude": 127.0759204
+    },
+    {
+      "festivalId": 4,
+      "schoolId": 4,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/kyh_mark.png",
+      "schoolName": "경희대 서울캠",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-22",
+      "endDate": "2024-05-24",
+      "latitude": 37.5967122,
+      "longitude": 127.0513948
+    },
+    {
+      "festivalId": 5,
+      "schoolId": 5,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/koreauniv_mark.gif",
+      "schoolName": "고려대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-21",
+      "endDate": "2024-05-23",
+      "latitude": 37.58938759999999,
+      "longitude": 127.0324773
+    },
+    {
+      "festivalId": 8,
+      "schoolId": 7,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/kwu_mark.png",
+      "schoolName": "광운대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-22",
+      "endDate": "2024-05-24",
+      "latitude": 37.6194277,
+      "longitude": 127.05982
+    },
+    {
+      "festivalId": 11,
+      "schoolId": 10,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/donguk_mark.png",
+      "schoolName": "동국대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-28",
+      "endDate": "2024-05-30",
+      "latitude": 37.5582876,
+      "longitude": 127.0001671
+    },
+    {
+      "festivalId": 2,
+      "schoolId": 11,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/seogang_univ.jpg",
+      "schoolName": "서강대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-16",
+      "endDate": "2024-05-17",
+      "latitude": 37.5509442,
+      "longitude": 126.9410023
+    },
+    {
+      "festivalId": 3,
+      "schoolId": 3,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/seoul_city_mark.png",
+      "schoolName": "시립대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-20",
+      "endDate": "2024-05-22",
+      "latitude": 37.5838657,
+      "longitude": 127.0587771
+    },
+    {
+      "festivalId": 6,
+      "schoolId": 6,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/yonsei_univ_mark.jpg",
+      "schoolName": "연세대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-21",
+      "endDate": "2024-05-26",
+      "latitude": 37.5663937,
+      "longitude": 126.9387066
+    },
+    {
+      "festivalId": 10,
+      "schoolId": 9,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/choongang_univ.png",
+      "schoolName": "중앙대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-27",
+      "endDate": "2024-05-31",
+      "latitude": 37.5050881,
+      "longitude": 126.9571012
+    },
+    {
+      "festivalId": 9,
+      "schoolId": 8,
+      "thumbnail": "https://unifest-dev-bucket.s3.ap-northeast-2.amazonaws.com/hanyang_univ_mark.png",
+      "schoolName": "한양대",
+      "region": "서울",
+      "festivalName": "대동제",
+      "beginDate": "2024-05-22",
+      "endDate": "2022-05-24",
+      "latitude": 37.5571759,
+      "longitude": 127.0454092
+    }
+  ]
+}

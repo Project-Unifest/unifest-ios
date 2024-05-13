@@ -24,6 +24,7 @@ struct MenuView: View {
                     
                     Spacer()
                     
+                    /*
                     Button {
                         
                     } label: {
@@ -36,7 +37,7 @@ struct MenuView: View {
                                 .font(.system(size: 11))
                                 .foregroundColor(.gray)
                         }
-                    }
+                    }*/
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -44,14 +45,14 @@ struct MenuView: View {
                 // LazyHGrid
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
                     circleSchoolView(image: .konkukLogo, name: "건국대")
-                    circleSchoolView(image: .chungangLogo, name: "중앙대")
+                    /* circleSchoolView(image: .chungangLogo, name: "중앙대")
                     circleSchoolView(image: .uosLogo, name: "한국외대")
                     circleSchoolView(image: .konkukLogo, name: "건국대")
                     circleSchoolView(image: .chungangLogo, name: "중앙대")
                     circleSchoolView(image: .uosLogo, name: "한국외대")
                     circleSchoolView(image: .konkukLogo, name: "건국대")
                     circleSchoolView(image: .chungangLogo, name: "중앙대")
-                    circleSchoolView(image: .uosLogo, name: "한국외대")
+                    circleSchoolView(image: .uosLogo, name: "한국외대")*/
                 }
                 .padding(.horizontal)
                 
@@ -86,11 +87,14 @@ struct MenuView: View {
                 .padding(.horizontal)
                 
                 VStack {
-                    boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
+                    /* boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
                         .padding(.vertical, 10)
                     Divider()
                     boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: true)
-                        .padding(.vertical, 10)
+                        .padding(.vertical, 10)*/
+                    Text("저장한 관심 부스가 없습니다")
+                        .padding(.vertical, 60)
+                        .font(.system(size: 15))
                 }
                 
                 Image(.boldLine)
@@ -100,7 +104,9 @@ struct MenuView: View {
                     .padding(.bottom, 0)
                 
                 Button {
-                    
+                    if let url = URL(string: "http://pf.kakao.com/_KxaaDG/chat") {
+                            UIApplication.shared.open(url, options: [:])
+                        }
                 } label: {
                     HStack {
                         Image(systemName: "headphones.circle")
@@ -146,6 +152,19 @@ struct MenuView: View {
                 }
                 
                 Divider()
+                    .padding(.bottom, 20)
+                
+                if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    Text("UNIFEST v\(appVersion)")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.gray)
+                } else {
+                    Text("UNIFEST")
+                }
+                
+                Text("UNIFEST 2024 © ALL RIGHT RESERVED")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.gray)
                 
                 Spacer()
             }

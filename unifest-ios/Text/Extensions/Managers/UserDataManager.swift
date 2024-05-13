@@ -11,17 +11,17 @@ final class UserDataManager: ObservableObject {
     static let shared = UserDataManager()
     static var likeList: [Int] = []
     
-    static var festivalList: [FestivalData] = []
+    // static var festivalList: [FestivalData] = []
     
     func fetchData() {
-        APIManager.fetchDataGET(.fest_all, apiType: .GET) { result in
+        /* APIManager.fetchDataGET("", apiType: .GET) { result in
             switch result {
             case .success(let data):
                 print("Data received in View: \(data)")
             case .failure(let error):
                 print("Error in View: \(error)")
             }
-        }
+        }*/
     }
 }
 

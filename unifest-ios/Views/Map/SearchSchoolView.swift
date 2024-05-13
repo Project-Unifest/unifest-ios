@@ -64,11 +64,11 @@ struct SearchSchoolView: View {
             
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    SchoolBoxView(isSelected: .constant(false), schoolImage: .konkukLogo, schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                    /* SchoolBoxView(isSelected: .constant(false), schoolImage: .konkukLogo, schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
                     SchoolBoxView(isSelected: .constant(false), schoolImage: .hongikLogo, schoolName: "홍익대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
                     SchoolBoxView(isSelected: .constant(false), schoolImage: .chungangLogo, schoolName: "중앙대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
                     SchoolBoxView(isSelected: .constant(false), schoolImage: .snutLogo, schoolName: "서울과기대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                    SchoolBoxView(isSelected: .constant(false), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                    SchoolBoxView(isSelected: .constant(false), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )*/
                 }
                 .padding(.horizontal)
             }

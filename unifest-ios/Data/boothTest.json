@@ -1,0 +1,94 @@
+{
+  "code": "200",
+  "message": "OK",
+  "data": [
+    {
+      "id": 77,
+      "name": "주점주점",
+      "category": "BAR",
+      "description": "대한민국 모든 술을 파는 주점주점입니다",
+      "thumbnail": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnamu.wiki%2Fw%2F%25ED%258E%258D&psig=AOvVaw02Jb7NXU-0lV_1FDkWRjqU&ust=1715663118647000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCMCRk5PtiYYDFQAAAAAdAAAAABAJ",
+      "location": "법학관 앞",
+      "latitude": 37.5417,
+      "longitude": 127.075,
+      "enabled": true
+    },
+    {
+      "id": 78,
+      "name": "부동산학관 부스",
+      "category": "FOOD",
+      "description": "부동산학관에 위치한 닭꼬치맛집",
+      "thumbnail": "https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png",
+      "location": "부동산학관 1층",
+      "latitude": 37.5432,
+      "longitude": 127.078,
+      "enabled": true
+    },
+    {
+      "id": 79,
+      "name": "공대주점",
+      "category": "BAR",
+      "description": "컴퓨터 공학과와 물리학과가 함께하는 합동부스입니다. 방문자 이벤트로 무료 안주 하나씩 제공중이에요!!",
+      "thumbnail": "https://img3.yna.co.kr/photo/yna/YH/2022/05/25/PYH2022052524930001300_P4.jpg",
+      "location": "공학관 ",
+      "latitude": 37.541,
+      "longitude": 127.079,
+      "enabled": true
+    },
+    {
+      "id": 80,
+      "name": "생명대 화장실",
+      "category": "TOILET",
+      "description": "생명대 1층,2층,3층에 위치해있습니다",
+      "thumbnail": "https://image.fnnews.com/resource/media/image/2021/11/01/202111011759157636_l.jpg",
+      "location": "생명대학교 내부",
+      "latitude": 37.5409,
+      "longitude": 127.075,
+      "enabled": true
+    },
+    {
+      "id": 81,
+      "name": "법학관 의무실",
+      "category": "MEDICAL",
+      "description": "밴드,붕대,응급처치를 받을수있는 의무실입니다. 간단한 치료가 가능합니다",
+      "thumbnail": "https://image.fnnews.com/resource/media/image/2021/11/01/202111011759157636_l.jpg",
+      "location": "법학관 앞",
+      "latitude": 37.5415,
+      "longitude": 127.075,
+      "enabled": true
+    },
+    {
+      "id": 82,
+      "name": "유니페스",
+      "category": "EVENT",
+      "description": "유니페스 팀 부스입니다.\n 앱에 관한 설명을 듣고 축제 부스 운영을 기획중이시라면, 부스 등록 부탁드립니다.",
+      "thumbnail": "https://avatars.githubusercontent.com/u/162893196?s=200&v=4",
+      "location": "청심대 앞",
+      "latitude": 37.5424,
+      "longitude": 127.077,
+      "enabled": true
+    },
+    {
+      "id": 83,
+      "name": "일감호 보트",
+      "category": "EVENT",
+      "description": "일감호에 보트타러 오세요~\n2인까지 탑승가능하며, 구명조끼 필수입니다.",
+      "thumbnail": "https://i.namu.wiki/i/opFGNCxPd-Hb6Yrt0iA0AKnzzlwtnNHDqfg4-dQBZHOSYbZTiv9Ti_YhBK8H71NeL4_LKSxFYFvKZiDo10WPVA.webp",
+      "location": "청심대 앞",
+      "latitude": 37.5424,
+      "longitude": 127.076,
+      "enabled": true
+    },
+    {
+      "id": 84,
+      "name": "동생대 밥집",
+      "category": "FOOD",
+      "description": "동생대의 점심은 우리가 책임진다. 다들 밥먹으러 오세요~",
+      "thumbnail": "https://mblogthumb-phinf.pstatic.net/20101020_214/frontier2011_1287573562602w8CnH_JPEG/%B0%C7%B1%B9%B4%EB_%B5%BF%B9%B0%BB%FD%B8%ED%B0%FA%C7%D0%B0%FC_2.jpg?type=w420",
+      "location": "동생대 앞",
+      "latitude": 37.5403,
+      "longitude": 127.075,
+      "enabled": true
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 <g filter="url(#filter0_d_565_1093)">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M40.0147 59.0465C40.2054 58.7164 40.5303 58.4861 40.9022 58.4025C51.834 55.9423 60 46.1748 60 34.5C60 20.969 49.031 10 35.5 10C21.969 10 11 20.969 11 34.5C11 46.5529 19.7035 56.573 31.1685 58.6183C31.5649 58.689 31.9154 58.9252 32.1167 59.2739L34.8532 64.0136C35.3629 64.8965 36.6372 64.8965 37.147 64.0136L40.0147 59.0465Z" fill="white"/>
 </g>
-<path d="M56.0267 34.5C56.0267 45.8368 46.8364 55.027 35.4997 55.027C24.1629 55.027 14.9727 45.8368 14.9727 34.5C14.9727 23.1632 24.1629 13.973 35.4997 13.973C46.8364 13.973 56.0267 23.1632 56.0267 34.5Z" fill="url(#paint0_linear_565_1093)"/>
+<path d="M56.0267 34.4999C56.0267 45.8367 46.8364 55.027 35.4997 55.027C24.1629 55.027 14.9727 45.8367 14.9727 34.4999C14.9727 23.1632 24.1629 13.9729 35.4997 13.9729C46.8364 13.9729 56.0267 23.1632 56.0267 34.4999Z" fill="url(#paint0_linear_565_1093)"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M30.0721 22.25H41.6098V29.0723L47.75 29.0723V39.9278H41.6098V46.75H30.0721V39.9278H23.25V29.0723L30.0721 29.0723V22.25ZM32.0586 24.2365V31.0588L25.2365 31.0588V37.9413H32.0586V44.7635H39.6233V37.9413H45.7635V31.0588H39.6233V24.2365H32.0586Z" fill="white"/>
 <defs>
 <filter id="filter0_d_565_1093" x="0.6" y="0.6" width="69.8" height="75.4758" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
@@ -15,9 +15,9 @@
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_565_1093"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_565_1093" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_565_1093" x1="35.4997" y1="13.973" x2="35.4997" y2="55.027" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_565_1093" x1="35.4997" y1="13.9729" x2="35.4997" y2="55.027" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FF7B7B"/>
-<stop offset="1" stop-color="#F20000"/>
+<stop offset="1" stop-color="#FF3737"/>
 </linearGradient>
 </defs>
 </svg>

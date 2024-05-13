@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
+    @Binding var tabViewSelection: Int
     
     var body: some View {
         VStack {
@@ -46,7 +47,7 @@ struct WaitingView: View {
                 .padding(.bottom, 4)
             
             Button {
-                
+                tabViewSelection = 2
             } label: {
                 HStack(spacing: 0) {
                     Text("주점/부스 구경하러 가기")
@@ -65,5 +66,5 @@ struct WaitingView: View {
 }
 
 #Preview {
-    WaitingView(viewModel: RootViewModel())
+    WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
 }

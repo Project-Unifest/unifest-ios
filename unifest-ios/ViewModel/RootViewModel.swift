@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 class RootViewModel: ObservableObject {
-    @Published var viewState: ViewState = .intro
+    @Published var viewState: ViewState = .home
+    @Published var isLoading: Bool = false
     
     func transtion(to: ViewState) {
         withAnimation(.spring(duration: 0.2, bounce: 0.3)) {
