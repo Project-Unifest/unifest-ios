@@ -30,9 +30,6 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     @Published var userLongitude: Double = 0
     
     func checkLocationServiceEnabled() {
-        
-        print("CLLocationManager.locationServiceEnabled: \(CLLocationManager.locationServicesEnabled())")
-        
         if CLLocationManager.locationServicesEnabled() {
             locationManager = CLLocationManager()
             
@@ -129,6 +126,10 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     
     func startUpdatingLocation() {
         self.locationManager?.startUpdatingLocation()
+    }
+    
+    func stopUpdateLocation() {
+        self.locationManager?.stopUpdatingLocation()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

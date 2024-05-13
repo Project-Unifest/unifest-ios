@@ -9,15 +9,12 @@ import SwiftUI
 
 @main
 struct unifest_iosApp: App {
-    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var mapViewModel = MapViewModel()
     
     var body: some Scene {
         WindowGroup {
-            // ContentView()
-            // MapView(mapViewModel: mapViewModel)
-            IntroView()
+            RootView()
         }
     }
 }

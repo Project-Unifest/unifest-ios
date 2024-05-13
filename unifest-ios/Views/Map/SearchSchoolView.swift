@@ -50,7 +50,7 @@ struct SearchSchoolView: View {
             Image(.boldLine)
                 .resizable()
                 .scaledToFit()
-                .frame(width: .infinity)
+                .frame(maxWidth: .infinity)
             
             HStack {
                 Text("나의 관심 축제")

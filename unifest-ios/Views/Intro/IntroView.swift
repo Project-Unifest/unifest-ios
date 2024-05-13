@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct IntroView: View {
+    @ObservedObject var viewModel: RootViewModel
+    
     @State private var searchText: String = ""
     
     // 지역 선택 index
@@ -128,7 +130,7 @@ struct IntroView: View {
             }
             
             Button {
-                
+                viewModel.transtion(to: .home)
             } label: {
                 Image(.longButtonBlack)
                     .resizable()
@@ -183,7 +185,7 @@ struct SchoolBoxView: View {
 }
 
 #Preview {
-    IntroView()
+    IntroView(viewModel: RootViewModel())
 }
 
 #Preview {

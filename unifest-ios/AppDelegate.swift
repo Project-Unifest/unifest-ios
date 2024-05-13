@@ -8,7 +8,7 @@
 import SwiftUI
 // import Firebase
 import UserNotifications
-// import FirebaseCore
+import FirebaseCore
 // import FirebaseMessaging
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -39,6 +39,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         // 파이어베이스 Meesaging 설정
         // Messaging.messaging().delegate = self
+        
+        FirebaseApp.configure()
         
         return true
     }

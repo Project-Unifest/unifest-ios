@@ -60,7 +60,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds) {
+            Map(initialPosition: mapCameraPosition ) {// , bounds: mapCameraBounds) {
                 UserAnnotation()
                 
                 MapPolygon(coordinates: polygonKonkuk)
@@ -171,25 +171,25 @@ struct BoothAnnotation: View {
         ZStack {
             switch boothType {
             case .drinking:
-                Image(.drinking)
+                Image(isSelected ? .drinking : .drinking2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .toilet:
-                Image(.toilet)
+                Image(isSelected ? .toilet : .toilet2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(.booth)
+                Image(isSelected ? .booth : .booth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .hospital:
-                Image(.hospital)
+                Image(isSelected ? .hospital : .hospital2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)

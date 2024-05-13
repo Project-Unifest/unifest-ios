@@ -12,6 +12,7 @@ struct MapPageView: View {
     @State private var isPopularBoothPresented: Bool = false
     
     @State private var isSearchSchoolViewPresented: Bool = false
+    @State private var isDetailViewPresented: Bool = false
     
     var body: some View {
         ZStack {
@@ -44,9 +45,9 @@ struct MapPageView: View {
                             HStack {
                                 Text("인기 부스")
                                     .font(.system(size: 13))
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(.accent)
                                     .fontWeight(.semibold)
-                                Image(.upWhiteArrow)
+                                Image(.upPinkArrow)
                                     .rotationEffect(isPopularBoothPresented ? .degrees(180) : .degrees(0))
                             }
                             .padding(.bottom, 2)
@@ -56,10 +57,22 @@ struct MapPageView: View {
                 if isPopularBoothPresented {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞")
-                            BoothBox(rank: 2, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞")
-                            BoothBox(rank: 3, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞")
-                            BoothBox(rank: 4, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞")
+                            BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
+                                .onTapGesture {
+                                    isDetailViewPresented = true
+                                }
+                            BoothBox(rank: 2, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
+                                .onTapGesture {
+                                    isDetailViewPresented = true
+                                }
+                            BoothBox(rank: 3, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
+                                .onTapGesture {
+                                    isDetailViewPresented = true
+                                }
+                            BoothBox(rank: 4, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
+                                .onTapGesture {
+                                    isDetailViewPresented = true
+                                }
                         }
                         .padding(.horizontal, 35)
                     }
@@ -71,7 +84,11 @@ struct MapPageView: View {
         .sheet(isPresented: $isSearchSchoolViewPresented) {
             SearchSchoolView()
                 .presentationDragIndicator(.visible)
-                .presentationDetents([.height(700)])
+                // .presentationDetents([.height(700)])
+        }
+        .sheet(isPresented: $isDetailViewPresented) {
+            DetailView()
+                .presentationDragIndicator(.visible)
         }
     }
 }
@@ -150,6 +167,7 @@ struct MapPageHeaderView: View {
                             Text("주점")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[0] ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
@@ -162,6 +180,7 @@ struct MapPageHeaderView: View {
                             Text("부스")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[1] ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
@@ -174,6 +193,7 @@ struct MapPageHeaderView: View {
                             Text("의무실")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[2] ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
@@ -186,6 +206,7 @@ struct MapPageHeaderView: View {
                             Text("화장실")
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
+                                .foregroundStyle(isTagSelected[3] ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
@@ -209,6 +230,7 @@ struct BoothBox: View {
     let title: String
     let description: String
     let position: String
+    let imageURL: String
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
@@ -217,14 +239,27 @@ struct BoothBox: View {
             .overlay {
                 HStack {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(.lightGray)
-                            .frame(width: 86, height: 86)
+                        AsyncImage(url: URL(string: imageURL)) { image in
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 90, height: 86)
+                                .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                        } placeholder: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(.lightGray)
+                                    .frame(width: 90, height: 86)
+                                
+                                ProgressView()
+                                    .frame(maxWidth: .infinity)
+                            }
+                        }
                         
                         VStack {
                             HStack {
                                 Circle()
-                                    .fill(Color.darkGray)
+                                    .fill(Color.defaultPink)
                                     .frame(width: 36, height: 36)
                                     .overlay {
                                         Text("\(rank)위")
@@ -271,6 +306,6 @@ struct BoothBox: View {
 #Preview {
     ZStack {
         Color.gray
-        BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞")
+        BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "https://i.namu.wiki/i/JaudlPaMxzH-kbYH_b788UT_sX47F_ajB1hFH7s37d5CZUqOfA6vcoXMiW3E4--hG_PwgDcvQ6Hi021KyzghLQ.webp")
     }
 }
