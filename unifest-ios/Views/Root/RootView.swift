@@ -12,7 +12,9 @@ struct RootView: View {
     @ObservedObject var mapViewModel = MapViewModel()
     @ObservedObject var festivalModel = FestivalModel()
     @ObservedObject var boothModel = BoothModel()
-    @State private var viewState: ViewState = .home
+    @ObservedObject var networkManager = NetworkManager()
+    
+    // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkAlertPresented: Bool = false
     
@@ -25,47 +27,55 @@ struct RootView: View {
                 TabView(selection: $tabViewSelection) {
                     CalendarTabView(viewModel: viewModel, festivalModel: festivalModel)
                         .onAppear {
-                            viewState = .home
+                            print("selection: \(self.tabViewSelection)")
                         }
                         .tabItem {
-                            Image(viewState == .home ? .homeIcon : .homeGray)
-                            Text("홈")
+                            // Image(viewState == .home ? .homeIcon : .homeGray)
+                            // Text(StringLiterals.Root.home)
+                            Label(StringLiterals.Root.home, systemImage: "house.circle")
                         }
+                        .tag(0)
                     
                     MapPageView(mapViewModel: mapViewModel, boothModel: boothModel)
                         .onAppear {
                             mapViewModel.startUpdatingLocation()
-                            viewState = .map
+                            print("selection: \(self.tabViewSelection)")
                         }
                         .onDisappear {
                             mapViewModel.stopUpdateLocation()
                         }
                         .tabItem {
-                            Image(viewState == .map ? .mapIcon : .mapGray)
-                            Text("지도")
+                            // Image(viewState == .map ? .mapIcon : .mapGray)
+                            // Text(StringLiterals.Root.map)
+                            Label(StringLiterals.Root.map, systemImage: "map.circle")
                         }
+                        .tag(1)
                     
                     WaitingView(viewModel: viewModel, tabViewSelection: $tabViewSelection)
                         .onAppear {
-                            viewState = .waiting
+                            print("selection: \(self.tabViewSelection)")
                         }
                         .tabItem {
-                            Image(viewState == .waiting ? .waitingIcon : .waitingGray)
-                            Text("웨이팅")
+                            // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
+                            // Text(StringLiterals.Root.waiting)
+                            Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
                         }
+                        .tag(2)
                     
-                    MenuView()
+                    MenuView(boothModel: boothModel)
                         .onAppear {
-                            viewState = .menu
+                            print("selection: \(self.tabViewSelection)")
                         }
                         .tabItem {
-                            Image(viewState == .menu ? .menuIcon : .menuGray)
-                            Text("메뉴")
+                            // Image(viewState == .menu ? .menuIcon : .menuGray)
+                            // Text(StringLiterals.Root.menu)
+                            Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
                         }
+                        .tag(3)
                 }
             }
             
-            if !NetworkManager().isConnected {
+            if !networkManager.isConnected {
                 NetworkErrorView(errorType: .network)
             }
             
@@ -75,6 +85,9 @@ struct RootView: View {
                     ProgressView()
                 }
             }
+        }
+        .onAppear {
+            boothModel.loadLikeBoothListDB()
         }
     }
 }

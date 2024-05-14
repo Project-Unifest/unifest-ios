@@ -88,7 +88,13 @@ struct StarItem: Codable, Hashable {
 }
 
 class FestivalModel: ObservableObject {
-    @Published var festivals: [FestivalItem] = []
+    @Published var festivals: [FestivalItem] = [] {
+        willSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
     @Published var todayFestivals: [TodayFestivalItem] = [] {
         willSet {
             DispatchQueue.main.async {

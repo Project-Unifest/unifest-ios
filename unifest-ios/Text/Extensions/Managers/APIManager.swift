@@ -11,13 +11,13 @@ import SwiftUI
 
 final class APIManager: ObservableObject {
     
-    static let shared = APIManager(serverType: .dev)
+    static let shared = APIManager(serverType: .prod)
     private var cancellables = Set<AnyCancellable>()
     
     // API 서버 종류별 address
     enum ServerType: String {
         case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
-        case prod = "http://ec2-54-180-210-67.ap-northeast-2.compute.amazonaws.com:9090"
+        case prod = "https://unifest.store"
     }
     
     // API Error 종류

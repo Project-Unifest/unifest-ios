@@ -9,6 +9,18 @@ import SwiftUI
 
 struct MenuView: View {
     @State private var isListViewPresented: Bool = false
+    @ObservedObject var boothModel: BoothModel
+    @State private var isDetailViewPresented: Bool = false
+    @State private var randomLikeList: [Int] = []
+    
+    @State private var isPermissionAlertPresented: Bool = false
+    
+    // 메일
+    @State private var isErrorDeclarationModalPresented: Bool = false
+    @State private var isCopyFinishPresented: Bool = false
+    
+    // 앱 초기화
+    @State private var isResetAlertPresented: Bool = false
     
     var body: some View {
         ZStack {
@@ -17,7 +29,7 @@ struct MenuView: View {
                     .frame(height: 56)
                 
                 HStack {
-                    Text("나의 관심학교")
+                    Text(StringLiterals.Menu.LikedSchoolTitle)
                         .font(.system(size: 15))
                         .bold()
                         .foregroundStyle(.black)
@@ -63,38 +75,61 @@ struct MenuView: View {
                     .padding(.vertical)
                 
                 HStack {
-                    Text("관심 부스")
+                    Text(StringLiterals.Menu.LikedBoothTitle)
                         .font(.system(size: 15))
                         .bold()
                         .foregroundStyle(.black)
                     
                     Spacer()
                     
-                    Button {
-                        isListViewPresented.toggle()
-                    } label: {
-                        HStack(spacing: 0) {
-                            Text("더보기")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray)
-                                .underline()
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray)
+                    if !boothModel.likedBoothList.isEmpty {
+                        Button {
+                            isListViewPresented.toggle()
+                        } label: {
+                            HStack(spacing: 0) {
+                                Text(StringLiterals.Menu.more)
+                                    .font(.system(size: 11))
+                                    .foregroundColor(.gray)
+                                    .underline()
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 11))
+                                    .foregroundColor(.gray)
+                            }
                         }
                     }
                 }
                 .padding(.horizontal)
                 
-                VStack {
-                    /* boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
-                        .padding(.vertical, 10)
-                    Divider()
-                    boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: true)
-                        .padding(.vertical, 10)*/
-                    Text("저장한 관심 부스가 없습니다")
-                        .padding(.vertical, 60)
-                        .font(.system(size: 15))
+                if boothModel.likedBoothList.isEmpty {
+                    VStack(alignment: .center) {
+                        Text(StringLiterals.Menu.noLikedBoothTitle)
+                            .font(.system(size: 16))
+                            .fontWeight(.semibold)
+                            .foregroundColor(.defaultBlack)
+                            .padding(.bottom, 1)
+                        
+                        Text(StringLiterals.Menu.noLikedBoothMessage)
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                            .padding(.bottom, 10)
+                    }
+                    .frame(height: 240)
+                } else {
+                    VStack {
+                        // let randomLikeList = boothModel.getRandomLikedBooths()
+                        
+                        ForEach(randomLikeList, id: \.self) { boothID in
+                            if let booth = boothModel.getBoothByID(boothID) {
+                                LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                    .padding(.vertical, 10)
+                                    .onTapGesture {
+                                        boothModel.loadBoothDetail(boothID)
+                                        isDetailViewPresented = true
+                                    }
+                                Divider()
+                            }
+                        }
+                    }
                 }
                 
                 Image(.boldLine)
@@ -104,7 +139,7 @@ struct MenuView: View {
                     .padding(.bottom, 0)
                 
                 Button {
-                    if let url = URL(string: "http://pf.kakao.com/_KxaaDG/chat") {
+                    if let url = URL(string: StringLiterals.URL.messageChannelLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
                 } label: {
@@ -115,7 +150,7 @@ struct MenuView: View {
                             .foregroundColor(.darkGray)
                             .padding(.trailing, 8)
                         
-                        Text("이용문의")
+                        Text(StringLiterals.Menu.askTitle)
                             .font(.system(size: 15))
                             .foregroundStyle(.darkGray)
                             .fontWeight(.medium)
@@ -129,7 +164,7 @@ struct MenuView: View {
                 Divider()
                 
                 Button {
-                    if let url = URL(string: "https://naver.com") {
+                    if let url = URL(string: StringLiterals.URL.operatorModeLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
                 } label: {
@@ -140,7 +175,7 @@ struct MenuView: View {
                             .foregroundColor(.darkGray)
                             .padding(.trailing, 8)
                         
-                        Text("운영자 모드")
+                        Text(StringLiterals.Menu.operatorModeTitle)
                             .font(.system(size: 15))
                             .foregroundStyle(.darkGray)
                             .fontWeight(.medium)
@@ -152,29 +187,265 @@ struct MenuView: View {
                 }
                 
                 Divider()
+                
+                Button {
+                    if let url = URL(string: StringLiterals.URL.instagramLink) {
+                            UIApplication.shared.open(url, options: [:])
+                        }
+                } label: {
+                    HStack {
+                        Image(.instagramLogo)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.instagram)
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
+                HStack {
+                    Text("권한 및 개인정보 처리방침")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.defaultBlack)
+                        .bold()
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                
+                Divider()
+                
+                Button {
+                    isPermissionAlertPresented = true
+                } label: {
+                    HStack {
+                        Image(systemName: "location.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.locationAuthText)
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
+                // 개인정보 처리방침
+                Button {
+                    if let url = URL(string: StringLiterals.URL.privacyPolicyLink) {
+                            UIApplication.shared.open(url, options: [:])
+                        }
+                } label: {
+                    HStack {
+                        Image(systemName: "lock.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.privacyText)
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
+                HStack {
+                    Text("피드백")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.defaultBlack)
+                        .bold()
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                
+                Divider()
+                
+                // 메일 보내기
+                Button {
+                    isErrorDeclarationModalPresented = true
+                } label: {
+                    HStack {
+                        Image(systemName: "envelope.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.developerMail)
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                /* Divider()
+                
+                HStack {
+                    Text("초기화")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.red)
+                        .bold()
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                
+                Divider()
+                
+                Button {
+                    isResetAlertPresented = true
+                } label: {
+                    HStack {
+                        Image(systemName: "xmark.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.red)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.clearApp)
+                            .font(.system(size: 15))
+                            .foregroundColor(.red)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }*/
+                
+                Divider()
                     .padding(.bottom, 20)
                 
                 if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                    Text("UNIFEST v\(appVersion)")
+                    Text(StringLiterals.Menu.appTitle + " iOS v\(appVersion)")
                         .font(.system(size: 11))
                         .foregroundStyle(.gray)
                 } else {
-                    Text("UNIFEST")
+                    Text(StringLiterals.Menu.appTitle)
                 }
                 
-                Text("UNIFEST 2024 © ALL RIGHT RESERVED")
+                Text(StringLiterals.Menu.copyright)
                     .font(.system(size: 11))
                     .foregroundStyle(.gray)
+                    .padding(.bottom, 20)
                 
                 Spacer()
             }
             .padding(.top, 32)
             
             VStack {
-                NavigationHeaderView(text: "메뉴")
+                NavigationHeaderView(text: StringLiterals.Menu.title)
                 Spacer()
             }
         }
+        .fullScreenCover(isPresented: $isListViewPresented, content: {
+            LikeBoothListView(boothModel: boothModel)
+        })
+        .onAppear {
+            // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
+            randomLikeList = boothModel.getRandomLikedBooths()
+        }
+        .sheet(isPresented: $isDetailViewPresented) {
+            DetailView(boothModel: boothModel)
+                .presentationDragIndicator(.visible)
+        }
+        // 권한 허가 수정 안내 모달
+        .alert("권한 허가 수정 안내", isPresented: $isPermissionAlertPresented, actions: {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+                
+            }
+            Button("알겠어요", role: nil) {
+                
+            }
+        }, message: {
+            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 앱 - 펫스페이스 에서 권한을 수정할 수 있어요.")
+        })
+        // 기능 오류 신고 모달
+        .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
+            Button("메일을 작성할래요", role: nil) {
+                // 메일 보내기
+//                let emailAddr = "mailto:leehe228@konkuk.ac.kr"
+//                guard let emailUrl = URL(string: emailAddr) else { return }
+//                UIApplication.shared.open(emailUrl)
+                if let emailUrl = URL(string: "mailto:hoeunlee228@gmail.com"), UIApplication.shared.canOpenURL(emailUrl) {
+                    UIApplication.shared.open(emailUrl)
+                } else {
+                    print("Failed to open email URL")
+                }
+            }
+            Button("메일 주소를 복사할래요", role: nil) {
+                // 클립보드에 복사
+                UIPasteboard.general.string = "hoeunlee228@gmail.com"
+                isCopyFinishPresented = true
+            }
+            Button("알겠어요", role: nil) {
+                //
+            }
+        }, message: {
+            Text("피드백은 hoeunlee228@gmail.com으로 메일을 작성해주세요. 소중한 의견 감사합니다.")
+        })
+        // 복사 완료 모달
+        .alert("복사 완료", isPresented: $isCopyFinishPresented, actions: {
+            Button("알겠어요", role: nil) {
+                
+            }
+        }, message: {
+            Text("클립보드에 복사가 완료되었어요. 소중한 의견을 작성해 보내주세요.")
+        })
+        
+        // 앱 데이터 초기화
+        .alert("앱을 초기화할까요?", isPresented: $isResetAlertPresented, actions: {
+            Button("초기화할게요", role: .destructive) {
+                
+            }
+            Button("취소할게요", role: .cancel) {
+                
+            }
+        }, message: {
+            Text("앱 저장소에 저장된 모든 데이터를 제거하여 앱을 초기 상태로 되돌립니다. 삭제된 데이터는 복구할 수 없습니다.")
+        })
     }
     
     @ViewBuilder
@@ -197,58 +468,8 @@ struct MenuView: View {
                 .foregroundStyle(.darkGray)
         }
     }
-    
-    @ViewBuilder
-    func boothBox(image: ImageResource, name: String, description: String, location: String, isFavor: Bool) -> some View {
-        HStack {
-            Image(image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 86, height: 86)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.trailing, 4)
-                
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(name)
-                        .font(.system(size: 18))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
-                    
-                    Spacer()
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(isFavor ? .pinkBookMark : .bookmark)
-                    }
-                }
-                
-                Text(description)
-                    .font(.system(size: 13))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.darkGray)
-                
-                Spacer()
-                
-                HStack(spacing: 2) {
-                    Image(.marker)
-                    Text(location)
-                        .font(.system(size: 13))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
-                    Spacer()
-                }
-                
-            }
-        }
-        .padding(.horizontal)
-        .fullScreenCover(isPresented: $isListViewPresented, content: {
-            LikeBoothListView()
-        })
-    }
 }
 
 #Preview {
-    MenuView()
+    MenuView(boothModel: BoothModel())
 }

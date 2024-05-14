@@ -22,12 +22,12 @@ struct NetworkErrorView: View {
                             .padding(.top, 26)
                             .padding(.bottom, 10)
                         
-                        Text(errorType == .server ? "서버 문제 발생" : "네트워크 문제")
+                        Text(errorType == .server ? StringLiterals.NetworkError.serverErrorTitle : StringLiterals.NetworkError.networkErrorTitle)
                             .font(.system(size: 18))
                             .fontWeight(.semibold)
                             .padding(.bottom, 3)
                         
-                        Text(errorType == .server ? "개발자에게 문의 바랍니다." : "와이파이나 데이터 접속을 확인해주세요.")
+                        Text(errorType == .server ? StringLiterals.NetworkError.serverErrorMessage : StringLiterals.NetworkError.networkErrorMessage)
                             .font(.system(size: 13))
                             .fontWeight(.medium)
                             .padding(.bottom, 10)
@@ -37,7 +37,7 @@ struct NetworkErrorView: View {
                         } label: {
                             Image(.mediumPinkButton)
                                 .overlay {
-                                    Text("재시도")
+                                    Text(StringLiterals.NetworkError.retry)
                                         .font(.system(size: 13))
                                         .foregroundStyle(.white)
                                         .fontWeight(.semibold)

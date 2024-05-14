@@ -16,15 +16,22 @@ struct MapPageView: View {
     @State private var isSearchSchoolViewPresented: Bool = false
     @State private var isDetailViewPresented: Bool = false
     
+    @State private var searchText: String = ""
+    
+    @State private var isTagSelected: [BoothType: Bool] = [.drink: true, .food: true, .booth: true, .event: true, .hospital: true, .toilet: true]
+    
+    @State private var isBoothListPresented: Bool = false
+    @State private var selectedBoothIDList: [Int] = []
+    
     var body: some View {
         ZStack {
             VStack {
                 Spacer()
-                MapView(mapViewModel: mapViewModel, boothModel: boothModel)
+                MapView(mapViewModel: mapViewModel, boothModel: boothModel, isTagSelected: $isTagSelected, searchText: $searchText, selectedBoothIDList: $selectedBoothIDList, isBoothListPresented: $isBoothListPresented, isPopularBoothPresented: $isPopularBoothPresented)
             }
             
             VStack {
-                MapPageHeaderView(isSearchSchoolViewPresented: $isSearchSchoolViewPresented)
+                MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
                     .background(.background)
                     .clipShape(
                         .rect(
@@ -37,44 +44,77 @@ struct MapPageView: View {
                     
                 Spacer()
                 
-                Button {
-                    withAnimation(.spring) {
-                        isPopularBoothPresented.toggle()
-                    }
-                } label: {
-                    Image(.popBoothButton)
-                        .overlay {
-                            HStack {
-                                Text("인기 부스")
-                                    .font(.system(size: 13))
-                                    .foregroundStyle(.accent)
-                                    .fontWeight(.semibold)
-                                Image(.upPinkArrow)
-                                    .rotationEffect(isPopularBoothPresented ? .degrees(180) : .degrees(0))
+                HStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    
+                    if isBoothListPresented {
+                        Button {
+                            withAnimation(.spring) {
+                                isBoothListPresented = false
                             }
-                            .padding(.bottom, 2)
+                        } label: {
+                            Image(.popCloseButton)
                         }
+                    }
+                    
+                    if !boothModel.top5booths.isEmpty && searchText.isEmpty && !isBoothListPresented {
+                        Button {
+                            withAnimation(.spring) {
+                                // isPopularBoothPresented.toggle()
+                                if isPopularBoothPresented {
+                                    // on -> off
+                                    isPopularBoothPresented = false
+                                } else {
+                                    // off -> on
+                                    if isBoothListPresented {
+                                        isBoothListPresented = false
+                                    }
+                                    isPopularBoothPresented = true
+                                }
+                            }
+                        } label: {
+                            Image(.popBoothButton)
+                                .overlay {
+                                    HStack {
+                                        Text(StringLiterals.Map.favoriteBoothTitle)
+                                            .font(.system(size: 13))
+                                            .foregroundStyle(.accent)
+                                            .fontWeight(.semibold)
+                                        Image(.upPinkArrow)
+                                            .rotationEffect(isPopularBoothPresented ? .degrees(180) : .degrees(0))
+                                    }
+                                    .padding(.bottom, 2)
+                                }
+                        }
+                    }
+                    
+                    Spacer()
                 }
                 
-                if isPopularBoothPresented {
+                if isPopularBoothPresented || isBoothListPresented {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
-                                .onTapGesture {
-                                    isDetailViewPresented = true
+                            if isPopularBoothPresented {
+                                ForEach(Array(boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
+                                    BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
+                                        .onTapGesture {
+                                            boothModel.loadBoothDetail(topBooth.id)
+                                            isDetailViewPresented = true
+                                        }
                                 }
-                            BoothBox(rank: 2, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
-                                .onTapGesture {
-                                    isDetailViewPresented = true
+                            } else {
+                                if boothModel.mapSelectedBoothList.isEmpty {
+                                    //
+                                } else {
+                                    ForEach(boothModel.mapSelectedBoothList, id: \.self) { booth in
+                                        BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
+                                            .onTapGesture {
+                                                boothModel.loadBoothDetail(booth.id)
+                                                isDetailViewPresented = true
+                                            }
+                                    }
                                 }
-                            BoothBox(rank: 3, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
-                                .onTapGesture {
-                                    isDetailViewPresented = true
-                                }
-                            BoothBox(rank: 4, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "")
-                                .onTapGesture {
-                                    isDetailViewPresented = true
-                                }
+                            }
                         }
                         .padding(.horizontal, 35)
                     }
@@ -89,8 +129,11 @@ struct MapPageView: View {
                 // .presentationDetents([.height(700)])
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView()
+            DetailView(boothModel: boothModel)
                 .presentationDragIndicator(.visible)
+        }
+        .onAppear {
+            boothModel.loadTop5Booth()
         }
     }
 }
@@ -107,16 +150,17 @@ struct MapPageView: View {
 
 struct MapPageHeaderView: View {
     @State private var isInfoTextPresented: Bool = true
-    @State private var searchText: String = ""
-    @State private var isTagSelected: [Bool] = [true, true, false, false, false, false]
+    @Binding var searchText: String
+    @Binding var isTagSelected: [BoothType: Bool]
     
     @Binding var isSearchSchoolViewPresented: Bool
+    @Binding var isPopularBoothPresented: Bool
     
     var body: some View {
         VStack {
             HStack {
                 Button {
-                    isSearchSchoolViewPresented = true
+                    // isSearchSchoolViewPresented = true
                 } label: {
                     HStack {
                         Text("건국대학교")
@@ -124,13 +168,14 @@ struct MapPageHeaderView: View {
                             .bold()
                             .foregroundStyle(.defaultBlack)
                         
-                        Image(.downArrow)
+                        /* Image(.downArrow)
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 16, height: 16)
+                            .frame(width: 16, height: 16) */
                     }
                 }
                 
+                /*
                 Image(.blackBubble)
                     .overlay {
                         VStack(alignment: .center) {
@@ -145,7 +190,7 @@ struct MapPageHeaderView: View {
                             isInfoTextPresented = false
                         }
                     }
-                    .opacity(isInfoTextPresented ? 1 : 0)
+                    .opacity(isInfoTextPresented ? 1 : 0)*/
                 
                 Spacer()
             }
@@ -154,9 +199,26 @@ struct MapPageHeaderView: View {
             Image(.searchBox)
                 .overlay {
                     HStack {
-                        TextField("부스/주점을 검색해보세요.", text: $searchText)
+                        TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
                             .font(.system(size: 13))
-                        Image(.searchIcon)
+                            .onChange(of: searchText) {
+                                if !searchText.isEmpty {
+                                    withAnimation(.spring) {
+                                        isPopularBoothPresented = false
+                                    }
+                                }
+                            }
+                        
+                        if searchText.isEmpty {
+                            Image(.searchIcon)
+                        } else {
+                            Button {
+                                searchText = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.gray)
+                            }
+                        }
                     }
                     .padding(.horizontal, 15)
                 }
@@ -164,81 +226,81 @@ struct MapPageHeaderView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 7) {
-                    Image(isTagSelected[0] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("주점")
+                            Text(StringLiterals.Map.drinkBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[0] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.drink] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[0].toggle()
+                                isTagSelected[.drink]?.toggle()
                             }
                         }
                     
-                    Image(isTagSelected[1] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("먹거리")
+                            Text(StringLiterals.Map.foodBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[1] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.food] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[1].toggle()
+                                isTagSelected[.food]?.toggle()
                             }
                         }
                     
-                    Image(isTagSelected[2] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("이벤트")
+                            Text(StringLiterals.Map.eventBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[2] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.event] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[2].toggle()
+                                isTagSelected[.event]?.toggle()
                             }
                         }
                     
-                    Image(isTagSelected[3] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("일반")
+                            Text(StringLiterals.Map.generalBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[3] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.booth] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[3].toggle()
+                                isTagSelected[.booth]?.toggle()
                             }
                         }
                     
-                    Image(isTagSelected[4] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("의무실")
+                            Text(StringLiterals.Map.hospitalBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[4] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.hospital] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[4].toggle()
+                                isTagSelected[.hospital]?.toggle()
                             }
                         }
                     
-                    Image(isTagSelected[5] ? .selectedTagBox : .nonselectedTagBox)
+                    Image(isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
-                            Text("화장실")
+                            Text(StringLiterals.Map.toiletBoothTitle)
                                 .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[5] ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(isTagSelected[.toilet] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
                             withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[5].toggle()
+                                isTagSelected[.toilet]?.toggle()
                             }
                         }
                 }
@@ -247,10 +309,6 @@ struct MapPageHeaderView: View {
         }
         .padding(.bottom)
     }
-}
-
-#Preview {
-    MapPageHeaderView(isSearchSchoolViewPresented: .constant(false))
 }
 
 struct BoothBox: View {
@@ -279,27 +337,32 @@ struct BoothBox: View {
                                     .fill(.lightGray)
                                     .frame(width: 90, height: 86)
                                 
-                                ProgressView()
-                                    .frame(maxWidth: .infinity)
+                                Image(.noImagePlaceholder)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 50, height: 50)
                             }
                         }
+                        .frame(width: 90, height: 86)
                         
-                        VStack {
-                            HStack {
-                                Circle()
-                                    .fill(Color.defaultPink)
-                                    .frame(width: 36, height: 36)
-                                    .overlay {
-                                        Text("\(rank)위")
-                                            .font(.system(size: 13))
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(.white)
-                                    }
+                        if rank != -1 {
+                            VStack {
+                                HStack {
+                                    Circle()
+                                        .fill(Color.defaultPink)
+                                        .frame(width: 36, height: 36)
+                                        .overlay {
+                                            Text("\(rank + 1)" + StringLiterals.Map.ranking)
+                                                .font(.system(size: 13))
+                                                .fontWeight(.semibold)
+                                                .foregroundStyle(.white)
+                                        }
+                                    Spacer()
+                                }
                                 Spacer()
                             }
-                            Spacer()
+                            .offset(x: -10, y: -8)
                         }
-                        .offset(x: -10, y: -8)
                     }
                     .frame(width: 86, height: 86)
                     
@@ -331,9 +394,10 @@ struct BoothBox: View {
     }
 }
 
-#Preview {
+/* #Preview {
     ZStack {
         Color.gray
         BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "https://i.namu.wiki/i/JaudlPaMxzH-kbYH_b788UT_sX47F_ajB1hFH7s37d5CZUqOfA6vcoXMiW3E4--hG_PwgDcvQ6Hi021KyzghLQ.webp")
     }
 }
+*/

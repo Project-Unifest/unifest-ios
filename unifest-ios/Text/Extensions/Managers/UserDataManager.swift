@@ -9,7 +9,7 @@ import Foundation
 
 final class UserDataManager: ObservableObject {
     static let shared = UserDataManager()
-    static var likeList: [Int] = []
+    static var likeBoothIDList: [Int] = []
     
     // static var festivalList: [FestivalData] = []
     

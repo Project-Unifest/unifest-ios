@@ -12,9 +12,10 @@ import MapKit
 struct OneMapView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @Environment(\.dismiss) private var dismiss
+    let booth: BoothDetailItem?
     
-    let boothName: String
-    let boothLocation: String
+    // let boothName: String
+    // let boothLocation: String
     
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
     @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_630, longitude: 127.076_870), distance: 4000, heading: 0.0, pitch: 0))
@@ -76,10 +77,11 @@ struct OneMapView: View {
                         .foregroundStyle(.gray.opacity(0.5))
                 }
                 
-                Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.542_18, longitude: 127.078_40)) {
-                    OneBoothAnnotation(boothType: .drink)
+                if let booth = booth {
+                    Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
+                        OneBoothAnnotation(boothType: stringToBoothType(booth.category))
+                    }
                 }
-                
             }
             .controlSize(.mini)
             .mapStyle(.standard)
@@ -112,13 +114,15 @@ struct OneMapView: View {
                         .frame(width: 20, height: 32)
                         Spacer()
                         VStack(spacing: 0) {
-                            Text(boothName)
-                                .font(.system(size: 20))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.black)
-                            Text(boothLocation)
-                                .font(.system(size: 12))
-                                .foregroundStyle(.gray)
+                            if let booth = booth {
+                                Text(booth.name)
+                                    .font(.system(size: 20))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.black)
+                                Text(booth.location)
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.gray)
+                            }
                         }
                         .frame(height: 32)
                         Spacer()
@@ -131,6 +135,25 @@ struct OneMapView: View {
                 
                 Spacer()
             }
+        }
+    }
+    
+    func stringToBoothType(_ typeString: String) -> BoothType {
+        switch typeString {
+        case BoothType.drink.rawValue:
+            return .drink
+        case BoothType.food.rawValue:
+            return .food
+        case BoothType.event.rawValue:
+            return .event
+        case BoothType.booth.rawValue:
+            return .booth
+        case BoothType.hospital.rawValue:
+            return .hospital
+        case BoothType.toilet.rawValue:
+            return .toilet
+        default:
+            return .booth
         }
     }
     
@@ -166,13 +189,13 @@ struct OneMapView: View {
     }
 }
 
-#Preview {
+/* #Preview {
     @ObservedObject var mapViewModel = MapViewModel()
     
     return Group {
-        OneMapView(mapViewModel: mapViewModel, boothName: "컴공주점", boothLocation: "청심대 앞")
+        OneMapView(mapViewModel: mapViewModel, booth:)
     }
-}
+}*/
 
 struct OneBoothAnnotation: View {
     let boothType: BoothType

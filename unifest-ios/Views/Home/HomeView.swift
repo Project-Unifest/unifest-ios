@@ -48,7 +48,7 @@ struct HomeView: View {
                 .frame(height: 20)
             
             HStack {
-                Text("\(selectedMonth)월 \(selectedDay)일 축제 일정")
+                Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalTitle)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
                     .foregroundStyle(.black)
@@ -64,14 +64,13 @@ struct HomeView: View {
                             .font(.system(size: 26))
                             .foregroundStyle(.black)
                         
-                        Text("축제 일정 없음")
-                            .font(.system(size: 18))
+                        Text(StringLiterals.Home.noFestivalTitle)
+                            .font(.system(size: 16))
                             .foregroundStyle(.black)
                             .fontWeight(.semibold)
                         
-                        Text("오늘은 축제가 열리는 학교가 없어요")
+                        Text(StringLiterals.Home.noFestivalMessage)
                             .font(.system(size: 12))
-                            .fontWeight(.medium)
                             .foregroundStyle(.gray)
                         
                         Spacer()
@@ -90,32 +89,12 @@ struct HomeView: View {
                             Divider()
                                 .padding(.trailing)
                         }
-                        
-                        /* schoolFestDetailRow(dateText: "5/21(월)", name: "녹색지대", day: 1, location: "건국대학교 서울캠퍼스")
-                        
-                        Divider()
-                            .padding(.trailing)
-                        
-                        schoolFestDetailRow(dateText: "5/21(월)", name: "녹색지대", day: 1, location: "건국대학교 서울캠퍼스")
-                        
-                        Divider()
-                            .padding(.trailing)
-                        
-                        schoolFestDetailRow(dateText: "5/21(월)", name: "녹색지대", day: 1, location: "건국대학교 서울캠퍼스") */
                     }
                     .padding(.vertical, 20)
                     .padding(.leading)
-                    /*.onChange(of: selectedDay) {
-                        print("selected Day Updated")
-                        updateTodayList()
-                    }
-                    .onChange(of: selectedMonth) {
-                        print("selected Month Updated")
-                        updateTodayList()
-                    }*/
                 }
                 
-                /* 일단 제거
+                /*
                 Button {
                     isIntroViewPresented.toggle()
                 } label: {
@@ -140,7 +119,7 @@ struct HomeView: View {
                 .padding(.vertical)
             
             HStack {
-                Text("다가오는 축제 일정")
+                Text(StringLiterals.Home.upcomingFestivalTitle)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
                     .foregroundStyle(.black)
@@ -198,40 +177,6 @@ struct HomeView: View {
         return difference.day ?? 0
     }
     
-    /* func updateTodayList() {
-        viewModel.isLoading = true
-        print(APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", selectedMonth))-\(String(format: "%02d", selectedDay))")
-        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", selectedMonth))-\(String(format: "%02d", selectedDay))")!,timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                if let error = error {
-                    print("Error: \(error)")
-                } else {
-                    print("No data received")
-                }
-                return
-            }
-
-            do {
-                let decoder = JSONDecoder()
-                let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
-                
-                if let responseData = apiResponse.data {
-                    todayFestivalList = responseData
-                    viewModel.isLoading = false
-                }
-            } catch {
-                print("Error decoding JSON: \(error)")
-                viewModel.isLoading = false
-            }
-        }
-
-        task.resume()
-        
-    }*/
-    
     @ViewBuilder
     func schoolFestRow(image: String, dateText: String, name: String, school: String) -> some View {
         Image(.schoolFestBox)
@@ -241,9 +186,12 @@ struct HomeView: View {
             .overlay {
                 HStack(spacing: 10) {
                     AsyncImage(url: URL(string: image)) { image in
-                        image.image?
+                        image
                             .resizable()
                             .scaledToFit()
+                            .frame(width: 52, height: 52)
+                    } placeholder: {
+                        ProgressView()
                             .frame(width: 52, height: 52)
                     }
                     
@@ -310,14 +258,6 @@ struct HomeView: View {
                             ForEach(celebs, id: \.self) { star in
                                 CelebCircleView(celeb: CelebProfile(name: star.name, imageURL: star.imgUrl))
                             }
-                            /* CelebCircleView(celeb: CelebProfile(name: "싸이", imageURL: "https://i.namu.wiki/i/oN3SnBjP-09rtyqk5FZkU4J8ojog4Me4AQXrSHcrFPlirYO3tUFgS_MODwDyawcBqwpzwkQNy_U75S_dVlYt5jJwgONlpXD90lwiEbgJmK2ooij_ktVCXrRp6LHgSrTOAweI-9zkL8gdtU__q9t37MJqBlL8x2TVeHG2QionGik.webp"))
-                            
-                            CelebCircleView(celeb: CelebProfile(name: "싸이", imageURL: "https://i.namu.wiki/i/1ahRPVQm5CvZEuWX-qAVkCjGpGzfQgGV1EykhbwoQ5DhlQVCMAMBgvDm3uliJMQQcTOxtLkxTQAaITqI8EXlppVK2kXtU_IEZlkVBG648L8FhJ30iT5Sn6KRvWzL5wgZYMO59mNivTOdm6PQ9nJxTkUoeH8Q_R4N17q_wVZSunc.webp"))
-                            
-                            CelebCircleView(celeb: CelebProfile(name: "싸이", imageURL: "https://i.namu.wiki/i/1ahRPVQm5CvZEuWX-qAVkCjGpGzfQgGV1EykhbwoQ5DhlQVCMAMBgvDm3uliJMQQcTOxtLkxTQAaITqI8EXlppVK2kXtU_IEZlkVBG648L8FhJ30iT5Sn6KRvWzL5wgZYMO59mNivTOdm6PQ9nJxTkUoeH8Q_R4N17q_wVZSunc.webp"))
-                            
-                            CelebCircleView(celeb: CelebProfile(name: "싸이", imageURL: "https://i.namu.wiki/i/1ahRPVQm5CvZEuWX-qAVkCjGpGzfQgGV1EykhbwoQ5DhlQVCMAMBgvDm3uliJMQQcTOxtLkxTQAaITqI8EXlppVK2kXtU_IEZlkVBG648L8FhJ30iT5Sn6KRvWzL5wgZYMO59mNivTOdm6PQ9nJxTkUoeH8Q_R4N17q_wVZSunc.webp"))
-                             */
                         }
                     }
                     .frame(height: 72)
@@ -351,7 +291,7 @@ struct HomeView: View {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         
         guard let date = dateFormatter.date(from: dateString) else {
-            return "Invalid Date"
+            return ""
         }
         
         // Format month and day

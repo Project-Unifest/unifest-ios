@@ -13,8 +13,15 @@ struct MapView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @ObservedObject var boothModel: BoothModel
     
+    @Binding var isTagSelected: [BoothType: Bool]
+    @Binding var searchText: String
+    
+    @Binding var selectedBoothIDList: [Int]
+    @Binding var isBoothListPresented: Bool
+    @Binding var isPopularBoothPresented: Bool
+    
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
-    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 4000, heading: 0.0, pitch: 0))
+    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
     
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
     let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
@@ -61,7 +68,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPosition ) {// , bounds: mapCameraBounds) {
+            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds) {
                 UserAnnotation()
                 
                 MapPolygon(coordinates: polygonKonkuk)
@@ -70,13 +77,72 @@ struct MapView: View {
                 
                 if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
                     MapPolygon(coordinates: boxPolygon)
-                        .foregroundStyle(.gray.opacity(0.5))
+                        .foregroundStyle(.gray.opacity(0.2))
+                }
+                
+                if searchText.isEmpty {
+                    if lastDistance < 1000 {
+                        ForEach(boothModel.booths, id: \.self) { booth in
+                            if (isTagSelected[stringToBoothType(booth.category)] ?? false) {
+                                Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
+                                    BoothAnnotation(number: 0, boothType: stringToBoothType(booth.category))
+                                        .onTapGesture {
+                                            boothModel.updateMapSelectedBoothList([booth.id])
+                                            print("tab: \(booth.id)")
+                                            withAnimation(.spring) {
+                                                isPopularBoothPresented = false
+                                                isBoothListPresented = true
+                                            }
+                                        }
+                                }
+                            }
+                        }
+                    } else {
+                        ForEach(BoothType.allCases, id: \.self) { boothType in
+                            if (isTagSelected[boothType] ?? false) {
+                                // let clusters = clusterAnnotations(clusterRadius: 2 * (lastDistance / 10000), boothType: boothType)
+                                let clusters = clusterAnnotations(clusterRadius: 0.1, boothType: boothType)
+                                
+                                ForEach(clusters) { cluster in
+                                    Annotation("", coordinate: cluster.center) {
+                                        BoothAnnotation(number: cluster.points.count, boothType: boothType)
+                                            .onTapGesture {
+                                                boothModel.updateMapSelectedBoothList(cluster.boothIDList)
+                                                print("cluster tab: \(cluster.points.count)")
+                                                withAnimation(.spring) {
+                                                    isPopularBoothPresented = false
+                                                    isBoothListPresented = true
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } 
+                // 검색 결과만 표시
+                else {
+                    ForEach(boothModel.booths, id: \.self) { booth in
+                        if searchKeyword(booth: booth, keyword: searchText) {
+                            Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
+                                BoothAnnotation(number: 0, boothType: stringToBoothType(booth.category))
+                                    .onTapGesture {
+                                        boothModel.updateMapSelectedBoothList([booth.id])
+                                        print("tab: \(booth.id)")
+                                        withAnimation(.spring) {
+                                            isPopularBoothPresented = false
+                                            isBoothListPresented = true
+                                        }
+                                    }
+                            }
+                        }
+                    }
                 }
                 
                 // 37.540_03 127.074_20
                 // 37.543_02 127.076_65
                 // 37.542_18 127.078_40
-                Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.540_03, longitude: 127.074_20)) {
+                /* Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.540_03, longitude: 127.074_20)) {
                     BoothAnnotation(number: 8, boothType: .booth, isSelected: $isBoothSelected[0])
                 }
                 
@@ -86,15 +152,15 @@ struct MapView: View {
                 
                 Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.542_18, longitude: 127.078_40)) {
                     BoothAnnotation(number: 1, boothType: .toilet, isSelected: $isBoothSelected[2])
-                }
+                }*/
                 
             }
             // .ignoresSafeArea()
             .mapControls {
-                MapCompass()
-                MapPitchToggle()
-                MapUserLocationButton()
-                MapScaleView()
+//                MapCompass()
+//                MapPitchToggle()
+//                MapUserLocationButton()
+//                MapScaleView()
             }
             .controlSize(.mini)
             .mapStyle(.standard)
@@ -112,6 +178,7 @@ struct MapView: View {
                 lastDistance = mapCameraUpdateContext.camera.distance
                 lastLatitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
                 lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
+                print(lastDistance)
             }
         }
         .onAppear() {
@@ -121,6 +188,13 @@ struct MapView: View {
         .onDisappear() {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
+    }
+    
+    func searchKeyword(booth: BoothItem, keyword: String) -> Bool {
+        let descriptionContainsKeyword = booth.description.contains(keyword)
+        let nameContainsKeyword = booth.name.contains(keyword)
+        
+        return descriptionContainsKeyword || nameContainsKeyword
     }
     
     func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
@@ -154,10 +228,56 @@ struct MapView: View {
         }
     }
     
-    func clusterAnnotations(clusterRadius: Double) -> [Cluster] {
+    func clusterAnnotations(clusterRadius: Double, boothType: BoothType) -> [Cluster] {
+        var clusters: [Cluster] = []
         
+        for booth in boothModel.booths.filter({ $0.category == boothType.rawValue }) {
+            var isClustered = false
+            
+            var clusterId: Int = 0
+            for cluster in clusters {
+                let distance = calculateDistance(itemCoord: cluster.center, mvCoord: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude))
+                
+                if distance <= clusterRadius {
+                    cluster.points.append(CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude))
+                    cluster.boothIDList.append(booth.id)
+                    isClustered = true
+                    // print("store appended to cluster \(clusterId): \(distance)")
+                    cluster.updateCenter()
+                    break
+                }
+                clusterId += 1
+            }
+            
+            if !isClustered {
+                let newCluster = Cluster(center: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude), points: [CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)], type: boothType)
+                newCluster.boothIDList.append(booth.id)
+                clusters.append(newCluster)
+                // print("new \(clusters.count)th cluster created: \(newCluster.center)")
+            }
+        }
         
-        return []
+        // print("number of clusters: \(clusters.count)")
+        return clusters
+    }
+    
+    func stringToBoothType(_ typeString: String) -> BoothType {
+        switch typeString {
+        case BoothType.drink.rawValue:
+            return .drink
+        case BoothType.food.rawValue:
+            return .food
+        case BoothType.event.rawValue:
+            return .event
+        case BoothType.booth.rawValue:
+            return .booth
+        case BoothType.hospital.rawValue:
+            return .hospital
+        case BoothType.toilet.rawValue:
+            return .toilet
+        default:
+            return .booth
+        }
     }
 }
 
@@ -165,11 +285,15 @@ class Cluster: Identifiable {
     var id: UUID
     var center: CLLocationCoordinate2D
     var points: [CLLocationCoordinate2D]
+    var type: BoothType
+    var boothIDList: [Int]
     
-    init(center: CLLocationCoordinate2D, points: [CLLocationCoordinate2D]) {
+    init(center: CLLocationCoordinate2D, points: [CLLocationCoordinate2D], type: BoothType) {
         self.id = UUID()
         self.center = center
         self.points = points
+        self.type = type
+        self.boothIDList = []
     }
     
     func updateCenter() {
@@ -181,7 +305,7 @@ class Cluster: Identifiable {
             longMean += point.longitude
         }
         
-        var newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
+        let newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
         print("center updated from: \(center) \nto: \(newCenter)")
         center = newCenter
     }
@@ -197,8 +321,9 @@ extension Array {
 struct BoothAnnotation: View {
     let number: Int
     let boothType: BoothType
-    @Binding var isSelected: Bool
+    // @State private var isSelected: Bool
     @State private var annotationSize: CGFloat = 50
+    @State private var isSelected: Bool = false
     
     var body: some View {
         ZStack {
@@ -261,7 +386,14 @@ struct BoothAnnotation: View {
                 .frame(width: 44, height: 49)
             }
         }
-        .onTapGesture {
+        .onChange(of: isSelected) {
+            if isSelected {
+                annotationSize = 70
+            } else {
+                annotationSize = 50
+            }
+        }
+        /* .onTapGesture {
             withAnimation(.spring(duration: 0.2)) {
                 isSelected.toggle()
                 
@@ -271,32 +403,36 @@ struct BoothAnnotation: View {
                     annotationSize = 50
                 }
             }
-        }
+        }*/
     }
 }
 
-enum BoothType: String {
-    case drink = "주점"
-    case food = "먹거리"
-    case event = "이벤트"
-    case booth = "일반"
-    case hospital = "의무실"
-    case toilet = "화장실"
+enum BoothType: String, CaseIterable {
+    case drink = "BAR"
+    case food = "FOOD"
+    case event = "EVENT"
+    case booth = "BOOTH"
+    case hospital = "MEDICAL"
+    case toilet = "TOILET"
 }
 
-#Preview {
-    @ObservedObject var mapViewModel = MapViewModel()
-    
-    return Group {
-        MapView(mapViewModel: mapViewModel, boothModel: BoothModel())
-    }
-}
+//#Preview {
+//    @ObservedObject var mapViewModel = MapViewModel()
+//    @State var list: [Int] = []
+//    @State var isPresented: Bool = false
+//    @State var isFabPresented: Bool = false
+//    
+//    return Group {
+//        MapView(mapViewModel: mapViewModel, boothModel: BoothModel(), isTagSelected: .constant([.drink: true, .food: true, .booth: true, .event: true, .hospital: true, .toilet: true]), searchText: .constant(""), selectedBoothIDList: $list, isBoothListPresented: $isPresented, isPopularBoothPresented: $isFabPresented)
+//    }
+//}
 
 #Preview {
-    VStack(spacing: 10) {
-        BoothAnnotation(number: 1, boothType: .booth, isSelected: .constant(true))
-        BoothAnnotation(number: 3, boothType: .toilet, isSelected: .constant(false))
-        BoothAnnotation(number: 5, boothType: .hospital, isSelected: .constant(false))
-        BoothAnnotation(number: 7, boothType: .drink, isSelected: .constant(false))
+    TabView {
+        MapPageView(mapViewModel: MapViewModel(), boothModel: BoothModel())
+            .tabItem {
+                Image(.tabMapSelected)
+                Text("지도")
+            }
     }
 }

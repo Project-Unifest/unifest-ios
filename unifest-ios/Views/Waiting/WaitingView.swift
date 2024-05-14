@@ -14,7 +14,7 @@ struct WaitingView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("웨이팅")
+                Text(StringLiterals.Waiting.title)
                     .font(.system(size: 20))
                     .fontWeight(.semibold)
                 
@@ -28,7 +28,7 @@ struct WaitingView: View {
                 .frame(maxWidth: .infinity)
                 .overlay {
                     HStack {
-                        Text("나의 웨이팅")
+                        Text(StringLiterals.Waiting.myWaiting)
                             .font(.system(size: 13))
                             .bold()
                             .foregroundStyle(.defaultPink)
@@ -41,16 +41,16 @@ struct WaitingView: View {
             
             Spacer()
             
-            Text("신청한 웨이팅이 없어요")
+            Text(StringLiterals.Waiting.noWaitingTitle)
                 .font(.system(size: 15))
                 .fontWeight(.medium)
                 .padding(.bottom, 4)
             
             Button {
-                tabViewSelection = 2
+                tabViewSelection = 1
             } label: {
                 HStack(spacing: 0) {
-                    Text("주점/부스 구경하러 가기")
+                    Text(StringLiterals.Waiting.gotoMapView)
                         .foregroundColor(.gray)
                         .font(.system(size: 11))
                         .underline()

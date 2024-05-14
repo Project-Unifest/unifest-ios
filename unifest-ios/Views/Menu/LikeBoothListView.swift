@@ -9,30 +9,46 @@ import SwiftUI
 
 struct LikeBoothListView: View {
     @Environment(\.dismiss) var dismiss
+    @ObservedObject var boothModel: BoothModel
+    @State private var isDetailViewPresented: Bool = false
     
     var body: some View {
         ZStack {
-            ScrollView {
-                Spacer()
-                    .frame(height: 32)
-                
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
-                    .padding(.vertical, 10)
-                Divider()
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: true)
-                    .padding(.vertical, 10)
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: true)
-                    .padding(.vertical, 10)
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
-                    .padding(.vertical, 10)
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
-                    .padding(.vertical, 10)
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: true)
-                    .padding(.vertical, 10)
-                boothBox(image: .tempBack, name: "부스명", description: "부스 설명", location: "부스 위치", isFavor: false)
-                    .padding(.vertical, 10)
+            if boothModel.likedBoothList.isEmpty {
+                VStack(alignment: .center) {
+                    Spacer()
+                    Text(StringLiterals.Menu.noLikedBoothTitle)
+                        .font(.system(size: 16))
+                        .fontWeight(.semibold)
+                        .foregroundColor(.defaultBlack)
+                        .padding(.bottom, 1)
+                    
+                    Text(StringLiterals.Menu.noLikedBoothMessage)
+                        .font(.system(size: 12))
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+                .padding(.top, 32)
             }
-            .padding(.top, 32)
+            else {
+                ScrollView {
+                    Spacer()
+                        .frame(height: 32)
+                    ForEach(boothModel.likedBoothList, id: \.self) { boothID in
+                        if let booth = boothModel.getBoothByID(boothID) {
+                            // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                            LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                .padding(.vertical, 10)
+                                .onTapGesture {
+                                    boothModel.loadBoothDetail(boothID)
+                                    isDetailViewPresented = true
+                                }
+                            Divider()
+                        }
+                    }
+                }
+                .padding(.top, 32)
+            }
             
             VStack {
                 HStack(alignment: .bottom) {
@@ -59,7 +75,7 @@ struct LikeBoothListView: View {
                         }
                         .frame(width: 20)
                         Spacer()
-                        Text("관심 부스")
+                        Text(StringLiterals.Menu.LikedBoothTitle)
                             .font(.system(size: 20))
                             .fontWeight(.semibold)
                             .foregroundStyle(.black)
@@ -74,56 +90,13 @@ struct LikeBoothListView: View {
                 Spacer()
             }
         }
-    }
-    
-    @ViewBuilder
-    func boothBox(image: ImageResource, name: String, description: String, location: String, isFavor: Bool) -> some View {
-        HStack {
-            Image(image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 86, height: 86)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.trailing, 4)
-                
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(name)
-                        .font(.system(size: 18))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
-                    
-                    Spacer()
-                    
-                    Button {
-                        
-                    } label: {
-                        Image(isFavor ? .pinkBookMark : .bookmark)
-                    }
-                }
-                
-                Text(description)
-                    .font(.system(size: 13))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.darkGray)
-                
-                Spacer()
-                
-                HStack(spacing: 2) {
-                    Image(.marker)
-                    Text(location)
-                        .font(.system(size: 13))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
-                    Spacer()
-                }
-                
-            }
+        .sheet(isPresented: $isDetailViewPresented) {
+            DetailView(boothModel: boothModel)
+                .presentationDragIndicator(.visible)
         }
-        .padding(.horizontal)
     }
 }
 
 #Preview {
-    LikeBoothListView()
+    LikeBoothListView(boothModel: BoothModel())
 }

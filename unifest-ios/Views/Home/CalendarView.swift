@@ -335,12 +335,12 @@ struct CalendarTabView: View {
                     HStack {
                         Menu {
                             ForEach(1..<13, id: \.self) { monthIndex in
-                                Button("\(monthIndex)월") {
+                                Button("\(monthIndex)" + StringLiterals.Calendar.month) {
                                     monthPageIndex = monthIndex
                                 }
                             }
                         } label: {
-                            Text("\(monthPageIndex)월")
+                            Text("\(monthPageIndex)" + StringLiterals.Calendar.month)
                                 .font(.system(size: 24))
                                 .foregroundStyle(.black)
                                 .bold()
@@ -462,7 +462,6 @@ struct CalendarTabView: View {
                     }
                     .onEnded { _ in
                         if (startOffsetY < lastOffsetY) {
-                            print("bottom");
                             if !isExpanded {
                                 weekPageIndex = selectedMonth
                                 monthPageIndex = selectedMonth
@@ -471,7 +470,6 @@ struct CalendarTabView: View {
                                 }
                             }
                         } else {
-                            print("top");
                             if isExpanded {
                                 weekPageIndex = getWeekIndex()
                                 withAnimation(.spring) {
