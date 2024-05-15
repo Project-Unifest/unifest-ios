@@ -39,59 +39,66 @@ struct DetailView: View {
                             .frame(maxWidth: .infinity)
                         }
                         
-                        HStack {
-                            Text(boothModel.selectedBooth?.name ?? "")
-                                .font(.system(size: 22))
-                                .bold()
-                            
+                        if boothModel.selectedBooth == nil {
                             VStack {
-                                Spacer()
-                                
-                                Text(boothModel.selectedBooth?.warning ?? "")
-                                    .font(.system(size: 10))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.accent)
-                                    .padding(.bottom, 4)
+                                ProgressView()
                             }
-                            
-                            Spacer()
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        
-                        VStack {
-                            Text(boothModel.selectedBooth?.description ?? "")
-                                .font(.system(size: 13))
-                                .foregroundStyle(.darkGray)
-                                .padding(.horizontal)
-                                .padding(.bottom)
-                                .multilineTextAlignment(.leading)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        
-                        HStack {
-                            Image(.greenMarker)
-                            
-                            Text(boothModel.selectedBooth?.location ?? "")
-                                .font(.system(size: 13))
-                            
-                            Spacer()
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
-                        
-                        Button {
-                            isMapViewPresented = true
-                        } label: {
-                            Image(.longPinkButton)
-                                .overlay {
-                                    Text(StringLiterals.Detail.openLocation)
-                                        .font(.system(size: 13))
+                            .frame(height: 160)
+                        } else {
+                            HStack {
+                                Text(boothModel.selectedBooth?.name ?? "")
+                                    .font(.system(size: 22))
+                                    .bold()
+                                
+                                VStack {
+                                    Spacer()
+                                    
+                                    Text(boothModel.selectedBooth?.warning ?? "")
+                                        .font(.system(size: 10))
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.accent)
+                                        .padding(.bottom, 4)
                                 }
+                                
+                                Spacer()
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            
+                            VStack {
+                                Text(boothModel.selectedBooth?.description ?? "")
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(.darkGray)
+                                    .padding(.horizontal)
+                                    .padding(.bottom)
+                                    .multilineTextAlignment(.leading)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            HStack {
+                                Image(.greenMarker)
+                                
+                                Text(boothModel.selectedBooth?.location ?? "")
+                                    .font(.system(size: 13))
+                                
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 8)
+                            
+                            Button {
+                                isMapViewPresented = true
+                            } label: {
+                                Image(.longPinkButton)
+                                    .overlay {
+                                        Text(StringLiterals.Detail.openLocation)
+                                            .font(.system(size: 13))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(.accent)
+                                    }
+                            }
+                            .padding(.bottom)
                         }
-                        .padding(.bottom)
                         
                         Image(.boldLine)
                             .resizable()
@@ -136,6 +143,16 @@ struct DetailView: View {
                                 .padding(.horizontal)
                                 .padding(.bottom, 20)
                             }
+                        } else {
+                            VStack {
+                                ProgressView()
+                                    .padding(.bottom, 20)
+                                Text("메뉴를 불러오고 있어요")
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(.gray)
+                            }
+                            .frame(height: 100)
+                            .padding(.bottom, 20)
                         }
                     }
                     
@@ -172,23 +189,32 @@ struct DetailView: View {
                                 Image(boothModel.isBoothContain(boothModel.selectedBoothID) ? .pinkBookMark : .bookmark)
                             }
                             .padding(.horizontal, 10)
+                            .disabled(boothModel.selectedBooth == nil)
                             
-                            
-                            Text("\(boothModel.selectedBoothNumLike > 0 ? boothModel.selectedBoothNumLike : 0)")
-                                .font(.system(size: 10))
-                                .foregroundStyle(.darkGray)
+                            if boothModel.selectedBooth == nil {
+                                ProgressView()
+                                    .frame(width: 10, height: 10)
+                            } else {
+                                Text("\(boothModel.selectedBoothNumLike > 0 ? boothModel.selectedBoothNumLike : 0)")
+                                    .font(.system(size: 10))
+                                    .foregroundStyle(.darkGray)
+                            }
                         }
                         .padding(.top, 2)
                         
                         Button {
-                            
+                            // TODO: To Waiting
                         } label: {
                             Image(.longButtonDarkGray)
                                 .overlay {
-                                    Text(StringLiterals.Detail.noWaitingBooth)
-                                        .foregroundStyle(.white)
-                                        .font(.system(size: 14))
-                                        .bold()
+                                    if boothModel.selectedBooth == nil {
+                                        ProgressView()
+                                    } else {
+                                        Text(StringLiterals.Detail.noWaitingBooth)
+                                            .foregroundStyle(.white)
+                                            .font(.system(size: 14))
+                                            .bold()
+                                    }
                                 }
                         }
                         .padding(.trailing, 10)
@@ -199,6 +225,10 @@ struct DetailView: View {
                 .background(.background)
                 .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
             }
+        }
+        .onDisappear {
+            boothModel.selectedBooth = nil
+            boothModel.selectedBoothID = 0
         }
     }
 }

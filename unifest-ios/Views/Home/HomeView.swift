@@ -13,6 +13,9 @@ struct HomeView: View {
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     @State private var isIntroViewPresented: Bool = false
+    @State private var isLoading1: Bool = true
+    @State private var isLoading2: Bool = true
+    @State private var upcomingList: [FestivalItem] = []
     
     // @State private var todayFestivalList: [TodayFestivalItem] = []
     
@@ -78,20 +81,25 @@ struct HomeView: View {
                     .padding(.horizontal)
                     .frame(height: 360)
                 } else {
-                    // let festList: [FestivalItem] =
-                    
-                    VStack(spacing: 16) {
-                        
-                        ForEach(festivalModel.todayFestivals, id: \.self) { festival in
-                            let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                            schoolFestDetailRow(dateText: formatDate(festival.beginDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                    if !festivalModel.todayFestivals.isEmpty {
+                        VStack(spacing: 16) {
                             
-                            Divider()
-                                .padding(.trailing)
+                            ForEach(festivalModel.todayFestivals, id: \.self) { festival in
+                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
+                                schoolFestDetailRow(dateText: formatDate(festival.beginDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                                
+                                Divider()
+                                    .padding(.trailing)
+                            }
                         }
+                        .padding(.vertical, 20)
+                        .padding(.leading)
+                    } else {
+                        VStack {
+                            ProgressView()
+                        }
+                        .frame(height: 100)
                     }
-                    .padding(.vertical, 20)
-                    .padding(.leading)
                 }
                 
                 /*
@@ -129,27 +137,33 @@ struct HomeView: View {
             .padding(.bottom, 4)
             
             VStack(spacing: 8) {
+                let upcomingList = festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay)
                 
-                ForEach(festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay), id: \.self) { festival in
-                    schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
+                if upcomingList.isEmpty {
+                    VStack(alignment: .center) {
+                        Text(StringLiterals.Home.noUpcomingFestivalTitle)
+                            .font(.system(size: 16))
+                            .fontWeight(.semibold)
+                            .foregroundColor(.defaultBlack)
+                            .padding(.bottom, 1)
+                        
+                        Text(StringLiterals.Home.noUpcomingFestivalMessage)
+                            .font(.system(size: 12))
+                            .foregroundColor(.gray)
+                            .padding(.bottom, 10)
+                    }
+                    .frame(height: 240)
+                } else {
+                    ForEach(upcomingList, id: \.self) { festival in
+                        schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
+                    }
                 }
-                
-                /* schoolFestRow(image: .konkukLogo, dateText: "5/21(화) ~ 5/23(목)", name: "녹색지대", school: "건국대학교 서울캠퍼스")
-                
-                schoolFestRow(image: .konkukLogo, dateText: "5/21(화) ~ 5/23(목)", name: "녹색지대", school: "건국대학교 서울캠퍼스")
-                
-                schoolFestRow(image: .konkukLogo, dateText: "5/21(화) ~ 5/23(목)", name: "녹색지대", school: "건국대학교 서울캠퍼스")
-                
-                schoolFestRow(image: .konkukLogo, dateText: "5/21(화) ~ 5/23(목)", name: "녹색지대", school: "건국대학교 서울캠퍼스")*/
             }
             .padding(.horizontal)
         }
         .sheet(isPresented: $isIntroViewPresented) {
             IntroView(viewModel: viewModel, festivalModel: festivalModel)
         }
-//        .onAppear() {
-//            updateTodayList()
-//        }
     }
     
     func getFestDate(beginDate: String, month: Int, day: Int) -> Int {

@@ -78,6 +78,7 @@
 		0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
 		0CA4E1102BF3EC0A000B1B1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "unifest-ios.entitlements"; sourceTree = "<group>"; };
 		0CB2170C2BF23E3A0003338B /* FestivalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalData.swift; sourceTree = "<group>"; };
 		0CB2170E2BF23F270003338B /* festivalTest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = festivalTest.json; sourceTree = "<group>"; };
 		0CBB057D2BB074ED00EB56BE /* CelebProfileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CelebProfileView.swift; sourceTree = "<group>"; };
@@ -195,6 +196,7 @@
 		0C9D0A5A2BA19DFE00156763 /* unifest-ios */ = {
 			isa = PBXGroup;
 			children = (
+				0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */,
 				0CA4E1102BF3EC0A000B1B1B /* GoogleService-Info.plist */,
 				0C2A2C032BE9AEA600EDF359 /* Info.plist */,
 				0C9641F62BB94F2F00838DA9 /* ViewModel */,
@@ -601,6 +603,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
@@ -610,7 +613,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도에서 사용자의 실시간 위치를 파악하기 위해 위치 정보를 사용합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
@@ -639,6 +642,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
@@ -648,7 +652,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도에서 사용자의 실시간 위치를 파악하기 위해 위치 정보를 사용합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
