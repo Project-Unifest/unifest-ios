@@ -56,6 +56,7 @@ struct LikedBoothBoxView: View {
                     Spacer()
                     
                     Button {
+                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                         boothModel.deleteLikeBoothListDB(boothID)
                     } label: {
                         Image(.pinkBookMark)

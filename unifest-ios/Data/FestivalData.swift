@@ -240,7 +240,7 @@ class FestivalModel: ObservableObject {
     
     func getFestivalAfter(year: Int, month: Int, day: Int) -> [FestivalItem] {
         var festList: [FestivalItem] = []
-
+        
         // Get today's date
         let currentDate = Date()
         
@@ -258,6 +258,10 @@ class FestivalModel: ObservableObject {
             // Check if endDate is equal to or later than today's date
             if endDate >= currentDate {
                 festList.append(festival)
+                
+                if festList.count >= 5 {
+                    break
+                }
             }
         }
 

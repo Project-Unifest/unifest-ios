@@ -218,6 +218,8 @@ struct CalendarWeekView: View {
                                 selectedMonth = Calendar.current.component(.month, from: day)
                                 selectedDay = Calendar.current.component(.day, from: day)
                                 
+                                GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_DATE, params: ["month": selectedMonth, "day": selectedDay])
+                                
                                 if selectedMonth != month {
                                     month = selectedMonth
                                 }
@@ -349,6 +351,7 @@ struct CalendarTabView: View {
                         Spacer()
                         
                         Button {
+                            GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_CALENDAR_PAGE)
                             monthPageIndex -= 1
                         } label: {
                             Image(systemName: "chevron.left")
@@ -361,6 +364,7 @@ struct CalendarTabView: View {
                             .frame(width: 30)
                         
                         Button {
+                            GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_CALENDAR_PAGE)
                             monthPageIndex += 1
                         } label: {
                             Image(systemName: "chevron.right")
@@ -407,6 +411,7 @@ struct CalendarTabView: View {
                                 Button {
                                     // 월 -> 주
                                     if isExpanded {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_SHRINK_CALENDAR)
                                         weekPageIndex = getWeekIndex()
                                         withAnimation(.spring) {
                                             isExpanded = false
@@ -414,6 +419,7 @@ struct CalendarTabView: View {
                                     }
                                     // 주 -> 월
                                     else {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_EXPAND_CALENDAR)
                                         weekPageIndex = selectedMonth
                                         monthPageIndex = selectedMonth
                                         withAnimation(.spring) {

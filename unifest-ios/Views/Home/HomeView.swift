@@ -346,12 +346,16 @@ struct CelebCircleView: View {
             }
             .onTapGesture {
                 if !isTouched {
+                    GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
+                    
                     withAnimation {
                         isTouched = true
                     }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                        self.isTouched = false
+                        withAnimation {
+                            self.isTouched = false
+                        }
                     }
                 }
             }
@@ -361,9 +365,10 @@ struct CelebCircleView: View {
                     .fill(.black.opacity(0.5))
                     .overlay {
                         Text(celeb.name)
-                            .font(.system(size: 14))
+                            .font(.system(size: 13))
                             .fontWeight(.medium)
                             .foregroundStyle(.white)
+                            .multilineTextAlignment(.center)
                     }
             }
         }

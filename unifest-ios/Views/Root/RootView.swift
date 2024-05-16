@@ -27,7 +27,7 @@ struct RootView: View {
                 TabView(selection: $tabViewSelection) {
                     CalendarTabView(viewModel: viewModel, festivalModel: festivalModel)
                         .onAppear {
-                            print("selection: \(self.tabViewSelection)")
+                            GATracking.eventScreenView(GATracking.ScreenNames.homeView)
                         }
                         .tabItem {
                             // Image(viewState == .home ? .homeIcon : .homeGray)
@@ -39,7 +39,7 @@ struct RootView: View {
                     MapPageView(mapViewModel: mapViewModel, boothModel: boothModel)
                         .onAppear {
                             mapViewModel.startUpdatingLocation()
-                            print("selection: \(self.tabViewSelection)")
+                            GATracking.eventScreenView(GATracking.ScreenNames.mapView)
                         }
                         .onDisappear {
                             mapViewModel.stopUpdateLocation()
@@ -53,7 +53,7 @@ struct RootView: View {
                     
                     WaitingView(viewModel: viewModel, tabViewSelection: $tabViewSelection)
                         .onAppear {
-                            print("selection: \(self.tabViewSelection)")
+                            GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
                         }
                         .tabItem {
                             // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
@@ -64,7 +64,7 @@ struct RootView: View {
                     
                     MenuView(boothModel: boothModel)
                         .onAppear {
-                            print("selection: \(self.tabViewSelection)")
+                            GATracking.eventScreenView(GATracking.ScreenNames.menuView)
                         }
                         .tabItem {
                             // Image(viewState == .menu ? .menuIcon : .menuGray)
@@ -77,6 +77,9 @@ struct RootView: View {
             
             if !networkManager.isConnected {
                 NetworkErrorView(errorType: .network)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                    }
             }
             
             if viewModel.isLoading {

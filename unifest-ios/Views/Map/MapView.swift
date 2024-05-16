@@ -103,6 +103,7 @@ struct MapView: View {
                                             boothModel.updateMapSelectedBoothList([booth.id])
                                             print("tab: \(booth.id)")
                                             withAnimation(.spring) {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ANNOTATION, params: ["boothID": booth.id])
                                                 isPopularBoothPresented = false
                                                 isBoothListPresented = true
                                             }
@@ -113,10 +114,11 @@ struct MapView: View {
                     } else {
                         ForEach(BoothType.allCases, id: \.self) { boothType in
                             if (isTagSelected[boothType] ?? false) {
-                                ForEach(clusterAnnotations(clusterRadius: 1, boothType: boothType)) { cluster in
+                                ForEach(clusterAnnotations(clusterRadius: 0.1, boothType: boothType)) { cluster in
                                     Annotation("", coordinate: cluster.center) {
                                         BoothAnnotation(number: cluster.points.count, boothType: boothType)
                                             .onTapGesture {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_CLUSTER, params: ["clusterLength": cluster.points.count, "clusterType": cluster.type.rawValue])
                                                 boothModel.updateMapSelectedBoothList(cluster.boothIDList)
                                                 print("cluster tab: \(cluster.points.count)")
                                                 withAnimation(.spring) {
@@ -137,6 +139,7 @@ struct MapView: View {
                             Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
                                 BoothAnnotation(number: 0, boothType: stringToBoothType(booth.category))
                                     .onTapGesture {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_SEARCHED_BOOTH_ANNOTATION, params: ["boothID": booth.id, "keyword": searchText])
                                         boothModel.updateMapSelectedBoothList([booth.id])
                                         print("tab: \(booth.id)")
                                         withAnimation(.spring) {

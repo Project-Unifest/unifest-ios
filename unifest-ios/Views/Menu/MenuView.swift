@@ -126,12 +126,16 @@ struct MenuView: View {
                                 LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                                     .padding(.vertical, 10)
                                     .onTapGesture {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                         boothModel.loadBoothDetail(boothID)
                                         isDetailViewPresented = true
                                     }
                                 Divider()
                             }
                         }
+                    }
+                    .onChange(of: boothModel.likedBoothList) {
+                        randomLikeList = boothModel.getRandomLikedBooths()
                     }
                 }
                 
@@ -154,10 +158,12 @@ struct MenuView: View {
                 
                 Divider()
                 
+                // 이용 문의
                 Button {
                     if let url = URL(string: StringLiterals.URL.messageChannelLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_KAKAO_CHANNEL)
                 } label: {
                     HStack {
                         Image(systemName: "headphones.circle")
@@ -179,10 +185,12 @@ struct MenuView: View {
                 
                 Divider()
                 
+                // 운영자 모드
                 Button {
                     if let url = URL(string: StringLiterals.URL.operatorModeLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_OPERATOR_SITE)
                 } label: {
                     HStack {
                         Image(systemName: "ellipsis.circle")
@@ -204,10 +212,12 @@ struct MenuView: View {
                 
                 Divider()
                 
+                // 인스타
                 Button {
                     if let url = URL(string: StringLiterals.URL.instagramLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_INSTAGRAM)
                 } label: {
                     HStack {
                         Image(.instagramLogo)
@@ -271,10 +281,12 @@ struct MenuView: View {
                         .onChange(of: clusterToggle) {
                             if clusterToggle {
                                 // off -> on
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
                                 UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
                                 // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
                             } else {
                                 // on -> off
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
                                 UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
                                 // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
                             }
@@ -298,8 +310,10 @@ struct MenuView: View {
                 
                 Divider()
                 
+                // 권한 수정
                 Button {
                     isPermissionAlertPresented = true
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING)
                 } label: {
                     HStack {
                         Image(systemName: "location.circle")
@@ -327,6 +341,7 @@ struct MenuView: View {
                     if let url = URL(string: StringLiterals.URL.privacyPolicyLink) {
                             UIApplication.shared.open(url, options: [:])
                         }
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_PRIVACY)
                 } label: {
                     HStack {
                         Image(systemName: "lock.circle")
@@ -365,6 +380,7 @@ struct MenuView: View {
                 // 메일 보내기
                 Button {
                     isErrorDeclarationModalPresented = true
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_MAIL_TO_DEV)
                 } label: {
                     HStack {
                         Image(systemName: "envelope.circle")
@@ -458,6 +474,9 @@ struct MenuView: View {
         .sheet(isPresented: $isDetailViewPresented) {
             DetailView(boothModel: boothModel)
                 .presentationDragIndicator(.visible)
+                .onAppear {
+                    GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)
+                }
         }
         // 권한 허가 수정 안내 모달
         .alert("권한 허가 수정 안내", isPresented: $isPermissionAlertPresented, actions: {

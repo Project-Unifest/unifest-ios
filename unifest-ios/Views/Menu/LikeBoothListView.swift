@@ -40,6 +40,7 @@ struct LikeBoothListView: View {
                             LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                                 .padding(.vertical, 10)
                                 .onTapGesture {
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                     boothModel.loadBoothDetail(boothID)
                                     isDetailViewPresented = true
                                 }

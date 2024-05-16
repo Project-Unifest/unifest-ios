@@ -63,9 +63,11 @@ struct MapPageView: View {
                                 // isPopularBoothPresented.toggle()
                                 if isPopularBoothPresented {
                                     // on -> off
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
                                     isPopularBoothPresented = false
                                 } else {
                                     // off -> on
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
                                     if isBoothListPresented {
                                         isBoothListPresented = false
                                     }
@@ -98,6 +100,7 @@ struct MapPageView: View {
                                 ForEach(Array(boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
                                     BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
                                         .onTapGesture {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
                                             boothModel.loadBoothDetail(topBooth.id)
                                             isDetailViewPresented = true
                                         }
@@ -109,6 +112,7 @@ struct MapPageView: View {
                                     ForEach(boothModel.mapSelectedBoothList, id: \.self) { booth in
                                         BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
                                             .onTapGesture {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
                                                 boothModel.loadBoothDetail(booth.id)
                                                 isDetailViewPresented = true
                                             }
@@ -234,6 +238,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.drink] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.drink.rawValue, "turn": (isTagSelected[.drink] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.drink]?.toggle()
                             }
@@ -247,6 +252,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.food] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.food.rawValue, "turn": (isTagSelected[.food] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.food]?.toggle()
                             }
@@ -260,6 +266,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.event] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.event.rawValue, "turn": (isTagSelected[.event] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.event]?.toggle()
                             }
@@ -273,6 +280,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.booth] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.booth.rawValue, "turn": (isTagSelected[.booth] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.booth]?.toggle()
                             }
@@ -286,6 +294,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.hospital] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.hospital.rawValue, "turn": (isTagSelected[.hospital] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.hospital]?.toggle()
                             }
@@ -299,6 +308,7 @@ struct MapPageHeaderView: View {
                                 .foregroundStyle(isTagSelected[.toilet] ?? false ? .defaultPink : .defaultBlack)
                         }
                         .onTapGesture {
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.toilet.rawValue, "turn": (isTagSelected[.toilet] ?? false) ? "off" : "on"])
                             withAnimation(.spring(duration: 0.2)) {
                                 isTagSelected[.toilet]?.toggle()
                             }

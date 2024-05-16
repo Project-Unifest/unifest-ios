@@ -165,6 +165,9 @@ struct DetailView: View {
                 .background(.background)
                 .fullScreenCover(isPresented: $isMapViewPresented, content: {
                     OneMapView(mapViewModel: MapViewModel(), booth: boothModel.selectedBooth)
+                        .onAppear {
+                            GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+                        }
                 })
             }
             
@@ -180,10 +183,12 @@ struct DetailView: View {
                             Button {
                                 if boothModel.isBoothContain(boothModel.selectedBoothID) {
                                     // delete
+                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_CANCEL, params: ["boothID": boothModel.selectedBoothID])
                                     boothModel.deleteLikeBoothListDB(boothModel.selectedBoothID)
                                     boothModel.deleteLike(boothModel.selectedBoothID)
                                 } else {
                                     // add
+                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_ADD, params: ["boothID": boothModel.selectedBoothID])
                                     boothModel.insertLikeBoothDB(boothModel.selectedBoothID)
                                     boothModel.addLike(boothModel.selectedBoothID)
                                 }
@@ -202,7 +207,8 @@ struct DetailView: View {
                                     .foregroundStyle(.darkGray)
                             }
                         }
-                        .padding(.top, 2)
+                        .padding(.top, 8)
+                        .padding(.leading, 10)
                         
                         Button {
                             // TODO: To Waiting
@@ -219,7 +225,7 @@ struct DetailView: View {
                                     }
                                 }
                         }
-                        .padding(.trailing, 10)
+                        .padding(.trailing, 20)
                         .disabled(true)
                     }
                 }
@@ -227,6 +233,9 @@ struct DetailView: View {
                 .background(.background)
                 .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
             }
+        }
+        .onAppear {
+            GATracking.eventScreenView(GATracking.ScreenNames.boothDetailView)
         }
         .onDisappear {
             boothModel.selectedBooth = nil
@@ -241,7 +250,7 @@ struct DetailView: View {
     return Group {
         DetailView(boothModel: boothModel)
             .onAppear {
-                boothModel.loadBoothDetail(78)
+                boothModel.loadBoothDetail(113)
             }
     }
 }
