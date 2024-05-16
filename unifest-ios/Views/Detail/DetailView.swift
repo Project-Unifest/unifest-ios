@@ -49,6 +49,7 @@ struct DetailView: View {
                                 Text(boothModel.selectedBooth?.name ?? "")
                                     .font(.system(size: 22))
                                     .bold()
+                                    .lineLimit(1)
                                 
                                 VStack {
                                     Spacer()
@@ -58,22 +59,23 @@ struct DetailView: View {
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.accent)
                                         .padding(.bottom, 4)
+                                        .lineLimit(1)
                                 }
                                 
                                 Spacer()
                             }
                             .padding()
-                            .frame(maxWidth: .infinity)
+//                            .frame(maxWidth: .infinity)
                             
                             VStack {
                                 Text(boothModel.selectedBooth?.description ?? "")
                                     .font(.system(size: 13))
                                     .foregroundStyle(.darkGray)
-                                    .padding(.horizontal)
                                     .padding(.bottom)
                                     .multilineTextAlignment(.leading)
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
                             
                             HStack {
                                 Image(.greenMarker)
@@ -179,6 +181,9 @@ struct DetailView: View {
                         .frame(height: 10)
                     
                     HStack {
+                        Spacer()
+                            .frame(width: 10)
+                        
                         VStack {
                             Button {
                                 if boothModel.isBoothContain(boothModel.selectedBoothID) {
@@ -208,7 +213,6 @@ struct DetailView: View {
                             }
                         }
                         .padding(.top, 8)
-                        .padding(.leading, 10)
                         
                         Button {
                             // TODO: To Waiting
@@ -225,8 +229,10 @@ struct DetailView: View {
                                     }
                                 }
                         }
-                        .padding(.trailing, 20)
                         .disabled(true)
+                        
+                        Spacer()
+                            .frame(width: 20)
                     }
                 }
                 .frame(maxWidth: .infinity)

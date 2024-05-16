@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0C0688B32BC0471500069401 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0688B22BC0471500069401 /* CalendarView.swift */; };
 		0C1A2C6C2BB2718800AD0692 /* AdminMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1A2C6B2BB2718800AD0692 /* AdminMainView.swift */; };
+		0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C244FCC2BF67E6B0047F23D /* VersionService.swift */; };
+		0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C244FCF2BF6837C0047F23D /* ConfettiSwiftUI */; };
+		0C244FD32BF6851E0047F23D /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C244FD22BF6851E0047F23D /* WelcomeView.swift */; };
 		0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2BFD2BE9A87900EDF359 /* APIManager.swift */; };
 		0C2A2C002BE9A8B000EDF359 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */; };
 		0C2A2C022BE9A8DB00EDF359 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2C012BE9A8DB00EDF359 /* UserDataManager.swift */; };
@@ -56,6 +59,8 @@
 /* Begin PBXFileReference section */
 		0C0688B22BC0471500069401 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0C1A2C6B2BB2718800AD0692 /* AdminMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminMainView.swift; sourceTree = "<group>"; };
+		0C244FCC2BF67E6B0047F23D /* VersionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionService.swift; sourceTree = "<group>"; };
+		0C244FD22BF6851E0047F23D /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		0C2A2BFD2BE9A87900EDF359 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0C2A2C012BE9A8DB00EDF359 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
@@ -103,6 +108,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
 				0C72B0C32BF0EC71002BF5E7 /* FirebaseAnalyticsSwift in Frameworks */,
 				0C72B0BF2BF0EC71002BF5E7 /* FirebaseAnalytics in Frameworks */,
 				0C72B0C12BF0EC71002BF5E7 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
@@ -114,6 +120,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C244FD12BF685150047F23D /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				0C244FD22BF6851E0047F23D /* WelcomeView.swift */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
 		0C2A2BFC2BE9A86500EDF359 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,6 +135,7 @@
 				0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */,
 				0C2A2C012BE9A8DB00EDF359 /* UserDataManager.swift */,
 				0C7A9CA52BF3E91100F639BA /* GATracker.swift */,
+				0C244FCC2BF67E6B0047F23D /* VersionService.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -291,6 +306,7 @@
 		0CBB05872BB074ED00EB56BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0C244FD12BF685150047F23D /* Welcome */,
 				0C4DFCAF2BBEFC1D00CAB98B /* Dialog */,
 				0C9641F32BB94E7400838DA9 /* Menu */,
 				0C9641F02BB94DDD00838DA9 /* Waiting */,
@@ -377,6 +393,7 @@
 				0C72B0C22BF0EC71002BF5E7 /* FirebaseAnalyticsSwift */,
 				0C72B0C42BF0EC71002BF5E7 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				0C72B0C62BF0EC71002BF5E7 /* FirebaseAppCheck */,
+				0C244FCF2BF6837C0047F23D /* ConfettiSwiftUI */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -408,6 +425,7 @@
 			mainGroup = 0C9D0A4F2BA19DFE00156763;
 			packageReferences = (
 				0C72B0BD2BF0EC71002BF5E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -446,6 +464,7 @@
 				0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */,
 				0C9641F92BB94F3D00838DA9 /* RootViewModel.swift in Sources */,
 				0C9641F22BB94DE700838DA9 /* WaitingView.swift in Sources */,
+				0C244FD32BF6851E0047F23D /* WelcomeView.swift in Sources */,
 				0CBB05882BB074ED00EB56BE /* CelebProfileView.swift in Sources */,
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
@@ -464,6 +483,7 @@
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
+				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				0CBB058A2BB074ED00EB56BE /* IntroView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				0CBB058B2BB074ED00EB56BE /* MapPageView.swift in Sources */,
@@ -620,11 +640,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -659,11 +680,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -700,6 +722,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		0C72B0BD2BF0EC71002BF5E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -711,6 +741,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0C244FCF2BF6837C0047F23D /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		0C72B0BE2BF0EC71002BF5E7 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0C72B0BD2BF0EC71002BF5E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -381,6 +381,7 @@ struct BoothBox: View {
                             .font(.system(size: 18))
                             .fontWeight(.semibold)
                             .padding(.bottom, 1)
+                            .lineLimit(1)
                         
                         Text(description)
                             .font(.system(size: 13))
@@ -395,6 +396,7 @@ struct BoothBox: View {
                             Text(position)
                                 .font(.system(size: 13))
                                 .fontWeight(.semibold)
+                                .lineLimit(1)
                         }
                     }
                     .frame(width: 160)

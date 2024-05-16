@@ -52,6 +52,7 @@ struct LikedBoothBoxView: View {
                         .font(.system(size: 18))
                         .fontWeight(.semibold)
                         .foregroundStyle(.darkGray)
+                        .lineLimit(1)
                     
                     Spacer()
                     
@@ -64,18 +65,19 @@ struct LikedBoothBoxView: View {
                 }
                 
                 Text(description)
-                    .font(.system(size: 13))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.darkGray)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.gray)
+                    .lineLimit(2)
                 
                 Spacer()
                 
                 HStack(spacing: 2) {
                     Image(.marker)
                     Text(location)
-                        .font(.system(size: 13))
+                        .font(.system(size: 11))
                         .fontWeight(.semibold)
                         .foregroundStyle(.darkGray)
+                        .lineLimit(1)
                     Spacer()
                 }
                 

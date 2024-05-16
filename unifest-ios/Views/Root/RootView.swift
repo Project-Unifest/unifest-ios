@@ -18,6 +18,10 @@ struct RootView: View {
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkAlertPresented: Bool = false
     
+    @State private var appVersionAlertPresented: Bool = false
+    
+    @State private var isWelcomeViewPresented: Bool = false
+    
     var body: some View {
         ZStack {
             switch viewModel.viewState {
@@ -90,8 +94,40 @@ struct RootView: View {
             }
         }
         .onAppear {
+            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
+                isWelcomeViewPresented = true
+            }
+            
             boothModel.loadLikeBoothListDB()
+            
+            if VersionService.shared.isOldVersion {
+                print("This app is old. Updated Needed")
+                appVersionAlertPresented = true
+            } else {
+                print("This app is latest.")
+            }
         }
+        .sheet(isPresented: $isWelcomeViewPresented) {
+            WelcomeView()
+                .onAppear {
+                    GATracking.eventScreenView(GATracking.ScreenNames.welcomeView)
+                }
+                .onDisappear {
+                    UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
+                }
+                .presentationDragIndicator(.visible)
+        }
+        .alert("유니페스 업데이트 안내", isPresented: $appVersionAlertPresented, actions: {
+            Button("업데이트") {
+                if let url = URL(string: VersionService.shared.appStoreOpenUrlString), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    // sleep(3)
+                    // exit(0)
+                }
+            }
+        }, message: {
+            Text("새 버전으로 업데이트 되었습니다. 앱을 최신 버전으로 업데이트 해주세요.")
+        })
     }
 }
 

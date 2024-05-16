@@ -83,6 +83,7 @@ struct GATracking {
     }
     
     struct ScreenNames {
+        static let welcomeView = "WelcomeView"
         static let homeView = "HomeView"
         
         static let mapView = "MapView"
