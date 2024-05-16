@@ -83,6 +83,7 @@ enum StringLiterals {
         static let developerMail = "개발자에게 메일 보내기"
         static let privacyText = "개인정보 처리방침"
         static let clearApp = "앱 데이터 초기화"
+        static let clusterSetting = "지도에서 가까운 부스 묶어보기"
     }
     
     enum Waiting {
