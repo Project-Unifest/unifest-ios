@@ -119,7 +119,7 @@ struct OneMapView: View {
                                     .font(.system(size: 20))
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.black)
-                                Text(booth.location)
+                                Text(booth.location ?? "")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
                             }

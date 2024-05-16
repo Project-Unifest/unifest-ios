@@ -117,31 +117,33 @@ struct DetailView: View {
                         .padding(.bottom, 6)
                         
                         if let booth = boothModel.selectedBooth {
-                            if booth.menus.isEmpty {
-                                VStack {
-                                    Spacer()
-                                        .frame(height: 100)
-                                    
-                                    HStack {
+                            if let boothMenu = booth.menus {
+                                if boothMenu.isEmpty {
+                                    VStack {
                                         Spacer()
-                                        Text(StringLiterals.Detail.noMenuTitle)
-                                            .foregroundStyle(.gray)
-                                            .font(.system(size: 12))
+                                            .frame(height: 100)
+                                        
+                                        HStack {
+                                            Spacer()
+                                            Text(StringLiterals.Detail.noMenuTitle)
+                                                .foregroundStyle(.gray)
+                                                .font(.system(size: 12))
+                                            Spacer()
+                                        }
+                                        
                                         Spacer()
+                                            .frame(height: 100)
+                                        
                                     }
-                                    
-                                    Spacer()
-                                        .frame(height: 100)
-                                    
-                                }
-                            } else {
-                                VStack(spacing: 10) {
-                                    ForEach(boothModel.selectedBooth!.menus, id: \.self) { menu in
-                                        MenuBar(imageURL: menu.imgUrl, name: menu.name, price: menu.price)
+                                } else {
+                                    VStack(spacing: 10) {
+                                        ForEach(boothMenu, id: \.self) { menu in
+                                            MenuBar(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0)
+                                        }
                                     }
+                                    .padding(.horizontal)
+                                    .padding(.bottom, 20)
                                 }
-                                .padding(.horizontal)
-                                .padding(.bottom, 20)
                             }
                         } else {
                             VStack {
@@ -277,9 +279,15 @@ struct MenuBar: View {
                     .fontWeight(.semibold)
                     .padding(.bottom, 1)
                 
-                Text("\(price)" + StringLiterals.Detail.won)
-                    .font(.system(size: 16))
-                    .fontWeight(.semibold)
+                if price == 0 {
+                    Text("무료")
+                        .font(.system(size: 16))
+                        .fontWeight(.semibold)
+                } else {
+                    Text("\(price)" + StringLiterals.Detail.won)
+                        .font(.system(size: 16))
+                        .fontWeight(.semibold)
+                }
             }
             
             Spacer()

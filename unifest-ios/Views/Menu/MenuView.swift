@@ -141,6 +141,19 @@ struct MenuView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.bottom, 0)
                 
+                HStack {
+                    Text("Contact Us")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.defaultBlack)
+                        .bold()
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                
+                Divider()
+                
                 Button {
                     if let url = URL(string: StringLiterals.URL.messageChannelLink) {
                             UIApplication.shared.open(url, options: [:])

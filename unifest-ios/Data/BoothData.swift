@@ -65,21 +65,21 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var id: Int
     var name: String
     var category: String
-    var description: String
-    var thumbnail: String
-    var warning: String
-    var location: String
+    var description: String?
+    var thumbnail: String?
+    var warning: String?
+    var location: String?
     var latitude: Double
     var longitude: Double
-    var menus: [MenuItem]
-    var enabled: Bool
+    var menus: [MenuItem]?
+    var enabled: Bool?
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {
     var id: Int
-    var name: String
-    var price: Int
-    var imgUrl: String
+    var name: String?
+    var price: Int?
+    var imgUrl: String?
 }
 
 struct APIResponseIntData: Codable {
