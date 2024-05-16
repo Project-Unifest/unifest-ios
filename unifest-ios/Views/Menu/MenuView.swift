@@ -22,6 +22,9 @@ struct MenuView: View {
     // 앱 초기화
     @State private var isResetAlertPresented: Bool = false
     
+    // 클러스터링 여부 설정
+    @State private var clusterToggle: Bool = true
+    
     var body: some View {
         ZStack {
             ScrollView {
@@ -213,6 +216,62 @@ struct MenuView: View {
                 
                 Divider()
                 
+                // 설정
+                HStack {
+                    Text("설정")
+                        .font(.system(size: 15))
+                        .foregroundStyle(.defaultBlack)
+                        .bold()
+                    
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 20)
+                
+                Divider()
+                
+                // 클러스터링 여부
+                HStack(alignment: .center) {
+                    Image(systemName: "circle.dotted.and.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.darkGray)
+                        .padding(.trailing, 8)
+                    
+                    VStack(alignment: .leading) {
+                        Text("부스 묶어보기")
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Text("축소된 지도에서 가까운 부스를 묶어 표시합니다")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.gray)
+                            .fontWeight(.medium)
+                    }
+                    
+                    Spacer()
+                    
+                    Toggle("", isOn: $clusterToggle)
+                        .frame(width: 60)
+                        .onChange(of: clusterToggle) {
+                            if clusterToggle {
+                                // off -> on
+                                UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                                // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                            } else {
+                                // on -> off
+                                UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+                                // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                            }
+                        }
+                }
+                .frame(height: 60)
+                .padding(.horizontal)
+                
+                Divider()
+                
                 HStack {
                     Text("권한 및 개인정보 처리방침")
                         .font(.system(size: 15))
@@ -381,6 +440,7 @@ struct MenuView: View {
         .onAppear {
             // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
             randomLikeList = boothModel.getRandomLikedBooths()
+            clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
         }
         .sheet(isPresented: $isDetailViewPresented) {
             DetailView(boothModel: boothModel)

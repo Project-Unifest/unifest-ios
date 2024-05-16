@@ -81,7 +81,10 @@ struct MapView: View {
                 }
                 
                 if searchText.isEmpty {
-                    if lastDistance < 1000 {
+                    // setting
+                    let isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                    
+                    if (lastDistance < 1000 || !isClustering) {
                         ForEach(boothModel.booths, id: \.self) { booth in
                             if (isTagSelected[stringToBoothType(booth.category)] ?? false) {
                                 Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
@@ -100,10 +103,7 @@ struct MapView: View {
                     } else {
                         ForEach(BoothType.allCases, id: \.self) { boothType in
                             if (isTagSelected[boothType] ?? false) {
-                                // let clusters = clusterAnnotations(clusterRadius: 2 * (lastDistance / 10000), boothType: boothType)
-                                let clusters = clusterAnnotations(clusterRadius: 0.1, boothType: boothType)
-                                
-                                ForEach(clusters) { cluster in
+                                ForEach(clusterAnnotations(clusterRadius: 1, boothType: boothType)) { cluster in
                                     Annotation("", coordinate: cluster.center) {
                                         BoothAnnotation(number: cluster.points.count, boothType: boothType)
                                             .onTapGesture {
@@ -119,7 +119,7 @@ struct MapView: View {
                             }
                         }
                     }
-                } 
+                }
                 // 검색 결과만 표시
                 else {
                     ForEach(boothModel.booths, id: \.self) { booth in
