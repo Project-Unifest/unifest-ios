@@ -27,44 +27,54 @@ struct MapView: View {
     let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     let polygonKonkuk: [CLLocationCoordinate2D] = [
-        CLLocationCoordinate2D(latitude: 37.54472, longitude: 127.07665),
-        CLLocationCoordinate2D(latitude: 37.54458, longitude: 127.07498),
-        CLLocationCoordinate2D(latitude: 37.54468, longitude: 127.07382),
-        CLLocationCoordinate2D(latitude: 37.54444, longitude: 127.07287),
-        CLLocationCoordinate2D(latitude: 37.54199, longitude: 127.07175),
-        CLLocationCoordinate2D(latitude: 37.54176, longitude: 127.07246),
-        CLLocationCoordinate2D(latitude: 37.54104, longitude: 127.07296),
-        CLLocationCoordinate2D(latitude: 37.53956, longitude: 127.07225),
-        CLLocationCoordinate2D(latitude: 37.53901, longitude: 127.07409),
-        CLLocationCoordinate2D(latitude: 37.53884, longitude: 127.07443),
-        CLLocationCoordinate2D(latitude: 37.53872, longitude: 127.07497),
-        CLLocationCoordinate2D(latitude: 37.53933, longitude: 127.07514),
-        CLLocationCoordinate2D(latitude: 37.53921, longitude: 127.07690),
-        CLLocationCoordinate2D(latitude: 37.53999, longitude: 127.07722),
-        CLLocationCoordinate2D(latitude: 37.54094, longitude: 127.07787),
-        CLLocationCoordinate2D(latitude: 37.54108, longitude: 127.07827),
-        CLLocationCoordinate2D(latitude: 37.54075, longitude: 127.07930),
-        CLLocationCoordinate2D(latitude: 37.54075, longitude: 127.08073),
-        CLLocationCoordinate2D(latitude: 37.54124, longitude: 127.08119),
-        CLLocationCoordinate2D(latitude: 37.54198, longitude: 127.08133),
-        CLLocationCoordinate2D(latitude: 37.54306, longitude: 127.08132),
-        CLLocationCoordinate2D(latitude: 37.54320, longitude: 127.07944),
-        CLLocationCoordinate2D(latitude: 37.54392, longitude: 127.07964),
-        CLLocationCoordinate2D(latitude: 37.54428, longitude: 127.08001),
-        CLLocationCoordinate2D(latitude: 37.54499, longitude: 127.07988),
-        CLLocationCoordinate2D(latitude: 37.54484, longitude: 127.07782),
-        CLLocationCoordinate2D(latitude: 37.54493, longitude: 127.07689),
-        CLLocationCoordinate2D(latitude: 37.54490, longitude: 127.07661)
+        CLLocationCoordinate2D(latitude: 37.54508, longitude: 127.07658),
+        CLLocationCoordinate2D(latitude: 37.54468, longitude: 127.07663),
+        CLLocationCoordinate2D(latitude: 37.54470, longitude: 127.07615),
+        CLLocationCoordinate2D(latitude: 37.54461, longitude: 127.07561),
+        CLLocationCoordinate2D(latitude: 37.54462, longitude: 127.07507),
+        CLLocationCoordinate2D(latitude: 37.54461, longitude: 127.07455),
+        CLLocationCoordinate2D(latitude: 37.54470, longitude: 127.07396),
+        CLLocationCoordinate2D(latitude: 37.54462, longitude: 127.07348),
+        CLLocationCoordinate2D(latitude: 37.54452, longitude: 127.07331),
+        CLLocationCoordinate2D(latitude: 37.54266, longitude: 127.07252),
+        CLLocationCoordinate2D(latitude: 37.54230, longitude: 127.07227),
+        CLLocationCoordinate2D(latitude: 37.54132, longitude: 127.07179),
+        CLLocationCoordinate2D(latitude: 37.54099, longitude: 127.07283),
+        CLLocationCoordinate2D(latitude: 37.53957, longitude: 127.07216),
+        CLLocationCoordinate2D(latitude: 37.53873, longitude: 127.07504),
+        CLLocationCoordinate2D(latitude: 37.53933, longitude: 127.07516),
+        CLLocationCoordinate2D(latitude: 37.53919, longitude: 127.07674),
+        CLLocationCoordinate2D(latitude: 37.53908, longitude: 127.07719),
+        CLLocationCoordinate2D(latitude: 37.53910, longitude: 127.07839),
+        CLLocationCoordinate2D(latitude: 37.53900, longitude: 127.07850),
+        CLLocationCoordinate2D(latitude: 37.53902, longitude: 127.07903),
+        CLLocationCoordinate2D(latitude: 37.53886, longitude: 127.07906),
+        CLLocationCoordinate2D(latitude: 37.53891, longitude: 127.07995),
+        CLLocationCoordinate2D(latitude: 37.53925, longitude: 127.07993),
+        CLLocationCoordinate2D(latitude: 37.53934, longitude: 127.07973),
+        CLLocationCoordinate2D(latitude: 37.53982, longitude: 127.07962),
+        CLLocationCoordinate2D(latitude: 37.54014, longitude: 127.07999),
+        CLLocationCoordinate2D(latitude: 37.54067, longitude: 127.08086),
+        CLLocationCoordinate2D(latitude: 37.54119, longitude: 127.08131),
+        CLLocationCoordinate2D(latitude: 37.54208, longitude: 127.08131),
+        CLLocationCoordinate2D(latitude: 37.54234, longitude: 127.08115),
+        CLLocationCoordinate2D(latitude: 37.54257, longitude: 127.07857),
+        CLLocationCoordinate2D(latitude: 37.54382, longitude: 127.07876),
+        CLLocationCoordinate2D(latitude: 37.54394, longitude: 127.07966),
+        CLLocationCoordinate2D(latitude: 37.54429, longitude: 127.08006),
+        CLLocationCoordinate2D(latitude: 37.54496, longitude: 127.07994),
+        CLLocationCoordinate2D(latitude: 37.54493, longitude: 127.07897),
+        CLLocationCoordinate2D(latitude: 37.54485, longitude: 127.07754),
+        CLLocationCoordinate2D(latitude: 37.54494, longitude: 127.07704),
+        CLLocationCoordinate2D(latitude: 37.54516, longitude: 127.07688)
     ]
     
     // distance
     @State private var lastDistance: Double = 4000
     
     // last center
-    @State private var lastLatitude: CLLocationDegrees = 37.542_630
-    @State private var lastLongitude: CLLocationDegrees = 127.076_870
-    
-    @State private var isBoothSelected: [Bool] = [false, false, false]
+    // @State private var lastLatitude: CLLocationDegrees = 37.542_630
+    // @State private var lastLongitude: CLLocationDegrees = 127.076_870
     
     var body: some View {
         ZStack {
@@ -175,10 +185,15 @@ struct MapView: View {
                     clusters = clusterAnnotations(clusterRadius: 2 * (lastDistance / 120_000))
                 }*/
                 
-                lastDistance = mapCameraUpdateContext.camera.distance
-                lastLatitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
-                lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
-                print(lastDistance)
+                // 비율이 달라진 경우에만 업데이트
+                if (abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1) {
+                    print("last dist: \(lastDistance), new dist: \(mapCameraUpdateContext.camera.distance)")
+                    lastDistance = mapCameraUpdateContext.camera.distance
+                }
+                
+                // lastLatitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
+                // lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
+                // print(lastDistance)
             }
         }
         .onAppear() {
@@ -231,7 +246,9 @@ struct MapView: View {
     func clusterAnnotations(clusterRadius: Double, boothType: BoothType) -> [Cluster] {
         var clusters: [Cluster] = []
         
-        for booth in boothModel.booths.filter({ $0.category == boothType.rawValue }) {
+        let filteredBooths = boothModel.booths.filter({ $0.category == boothType.rawValue })
+        
+        for booth in filteredBooths {
             var isClustered = false
             
             var clusterId: Int = 0
@@ -243,12 +260,13 @@ struct MapView: View {
                     cluster.boothIDList.append(booth.id)
                     isClustered = true
                     // print("store appended to cluster \(clusterId): \(distance)")
-                    cluster.updateCenter()
+                    // cluster.updateCenter()
                     break
                 }
                 clusterId += 1
             }
             
+            // 아무 곳에도 못 들어갔다면
             if !isClustered {
                 let newCluster = Cluster(center: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude), points: [CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)], type: boothType)
                 newCluster.boothIDList.append(booth.id)
@@ -411,7 +429,7 @@ enum BoothType: String, CaseIterable {
     case drink = "BAR"
     case food = "FOOD"
     case event = "EVENT"
-    case booth = "BOOTH"
+    case booth = "NORMAL"
     case hospital = "MEDICAL"
     case toilet = "TOILET"
 }
