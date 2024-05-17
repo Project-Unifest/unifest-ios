@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct LikeBoothListView: View {
+    @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var boothModel: BoothModel
     @State private var isDetailViewPresented: Bool = false
     
     var body: some View {
         ZStack {
-            if boothModel.likedBoothList.isEmpty {
+            if viewModel.boothModel.likedBoothList.isEmpty {
                 VStack(alignment: .center) {
                     Spacer()
                     Text(StringLiterals.Menu.noLikedBoothTitle)
@@ -34,14 +34,14 @@ struct LikeBoothListView: View {
                 ScrollView {
                     Spacer()
                         .frame(height: 32)
-                    ForEach(boothModel.likedBoothList, id: \.self) { boothID in
-                        if let booth = boothModel.getBoothByID(boothID) {
+                    ForEach(viewModel.boothModel.likedBoothList, id: \.self) { boothID in
+                        if let booth = viewModel.boothModel.getBoothByID(boothID) {
                             // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                            LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                            LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                                 .padding(.vertical, 10)
                                 .onTapGesture {
                                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                    boothModel.loadBoothDetail(boothID)
+                                    viewModel.boothModel.loadBoothDetail(boothID)
                                     isDetailViewPresented = true
                                 }
                             Divider()
@@ -92,12 +92,12 @@ struct LikeBoothListView: View {
             }
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView(boothModel: boothModel)
+            DetailView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
         }
     }
 }
 
 #Preview {
-    LikeBoothListView(boothModel: BoothModel())
+    LikeBoothListView(viewModel: RootViewModel())
 }

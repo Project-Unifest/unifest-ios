@@ -8,30 +8,25 @@
 import SwiftUI
 
 struct MapPageView: View {
+    @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-    @ObservedObject var boothModel: BoothModel
-    
-    @State private var isPopularBoothPresented: Bool = false
     
     @State private var isSearchSchoolViewPresented: Bool = false
     @State private var isDetailViewPresented: Bool = false
     
     @State private var searchText: String = ""
     
-    @State private var isTagSelected: [BoothType: Bool] = [.drink: true, .food: true, .booth: true, .event: true, .hospital: true, .toilet: true]
-    
-    @State private var isBoothListPresented: Bool = false
-    @State private var selectedBoothIDList: [Int] = []
-    
     var body: some View {
         ZStack {
             VStack {
                 Spacer()
-                MapView(mapViewModel: mapViewModel, boothModel: boothModel, isTagSelected: $isTagSelected, searchText: $searchText, selectedBoothIDList: $selectedBoothIDList, isBoothListPresented: $isBoothListPresented, isPopularBoothPresented: $isPopularBoothPresented)
+                // MapView(mapViewModel: mapViewModel, boothModel: boothModel, isTagSelected: $isTagSelected, searchText: $searchText, selectedBoothIDList: $selectedBoothIDList, isBoothListPresented: $isBoothListPresented, isPopularBoothPresented: $isPopularBoothPresented)
+                MapView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
             }
             
             VStack {
-                MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
+                // MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
+                MapPageHeaderView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
                     .background(.background)
                     .clipShape(
                         .rect(
@@ -47,31 +42,38 @@ struct MapPageView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Spacer()
                     
-                    if isBoothListPresented {
+                    if mapViewModel.isBoothListPresented {
                         Button {
                             withAnimation(.spring) {
-                                isBoothListPresented = false
+                                mapViewModel.isBoothListPresented = false
                             }
+                            mapViewModel.setSelectedAnnotationID(-1)
+                            viewModel.boothModel.updateMapSelectedBoothList([])
                         } label: {
                             Image(.popCloseButton)
                         }
                     }
                     
-                    if !boothModel.top5booths.isEmpty && searchText.isEmpty && !isBoothListPresented {
+                    if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
                         Button {
                             withAnimation(.spring) {
-                                // isPopularBoothPresented.toggle()
-                                if isPopularBoothPresented {
+                                if mapViewModel.isPopularBoothPresented {
                                     // on -> off
                                     GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
-                                    isPopularBoothPresented = false
+                                    DispatchQueue.main.async {
+                                        mapViewModel.isPopularBoothPresented = false
+                                    }
                                 } else {
                                     // off -> on
                                     GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
-                                    if isBoothListPresented {
-                                        isBoothListPresented = false
+                                    if mapViewModel.isBoothListPresented {
+                                        DispatchQueue.main.async {
+                                            mapViewModel.isBoothListPresented = false
+                                        }
                                     }
-                                    isPopularBoothPresented = true
+                                    DispatchQueue.main.async {
+                                        mapViewModel.isPopularBoothPresented = true
+                                    }
                                 }
                             }
                         } label: {
@@ -83,7 +85,7 @@ struct MapPageView: View {
                                             .foregroundStyle(.accent)
                                             .fontWeight(.semibold)
                                         Image(.upPinkArrow)
-                                            .rotationEffect(isPopularBoothPresented ? .degrees(180) : .degrees(0))
+                                            .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
                                     }
                                     .padding(.bottom, 2)
                                 }
@@ -93,27 +95,27 @@ struct MapPageView: View {
                     Spacer()
                 }
                 
-                if isPopularBoothPresented || isBoothListPresented {
+                if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 12) {
-                            if isPopularBoothPresented {
-                                ForEach(Array(boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
+                            if mapViewModel.isPopularBoothPresented {
+                                ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
                                     BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
-                                            boothModel.loadBoothDetail(topBooth.id)
+                                            viewModel.boothModel.loadBoothDetail(topBooth.id)
                                             isDetailViewPresented = true
                                         }
                                 }
                             } else {
-                                if boothModel.mapSelectedBoothList.isEmpty {
+                                if viewModel.boothModel.mapSelectedBoothList.isEmpty {
                                     //
                                 } else {
-                                    ForEach(boothModel.mapSelectedBoothList, id: \.self) { booth in
+                                    ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
                                         BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
                                             .onTapGesture {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
-                                                boothModel.loadBoothDetail(booth.id)
+                                                viewModel.boothModel.loadBoothDetail(booth.id)
                                                 isDetailViewPresented = true
                                             }
                                     }
@@ -133,32 +135,24 @@ struct MapPageView: View {
                 // .presentationDetents([.height(700)])
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView(boothModel: boothModel)
+            DetailView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {
-            boothModel.loadTop5Booth()
+            viewModel.boothModel.loadTop5Booth()
         }
     }
 }
 
 #Preview {
-    TabView {
-        MapPageView(mapViewModel: MapViewModel(), boothModel: BoothModel())
-            .tabItem {
-                Image(.tabMapSelected)
-                Text("지도")
-            }
-    }
+    RootView(rootViewModel: RootViewModel())
 }
 
 struct MapPageHeaderView: View {
+    @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @State private var isInfoTextPresented: Bool = true
     @Binding var searchText: String
-    @Binding var isTagSelected: [BoothType: Bool]
-    
-    @Binding var isSearchSchoolViewPresented: Bool
-    @Binding var isPopularBoothPresented: Bool
     
     var body: some View {
         VStack {
@@ -207,9 +201,10 @@ struct MapPageHeaderView: View {
                             .font(.system(size: 13))
                             .onChange(of: searchText) {
                                 if !searchText.isEmpty {
-                                    withAnimation(.spring) {
-                                        isPopularBoothPresented = false
-                                    }
+                                    mapViewModel.isPopularBoothPresented = false
+                                    mapViewModel.isBoothListPresented = false
+                                    mapViewModel.setSelectedAnnotationID(-1)
+                                    viewModel.boothModel.updateMapSelectedBoothList([])
                                 }
                             }
                         
@@ -218,6 +213,7 @@ struct MapPageHeaderView: View {
                         } else {
                             Button {
                                 searchText = ""
+                                UIApplication.shared.endEditing(true)
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
@@ -230,87 +226,93 @@ struct MapPageHeaderView: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 7) {
-                    Image(isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.drinkBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.drink] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.drink] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.drink.rawValue, "turn": (isTagSelected[.drink] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.drink]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.drink.rawValue, "turn": (mapViewModel.isTagSelected[.drink] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.drink]?.toggle()
+                                }
                             }
                         }
                     
-                    Image(isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.foodBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.food] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.food] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.food.rawValue, "turn": (isTagSelected[.food] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.food]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.food.rawValue, "turn": (mapViewModel.isTagSelected[.food] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.food]?.toggle()
+                                }
                             }
                         }
                     
-                    Image(isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.eventBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.event] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.event] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.event.rawValue, "turn": (isTagSelected[.event] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.event]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.event.rawValue, "turn": (mapViewModel.isTagSelected[.event] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.event]?.toggle()
+                                }
                             }
                         }
                     
-                    Image(isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.generalBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.booth] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.booth] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.booth.rawValue, "turn": (isTagSelected[.booth] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.booth]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.booth.rawValue, "turn": (mapViewModel.isTagSelected[.booth] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.booth]?.toggle()
+                                }
                             }
                         }
                     
-                    Image(isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.hospitalBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.hospital] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.hospital] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.hospital.rawValue, "turn": (isTagSelected[.hospital] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.hospital]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.hospital.rawValue, "turn": (mapViewModel.isTagSelected[.hospital] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.hospital]?.toggle()
+                                }
                             }
                         }
                     
-                    Image(isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Image(mapViewModel.isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.toiletBoothTitle)
-                                .fontWeight(.semibold)
                                 .font(.system(size: 13))
-                                .foregroundStyle(isTagSelected[.toilet] ?? false ? .defaultPink : .defaultBlack)
+                                .foregroundStyle(mapViewModel.isTagSelected[.toilet] ?? false ? .defaultPink : .gray)
                         }
                         .onTapGesture {
-                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.toilet.rawValue, "turn": (isTagSelected[.toilet] ?? false) ? "off" : "on"])
-                            withAnimation(.spring(duration: 0.2)) {
-                                isTagSelected[.toilet]?.toggle()
+                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.toilet.rawValue, "turn": (mapViewModel.isTagSelected[.toilet] ?? false) ? "off" : "on"])
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(duration: 0.2)) {
+                                    mapViewModel.isTagSelected[.toilet]?.toggle()
+                                }
                             }
                         }
                 }
@@ -318,6 +320,12 @@ struct MapPageHeaderView: View {
             }
         }
         .padding(.bottom)
+    }
+}
+
+extension UIApplication {
+    func endEditing(_ force: Bool) {
+        self.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
@@ -405,11 +413,3 @@ struct BoothBox: View {
             }
     }
 }
-
-/* #Preview {
-    ZStack {
-        Color.gray
-        BoothBox(rank: 1, title: "컴공 주점", description: "저희 주점은 일본 이자카야를 모티브로 만든 컴공인을 위한 주점입니다.", position: "청심대 앞", imageURL: "https://i.namu.wiki/i/JaudlPaMxzH-kbYH_b788UT_sX47F_ajB1hFH7s37d5CZUqOfA6vcoXMiW3E4--hG_PwgDcvQ6Hi021KyzghLQ.webp")
-    }
-}
-*/

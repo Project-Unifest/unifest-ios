@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MenuView: View {
+    @ObservedObject var viewModel: RootViewModel
     @State private var isListViewPresented: Bool = false
-    @ObservedObject var boothModel: BoothModel
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
     
@@ -85,7 +85,7 @@ struct MenuView: View {
                     
                     Spacer()
                     
-                    if !boothModel.likedBoothList.isEmpty {
+                    if !viewModel.boothModel.likedBoothList.isEmpty {
                         Button {
                             isListViewPresented.toggle()
                         } label: {
@@ -103,7 +103,7 @@ struct MenuView: View {
                 }
                 .padding(.horizontal)
                 
-                if boothModel.likedBoothList.isEmpty {
+                if viewModel.boothModel.likedBoothList.isEmpty {
                     VStack(alignment: .center) {
                         Text(StringLiterals.Menu.noLikedBoothTitle)
                             .font(.system(size: 16))
@@ -122,20 +122,20 @@ struct MenuView: View {
                         // let randomLikeList = boothModel.getRandomLikedBooths()
                         
                         ForEach(randomLikeList, id: \.self) { boothID in
-                            if let booth = boothModel.getBoothByID(boothID) {
-                                LikedBoothBoxView(boothModel: boothModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                            if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                                     .padding(.vertical, 10)
                                     .onTapGesture {
                                         GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                        boothModel.loadBoothDetail(boothID)
+                                        viewModel.boothModel.loadBoothDetail(boothID)
                                         isDetailViewPresented = true
                                     }
                                 Divider()
                             }
                         }
                     }
-                    .onChange(of: boothModel.likedBoothList) {
-                        randomLikeList = boothModel.getRandomLikedBooths()
+                    .onChange(of: viewModel.boothModel.likedBoothList) {
+                        randomLikeList = viewModel.boothModel.getRandomLikedBooths()
                     }
                 }
                 
@@ -464,15 +464,15 @@ struct MenuView: View {
             }
         }
         .fullScreenCover(isPresented: $isListViewPresented, content: {
-            LikeBoothListView(boothModel: boothModel)
+            LikeBoothListView(viewModel: viewModel)
         })
         .onAppear {
             // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
-            randomLikeList = boothModel.getRandomLikedBooths()
+            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView(boothModel: boothModel)
+            DetailView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)
@@ -563,5 +563,5 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(boothModel: BoothModel())
+    MenuView(viewModel: RootViewModel())
 }

@@ -116,6 +116,8 @@ struct APIResponseIntData: Codable {
 }
 
 class BoothModel: ObservableObject {
+    // static let shared = BoothModel()
+    
     @Published var booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {

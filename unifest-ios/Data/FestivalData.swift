@@ -88,6 +88,8 @@ struct StarItem: Codable, Hashable {
 }
 
 class FestivalModel: ObservableObject {
+    // static let shared = FestivalModel()
+    
     @Published var festivals: [FestivalItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -102,6 +104,7 @@ class FestivalModel: ObservableObject {
             }
         }
     }
+    
     private var cancellables = Set<AnyCancellable>()
     
     init() {

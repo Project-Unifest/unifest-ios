@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct LikedBoothBoxView: View {
-    @ObservedObject var boothModel: BoothModel
+    @ObservedObject var viewModel: RootViewModel
     let boothID: Int
     let image: String
     let name: String
@@ -58,7 +58,7 @@ struct LikedBoothBoxView: View {
                     
                     Button {
                         GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                        boothModel.deleteLikeBoothListDB(boothID)
+                        viewModel.boothModel.deleteLikeBoothListDB(boothID)
                     } label: {
                         Image(.pinkBookMark)
                     }

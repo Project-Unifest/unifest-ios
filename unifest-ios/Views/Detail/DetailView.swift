@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct DetailView: View {
+    @ObservedObject var viewModel: RootViewModel
     @State private var isMapViewPresented: Bool = false
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var boothModel: BoothModel
+    
+    @State private var isReloadButtonPresent: Bool = false
     
     var body: some View {
         ZStack {
@@ -18,7 +20,7 @@ struct DetailView: View {
                 ScrollView {
                     VStack {
                         ZStack {
-                            AsyncImage(url: URL(string: boothModel.selectedBooth?.thumbnail ?? "")) { image in
+                            AsyncImage(url: URL(string: viewModel.boothModel.selectedBooth?.thumbnail ?? "")) { image in
                                 image
                                     .resizable()
                                     .scaledToFill()
@@ -39,28 +41,26 @@ struct DetailView: View {
                             .frame(maxWidth: .infinity)
                         }
                         
-                        if boothModel.selectedBooth == nil {
+                        if viewModel.boothModel.selectedBooth == nil {
                             VStack {
-                                ProgressView()
+                                if !isReloadButtonPresent {
+                                    ProgressView()
+                                }
                             }
                             .frame(height: 160)
                         } else {
                             HStack {
-                                Text(boothModel.selectedBooth?.name ?? "")
+                                Text(viewModel.boothModel.selectedBooth?.name ?? "")
                                     .font(.system(size: 22))
                                     .bold()
                                     .lineLimit(1)
                                 
-                                VStack {
-                                    Spacer()
-                                    
-                                    Text(boothModel.selectedBooth?.warning ?? "")
-                                        .font(.system(size: 10))
-                                        .fontWeight(.semibold)
-                                        .foregroundStyle(.accent)
-                                        .padding(.bottom, 4)
-                                        .lineLimit(1)
-                                }
+                                Text(viewModel.boothModel.selectedBooth?.warning ?? "")
+                                    .font(.system(size: 10))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.accent)
+                                    .padding(.bottom, 4)
+                                    .lineLimit(2)
                                 
                                 Spacer()
                             }
@@ -68,7 +68,7 @@ struct DetailView: View {
 //                            .frame(maxWidth: .infinity)
                             
                             VStack {
-                                Text(boothModel.selectedBooth?.description ?? "")
+                                Text(viewModel.boothModel.selectedBooth?.description ?? "")
                                     .font(.system(size: 13))
                                     .foregroundStyle(.darkGray)
                                     .padding(.bottom)
@@ -80,7 +80,7 @@ struct DetailView: View {
                             HStack {
                                 Image(.greenMarker)
                                 
-                                Text(boothModel.selectedBooth?.location ?? "")
+                                Text(viewModel.boothModel.selectedBooth?.location ?? "")
                                     .font(.system(size: 13))
                                 
                                 Spacer()
@@ -118,7 +118,7 @@ struct DetailView: View {
                         .padding(.horizontal)
                         .padding(.bottom, 6)
                         
-                        if let booth = boothModel.selectedBooth {
+                        if let booth = viewModel.boothModel.selectedBooth {
                             if let boothMenu = booth.menus {
                                 if boothMenu.isEmpty {
                                     VStack {
@@ -149,11 +149,23 @@ struct DetailView: View {
                             }
                         } else {
                             VStack {
-                                ProgressView()
-                                    .padding(.bottom, 20)
-                                Text("메뉴를 불러오고 있어요")
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(.gray)
+                                if !isReloadButtonPresent {
+                                    ProgressView()
+                                        .padding(.bottom, 20)
+                                } else {
+                                    Text("부스 정보를 불러오지 못했습니다")
+                                        .foregroundStyle(.darkGray)
+                                        .font(.system(size: 15))
+                                        .padding(.bottom, 4)
+                                    Button {
+                                        viewModel.boothModel.loadBoothDetail(viewModel.boothModel.selectedBoothID)
+                                    } label: {
+                                        Text("다시 시도")
+                                            .foregroundStyle(.gray)
+                                            .font(.system(size: 15))
+                                            .fontWeight(.bold)
+                                    }
+                                }
                             }
                             .frame(height: 100)
                             .padding(.bottom, 20)
@@ -166,7 +178,7 @@ struct DetailView: View {
                 .ignoresSafeArea(edges: .top)
                 .background(.background)
                 .fullScreenCover(isPresented: $isMapViewPresented, content: {
-                    OneMapView(mapViewModel: MapViewModel(), booth: boothModel.selectedBooth)
+                    OneMapView(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
                         .onAppear {
                             GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
                         }
@@ -186,28 +198,29 @@ struct DetailView: View {
                         
                         VStack {
                             Button {
-                                if boothModel.isBoothContain(boothModel.selectedBoothID) {
+                                if viewModel.boothModel.isBoothContain(viewModel.boothModel.selectedBoothID) {
                                     // delete
-                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_CANCEL, params: ["boothID": boothModel.selectedBoothID])
-                                    boothModel.deleteLikeBoothListDB(boothModel.selectedBoothID)
-                                    boothModel.deleteLike(boothModel.selectedBoothID)
+                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_CANCEL, params: ["boothID": viewModel.boothModel.selectedBoothID])
+                                    viewModel.boothModel.deleteLikeBoothListDB(viewModel.boothModel.selectedBoothID)
+                                    viewModel.boothModel.deleteLike(viewModel.boothModel.selectedBoothID)
                                 } else {
                                     // add
-                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_ADD, params: ["boothID": boothModel.selectedBoothID])
-                                    boothModel.insertLikeBoothDB(boothModel.selectedBoothID)
-                                    boothModel.addLike(boothModel.selectedBoothID)
+                                    GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_ADD, params: ["boothID": viewModel.boothModel.selectedBoothID])
+                                    viewModel.boothModel.insertLikeBoothDB(viewModel.boothModel.selectedBoothID)
+                                    viewModel.boothModel.addLike(viewModel.boothModel.selectedBoothID)
                                 }
                             } label: {
-                                Image(boothModel.isBoothContain(boothModel.selectedBoothID) ? .pinkBookMark : .bookmark)
+                                Image(viewModel.boothModel.isBoothContain(viewModel.boothModel.selectedBoothID) ? .pinkBookMark : .bookmark)
                             }
                             .padding(.horizontal, 10)
-                            .disabled(boothModel.selectedBooth == nil)
+                            .disabled(viewModel.boothModel.selectedBooth == nil)
                             
-                            if boothModel.selectedBooth == nil {
-                                ProgressView()
-                                    .frame(width: 10, height: 10)
+                            if viewModel.boothModel.selectedBooth == nil {
+                                Text("-")
+                                    .font(.system(size: 10))
+                                    .foregroundStyle(.darkGray)
                             } else {
-                                Text("\(boothModel.selectedBoothNumLike > 0 ? boothModel.selectedBoothNumLike : 0)")
+                                Text("\(viewModel.boothModel.selectedBoothNumLike > 0 ? viewModel.boothModel.selectedBoothNumLike : 0)")
                                     .font(.system(size: 10))
                                     .foregroundStyle(.darkGray)
                             }
@@ -219,8 +232,15 @@ struct DetailView: View {
                         } label: {
                             Image(.longButtonDarkGray)
                                 .overlay {
-                                    if boothModel.selectedBooth == nil {
-                                        ProgressView()
+                                    if viewModel.boothModel.selectedBooth == nil {
+                                        if !isReloadButtonPresent {
+                                            ProgressView()
+                                        } else {
+                                            Text(StringLiterals.Detail.noWaitingBooth)
+                                                .foregroundStyle(.white)
+                                                .font(.system(size: 14))
+                                                .bold()
+                                        }
                                     } else {
                                         Text(StringLiterals.Detail.noWaitingBooth)
                                             .foregroundStyle(.white)
@@ -241,22 +261,26 @@ struct DetailView: View {
             }
         }
         .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.isReloadButtonPresent = true
+            }
             GATracking.eventScreenView(GATracking.ScreenNames.boothDetailView)
         }
         .onDisappear {
-            boothModel.selectedBooth = nil
-            boothModel.selectedBoothID = 0
+            viewModel.boothModel.selectedBooth = nil
+            viewModel.boothModel.selectedBoothID = 0
         }
     }
 }
 
 #Preview {
-    @ObservedObject var boothModel = BoothModel()
+    @ObservedObject var viewModel = RootViewModel()
     
     return Group {
-        DetailView(boothModel: boothModel)
+        DetailView(viewModel: viewModel)
             .onAppear {
-                boothModel.loadBoothDetail(113)
+                viewModel.boothModel.selectedBoothID = 126
+                viewModel.boothModel.loadBoothDetail(126)
             }
     }
 }

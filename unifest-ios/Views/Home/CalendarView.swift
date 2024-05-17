@@ -9,7 +9,6 @@ import SwiftUI
 
 struct CalendarView: View {
     @ObservedObject var viewModel: RootViewModel
-    @ObservedObject var festivalModel: FestivalModel
     
     let year: Int
     let month: Int
@@ -70,10 +69,10 @@ struct CalendarView: View {
                                         currentMonth = selectedMonth
                                     }
                                     
-                                    festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
+                                    viewModel.festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
                                 }
                             
-                            let festivalNum: Int = festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
+                            let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
                             if (festivalNum > 0) {
                                 simpleDot(.defaultGreen)
                             } else {
@@ -164,7 +163,6 @@ struct CalendarView: View {
 
 struct CalendarWeekView: View {
     @ObservedObject var viewModel: RootViewModel
-    @ObservedObject var festivalModel: FestivalModel
     let year: Int
     @Binding var month: Int
     let currentFirstSunday: Date
@@ -224,10 +222,10 @@ struct CalendarWeekView: View {
                                     month = selectedMonth
                                 }
                                 
-                                festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
+                                viewModel.festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
                             }
                         
-                        let festivalNum: Int = festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
+                        let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
                         if (festivalNum > 0) {
                             simpleDot(.defaultGreen)
                         } else {
@@ -294,7 +292,6 @@ extension Int {
 
 struct CalendarTabView: View {
     @ObservedObject var viewModel: RootViewModel
-    @ObservedObject var festivalModel: FestivalModel
     
     @State private var currentYear: Int
     @State private var currentMonth: Int
@@ -314,7 +311,7 @@ struct CalendarTabView: View {
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
     
-    init(viewModel: RootViewModel, festivalModel: FestivalModel) {
+    init(viewModel: RootViewModel) {
         let date = Date()
         currentYear = Calendar.current.component(.year, from: date)
         currentMonth = Calendar.current.component(.month, from: date)
@@ -327,7 +324,6 @@ struct CalendarTabView: View {
         currentFirstSunday = Date()
         
         self.viewModel = viewModel
-        self.festivalModel = festivalModel
     }
     
     var body: some View {
@@ -385,14 +381,14 @@ struct CalendarTabView: View {
                             let firstSunday = Calendar.current.date(byAdding: .day, value: weekIdx * 7, to: firstSundayOfYear)!
                             let wednesday = Calendar.current.date(byAdding: .day, value: weekIdx * 7 + 3, to: firstSundayOfYear)!
                             
-                            CalendarWeekView(viewModel: viewModel, festivalModel: festivalModel, year: currentYear, month: $currentMonth, currentFirstSunday: firstSunday, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
+                            CalendarWeekView(viewModel: viewModel, year: currentYear, month: $currentMonth, currentFirstSunday: firstSunday, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
                                 .onAppear {
                                     currentMonth = Calendar.current.component(.month, from: wednesday)
                                 }
                         }
                     } else {
                         ForEach(1...12, id: \.self) { month in
-                            CalendarView(viewModel: viewModel, festivalModel: festivalModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
+                            CalendarView(viewModel: viewModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
                         }
                     }
                 }
@@ -455,7 +451,7 @@ struct CalendarTabView: View {
                 // print(firstSundayOfYear)
                 // print(currentFirstSunday)
                 // getViewHeight()
-                festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
+                viewModel.festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
             }
             .gesture(
                 DragGesture()
@@ -491,7 +487,7 @@ struct CalendarTabView: View {
             Spacer()
                 .frame(height: 24)
             
-            HomeView(viewModel: viewModel, festivalModel: festivalModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
+            HomeView(viewModel: viewModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
         }
     }
     
@@ -558,6 +554,6 @@ struct CalendarTabView: View {
 }
 
 #Preview {
-    CalendarTabView(viewModel: RootViewModel(), festivalModel: FestivalModel())
+    CalendarTabView(viewModel: RootViewModel())
 }
 

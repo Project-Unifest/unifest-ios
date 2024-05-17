@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct RootView: View {
-    @ObservedObject var viewModel = RootViewModel()
-    @ObservedObject var mapViewModel = MapViewModel()
-    @ObservedObject var festivalModel = FestivalModel()
-    @ObservedObject var boothModel = BoothModel()
-    @ObservedObject var networkManager = NetworkManager()
+    @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
+    @ObservedObject var networkManager: NetworkManager
     
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
@@ -22,14 +20,20 @@ struct RootView: View {
     
     @State private var isWelcomeViewPresented: Bool = false
     
+    init(rootViewModel: RootViewModel) {
+        self.viewModel = rootViewModel
+        self.mapViewModel = MapViewModel(viewModel: rootViewModel)
+        self.networkManager = NetworkManager()
+    }
+    
     var body: some View {
         ZStack {
             switch viewModel.viewState {
             case .intro:
-                IntroView(viewModel: viewModel, festivalModel: festivalModel)
+                IntroView(viewModel: viewModel)
             case .home, .map, .waiting, .menu:
                 TabView(selection: $tabViewSelection) {
-                    CalendarTabView(viewModel: viewModel, festivalModel: festivalModel)
+                    CalendarTabView(viewModel: viewModel)
                         .onAppear {
                             GATracking.eventScreenView(GATracking.ScreenNames.homeView)
                         }
@@ -40,13 +44,13 @@ struct RootView: View {
                         }
                         .tag(0)
                     
-                    MapPageView(mapViewModel: mapViewModel, boothModel: boothModel)
+                    MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
                         .onAppear {
                             mapViewModel.startUpdatingLocation()
                             GATracking.eventScreenView(GATracking.ScreenNames.mapView)
                         }
                         .onDisappear {
-                            mapViewModel.stopUpdateLocation()
+                            mapViewModel.stopUpdatingLocation()
                         }
                         .tabItem {
                             // Image(viewState == .map ? .mapIcon : .mapGray)
@@ -66,7 +70,7 @@ struct RootView: View {
                         }
                         .tag(2)
                     
-                    MenuView(boothModel: boothModel)
+                    MenuView(viewModel: viewModel)
                         .onAppear {
                             GATracking.eventScreenView(GATracking.ScreenNames.menuView)
                         }
@@ -98,7 +102,7 @@ struct RootView: View {
                 isWelcomeViewPresented = true
             }
             
-            boothModel.loadLikeBoothListDB()
+            viewModel.boothModel.loadLikeBoothListDB()
             
             if VersionService.shared.isOldVersion {
                 print("This app is old. Updated Needed")
@@ -140,5 +144,5 @@ enum ViewState {
 }
 
 #Preview {
-    RootView()
+    RootView(rootViewModel: RootViewModel())
 }

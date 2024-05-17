@@ -10,7 +10,7 @@ import CoreLocation
 import MapKit
 
 struct OneMapView: View {
-    @ObservedObject var mapViewModel: MapViewModel
+    @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
     let booth: BoothDetailItem?
     

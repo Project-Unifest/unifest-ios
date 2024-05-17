@@ -10,15 +10,10 @@ import CoreLocation
 import MapKit
 
 struct MapView: View {
+    @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-    @ObservedObject var boothModel: BoothModel
-    
-    @Binding var isTagSelected: [BoothType: Bool]
+
     @Binding var searchText: String
-    
-    @Binding var selectedBoothIDList: [Int]
-    @Binding var isBoothListPresented: Bool
-    @Binding var isPopularBoothPresented: Bool
     
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
     @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
@@ -69,8 +64,17 @@ struct MapView: View {
         CLLocationCoordinate2D(latitude: 37.54516, longitude: 127.07688)
     ]
     
+    let personalBoothList: [CLLocationCoordinate2D] = [
+        CLLocationCoordinate2D(latitude: 37.54376, longitude: 127.07689),
+        CLLocationCoordinate2D(latitude: 37.54367, longitude: 127.07789),
+        CLLocationCoordinate2D(latitude: 37.54374, longitude: 127.07791),
+        CLLocationCoordinate2D(latitude: 37.54382, longitude: 127.07690)
+    ]
+    
     // distance
     @State private var lastDistance: Double = 4000
+    
+    @State private var isClustering: Bool = false
     
     // last center
     // @State private var lastLatitude: CLLocationDegrees = 37.542_630
@@ -90,43 +94,43 @@ struct MapView: View {
                         .foregroundStyle(.gray.opacity(0.2))
                 }
                 
-                if searchText.isEmpty {
+                ForEach(mapViewModel.annotationList, id: \.self) { annData in
+                    Annotation("", coordinate: CLLocationCoordinate2D(latitude: annData.latitude, longitude: annData.longitude)) {
+                        BoothAnnotation(mapViewModel: mapViewModel, annID: annData.id, boothType: annData.annType, number: annData.boothIDList.count)
+                            .onTapGesture {
+                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ANNOTATION, params: ["boothID": annData.boothIDList[0]])
+                                mapViewModel.setSelectedAnnotationID(annData.id)
+                                viewModel.boothModel.updateMapSelectedBoothList(annData.boothIDList)
+                                print("tab: \(annData.boothIDList[0])")
+                                DispatchQueue.main.async {
+                                    withAnimation(.spring) {
+                                        mapViewModel.isPopularBoothPresented = false
+                                        mapViewModel.isBoothListPresented = true
+                                    }
+                                }
+                            }
+                    }
+                }
+                
+                /* if searchText.isEmpty {
                     // setting
                     let isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
                     
                     if (lastDistance < 1000 || !isClustering) {
-                        ForEach(boothModel.booths, id: \.self) { booth in
-                            if (isTagSelected[stringToBoothType(booth.category)] ?? false) {
-                                Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
-                                    BoothAnnotation(number: 0, boothType: stringToBoothType(booth.category))
-                                        .onTapGesture {
-                                            boothModel.updateMapSelectedBoothList([booth.id])
-                                            print("tab: \(booth.id)")
-                                            withAnimation(.spring) {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ANNOTATION, params: ["boothID": booth.id])
-                                                isPopularBoothPresented = false
-                                                isBoothListPresented = true
-                                            }
-                                        }
-                                }
+                        ForEach(viewModel.boothModel.booths, id: \.self) { booth in
+                            Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
+                                // BoothAnnotation(mapViewModel, boothType: stringToBoothType(booth.category), isCluster: false, isSearch: false, keyword: "", boothIDList: [booth.id], boothModel: boothModel)
+                                // BoothAnnotation(mapViewModel, number: 0, boothType: stringToBoothType(booth.category), isCluster: false, isSearch: false, keyword: "", isPopularBoothPresented: $isPopularBoothPresented, isBoothListPresented: $isBoothListPresented, boothIDList: [booth.id], boothModel: boothModel)
+                                
                             }
                         }
                     } else {
                         ForEach(BoothType.allCases, id: \.self) { boothType in
-                            if (isTagSelected[boothType] ?? false) {
-                                ForEach(clusterAnnotations(clusterRadius: 0.1, boothType: boothType)) { cluster in
-                                    Annotation("", coordinate: cluster.center) {
-                                        BoothAnnotation(number: cluster.points.count, boothType: boothType)
-                                            .onTapGesture {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_CLUSTER, params: ["clusterLength": cluster.points.count, "clusterType": cluster.type.rawValue])
-                                                boothModel.updateMapSelectedBoothList(cluster.boothIDList)
-                                                print("cluster tab: \(cluster.points.count)")
-                                                withAnimation(.spring) {
-                                                    isPopularBoothPresented = false
-                                                    isBoothListPresented = true
-                                                }
-                                            }
-                                    }
+                            ForEach(clusterAnnotations(clusterRadius: 0.1, boothType: boothType)) { cluster in
+                                Annotation("", coordinate: cluster.center) {
+                                    // BoothAnnotation(mapViewModel, boothType: boothType, isCluster: true, isSearch: false, keyword: "", boothIDList: [], boothModel: boothModel)
+                                    // BoothAnnotation(mapViewModel, number: cluster.points.count, boothType: boothType, isCluster: false, isSearch: false, keyword: "", isPopularBoothPresented: $isPopularBoothPresented, isBoothListPresented: $isBoothListPresented, boothIDList: cluster.boothIDList, boothModel: boothModel)
+                                    
                                 }
                             }
                         }
@@ -137,38 +141,18 @@ struct MapView: View {
                     ForEach(boothModel.booths, id: \.self) { booth in
                         if searchKeyword(booth: booth, keyword: searchText) {
                             Annotation("", coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
-                                BoothAnnotation(number: 0, boothType: stringToBoothType(booth.category))
-                                    .onTapGesture {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_SEARCHED_BOOTH_ANNOTATION, params: ["boothID": booth.id, "keyword": searchText])
-                                        boothModel.updateMapSelectedBoothList([booth.id])
-                                        print("tab: \(booth.id)")
-                                        withAnimation(.spring) {
-                                            isPopularBoothPresented = false
-                                            isBoothListPresented = true
-                                        }
-                                    }
+                                // BoothAnnotation(mapViewModel, number: 0, boothType: stringToBoothType(booth.category), isCluster: false, isSearch: true, keyword: searchText, isPopularBoothPresented: $isPopularBoothPresented, isBoothListPresented: $isBoothListPresented, boothIDList: [booth.id], boothModel: boothModel)
                             }
                         }
                     }
-                }
-                
-                // 37.540_03 127.074_20
-                // 37.543_02 127.076_65
-                // 37.542_18 127.078_40
-                /* Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.540_03, longitude: 127.074_20)) {
-                    BoothAnnotation(number: 8, boothType: .booth, isSelected: $isBoothSelected[0])
-                }
-                
-                Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.543_02, longitude: 127.076_65)) {
-                    BoothAnnotation(number: 13, boothType: .drink, isSelected: $isBoothSelected[1])
-                }
-                
-                Annotation("", coordinate: CLLocationCoordinate2D(latitude: 37.542_18, longitude: 127.078_40)) {
-                    BoothAnnotation(number: 1, boothType: .toilet, isSelected: $isBoothSelected[2])
                 }*/
-                
             }
-            // .ignoresSafeArea()
+            .onChange(of: searchText) {
+                mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
+            }
+            .onChange(of: mapViewModel.isTagSelected) {
+                mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
+            }
             .mapControls {
 //                MapCompass()
 //                MapPitchToggle()
@@ -181,38 +165,41 @@ struct MapView: View {
             .onMapCameraChange { mapCameraUpdateContext in
                 print("mapCam distance: \(mapCameraUpdateContext.camera.distance)")
                 print("mapCam Center: (\(mapCameraUpdateContext.camera.centerCoordinate.latitude), \(mapCameraUpdateContext.camera.centerCoordinate.longitude))")
-                
-                // 확대, 축소 비율이 1.1 이상 변한 경우만 업데이트
-                /* print("map distance ratio: \(max(lastDistance, mapCameraUpdateContext.camera.distance) / min(lastDistance, mapCameraUpdateContext.camera.distance))")
-                if max(lastDistance, mapCameraUpdateContext.camera.distance) / min(lastDistance, mapCameraUpdateContext.camera.distance) > 1.1 && lastDistance >= 40000 {
-                    clusters = clusterAnnotations(clusterRadius: 2 * (lastDistance / 120_000))
-                }*/
-                
+       
                 // 비율이 달라진 경우에만 업데이트
                 if (abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1) {
                     print("last dist: \(lastDistance), new dist: \(mapCameraUpdateContext.camera.distance)")
-                    lastDistance = mapCameraUpdateContext.camera.distance
+                    let newDistance = mapCameraUpdateContext.camera.distance
+                    
+                    if newDistance > 1000 && lastDistance <= 1000 {
+                        isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                        mapViewModel.updateAnnotationList(makeCluster: isClustering)
+                    }
+                    else if newDistance < 1000 && lastDistance >= 1000 {
+                        // 1000 이상 -> 1000 미만
+                        isClustering = false
+                        mapViewModel.updateAnnotationList(makeCluster: false)
+                    }
+                    
+                    lastDistance = newDistance
                 }
                 
                 // lastLatitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
                 // lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
-                // print(lastDistance)
             }
         }
         .onAppear() {
-            mapViewModel.checkLocationServiceEnabled()
+            lastDistance = 3000
+            mapViewModel.requestLocationAuthorization()
             mapViewModel.locationManager?.startUpdatingLocation()
+            
+            // 초기
+            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+            mapViewModel.updateAnnotationList(makeCluster: isClustering)
         }
         .onDisappear() {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
-    }
-    
-    func searchKeyword(booth: BoothItem, keyword: String) -> Bool {
-        let descriptionContainsKeyword = booth.description.contains(keyword)
-        let nameContainsKeyword = booth.name.contains(keyword)
-        
-        return descriptionContainsKeyword || nameContainsKeyword
     }
     
     func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
@@ -249,7 +236,7 @@ struct MapView: View {
     func clusterAnnotations(clusterRadius: Double, boothType: BoothType) -> [Cluster] {
         var clusters: [Cluster] = []
         
-        let filteredBooths = boothModel.booths.filter({ $0.category == boothType.rawValue })
+        let filteredBooths = viewModel.boothModel.booths.filter({ $0.category == boothType.rawValue })
         
         for booth in filteredBooths {
             var isClustered = false
@@ -263,7 +250,7 @@ struct MapView: View {
                     cluster.boothIDList.append(booth.id)
                     isClustered = true
                     // print("store appended to cluster \(clusterId): \(distance)")
-                    // cluster.updateCenter()
+                    cluster.updateCenter()
                     break
                 }
                 clusterId += 1
@@ -302,85 +289,50 @@ struct MapView: View {
     }
 }
 
-class Cluster: Identifiable {
-    var id: UUID
-    var center: CLLocationCoordinate2D
-    var points: [CLLocationCoordinate2D]
-    var type: BoothType
-    var boothIDList: [Int]
-    
-    init(center: CLLocationCoordinate2D, points: [CLLocationCoordinate2D], type: BoothType) {
-        self.id = UUID()
-        self.center = center
-        self.points = points
-        self.type = type
-        self.boothIDList = []
-    }
-    
-    func updateCenter() {
-        var latMean: CLLocationDegrees = 0
-        var longMean: CLLocationDegrees = 0
-        
-        for point in points {
-            latMean += point.latitude
-            longMean += point.longitude
-        }
-        
-        let newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
-        print("center updated from: \(center) \nto: \(newCenter)")
-        center = newCenter
-    }
-}
-
-extension Array {
-    mutating func rotateLeft(amount: Int) {
-        let amount = amount % count
-        self = Array(self[amount ..< count] + self[0 ..< amount])
-    }
-}
-
 struct BoothAnnotation: View {
-    let number: Int
+    @ObservedObject var mapViewModel: MapViewModel
+    let annID: Int
     let boothType: BoothType
-    // @State private var isSelected: Bool
-    @State private var annotationSize: CGFloat = 50
-    @State private var isSelected: Bool = false
+    let number: Int
+    // let annotationSize: CGFloat = 50
     
     var body: some View {
         ZStack {
+            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+            
             switch boothType {
             case .drink:
-                Image(isSelected ? .drinkBooth1 : .drinkBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .toilet:
-                Image(isSelected ? .toiletBooth1 : .toiletBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .toiletBooth1 : .toiletBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(isSelected ? .generalBooth1 : .generalBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .hospital:
-                Image(isSelected ? .hospitalBooth1 : .hospitalBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .hospitalBooth1 : .hospitalBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .food:
-                Image(isSelected ? .foodBooth1 : .foodBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .foodBooth1 : .foodBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-                Image(isSelected ? .eventBooth1 : .eventBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -407,24 +359,47 @@ struct BoothAnnotation: View {
                 .frame(width: 44, height: 49)
             }
         }
-        .onChange(of: isSelected) {
-            if isSelected {
-                annotationSize = 70
-            } else {
-                annotationSize = 50
-            }
+    }
+}
+
+class Cluster: Identifiable {
+    var id: UUID
+    var center: CLLocationCoordinate2D
+    var points: [CLLocationCoordinate2D]
+    var type: BoothType
+    var boothIDList: [Int]
+    
+    init(center: CLLocationCoordinate2D, points: [CLLocationCoordinate2D], type: BoothType) {
+        self.id = UUID()
+        self.center = center
+        self.points = points
+        self.type = type
+        self.boothIDList = []
+    }
+    
+    func getBoothIDList() -> [Int] {
+        return self.boothIDList
+    }
+    
+    func updateCenter() {
+        var latMean: CLLocationDegrees = 0
+        var longMean: CLLocationDegrees = 0
+        
+        for point in points {
+            latMean += point.latitude
+            longMean += point.longitude
         }
-        /* .onTapGesture {
-            withAnimation(.spring(duration: 0.2)) {
-                isSelected.toggle()
-                
-                if isSelected {
-                    annotationSize = 70
-                } else {
-                    annotationSize = 50
-                }
-            }
-        }*/
+        
+        let newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
+        print("center updated from: \(center) \nto: \(newCenter)")
+        center = newCenter
+    }
+}
+
+extension Array {
+    mutating func rotateLeft(amount: Int) {
+        let amount = amount % count
+        self = Array(self[amount ..< count] + self[0 ..< amount])
     }
 }
 
@@ -437,23 +412,6 @@ enum BoothType: String, CaseIterable {
     case toilet = "TOILET"
 }
 
-//#Preview {
-//    @ObservedObject var mapViewModel = MapViewModel()
-//    @State var list: [Int] = []
-//    @State var isPresented: Bool = false
-//    @State var isFabPresented: Bool = false
-//    
-//    return Group {
-//        MapView(mapViewModel: mapViewModel, boothModel: BoothModel(), isTagSelected: .constant([.drink: true, .food: true, .booth: true, .event: true, .hospital: true, .toilet: true]), searchText: .constant(""), selectedBoothIDList: $list, isBoothListPresented: $isPresented, isPopularBoothPresented: $isFabPresented)
-//    }
-//}
-
 #Preview {
-    TabView {
-        MapPageView(mapViewModel: MapViewModel(), boothModel: BoothModel())
-            .tabItem {
-                Image(.tabMapSelected)
-                Text("지도")
-            }
-    }
+    RootView(rootViewModel: RootViewModel())
 }

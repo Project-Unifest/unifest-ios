@@ -9,7 +9,6 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var viewModel: RootViewModel
-    @ObservedObject var festivalModel: FestivalModel
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     @State private var isIntroViewPresented: Bool = false
@@ -60,7 +59,7 @@ struct HomeView: View {
             .padding(.horizontal)
             
             VStack {
-                if (festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0) {
+                if (viewModel.festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0) {
                     VStack(alignment: .center, spacing: 9) {
                         Spacer()
                         Image(systemName: "calendar.badge.exclamationmark")
@@ -81,10 +80,10 @@ struct HomeView: View {
                     .padding(.horizontal)
                     .frame(height: 360)
                 } else {
-                    if !festivalModel.todayFestivals.isEmpty {
+                    if !viewModel.festivalModel.todayFestivals.isEmpty {
                         VStack(spacing: 16) {
                             
-                            ForEach(festivalModel.todayFestivals, id: \.self) { festival in
+                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
                                 let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
                                 schoolFestDetailRow(dateText: formatDate(festival.beginDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
                                 
@@ -92,7 +91,7 @@ struct HomeView: View {
                                     .padding(.trailing)
                             }
                         }
-                        .padding(.vertical, 20)
+                        .padding(.top, 20)
                         .padding(.leading)
                     } else {
                         VStack {
@@ -137,9 +136,7 @@ struct HomeView: View {
             .padding(.bottom, 4)
             
             VStack(spacing: 8) {
-                let upcomingList = festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay)
-                
-                if upcomingList.isEmpty {
+                if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay).isEmpty {
                     VStack(alignment: .center) {
                         Text(StringLiterals.Home.noUpcomingFestivalTitle)
                             .font(.system(size: 16))
@@ -154,7 +151,7 @@ struct HomeView: View {
                     }
                     .frame(height: 240)
                 } else {
-                    ForEach(upcomingList, id: \.self) { festival in
+                    ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay), id: \.self) { festival in
                         schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
                     }
                 }
@@ -162,7 +159,7 @@ struct HomeView: View {
             .padding(.horizontal)
         }
         .sheet(isPresented: $isIntroViewPresented) {
-            IntroView(viewModel: viewModel, festivalModel: festivalModel)
+            IntroView(viewModel: viewModel)
         }
     }
     
@@ -377,11 +374,7 @@ struct CelebCircleView: View {
 }
 
 #Preview {
-    HomeView(viewModel: RootViewModel(), festivalModel: FestivalModel(), selectedMonth: .constant(5), selectedDay: .constant(22), isFest: false)
-}
-
-#Preview {
-    HomeView(viewModel: RootViewModel(), festivalModel: FestivalModel(), selectedMonth: .constant(5), selectedDay: .constant(22), isFest: true)
+    RootView(rootViewModel: RootViewModel())
 }
 
 struct CelebProfile: Codable, Identifiable {

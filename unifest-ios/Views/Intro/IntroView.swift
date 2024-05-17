@@ -9,7 +9,6 @@ import SwiftUI
 
 struct IntroView: View {
     @ObservedObject var viewModel: RootViewModel
-    @ObservedObject var festivalModel: FestivalModel
     @State private var likedList: [Int] = []
     
     @State private var searchText: String = ""
@@ -146,7 +145,7 @@ struct IntroView: View {
                             // SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
                         } */
                         // let festivalList = viewModel.festivalModel.festivals.filter{ $0.region! == regions[regionIndex] }
-                        let festivalList: [FestivalItem] = festivalModel.festivals
+                        let festivalList: [FestivalItem] = viewModel.festivalModel.festivals
                         
                        /*  if (regionIndex > 0) {
                             festivalList = festivalList.filter { $0.region == "서울" }
@@ -303,7 +302,7 @@ struct SchoolBoxView: View {
 }
 
 #Preview {
-    IntroView(viewModel: RootViewModel(), festivalModel: FestivalModel())
+    IntroView(viewModel: RootViewModel())
 }
 
 //#Preview {
