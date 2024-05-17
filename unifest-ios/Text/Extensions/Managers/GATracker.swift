@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseCore
 import FirebaseAnalytics
-import FirebaseAnalyticsSwift
 import Firebase
 
 // 2023. 11. 15. 23:20

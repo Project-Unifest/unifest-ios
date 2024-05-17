@@ -10,6 +10,10 @@ import SwiftUI
 import UserNotifications
 import FirebaseCore
 // import FirebaseMessaging
+import Firebase
+import UserNotifications
+import FirebaseCore
+import FirebaseMessaging
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -23,7 +27,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         ProcessInfo.processInfo.setValue(newArguments, forKey: "arguments")
         #endif
         
-        // FirebaseApp.configure()
+        FirebaseApp.configure()
         
         // 앱 실행 시 사용자에게 알림 허용 권한을 받음
         UNUserNotificationCenter.current().delegate = self
@@ -38,9 +42,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         
         // 파이어베이스 Meesaging 설정
-        // Messaging.messaging().delegate = self
-        
-        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
         
         VersionService.shared.loadAppStoreVersion { latestVersion in
             guard let latestVersion else { return }
@@ -67,7 +69,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("APNS token: \(deviceToken)")
-        // Messaging.messaging().apnsToken = deviceToken
+        Messaging.messaging().apnsToken = deviceToken
     }
     
     // Foreground(앱 켜진 상태)에서도 알림 오는 설정
@@ -76,7 +78,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 }
 
-/* extension AppDelegate: MessagingDelegate {
+extension AppDelegate: MessagingDelegate {
     
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
@@ -91,4 +93,4 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
-}*/
+}
