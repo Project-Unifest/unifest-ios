@@ -39,8 +39,8 @@ struct MenuView: View {
                     
                     Spacer()
                     
-                    /*
-                    Button {
+                    
+                    /* Button {
                         
                     } label: {
                         HStack(spacing: 0) {
@@ -52,14 +52,14 @@ struct MenuView: View {
                                 .font(.system(size: 11))
                                 .foregroundColor(.gray)
                         }
-                    }*/
+                    } */
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 
                 // LazyHGrid
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
-                    circleSchoolView(image: .konkukLogo, name: "건국대")
+                    circleSchoolView(image: .konkukLogo, name: "건국대", festivalName: "녹색지대")
                     /* circleSchoolView(image: .chungangLogo, name: "중앙대")
                     circleSchoolView(image: .uosLogo, name: "한국외대")
                     circleSchoolView(image: .konkukLogo, name: "건국대")
@@ -541,8 +541,8 @@ struct MenuView: View {
     }
     
     @ViewBuilder
-    func circleSchoolView(image: ImageResource, name: String) -> some View {
-        VStack(spacing: 8) {
+    func circleSchoolView(image: ImageResource, name: String, festivalName: String) -> some View {
+        VStack(spacing: 0) {
             Circle()
                 .fill(.background)
                 .frame(width: 58, height: 58)
@@ -553,10 +553,17 @@ struct MenuView: View {
                         .scaledToFit()
                         .frame(width: 46, height: 46)
                 }
+                .padding(.bottom, 8)
             
             Text(name)
                 .font(.system(size: 12))
                 .fontWeight(.medium)
+                .foregroundStyle(.gray)
+                .padding(.bottom, 2)
+            
+            Text(festivalName)
+                .font(.system(size: 15))
+                .fontWeight(.semibold)
                 .foregroundStyle(.darkGray)
         }
     }
