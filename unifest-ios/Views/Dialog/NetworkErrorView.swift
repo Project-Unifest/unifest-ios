@@ -35,7 +35,10 @@ struct NetworkErrorView: View {
                         Button {
                             // TODO: Retry
                         } label: {
-                            Image(.mediumPinkButton)
+                            Text("")
+                                .roundedButton(background: .defaultPink, strokeColor: .accent, height: 45, cornerRadius: 5)
+                                .padding(.horizontal)
+                            // Image(.mediumPinkButton)
                                 .overlay {
                                     Text(StringLiterals.NetworkError.retry)
                                         .font(.system(size: 13))
@@ -44,6 +47,7 @@ struct NetworkErrorView: View {
                                 }
                         }
                         .padding(.bottom, 16)
+                        .padding(.top, 8)
                     }
                 }
         }

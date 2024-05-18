@@ -190,13 +190,15 @@ struct HomeView: View {
     
     @ViewBuilder
     func schoolFestRow(image: String, dateText: String, name: String, school: String) -> some View {
-        Image(.schoolFestBox)
-            .resizable()
-            .scaledToFit()
-            .frame(maxWidth: .infinity)
+        Text("")
+            .roundedButton(background: .defaultWhite, strokeColor: .lightGray, height: 92, cornerRadius: 10)
+        // Image(.schoolFestBox)
+            // .resizable()
+            // .scaledToFit()
+            // .frame(maxWidth: .infinity)
             .overlay {
                 HStack(spacing: 10) {
-                    AsyncImage(url: URL(string: image)) { image in
+                    /* AsyncImage(url: URL(string: image)) { image in
                         image
                             .resizable()
                             .scaledToFit()
@@ -204,7 +206,32 @@ struct HomeView: View {
                     } placeholder: {
                         ProgressView()
                             .frame(width: 52, height: 52)
+                    }*/
+                    AsyncImage(url: URL(string: image)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 60, height: 60)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 60, height: 60)
+                        case .failure(let error):
+                            Image(.noImagePlaceholder)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                        @unknown default:
+                            Image(.noImagePlaceholder)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                        }
                     }
+                    .frame(width: 60, height: 60)
+                    .padding(.trailing, 5)
+                    // .border(.green)
                     
                     VStack(alignment: .leading, spacing: 5) {
                         Text(dateText)

@@ -44,8 +44,10 @@ struct MapPageView: View {
                     
                     if mapViewModel.isBoothListPresented {
                         Button {
-                            withAnimation(.spring) {
-                                mapViewModel.isBoothListPresented = false
+                            DispatchQueue.main.async {
+                                withAnimation(.spring) {
+                                    mapViewModel.isBoothListPresented = false
+                                }
                             }
                             mapViewModel.setSelectedAnnotationID(-1)
                             viewModel.boothModel.updateMapSelectedBoothList([])
@@ -56,28 +58,35 @@ struct MapPageView: View {
                     
                     if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
                         Button {
-                            withAnimation(.spring) {
-                                if mapViewModel.isPopularBoothPresented {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
-                                    DispatchQueue.main.async {
+                            if mapViewModel.isPopularBoothPresented {
+                                // on -> off
+                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
+                                DispatchQueue.main.async {
+                                    withAnimation {
                                         mapViewModel.isPopularBoothPresented = false
                                     }
-                                } else {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
-                                    if mapViewModel.isBoothListPresented {
-                                        DispatchQueue.main.async {
+                                }
+                            } else {
+                                // off -> on
+                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
+                                if mapViewModel.isBoothListPresented {
+                                    DispatchQueue.main.async {
+                                        withAnimation {
                                             mapViewModel.isBoothListPresented = false
                                         }
                                     }
-                                    DispatchQueue.main.async {
+                                }
+                                DispatchQueue.main.async {
+                                    withAnimation {
                                         mapViewModel.isPopularBoothPresented = true
                                     }
                                 }
                             }
                         } label: {
-                            Image(.popBoothButton)
+                            Text("")
+                                .roundedButton(background: .white, strokeColor: .accent, height: 36, cornerRadius: 39)
+                                .frame(width: 120)
+                            // Image(.popBoothButton)
                                 .overlay {
                                     HStack {
                                         Text(StringLiterals.Map.favoriteBoothTitle)
@@ -87,9 +96,9 @@ struct MapPageView: View {
                                         Image(.upPinkArrow)
                                             .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
                                     }
-                                    .padding(.bottom, 2)
                                 }
                         }
+                        .padding(.bottom)
                     }
                     
                     Spacer()
@@ -194,7 +203,10 @@ struct MapPageHeaderView: View {
             }
             .padding(.horizontal)
             
-            Image(.searchBox)
+            Text("")
+                .roundedButton(background: .white, strokeColor: .gray, height: 46, cornerRadius: 67)
+                .padding(.horizontal)
+            // Image(.searchBox)
                 .overlay {
                     HStack {
                         TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
@@ -220,13 +232,17 @@ struct MapPageHeaderView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, 15)
+                    .padding(.horizontal, 30)
                 }
                 .padding(.bottom, 6)
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 7) {
-                    Image(mapViewModel.isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.drink] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.drink] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.drinkBoothTitle)
                                 .font(.system(size: 13))
@@ -241,7 +257,11 @@ struct MapPageHeaderView: View {
                             }
                         }
                     
-                    Image(mapViewModel.isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.food] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.food] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.foodBoothTitle)
                                 .font(.system(size: 13))
@@ -256,7 +276,11 @@ struct MapPageHeaderView: View {
                             }
                         }
                     
-                    Image(mapViewModel.isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.event] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.event] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.eventBoothTitle)
                                 .font(.system(size: 13))
@@ -271,7 +295,11 @@ struct MapPageHeaderView: View {
                             }
                         }
                     
-                    Image(mapViewModel.isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.booth] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.booth] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.generalBoothTitle)
                                 .font(.system(size: 13))
@@ -286,7 +314,11 @@ struct MapPageHeaderView: View {
                             }
                         }
                     
-                    Image(mapViewModel.isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.hospital] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.hospital] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.hospitalBoothTitle)
                                 .font(.system(size: 13))
@@ -301,7 +333,11 @@ struct MapPageHeaderView: View {
                             }
                         }
                     
-                    Image(mapViewModel.isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
+                    Text("")
+                        .roundedButton(background: (mapViewModel.isTagSelected[.toilet] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.toilet] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .frame(width: 56)
+                        .padding(.vertical, 1)
+                    // Image(mapViewModel.isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.toiletBoothTitle)
                                 .font(.system(size: 13))

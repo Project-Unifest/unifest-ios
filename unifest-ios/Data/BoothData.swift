@@ -435,7 +435,7 @@ class BoothModel: ObservableObject {
         print(parameters)
         let postData = parameters.data(using: .utf8)
         
-        if let validURL = URL(string: APIManager.shared.serverType.rawValue + "/api/likes/") {
+        if let validURL = URL(string: APIManager.shared.serverType.rawValue + "/api/likes") {
             var request = URLRequest(url: validURL, timeoutInterval: Double.infinity)
             
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -449,7 +449,7 @@ class BoothModel: ObservableObject {
                 .decode(type: APIResponseIntData.self, decoder: JSONDecoder())
                 .sink { _ in
                 } receiveValue: { [weak self] returnedPost in
-                    print("get data : \(returnedPost)")
+                    print("booth like uploaded : \(returnedPost)")
                     self?.fetchLikeNum(boothID)
                     // completion()
                 }

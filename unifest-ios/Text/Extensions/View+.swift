@@ -9,24 +9,40 @@ import Foundation
 import SwiftUI
 
 extension View {
-  @ViewBuilder
-  func onReadSize(_ perform: @escaping (CGSize) -> Void) -> some View {
-    self.customBackground {
-      GeometryReader { geometryProxy in
-        Color.clear
-          .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
-      }
+    @ViewBuilder
+    func onReadSize(_ perform: @escaping (CGSize) -> Void) -> some View {
+        self.customBackground {
+            GeometryReader { geometryProxy in
+                Color.clear
+                    .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
+            }
+        }
+        .onPreferenceChange(SizePreferenceKey.self, perform: perform)
     }
-    .onPreferenceChange(SizePreferenceKey.self, perform: perform)
-  }
-  
-  @ViewBuilder
-  func customBackground<V: View>(alignment: Alignment = .center, @ViewBuilder content: () -> V) -> some View {
-    self.background(alignment: alignment, content: content)
-  }
+
+    @ViewBuilder
+    func customBackground<V: View>(alignment: Alignment = .center, @ViewBuilder content: () -> V) -> some View {
+        self.background(alignment: alignment, content: content)
+    }
+    
+    @ViewBuilder
+    func roundedButton(background: Color, strokeColor: Color, height: CGFloat, cornerRadius: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(background)
+            .stroke(strokeColor)
+            .frame(height: height)
+    }
 }
 
 struct SizePreferenceKey: PreferenceKey {
-  static var defaultValue: CGSize = .zero
-  static func reduce(value: inout CGSize, nextValue: () -> CGSize) { }
+    static var defaultValue: CGSize = .zero
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { }
+}
+
+#Preview {
+    VStack {
+        Text("")
+            .roundedButton(background: .white, strokeColor: .accent, height: 30, cornerRadius: 15)
+            .padding()
+    }
 }

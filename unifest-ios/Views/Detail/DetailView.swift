@@ -49,28 +49,35 @@ struct DetailView: View {
                             }
                             .frame(height: 160)
                         } else {
-                            HStack {
-                                MarqueeText(text: viewModel.boothModel.selectedBooth?.name ?? "", font: .systemFont(ofSize: 22), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
-                                    .frame(maxWidth: 200)
+                            VStack(alignment: .leading) {
+                                /* MarqueeText(text: viewModel.boothModel.selectedBooth?.name ?? "", font: .systemFont(ofSize: 22), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                                    .frame(maxWidth: 160)
                                     .bold()
+                                    .border(.green)*/
                                 /* Text(viewModel.boothModel.selectedBooth?.name ?? "")
                                     .font(.system(size: 22))
                                     .bold()
                                     .lineLimit(1)
                                  */
+                                // Text(viewModel.boothModel.selectedBooth?.name ?? "")
+                                MarqueeText(text: viewModel.boothModel.selectedBooth?.name ?? "", font: .systemFont(ofSize: 24), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                                    // .font(.system(size: 24))
+                                    .fontWeight(.bold)
+                                    .padding(.bottom, 4)
+                                    // .border(.green)
                                 
                                 Text(viewModel.boothModel.selectedBooth?.warning ?? "")
-                                    .font(.system(size: 10))
+                                    .font(.system(size: 11))
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.accent)
-                                    .padding(.bottom, 4)
-                                    .lineLimit(2)
+                                    .lineLimit(3)
+                                    // .border(.green)
                                  
-                                
-                                Spacer()
+                                // Spacer()
                             }
                             .padding()
-//                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: .infinity)
+                            // .border(.red)
                             
                             VStack {
                                 Text(viewModel.boothModel.selectedBooth?.description ?? "")
@@ -97,7 +104,10 @@ struct DetailView: View {
                             Button {
                                 isMapViewPresented = true
                             } label: {
-                                Image(.longPinkButton)
+                                // Image(.longPinkButton)
+                                Text("")
+                                    .roundedButton(background: .white, strokeColor: .accent, height: 33, cornerRadius: 10)
+                                    .padding(.horizontal)
                                     .overlay {
                                         Text(StringLiterals.Detail.openLocation)
                                             .font(.system(size: 13))
@@ -236,7 +246,9 @@ struct DetailView: View {
                         Button {
                             // TODO: To Waiting
                         } label: {
-                            Image(.longButtonDarkGray)
+                            Text("")
+                                .roundedButton(background: .darkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
+                            // Image(.longButtonDarkGray)
                                 .overlay {
                                     if viewModel.boothModel.selectedBooth == nil {
                                         if !isReloadButtonPresent {
@@ -285,8 +297,8 @@ struct DetailView: View {
     return Group {
         DetailView(viewModel: viewModel)
             .onAppear {
-                viewModel.boothModel.selectedBoothID = 126
-                viewModel.boothModel.loadBoothDetail(126)
+                viewModel.boothModel.selectedBoothID = 119
+                viewModel.boothModel.loadBoothDetail(119)
             }
     }
 }
@@ -301,7 +313,7 @@ struct MenuBar: View {
             AsyncImage(url: URL(string: imageURL)) { image in
                 image
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(width: 86, height: 86)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
             } placeholder: {

@@ -338,7 +338,7 @@ struct CalendarTabView: View {
                                 }
                             }
                         } label: {
-                            Text("\(monthPageIndex)" + StringLiterals.Calendar.month)
+                            Text("\(selectedYear)년 \(monthPageIndex)" + StringLiterals.Calendar.month)
                                 .font(.system(size: 24))
                                 .foregroundStyle(.black)
                                 .bold()
