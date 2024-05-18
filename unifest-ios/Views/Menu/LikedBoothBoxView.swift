@@ -87,3 +87,8 @@ struct LikedBoothBoxView: View {
         .padding(.horizontal)
     }
 }
+
+#Preview {
+    RootView(rootViewModel: RootViewModel())
+}
+

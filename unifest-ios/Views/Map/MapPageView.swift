@@ -385,11 +385,12 @@ struct BoothBox: View {
                     .frame(width: 86, height: 86)
                     
                     VStack(alignment: .leading) {
-                        Text(title)
-                            .font(.system(size: 18))
+                        MarqueeText(text: title, font: .systemFont(ofSize: 18), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                        // Text(title)
+                            // .font(.system(size: 18))
                             .fontWeight(.semibold)
                             .padding(.bottom, 1)
-                            .lineLimit(1)
+                            // .lineLimit(1)
                         
                         Text(description)
                             .font(.system(size: 13))
@@ -401,10 +402,12 @@ struct BoothBox: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 16, height: 16)
-                            Text(position)
-                                .font(.system(size: 13))
+                            
+                            MarqueeText(text: position, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                            // Text(position)
+                                // .font(.system(size: 13))
                                 .fontWeight(.semibold)
-                                .lineLimit(1)
+                                // .lineLimit(1)
                         }
                     }
                     .frame(width: 160)

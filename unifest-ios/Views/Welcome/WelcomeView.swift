@@ -18,7 +18,7 @@ struct WelcomeView: View {
     var body: some View {
         VStack(alignment: .center) {
             ZStack {
-                Image("AppLogo")
+                Image("appLogo")
                     .resizable()
                     .frame(width: 100, height: 100)
                     .cornerRadius(30)

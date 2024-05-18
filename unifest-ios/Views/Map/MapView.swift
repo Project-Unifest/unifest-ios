@@ -10,6 +10,7 @@ import CoreLocation
 import MapKit
 
 struct MapView: View {
+    @Namespace private var mainMap
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
 
@@ -82,7 +83,7 @@ struct MapView: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds) {
+            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: mainMap) {
                 UserAnnotation()
                 
                 MapPolygon(coordinates: polygonKonkuk)
@@ -187,7 +188,42 @@ struct MapView: View {
                 // lastLatitude = mapCameraUpdateContext.camera.centerCoordinate.latitude
                 // lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
             }
+            
+            
+            HStack(alignment: .center) {
+                Spacer()
+                VStack(alignment: .trailing) {
+                    Spacer()
+                        .frame(height: 140)
+                    
+                    Group {
+                        MapPitchToggle(scope: mainMap)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(.white)
+                            )
+                            .mapControlVisibility(.automatic)
+                            .controlSize(.mini)
+                        MapUserLocationButton(scope: mainMap)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(.white)
+                            )
+                            .mapControlVisibility(.automatic)
+                            .controlSize(.mini)
+                        
+                        MapCompass(scope: mainMap)
+                            .mapControlVisibility(.automatic)
+                            .controlSize(.mini)
+                    }
+                    Spacer()
+                }
+                .frame(width: 60)
+                .padding(.horizontal, 5)
+            }
+            
         }
+        .mapScope(mainMap)
         .onAppear() {
             lastDistance = 3000
             mapViewModel.requestLocationAuthorization()

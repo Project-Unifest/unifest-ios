@@ -50,10 +50,14 @@ struct DetailView: View {
                             .frame(height: 160)
                         } else {
                             HStack {
-                                Text(viewModel.boothModel.selectedBooth?.name ?? "")
+                                MarqueeText(text: viewModel.boothModel.selectedBooth?.name ?? "", font: .systemFont(ofSize: 22), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                                    .frame(maxWidth: 200)
+                                    .bold()
+                                /* Text(viewModel.boothModel.selectedBooth?.name ?? "")
                                     .font(.system(size: 22))
                                     .bold()
                                     .lineLimit(1)
+                                 */
                                 
                                 Text(viewModel.boothModel.selectedBooth?.warning ?? "")
                                     .font(.system(size: 10))
@@ -61,6 +65,7 @@ struct DetailView: View {
                                     .foregroundStyle(.accent)
                                     .padding(.bottom, 4)
                                     .lineLimit(2)
+                                 
                                 
                                 Spacer()
                             }
@@ -80,8 +85,9 @@ struct DetailView: View {
                             HStack {
                                 Image(.greenMarker)
                                 
-                                Text(viewModel.boothModel.selectedBooth?.location ?? "")
-                                    .font(.system(size: 13))
+                                MarqueeText(text: viewModel.boothModel.selectedBooth?.location ?? "", font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                                // Text(viewModel.boothModel.selectedBooth?.location ?? "")
+                                    // .font(.system(size: 13))
                                 
                                 Spacer()
                             }
@@ -313,6 +319,7 @@ struct MenuBar: View {
             .padding(.trailing, 8)
             
             VStack(alignment: .leading) {
+                
                 Text(name)
                     .font(.system(size: 14))
                     .fontWeight(.semibold)
@@ -323,7 +330,7 @@ struct MenuBar: View {
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
                 } else {
-                    Text("\(price)" + StringLiterals.Detail.won)
+                    Text(formattedPrice(price) + StringLiterals.Detail.won)
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
                 }
@@ -332,4 +339,15 @@ struct MenuBar: View {
             Spacer()
         }
     }
+    
+    func formattedPrice(_ price: Int) -> String {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            
+            if let formattedPrice = formatter.string(from: NSNumber(value: price)) {
+                return "\(formattedPrice)"
+            } else {
+                return "\(price)"
+            }
+        }
 }

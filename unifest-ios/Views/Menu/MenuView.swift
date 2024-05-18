@@ -570,5 +570,5 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(viewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel())
 }

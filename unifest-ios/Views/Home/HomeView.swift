@@ -264,15 +264,27 @@ struct HomeView: View {
                 Spacer()
                 
                 if let celebs = celebs {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack {
-                            ForEach(celebs, id: \.self) { star in
-                                CelebCircleView(celeb: CelebProfile(name: star.name, imageURL: star.imgUrl))
+                    ZStack(alignment: .leading) {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack {
+                                Spacer()
+                                    .frame(width: 30)
+                                
+                                ForEach(celebs, id: \.self) { star in
+                                    CelebCircleView(celeb: CelebProfile(name: star.name, imageURL: star.imgUrl))
+                                }
                             }
                         }
+                        .frame(height: 72)
+                        // .border(.red)
+                        
+                        Image(.leftRowOverlay)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 72)
                     }
                     .frame(height: 72)
-                    .padding(.leading, 40)
+                    // .border(.green)
                 }
             }
             .frame(height: 72)
@@ -320,10 +332,11 @@ struct HomeView: View {
 struct CelebCircleView: View {
     let celeb: CelebProfile
     @State private var isTouched: Bool = false
+    @State private var loadFailed: Bool = false
     
     var body: some View {
         ZStack {
-            AsyncImage(url: URL(string: celeb.imageURL)) { image in
+            /* AsyncImage(url: URL(string: celeb.imageURL)) { image in
                 image
                     .resizable()
                     .scaledToFill()
@@ -340,18 +353,61 @@ struct CelebCircleView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .frame(width: 72, height: 72)
+            }*/
+            AsyncImage(url: URL(string: celeb.imageURL)) { phase in
+                switch phase {
+                case .empty:
+                    ZStack {
+                        Circle()
+                            .fill(.lightGray)
+                            .frame(width: 72, height: 72)
+                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .frame(width: 72, height: 72)
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 72, height: 72)
+                        .clipShape(Circle())
+                        // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+                case .failure(let error):
+                    ZStack(alignment: .center) {
+                        Circle()
+                            .fill(.lightGray)
+                            .frame(width: 72, height: 72)
+                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+                        
+                        MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                            .frame(width: 50)
+                        // Text(celeb.name)
+                            // .font(.system(size: 13))
+                            .fontWeight(.medium)
+                            .foregroundStyle(.defaultBlack)
+                            // .multilineTextAlignment(.center)
+                            
+                    }
+                    .frame(width: 72)
+                    .onAppear {
+                        loadFailed = true
+                    }
+                }
             }
             .onTapGesture {
-                if !isTouched {
-                    GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
-                    
-                    withAnimation {
-                        isTouched = true
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                if !loadFailed {
+                    if !isTouched {
+                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
+                        
                         withAnimation {
-                            self.isTouched = false
+                            isTouched = true
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation {
+                                self.isTouched = false
+                            }
                         }
                     }
                 }
@@ -361,11 +417,12 @@ struct CelebCircleView: View {
                 Circle()
                     .fill(.black.opacity(0.5))
                     .overlay {
-                        Text(celeb.name)
-                            .font(.system(size: 13))
+                        MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        // Text(celeb.name)
+                            // .font(.system(size: 13))
                             .fontWeight(.medium)
                             .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
+                            // .multilineTextAlignment(.center)
                     }
             }
         }
