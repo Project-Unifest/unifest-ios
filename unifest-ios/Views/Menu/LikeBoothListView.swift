@@ -79,7 +79,7 @@ struct LikeBoothListView: View {
                         Text(StringLiterals.Menu.LikedBoothTitle)
                             .font(.system(size: 20))
                             .fontWeight(.semibold)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.defaultBlack)
                         Spacer()
                         Spacer()
                             .frame(width: 20)

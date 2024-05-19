@@ -12,6 +12,8 @@ import MapKit
 @available(iOS 17, *)
 struct MapViewiOS17: View {
     @Namespace private var mainMap
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
 
@@ -87,13 +89,24 @@ struct MapViewiOS17: View {
             Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: mainMap) {
                 UserAnnotation()
                 
-                MapPolygon(coordinates: polygonKonkuk)
-                    .foregroundStyle(.background.opacity(0.0))
-                    .stroke(.black.opacity(0.8), lineWidth: 1.0)
-                
-                if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
-                    MapPolygon(coordinates: boxPolygon)
-                        .foregroundStyle(.gray.opacity(0.2))
+                if colorScheme == .dark {
+                    MapPolygon(coordinates: polygonKonkuk)
+                        .foregroundStyle(.background.opacity(0.0))
+                        .stroke(.white.opacity(0.8), lineWidth: 1.0)
+                    
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                        MapPolygon(coordinates: boxPolygon)
+                            .foregroundStyle(.black.opacity(0.6))
+                    }
+                } else {
+                    MapPolygon(coordinates: polygonKonkuk)
+                        .foregroundStyle(.background.opacity(0.0))
+                        .stroke(.black.opacity(0.8), lineWidth: 1.0)
+                    
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                        MapPolygon(coordinates: boxPolygon)
+                            .foregroundStyle(.gray.opacity(0.2))
+                    }
                 }
                 
                 ForEach(mapViewModel.annotationList, id: \.self) { annData in
@@ -166,14 +179,14 @@ struct MapViewiOS17: View {
                         MapPitchToggle(scope: mainMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.defaultWhite)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
                         MapUserLocationButton(scope: mainMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.defaultWhite)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)

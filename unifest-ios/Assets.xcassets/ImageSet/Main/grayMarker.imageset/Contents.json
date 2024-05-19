@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "festRowLeft.png",
+      "filename" : "grayMarker.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "leftRowOverlayDark.png",
+      "filename" : "grayMarkerDark.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },

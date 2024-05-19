@@ -14,11 +14,14 @@ struct NetworkErrorView: View {
         ZStack {
             Color.black.opacity(0.8).ignoresSafeArea()
             
-            Image(.dialogBackground)
+            Text("")
+                .roundedButton(background: .defaultWhite2, strokeColor: .clear, height: 196, cornerRadius: 5)
+                .frame(width: 300)
+            // Image(.dialogBackground)
                 .overlay {
                     VStack(alignment: .center) {
                         Image(systemName: errorType == .server ? "exclamationmark.triangle.fill" : "wifi")
-                            .foregroundColor(errorType == .server ? .red : .black)
+                            .foregroundColor(errorType == .server ? .red : .defaultBlack)
                             .padding(.top, 26)
                             .padding(.bottom, 10)
                         
@@ -36,7 +39,7 @@ struct NetworkErrorView: View {
                             // TODO: Retry
                         } label: {
                             Text("")
-                                .roundedButton(background: .defaultPink, strokeColor: .accent, height: 45, cornerRadius: 5)
+                                .roundedButton(background: .defaultPink, strokeColor: .clear, height: 45, cornerRadius: 5)
                                 .padding(.horizontal)
                             // Image(.mediumPinkButton)
                                 .overlay {

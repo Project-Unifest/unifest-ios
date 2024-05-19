@@ -22,10 +22,12 @@ struct WaitingView: View {
             }
             .padding()
             
-            Image(.waitingBack)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
+            Text("").roundedButton(background: .defaultLightPink, strokeColor: .accent, height: 34, cornerRadius: 30)
+                .padding(.horizontal)
+            // Image(.waitingBack)
+                // .resizable()
+                // .scaledToFit()
+                // .frame(maxWidth: .infinity)
                 .overlay {
                     HStack {
                         Text(StringLiterals.Waiting.myWaiting)
@@ -35,9 +37,8 @@ struct WaitingView: View {
                         
                         Spacer()
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, 30)
                 }
-                .padding(.horizontal)
             
             Spacer()
             

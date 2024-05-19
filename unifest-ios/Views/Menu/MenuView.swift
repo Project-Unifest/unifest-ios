@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct MenuView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
+    @StateObject private var themeManager = ThemeManager()
+    
     @ObservedObject var viewModel: RootViewModel
     @State private var isListViewPresented: Bool = false
     @State private var isDetailViewPresented: Bool = false
@@ -35,7 +39,7 @@ struct MenuView: View {
                     Text(StringLiterals.Menu.LikedSchoolTitle)
                         .font(.system(size: 15))
                         .bold()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.defaultBlack)
                     
                     Spacer()
                     
@@ -71,17 +75,13 @@ struct MenuView: View {
                 }
                 .padding(.horizontal)
                 
-                Image(.boldLine)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical)
+                Text("").boldLine().padding(.vertical)
                 
                 HStack {
                     Text(StringLiterals.Menu.LikedBoothTitle)
                         .font(.system(size: 15))
                         .bold()
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.defaultBlack)
                     
                     Spacer()
                     
@@ -161,11 +161,7 @@ struct MenuView: View {
                     }
                 }
                 
-                Image(.boldLine)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom, 0)
+                Text("").boldLine().padding(.bottom, 0)
                 
                 HStack {
                     Text("Contact Us")
@@ -346,6 +342,48 @@ struct MenuView: View {
                 
                 Divider()
                 
+                /* // 화면 모드
+                Menu {
+                    Button("라이트") {
+                        themeManager.colorScheme = .light
+                    }
+                    
+                    Button("다크") {
+                        themeManager.colorScheme = .dark
+                    }
+                    
+                    Button("시스템") {
+                        themeManager.colorScheme = .system
+                    }
+                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CHANGE_SCREENMODE, params: ["screenMode": ""])
+                } label: {
+                    HStack {
+                        Image(systemName: colorScheme == .dark ? "moon.circle" : "sun.max.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text("화면 모드")
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                        
+                        Spacer()
+                        
+                        Text("라이트")
+                            .font(.system(size: 15))
+                            .foregroundStyle(.darkGray)
+                            .fontWeight(.medium)
+                            .padding(.trailing, 6)
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()*/
+                
                 HStack {
                     Text("권한 및 개인정보 처리방침")
                         .font(.system(size: 15))
@@ -512,6 +550,8 @@ struct MenuView: View {
                 Spacer()
             }
         }
+        // .environmentObject(themeManager)
+        // .environment(\.colorScheme, .getCurrentColorScheme())
         .fullScreenCover(isPresented: $isListViewPresented, content: {
             LikeBoothListView(viewModel: viewModel)
         })
@@ -593,7 +633,7 @@ struct MenuView: View {
     func circleSchoolView(image: ImageResource, name: String, festivalName: String) -> some View {
         VStack(spacing: 0) {
             Circle()
-                .fill(.background)
+                .fill(.white)
                 .frame(width: 58, height: 58)
                 .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 .overlay {

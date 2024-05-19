@@ -43,6 +43,13 @@ extension View {
             }
         }
     }
+    
+    @ViewBuilder
+    func boldLine() -> some View {
+        Rectangle()
+            .fill(.defaultBoldLine)
+            .frame(height: 8)
+    }
 }
 
 struct SizePreferenceKey: PreferenceKey {
@@ -55,5 +62,7 @@ struct SizePreferenceKey: PreferenceKey {
         Text("")
             .roundedButton(background: .white, strokeColor: .accent, height: 30, cornerRadius: 15)
             .padding()
+        
+        Text("").boldLine()
     }
 }

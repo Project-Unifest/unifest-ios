@@ -15,7 +15,7 @@ struct NavigationHeaderView: View {
             Text(text)
                 .font(.system(size: 20))
                 .fontWeight(.semibold)
-                .foregroundStyle(.black)
+                .foregroundStyle(.defaultBlack)
             Spacer()
         }
         .padding(.horizontal)

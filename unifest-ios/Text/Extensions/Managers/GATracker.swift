@@ -49,6 +49,7 @@ struct GATracking {
             static let MENU_OPEN_SETTING = "MENU_OPEN_SETTING"
             static let MENU_OPEN_PRIVACY = "MENU_OPEN_PRIVACY"
             static let MENU_MAIL_TO_DEV = "MENU_MAIL_TO_DEV"
+            static let MENU_CHANGE_SCREENMODE = "MENU_CHANGE_SCREENMODE"
         }
         
         struct BoothListView {

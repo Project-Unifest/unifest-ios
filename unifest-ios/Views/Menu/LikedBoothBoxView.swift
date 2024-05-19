@@ -69,7 +69,7 @@ struct LikedBoothBoxView: View {
                     .foregroundStyle(.gray)
                     .lineLimit(2)
                 
-                Spacer()
+                // Spacer()
                 
                 HStack(spacing: 2) {
                     Image(.marker)

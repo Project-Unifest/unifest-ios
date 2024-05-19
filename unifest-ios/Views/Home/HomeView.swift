@@ -53,7 +53,7 @@ struct HomeView: View {
                 Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalTitle)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.defaultBlack)
                 Spacer()
             }
             .padding(.horizontal)
@@ -64,11 +64,11 @@ struct HomeView: View {
                         Spacer()
                         Image(systemName: "calendar.badge.exclamationmark")
                             .font(.system(size: 26))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.defaultBlack)
                         
                         Text(StringLiterals.Home.noFestivalTitle)
                             .font(.system(size: 16))
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.defaultBlack)
                             .fontWeight(.semibold)
                         
                         Text(StringLiterals.Home.noFestivalMessage)
@@ -119,17 +119,19 @@ struct HomeView: View {
                 .padding(.horizontal)*/
             }
             
-            Image(.boldLine)
+            Text("").boldLine().padding(.vertical)
+            
+            /* Image(.boldLine)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: .infinity)
-                .padding(.vertical)
+                .padding(.vertical)*/
             
             HStack {
                 Text(StringLiterals.Home.upcomingFestivalTitle)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.defaultBlack)
                 Spacer()
             }
             .padding(.horizontal)
@@ -191,7 +193,7 @@ struct HomeView: View {
     @ViewBuilder
     func schoolFestRow(image: String, dateText: String, name: String, school: String) -> some View {
         Text("")
-            .roundedButton(background: .defaultWhite, strokeColor: .lightGray, height: 92, cornerRadius: 10)
+            .roundedButton(background: .defaultWhite, strokeColor: .defaultLightGray, height: 92, cornerRadius: 10)
         // Image(.schoolFestBox)
             // .resizable()
             // .scaledToFit()
@@ -217,7 +219,7 @@ struct HomeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 60, height: 60)
-                        case .failure(let error):
+                        case .failure(_):
                             Image(.noImagePlaceholder)
                                 .resizable()
                                 .scaledToFit()
@@ -241,9 +243,9 @@ struct HomeView: View {
                         Text(name)
                             .font(.system(size: 12))
                             .bold()
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.defaultBlack)
                         HStack(spacing: 5) {
-                            Image(.blackMarker)
+                            Image(.grayMarker)
                             Text(school)
                                 .font(.system(size: 12))
                                 .fontWeight(.medium)
@@ -275,12 +277,12 @@ struct HomeView: View {
                     
                     Text(name + " DAY \(day)")
                         .font(.system(size: 18))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.defaultBlack)
                         .fontWeight(.semibold)
                         .padding(.bottom, 11)
                     
                     HStack(spacing: 5) {
-                        Image(.blackMarker)
+                        Image(.grayMarker)
                         Text(location)
                             .font(.system(size: 11))
                             .fontWeight(.medium)
@@ -300,6 +302,9 @@ struct HomeView: View {
                                 ForEach(celebs, id: \.self) { star in
                                     CelebCircleView(celeb: CelebProfile(name: star.name, imageURL: star.imgUrl))
                                 }
+                                
+                                Spacer()
+                                    .frame(width: 20)
                             }
                         }
                         .frame(height: 72)
@@ -386,7 +391,7 @@ struct CelebCircleView: View {
                 case .empty:
                     ZStack {
                         Circle()
-                            .fill(.lightGray)
+                            .fill(.defaultLightGray)
                             .frame(width: 72, height: 72)
                             // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                         ProgressView()
@@ -400,10 +405,10 @@ struct CelebCircleView: View {
                         .frame(width: 72, height: 72)
                         .clipShape(Circle())
                         // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                case .failure(let error):
+                case .failure(_):
                     ZStack(alignment: .center) {
                         Circle()
-                            .fill(.lightGray)
+                            .fill(.defaultLightGray)
                             .frame(width: 72, height: 72)
                             // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                         

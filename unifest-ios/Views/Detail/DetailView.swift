@@ -29,7 +29,7 @@ struct DetailView: View {
                             } placeholder: {
                                 ZStack {
                                     RoundedRectangle(cornerRadius: 10)
-                                        .fill(.lightGray)
+                                        .fill(.defaultLightGray)
                                     
                                     Image(.noImagePlaceholder)
                                         .resizable()
@@ -60,34 +60,43 @@ struct DetailView: View {
                                     .lineLimit(1)
                                  */
                                 // Text(viewModel.boothModel.selectedBooth?.name ?? "")
-                                MarqueeText(text: viewModel.boothModel.selectedBooth?.name ?? "", font: .systemFont(ofSize: 24), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
-                                    // .font(.system(size: 24))
-                                    .fontWeight(.bold)
-                                    .padding(.bottom, 4)
-                                    // .border(.green)
+                                if let name = viewModel.boothModel.selectedBooth?.name {
+                                    if !name.isEmpty {
+                                        MarqueeText(text: name, font: .systemFont(ofSize: 24), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
+                                        // .font(.system(size: 24))
+                                            .fontWeight(.bold)
+                                            .padding(.bottom, 4)
+                                        // .border(.green)
+                                    }
+                                }
                                 
-                                Text(viewModel.boothModel.selectedBooth?.warning ?? "")
-                                    .font(.system(size: 11))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.accent)
-                                    .lineLimit(3)
-                                    // .border(.green)
-                                 
-                                // Spacer()
+                                if let warning = viewModel.boothModel.selectedBooth?.warning {
+                                    if !warning.isEmpty {
+                                        Text(viewModel.boothModel.selectedBooth?.warning ?? "")
+                                            .font(.system(size: 11))
+                                            .fontWeight(.semibold)
+                                            .foregroundStyle(.accent)
+                                            .lineLimit(3)
+                                    }
+                                }
                             }
                             .padding()
                             .frame(maxWidth: .infinity)
                             // .border(.red)
                             
-                            VStack {
-                                Text(viewModel.boothModel.selectedBooth?.description ?? "")
-                                    .font(.system(size: 13))
-                                    .foregroundStyle(.darkGray)
-                                    .padding(.bottom)
-                                    .multilineTextAlignment(.leading)
+                            if let description = viewModel.boothModel.selectedBooth?.description {
+                                if !description.isEmpty {
+                                    VStack {
+                                        Text(viewModel.boothModel.selectedBooth?.description ?? "")
+                                            .font(.system(size: 13))
+                                            .foregroundStyle(.darkGray)
+                                            .padding(.bottom)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal)
+                                }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal)
                             
                             HStack {
                                 Image(.greenMarker)
@@ -106,7 +115,7 @@ struct DetailView: View {
                             } label: {
                                 // Image(.longPinkButton)
                                 Text("")
-                                    .roundedButton(background: .white, strokeColor: .accent, height: 33, cornerRadius: 10)
+                                    .roundedButton(background: .defaultWhite, strokeColor: .accent, height: 33, cornerRadius: 10)
                                     .padding(.horizontal)
                                     .overlay {
                                         Text(StringLiterals.Detail.openLocation)
@@ -118,11 +127,12 @@ struct DetailView: View {
                             .padding(.bottom)
                         }
                         
-                        Image(.boldLine)
+                        Text("").boldLine().padding(.bottom, 8)
+                        /* Image(.boldLine)
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
-                            .padding(.bottom, 8)
+                            .padding(.bottom, 8)*/
                         
                         HStack {
                             Text(StringLiterals.Detail.menuTitle)
@@ -254,7 +264,7 @@ struct DetailView: View {
                             // TODO: To Waiting
                         } label: {
                             Text("")
-                                .roundedButton(background: .darkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
+                                .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
                             // Image(.longButtonDarkGray)
                                 .overlay {
                                     if viewModel.boothModel.selectedBooth == nil {
@@ -326,7 +336,7 @@ struct MenuBar: View {
             } placeholder: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(.lightGray)
+                        .fill(.defaultLightGray)
                         .frame(width: 86, height: 86)
                     
                     Image(.noImagePlaceholder)

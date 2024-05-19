@@ -12,6 +12,8 @@ import MapKit
 @available(iOS 17, *)
 struct OneMapViewiOS17: View {
     @Namespace private var oneMap
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
     let booth: BoothDetailItem?
@@ -73,13 +75,24 @@ struct OneMapViewiOS17: View {
             Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: oneMap) {
                 UserAnnotation()
                 
-                MapPolygon(coordinates: polygonKonkuk)
-                    .foregroundStyle(.background.opacity(0.0))
-                    .stroke(.black.opacity(0.8), lineWidth: 1.0)
-                
-                if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
-                    MapPolygon(coordinates: boxPolygon)
-                        .foregroundStyle(.gray.opacity(0.5))
+                if colorScheme == .dark {
+                    MapPolygon(coordinates: polygonKonkuk)
+                        .foregroundStyle(.background.opacity(0.0))
+                        .stroke(.white.opacity(0.8), lineWidth: 1.0)
+                    
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                        MapPolygon(coordinates: boxPolygon)
+                            .foregroundStyle(.black.opacity(0.6))
+                    }
+                } else {
+                    MapPolygon(coordinates: polygonKonkuk)
+                        .foregroundStyle(.background.opacity(0.0))
+                        .stroke(.black.opacity(0.8), lineWidth: 1.0)
+                    
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                        MapPolygon(coordinates: boxPolygon)
+                            .foregroundStyle(.gray.opacity(0.2))
+                    }
                 }
                 
                 if let booth = booth {
@@ -123,13 +136,16 @@ struct OneMapViewiOS17: View {
                         Spacer()
                         VStack(spacing: 0) {
                             if let booth = booth {
+                                // MarqueeText(text: booth.name, font: .systemFont(ofSize: 20, weight: .semibold), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .center)
                                 Text(booth.name)
                                     .font(.system(size: 20))
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(.black)
+                                    .lineLimit(1)
+                                    .foregroundStyle(.defaultBlack)
                                 Text(booth.location ?? "")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
+                                    .lineLimit(1)
                             }
                         }
                         .frame(height: 32)
@@ -154,14 +170,14 @@ struct OneMapViewiOS17: View {
                         MapPitchToggle(scope: oneMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.defaultWhite)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
                         MapUserLocationButton(scope: oneMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.defaultWhite)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
@@ -360,7 +376,7 @@ struct OneMapViewiOS16: View {
                                 Text(booth.name)
                                     .font(.system(size: 20))
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.defaultBlack)
                                 Text(booth.location ?? "")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
@@ -510,3 +526,8 @@ struct OneBoothAnnotation: View {
         }
     }
 }
+
+#Preview {
+    RootView(rootViewModel: RootViewModel())
+}
+

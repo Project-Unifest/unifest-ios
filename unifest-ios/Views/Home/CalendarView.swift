@@ -98,7 +98,7 @@ struct CalendarView: View {
     
     func getFontColor(thisMonth: Int) -> Color {
         if thisMonth == month {
-            return .black
+            return .defaultBlack
         } else {
             return .gray
         }
@@ -257,7 +257,7 @@ struct CalendarWeekView: View {
     
     func getFontColor(thisMonth: Int) -> Color {
         if thisMonth == month {
-            return .black
+            return .defaultBlack
         } else {
             return .gray
         }
@@ -340,7 +340,7 @@ struct CalendarTabView: View {
                         } label: {
                             Text("\(selectedYear)년 \(monthPageIndex)" + StringLiterals.Calendar.month)
                                 .font(.system(size: 24))
-                                .foregroundStyle(.black)
+                                .foregroundStyle(.defaultBlack)
                                 .bold()
                         }
                         
