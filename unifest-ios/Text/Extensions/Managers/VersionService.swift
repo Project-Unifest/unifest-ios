@@ -44,6 +44,7 @@ final class VersionService {
     func nowVersion() -> String {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         
+        print("now Version: \(version)")
         return version
     }
 }

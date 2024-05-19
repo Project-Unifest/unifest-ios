@@ -407,13 +407,13 @@ struct CelebCircleView: View {
                             .frame(width: 72, height: 72)
                             // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                         
-                        MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-                            .frame(width: 50)
-                        // Text(celeb.name)
-                            // .font(.system(size: 13))
+                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        //     .frame(width: 50)
+                        Text(celeb.name)
+                            .font(.system(size: 13))
                             .fontWeight(.medium)
                             .foregroundStyle(.defaultBlack)
-                            // .multilineTextAlignment(.center)
+                            .multilineTextAlignment(.center)
                             
                     }
                     .frame(width: 72)
@@ -444,12 +444,12 @@ struct CelebCircleView: View {
                 Circle()
                     .fill(.black.opacity(0.5))
                     .overlay {
-                        MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-                        // Text(celeb.name)
-                            // .font(.system(size: 13))
+                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        Text(celeb.name)
+                            .font(.system(size: 13))
                             .fontWeight(.medium)
                             .foregroundStyle(.white)
-                            // .multilineTextAlignment(.center)
+                            .multilineTextAlignment(.center)
                     }
             }
         }

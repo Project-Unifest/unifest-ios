@@ -118,24 +118,46 @@ struct MenuView: View {
                     }
                     .frame(height: 240)
                 } else {
-                    VStack {
-                        // let randomLikeList = boothModel.getRandomLikedBooths()
-                        
-                        ForEach(randomLikeList, id: \.self) { boothID in
-                            if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                                LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                    .padding(.vertical, 10)
-                                    .onTapGesture {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                        viewModel.boothModel.loadBoothDetail(boothID)
-                                        isDetailViewPresented = true
-                                    }
-                                Divider()
+                    if #available(iOS 17, *) {
+                        VStack {
+                            // let randomLikeList = boothModel.getRandomLikedBooths()
+                            
+                            ForEach(randomLikeList, id: \.self) { boothID in
+                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                        .padding(.vertical, 10)
+                                        .onTapGesture {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                            viewModel.boothModel.loadBoothDetail(boothID)
+                                            isDetailViewPresented = true
+                                        }
+                                    Divider()
+                                }
                             }
                         }
-                    }
-                    .onChange(of: viewModel.boothModel.likedBoothList) {
-                        randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                        .onChange(of: viewModel.boothModel.likedBoothList) {
+                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                        }
+                    } else {
+                        VStack {
+                            // let randomLikeList = boothModel.getRandomLikedBooths()
+                            
+                            ForEach(randomLikeList, id: \.self) { boothID in
+                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                        .padding(.vertical, 10)
+                                        .onTapGesture {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                            viewModel.boothModel.loadBoothDetail(boothID)
+                                            isDetailViewPresented = true
+                                        }
+                                    Divider()
+                                }
+                            }
+                        }
+                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
+                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                        }
                     }
                 }
                 
@@ -255,12 +277,21 @@ struct MenuView: View {
                 
                 // 클러스터링 여부
                 HStack(alignment: .center) {
-                    Image(systemName: "circle.dotted.and.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.darkGray)
-                        .padding(.trailing, 8)
+                    if #available(iOS 17, *) {
+                        Image(systemName: "circle.dotted.and.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                    } else {
+                        Image(systemName: "circle.dashed.inset.filled")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                    }
                     
                     VStack(alignment: .leading) {
                         Text("부스 묶어보기")
@@ -276,21 +307,39 @@ struct MenuView: View {
                     
                     Spacer()
                     
-                    Toggle("", isOn: $clusterToggle)
-                        .frame(width: 60)
-                        .onChange(of: clusterToggle) {
-                            if clusterToggle {
-                                // off -> on
-                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-                                UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-                                // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                            } else {
-                                // on -> off
-                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-                                UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-                                // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                    if #available(iOS 17, *) {
+                        Toggle("", isOn: $clusterToggle)
+                            .frame(width: 60)
+                            .onChange(of: clusterToggle) {
+                                if clusterToggle {
+                                    // off -> on
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                                } else {
+                                    // on -> off
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                                }
                             }
-                        }
+                    } else {
+                        Toggle("", isOn: $clusterToggle)
+                            .frame(width: 60)
+                            .onChange(of: clusterToggle) { _ in
+                                if clusterToggle {
+                                    // off -> on
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                                } else {
+                                    // on -> off
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                                }
+                            }
+                    }
                 }
                 .frame(height: 60)
                 .padding(.horizontal)

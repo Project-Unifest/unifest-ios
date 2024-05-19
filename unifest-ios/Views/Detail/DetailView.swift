@@ -194,10 +194,17 @@ struct DetailView: View {
                 .ignoresSafeArea(edges: .top)
                 .background(.background)
                 .fullScreenCover(isPresented: $isMapViewPresented, content: {
-                    OneMapView(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
-                        .onAppear {
-                            GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
-                        }
+                    if #available(iOS 17, *) {
+                        OneMapViewiOS17(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
+                            .onAppear {
+                                GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+                            }
+                    } else {
+                        OneMapViewiOS16(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
+                            .onAppear {
+                                GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+                            }
+                    }
                 })
             }
             

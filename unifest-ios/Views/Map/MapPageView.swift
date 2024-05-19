@@ -20,8 +20,12 @@ struct MapPageView: View {
         ZStack {
             VStack {
                 Spacer()
-                // MapView(mapViewModel: mapViewModel, boothModel: boothModel, isTagSelected: $isTagSelected, searchText: $searchText, selectedBoothIDList: $selectedBoothIDList, isBoothListPresented: $isBoothListPresented, isPopularBoothPresented: $isPopularBoothPresented)
-                MapView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+                
+                if #available(iOS 17, *) {
+                    MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+                } else {
+                    MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+                }
             }
             
             VStack {
@@ -209,16 +213,29 @@ struct MapPageHeaderView: View {
             // Image(.searchBox)
                 .overlay {
                     HStack {
-                        TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
-                            .font(.system(size: 13))
-                            .onChange(of: searchText) {
-                                if !searchText.isEmpty {
-                                    mapViewModel.isPopularBoothPresented = false
-                                    mapViewModel.isBoothListPresented = false
-                                    mapViewModel.setSelectedAnnotationID(-1)
-                                    viewModel.boothModel.updateMapSelectedBoothList([])
+                        if #available(iOS 17, *) {
+                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
+                                .font(.system(size: 13))
+                                .onChange(of: searchText) {
+                                    if !searchText.isEmpty {
+                                        mapViewModel.isPopularBoothPresented = false
+                                        mapViewModel.isBoothListPresented = false
+                                        mapViewModel.setSelectedAnnotationID(-1)
+                                        viewModel.boothModel.updateMapSelectedBoothList([])
+                                    }
                                 }
-                            }
+                        } else {
+                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
+                                .font(.system(size: 13))
+                                .onChange(of: searchText) { _ in
+                                    if !searchText.isEmpty {
+                                        mapViewModel.isPopularBoothPresented = false
+                                        mapViewModel.isBoothListPresented = false
+                                        mapViewModel.setSelectedAnnotationID(-1)
+                                        viewModel.boothModel.updateMapSelectedBoothList([])
+                                    }
+                                }
+                        }
                         
                         if searchText.isEmpty {
                             Image(.searchIcon)

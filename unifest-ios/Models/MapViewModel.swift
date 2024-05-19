@@ -271,7 +271,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     }
 }
 
-struct MapAnnotationData: Hashable {
+struct MapAnnotationData: Hashable, Identifiable {
     var id: Int
     var annType: BoothType
     var boothIDList: [Int]
