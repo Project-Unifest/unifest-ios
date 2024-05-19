@@ -35,6 +35,7 @@ struct RootView: View {
                 TabView(selection: $tabViewSelection) {
                     CalendarTabView(viewModel: viewModel)
                         .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
                             GATracking.eventScreenView(GATracking.ScreenNames.homeView)
                         }
                         .tabItem {
@@ -46,6 +47,7 @@ struct RootView: View {
                     
                     MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
                         .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
                             mapViewModel.startUpdatingLocation()
                             GATracking.eventScreenView(GATracking.ScreenNames.mapView)
                         }
@@ -61,6 +63,7 @@ struct RootView: View {
                     
                     WaitingView(viewModel: viewModel, tabViewSelection: $tabViewSelection)
                         .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
                             GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
                         }
                         .tabItem {
@@ -72,6 +75,7 @@ struct RootView: View {
                     
                     MenuView(viewModel: viewModel)
                         .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
                             GATracking.eventScreenView(GATracking.ScreenNames.menuView)
                         }
                         .tabItem {

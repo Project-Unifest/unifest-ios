@@ -20,6 +20,7 @@
 		0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */; };
 		0C683ABA2BF8F12C0076ECCF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */; };
 		0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */; };
+		0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C72FAAB2BFA443200782B61 /* HapticManager.swift */; };
 		0C7A117E2BF25F25008713B7 /* BoothData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A117D2BF25F25008713B7 /* BoothData.swift */; };
 		0C7A11802BF25FDF008713B7 /* boothTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C7A117F2BF25FDF008713B7 /* boothTest.json */; };
 		0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A9CA52BF3E91100F639BA /* GATracker.swift */; };
@@ -67,6 +68,7 @@
 		0C4DFCB02BBEFC2B00CAB98B /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
 		0C6523922BC131F00085232D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		0C72FAAB2BFA443200782B61 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		0C7A117D2BF25F25008713B7 /* BoothData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothData.swift; sourceTree = "<group>"; };
 		0C7A117F2BF25FDF008713B7 /* boothTest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = boothTest.json; sourceTree = "<group>"; };
 		0C7A9CA52BF3E91100F639BA /* GATracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GATracker.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				0C7A9CA52BF3E91100F639BA /* GATracker.swift */,
 				0C244FCC2BF67E6B0047F23D /* VersionService.swift */,
 				0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */,
+				0C72FAAB2BFA443200782B61 /* HapticManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -463,6 +466,7 @@
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
 				0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */,
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
+				0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */,
 				0CC40F422BF9276B002759DF /* View+.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
