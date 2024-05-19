@@ -85,7 +85,7 @@ struct HomeView: View {
                             
                             ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
                                 let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                                schoolFestDetailRow(dateText: formatDate(festival.beginDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
                                 
                                 Divider()
                                     .padding(.trailing)
@@ -260,7 +260,7 @@ struct HomeView: View {
     }
     
     @ViewBuilder
-    func schoolFestDetailRow(dateText: String, name: String, day: Int, location: String, celebs: [StarItem]?=nil) -> some View {
+    func schoolFestDetailRow(beginDateText: String, endDateText: String, name: String, day: Int, location: String, celebs: [StarItem]?=nil) -> some View {
         VStack {
             HStack {
                 Image(.verticalBar)
@@ -269,7 +269,7 @@ struct HomeView: View {
                     .frame(height: 72)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(dateText)
+                    Text(beginDateText + " ~ " + endDateText)
                         .bold()
                         .font(.system(size: 12))
                         .foregroundStyle(.gray)

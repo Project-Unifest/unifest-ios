@@ -74,6 +74,15 @@ struct MapViewiOS17: View {
         CLLocationCoordinate2D(latitude: 37.54374, longitude: 127.07791),
         CLLocationCoordinate2D(latitude: 37.54382, longitude: 127.07690)
     ]
+    let personalBoothCenter: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 37.54379, longitude: 127.07743)
+    
+    let foodtruckBoothList: [CLLocationCoordinate2D] = [
+        CLLocationCoordinate2D(latitude: 37.54386, longitude: 127.07689),
+        CLLocationCoordinate2D(latitude: 37.54376, longitude: 127.07783),
+        CLLocationCoordinate2D(latitude: 37.54386, longitude: 127.07784),
+        CLLocationCoordinate2D(latitude: 37.54394, longitude: 127.07689)
+    ]
+    let foodtruckCenter: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 37.54386, longitude: 127.07741)
     
     // distance
     @State private var lastDistance: Double = 4000
@@ -108,6 +117,18 @@ struct MapViewiOS17: View {
                             .foregroundStyle(.gray.opacity(0.2))
                     }
                 }
+                
+                // 개인 부스
+                /* MapPolygon(coordinates: personalBoothList)
+                    .foregroundStyle(.brown.opacity(0.1))
+                    .stroke(.brown.opacity(0.5), lineWidth: 0.5)
+                Annotation("개인 부스", coordinate: personalBoothCenter) { }
+                
+                // 푸드트럭
+                MapPolygon(coordinates: foodtruckBoothList)
+                    .foregroundStyle(.red.opacity(0.1))
+                    .stroke(.red.opacity(0.5), lineWidth: 0.5)
+                Annotation("푸드트럭", coordinate: foodtruckCenter) { } */
                 
                 ForEach(mapViewModel.annotationList, id: \.self) { annData in
                     Annotation("", coordinate: CLLocationCoordinate2D(latitude: annData.latitude, longitude: annData.longitude)) {

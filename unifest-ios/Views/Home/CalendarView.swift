@@ -19,7 +19,7 @@ struct CalendarView: View {
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     
-    @State private var calendar: [[Date]] = []
+    @Binding var calendar: [[Date]]
     
     let weekTextList: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     
@@ -88,6 +88,7 @@ struct CalendarView: View {
         }
         .onAppear {
             calendar = getCalendar(calMonth: month)
+            print("num of week: \(calendar.count)")
         }
     }
     
@@ -311,6 +312,8 @@ struct CalendarTabView: View {
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
     
+    @State private var calendar: [[Date]] = []
+
     init(viewModel: RootViewModel) {
         let date = Date()
         currentYear = Calendar.current.component(.year, from: date)
@@ -388,14 +391,14 @@ struct CalendarTabView: View {
                         }
                     } else {
                         ForEach(1...12, id: \.self) { month in
-                            CalendarView(viewModel: viewModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
+                            CalendarView(viewModel: viewModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay, calendar: $calendar)
                         }
                     }
                 }
                 .background(.background)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 // .border(.red)
-                .frame(height: isExpanded ? getViewHeight() : 80) // 6주 340 5주 290 4주 240 1주 80
+                .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80) // 6주 340 5주 290 4주 240 1주 80
                 .overlay {
                     Image(.navBottom)
                         .resizable()
@@ -530,6 +533,23 @@ struct CalendarTabView: View {
         
         // print("diff: \(diff)")
         return diff
+    }
+    
+    func getHeightByWeekNum(_ numWeek: Int) -> CGFloat {
+        // 6주 340 5주 290 4주 240 1주 80
+        if numWeek >= 7 {
+            return 490
+        } else if numWeek == 6 {
+            return 390
+        } else if numWeek == 5 {
+            return 290
+        } else if numWeek == 4 {
+            return 240
+        } else if numWeek == 3 {
+            return 190
+        } else {
+            return 80
+        }
     }
     
     func getWeekNumOfYear() -> [Int] {
