@@ -16,6 +16,8 @@ struct HomeView: View {
     @State private var isLoading2: Bool = true
     @State private var upcomingList: [FestivalItem] = []
     
+    @State private var maxLength: Int = 5
+    
     // @State private var todayFestivalList: [TodayFestivalItem] = []
     
     let isFest: Bool
@@ -138,7 +140,7 @@ struct HomeView: View {
             .padding(.bottom, 4)
             
             VStack(spacing: 8) {
-                if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay).isEmpty {
+                if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength).isEmpty {
                     VStack(alignment: .center) {
                         Text(StringLiterals.Home.noUpcomingFestivalTitle)
                             .font(.system(size: 16))
@@ -153,10 +155,28 @@ struct HomeView: View {
                     }
                     .frame(height: 240)
                 } else {
-                    ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay), id: \.self) { festival in
+                    ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength), id: \.self) { festival in
                         schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
                     }
                 }
+                
+                if viewModel.festivalModel.festivals.count > self.maxLength {
+                    Button {
+                        // 5개씩 더 불러오기
+                        self.maxLength += 5
+                    } label: {
+                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
+                            .frame(width: 64)
+                            .overlay {
+                                Text("더보기")
+                                    .foregroundStyle(.gray)
+                                    .font(.system(size: 12))
+                            }
+                    }
+                    .padding(.top, 10)
+                }
+                
+                Spacer().frame(height: 10)
             }
             .padding(.horizontal)
         }
