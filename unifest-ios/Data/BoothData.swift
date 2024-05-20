@@ -307,7 +307,18 @@ class BoothModel: ObservableObject {
     }
     
     func isBoothContain(_ boothID: Int) -> Bool {
-        return likedBoothList.contains(boothID)
+        if !likedBoothList.contains(boothID) {
+            return false
+        }
+        
+        for booth in booths {
+            // hit
+            if booth.id == boothID {
+                return true
+            }
+        }
+        print("** boothID: \(boothID) is not in booths")
+        return false
     }
     
     func loadLikeBoothListDB() {
@@ -387,8 +398,30 @@ class BoothModel: ObservableObject {
         }
     }
     
+    func getFullLikedBoothList() -> [Int] {
+        if likedBoothList.isEmpty {
+            return []
+        }
+        
+        var likedList: [Int] = []
+        
+        for likedID in likedBoothList {
+            if isBoothContain(likedID) {
+                likedList.append(likedID)
+            }
+        }
+        
+        print("liked List: ")
+        print(likedList)
+        return likedList
+    }
+    
     func getRandomLikedBooths(count: Int=3) -> [Int] {
-        // likedBoothList 배열의 길이가 3 이하인 경우, likedBoothList 그대로 반환
+        if likedBoothList.isEmpty {
+            return []
+        }
+        
+        /* // likedBoothList 배열의 길이가 3 이하인 경우, likedBoothList 그대로 반환
         guard likedBoothList.count > count else {
             return likedBoothList
         }
@@ -409,6 +442,27 @@ class BoothModel: ObservableObject {
         
         // print("randomly selected: ")
         // print(randomLikedBooths)
+        return randomLikedBooths*/
+        
+        var randomLikedBooths: [Int] = []
+        var likedBoothsCopy = likedBoothList
+        
+        for likedID in likedBoothsCopy {
+            let randomIndex = Int.random(in: 0..<likedBoothsCopy.count)
+            let randomBoothID = likedBoothsCopy[randomIndex]
+            
+            if isBoothContain(randomBoothID) {
+                randomLikedBooths.append(randomBoothID)
+            }
+            likedBoothsCopy.remove(at: randomIndex)
+            
+            if randomLikedBooths.count >= 3 {
+                break
+            }
+        }
+        
+        print("randomly selected: ")
+        print(randomLikedBooths)
         return randomLikedBooths
     }
     

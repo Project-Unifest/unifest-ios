@@ -15,6 +15,7 @@
 		0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2BFD2BE9A87900EDF359 /* APIManager.swift */; };
 		0C2A2C002BE9A8B000EDF359 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */; };
 		0C2A2C022BE9A8DB00EDF359 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2C012BE9A8DB00EDF359 /* UserDataManager.swift */; };
+		0C2AA3C62BFBBBAF008FB5DF /* OneImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2AA3C52BFBBBAF008FB5DF /* OneImageView.swift */; };
 		0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4DFCB02BBEFC2B00CAB98B /* NetworkErrorView.swift */; };
 		0C6523932BC131F00085232D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6523922BC131F00085232D /* HomeView.swift */; };
 		0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */; };
@@ -65,6 +66,7 @@
 		0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0C2A2C012BE9A8DB00EDF359 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
 		0C2A2C032BE9AEA600EDF359 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0C2AA3C52BFBBBAF008FB5DF /* OneImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneImageView.swift; sourceTree = "<group>"; };
 		0C4DFCB02BBEFC2B00CAB98B /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
 		0C6523922BC131F00085232D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 			children = (
 				0CDB46D42BB1DC8D00C34AED /* DetailView.swift */,
 				0C9641EB2BB941F200838DA9 /* WaitingPopupView.swift */,
+				0C2AA3C52BFBBBAF008FB5DF /* OneImageView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				0CBB058A2BB074ED00EB56BE /* IntroView.swift in Sources */,
+				0C2AA3C62BFBBBAF008FB5DF /* OneImageView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				0CBB058B2BB074ED00EB56BE /* MapPageView.swift in Sources */,
 				0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */,
@@ -631,7 +635,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -670,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

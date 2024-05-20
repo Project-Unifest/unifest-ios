@@ -8,6 +8,20 @@
 import Foundation
 import SwiftUI
 
+struct Background: ViewModifier {
+    @Environment(\.colorScheme) var colorScheme
+    var background: Material { colorScheme == .light ? .regularMaterial : .thickMaterial }
+    
+    func body(content: Content) -> some View {
+        content
+            .background(background)
+            .cornerRadius(10)
+            .compositingGroup()
+            .shadow(color: Color(.systemFill), radius: 5)
+    }
+}
+
+
 extension View {
     @ViewBuilder
     func onReadSize(_ perform: @escaping (CGSize) -> Void) -> some View {
@@ -49,6 +63,19 @@ extension View {
         Rectangle()
             .fill(.defaultBoldLine)
             .frame(height: 8)
+    }
+    
+    func materialBackground() -> some View {
+        self.modifier(Background())
+    }
+    
+    @ViewBuilder
+    func `if`<Content: View>(_ applyModifier: Bool = true, @ViewBuilder content: (Self) -> Content) -> some View {
+        if applyModifier {
+            content(self)
+        } else {
+            self
+        }
     }
 }
 

@@ -95,6 +95,17 @@ struct HomeView: View {
                         }
                         .padding(.top, 20)
                         .padding(.leading)
+                        
+                        /* List {
+                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
+                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
+                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                            }
+                        }
+                        .frame(height: CGFloat(viewModel.festivalModel.todayFestivals.count * 94))
+                        .padding(.top, 20)
+                        .listStyle(.plain)*/
+                        
                     } else {
                         VStack {
                             ProgressView()

@@ -13,6 +13,10 @@ struct DetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var isReloadButtonPresent: Bool = false
+    @State private var isOneImagePresented: Bool = false
+    @State private var selectedMenuURL: String = ""
+    @State private var selectedMenuName: String = ""
+    @State private var selectedMenuPrice: String = ""
     
     var body: some View {
         ZStack {
@@ -166,7 +170,7 @@ struct DetailView: View {
                                 } else {
                                     VStack(spacing: 10) {
                                         ForEach(boothMenu, id: \.self) { menu in
-                                            MenuBar(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0)
+                                            MenuBar(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0, isImagePresented: $isOneImagePresented, selectedURL: $selectedMenuURL, selectedName: $selectedMenuName, selectedPrice: $selectedMenuPrice)
                                         }
                                     }
                                     .padding(.horizontal)
@@ -294,6 +298,39 @@ struct DetailView: View {
                 .background(.background)
                 .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
             }
+            
+            VStack {
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        dismiss()
+                    } label: {
+                        ZStack {
+                            Circle()
+                                .frame(width: 26, height: 26)
+                                .tint(.defaultWhite.opacity(0.5))
+                            
+                            Image(systemName: "xmark.circle")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(.defaultBlack)
+                        }
+                    }
+                    .padding()
+                }
+                
+                Spacer()
+            }
+            
+            if isOneImagePresented {
+                OneImageView(isPresented: $isOneImagePresented, imageURL: selectedMenuURL, name: selectedMenuName, price: selectedMenuPrice)
+                    .onDisappear {
+                        selectedMenuURL = ""
+                        selectedMenuName = ""
+                        selectedMenuPrice = ""
+                    }
+            }
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -312,11 +349,14 @@ struct DetailView: View {
     @ObservedObject var viewModel = RootViewModel()
     
     return Group {
-        DetailView(viewModel: viewModel)
-            .onAppear {
-                viewModel.boothModel.selectedBoothID = 119
-                viewModel.boothModel.loadBoothDetail(119)
-            }
+        Text("")
+            .sheet(isPresented: .constant(true), content: {
+                DetailView(viewModel: viewModel)
+                    .onAppear {
+                        viewModel.boothModel.selectedBoothID = 119
+                        viewModel.boothModel.loadBoothDetail(119)
+                    }
+            })
     }
 }
 
@@ -324,6 +364,10 @@ struct MenuBar: View {
     let imageURL: String
     let name: String
     let price: Int
+    @Binding var isImagePresented: Bool
+    @Binding var selectedURL: String
+    @Binding var selectedName: String
+    @Binding var selectedPrice: String
     
     var body: some View {
         HStack {
@@ -333,6 +377,14 @@ struct MenuBar: View {
                     .scaledToFill()
                     .frame(width: 86, height: 86)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                    .onTapGesture {
+                        selectedURL = imageURL
+                        selectedName = name
+                        selectedPrice = formattedPrice(price) + StringLiterals.Detail.won
+                        withAnimation(.spring(duration: 0.1)) {
+                            isImagePresented = true
+                        }
+                    }
             } placeholder: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)

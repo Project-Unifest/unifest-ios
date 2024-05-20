@@ -14,7 +14,7 @@ struct LikeBoothListView: View {
     
     var body: some View {
         ZStack {
-            if viewModel.boothModel.likedBoothList.isEmpty {
+            if viewModel.boothModel.getFullLikedBoothList().isEmpty {
                 VStack(alignment: .center) {
                     Spacer()
                     Text(StringLiterals.Menu.noLikedBoothTitle)
@@ -31,7 +31,7 @@ struct LikeBoothListView: View {
                 .padding(.top, 32)
             }
             else {
-                ScrollView {
+                /* ScrollView {
                     Spacer()
                         .frame(height: 32)
                     ForEach(viewModel.boothModel.likedBoothList, id: \.self) { boothID in
@@ -48,7 +48,42 @@ struct LikeBoothListView: View {
                         }
                     }
                 }
-                .padding(.top, 32)
+                .padding(.top, 32)*/
+                
+                
+                List {
+                    ForEach(viewModel.boothModel.getFullLikedBoothList(), id: \.self) { boothID in
+                        if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                            // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                            LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                // .padding(.vertical, 10)
+                                .onTapGesture {
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                    viewModel.boothModel.loadBoothDetail(boothID)
+                                    isDetailViewPresented = true
+                                }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                        viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                    } label: {
+                                        Label("삭제", systemImage: "trash.circle").tint(.red)
+                                    }
+                                }
+                            // Divider()
+                        }
+                        else {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                            }
+                            .frame(height: 114)
+                        }
+                    }
+                }
+                .listStyle(.plain)
+                .padding(.top, 60)
             }
             
             VStack {
@@ -99,5 +134,6 @@ struct LikeBoothListView: View {
 }
 
 #Preview {
-    LikeBoothListView(viewModel: RootViewModel())
+    // LikeBoothListView(viewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel())
 }

@@ -56,12 +56,12 @@ struct LikedBoothBoxView: View {
                     
                     Spacer()
                     
-                    Button {
+                    /* Button {
                         GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                         viewModel.boothModel.deleteLikeBoothListDB(boothID)
                     } label: {
                         Image(.pinkBookMark)
-                    }
+                    }*/
                 }
                 
                 Text(description)
@@ -84,7 +84,7 @@ struct LikedBoothBoxView: View {
             }
         }
         .frame(height: 90)
-        .padding(.horizontal)
+        // .padding(.horizontal)
     }
 }
 

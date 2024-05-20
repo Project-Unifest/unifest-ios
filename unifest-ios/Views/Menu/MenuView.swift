@@ -103,7 +103,7 @@ struct MenuView: View {
                 }
                 .padding(.horizontal)
                 
-                if viewModel.boothModel.likedBoothList.isEmpty {
+                if viewModel.boothModel.likedBoothList.isEmpty || randomLikeList.isEmpty {
                     VStack(alignment: .center) {
                         Text(StringLiterals.Menu.noLikedBoothTitle)
                             .font(.system(size: 16))
@@ -119,42 +119,71 @@ struct MenuView: View {
                     .frame(height: 240)
                 } else {
                     if #available(iOS 17, *) {
-                        VStack {
-                            // let randomLikeList = boothModel.getRandomLikedBooths()
-                            
+                        List {
                             ForEach(randomLikeList, id: \.self) { boothID in
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
                                     LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                        .padding(.vertical, 10)
+                                        // .padding(.vertical, 10)
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
                                             isDetailViewPresented = true
                                         }
-                                    Divider()
+                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                            Button {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                            } label: {
+                                                Label("삭제", systemImage: "trash.circle").tint(.red)
+                                            }
+                                        }
+                                }
+                                else {
+                                    HStack {
+                                        Spacer()
+                                        ProgressView()
+                                        Spacer()
+                                    }
+                                    .frame(height: 114)
                                 }
                             }
                         }
+                        .listStyle(.plain)
+                        .frame(height: CGFloat(114 * randomLikeList.count))
                         .onChange(of: viewModel.boothModel.likedBoothList) {
                             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
                         }
                     } else {
-                        VStack {
-                            // let randomLikeList = boothModel.getRandomLikedBooths()
-                            
+                        List {
                             ForEach(randomLikeList, id: \.self) { boothID in
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
                                     LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                        .padding(.vertical, 10)
+                                        // .padding(.vertical, 10)
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
                                             isDetailViewPresented = true
                                         }
-                                    Divider()
+                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                            Button {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                            } label: {
+                                                Label("삭제", systemImage: "trash.circle").tint(.red)
+                                            }
+                                        }
+                                } else {
+                                    HStack {
+                                        Spacer()
+                                        ProgressView()
+                                        Spacer()
+                                    }
+                                    .frame(height: 114)
                                 }
                             }
                         }
+                        .listStyle(.plain)
+                        .frame(height: CGFloat(114 * randomLikeList.count))
                         .onChange(of: viewModel.boothModel.likedBoothList) { _ in
                             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
                         }
@@ -558,6 +587,8 @@ struct MenuView: View {
         .onAppear {
             // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+            print("randomLikeList num: \(randomLikeList.count)")
+            print(randomLikeList)
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
         }
         .sheet(isPresented: $isDetailViewPresented) {
