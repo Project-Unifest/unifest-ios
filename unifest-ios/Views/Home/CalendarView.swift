@@ -73,7 +73,16 @@ struct CalendarView: View {
                                 }
                             
                             let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
-                            if (festivalNum > 0) {
+                            /* if (festivalNum > 0) {
+                                simpleDot(.defaultGreen)
+                            } else {
+                                simpleDot(.clear)
+                            }*/
+                            if festivalNum >= 3 {
+                                simpleDot(.accent)
+                            } else if festivalNum == 2 {
+                                simpleDot(.defaultOrange)
+                            } else if festivalNum == 1 {
                                 simpleDot(.defaultGreen)
                             } else {
                                 simpleDot(.clear)
@@ -227,7 +236,17 @@ struct CalendarWeekView: View {
                             }
                         
                         let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
-                        if (festivalNum > 0) {
+                        /* if (festivalNum > 0) {
+                            simpleDot(.defaultGreen)
+                        } else {
+                            simpleDot(.clear)
+                        }*/
+                        
+                        if festivalNum >= 3 {
+                            simpleDot(.accent)
+                        } else if festivalNum == 2 {
+                            simpleDot(.defaultOrange)
+                        } else if festivalNum == 2 {
                             simpleDot(.defaultGreen)
                         } else {
                             simpleDot(.clear)
@@ -313,6 +332,8 @@ struct CalendarTabView: View {
     @State private var lastOffsetY: CGFloat = 0.0
     
     @State private var calendar: [[Date]] = []
+    
+    @State private var isInfoPresented: Bool = false
 
     init(viewModel: RootViewModel) {
         let date = Date()
@@ -345,6 +366,29 @@ struct CalendarTabView: View {
                                 .font(.system(size: 24))
                                 .foregroundStyle(.defaultBlack)
                                 .bold()
+                        }
+                        .padding(.trailing, 10)
+                        
+                        if isInfoPresented {
+                            HStack(alignment: .center, spacing: 0) {
+                                simpleDot(.defaultGreen)
+                                    .padding(.trailing, 3)
+                                Text("1개")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.gray)
+                                    .padding(.trailing, 8)
+                                simpleDot(.defaultOrange)
+                                    .padding(.trailing, 3)
+                                Text("2개")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.gray)
+                                    .padding(.trailing, 8)
+                                simpleDot(.accent)
+                                    .padding(.trailing, 3)
+                                Text("3개 이상")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.gray)
+                            }
                         }
                         
                         Spacer()
@@ -423,6 +467,12 @@ struct CalendarTabView: View {
                                         monthPageIndex = selectedMonth
                                         withAnimation(.spring) {
                                             isExpanded = true
+                                            isInfoPresented = true
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            withAnimation(.easeInOut(duration: 0.5)) {
+                                                isInfoPresented = false
+                                            }
                                         }
                                     }
                                 } label: {
@@ -472,6 +522,12 @@ struct CalendarTabView: View {
                                 monthPageIndex = selectedMonth
                                 withAnimation(.spring) {
                                     isExpanded = true
+                                    isInfoPresented = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation(.easeInOut(duration: 0.5)) {
+                                        isInfoPresented = false
+                                    }
                                 }
                             }
                         } else {
@@ -492,6 +548,13 @@ struct CalendarTabView: View {
             
             HomeView(viewModel: viewModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
         }
+    }
+    
+    @ViewBuilder
+    func simpleDot(_ color: Color) -> some View {
+        Circle()
+            .fill(color)
+            .frame(width: 7, height: 7)
     }
     
     func getViewHeight() -> CGFloat {
