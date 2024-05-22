@@ -506,10 +506,52 @@ struct MenuView: View {
                             .foregroundColor(.darkGray)
                             .padding(.trailing, 8)
                         
-                        Text(StringLiterals.Menu.developerMail)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                        VStack(alignment: .leading) {
+                            Text("개발자에게 메일 보내기")
+                                .font(.system(size: 15))
+                                .foregroundStyle(.darkGray)
+                                .fontWeight(.medium)
+                            
+                            Text("앱 오류 신고, 개선점, 피드백을 남겨주세요")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.gray)
+                                .fontWeight(.medium)
+                        }
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
+                // 앱스토어 이동
+                Button {
+                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_APPSTORE)
+                    if let url = URL(string: VersionService.shared.appStoreOpenUrlString), UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "star.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        VStack(alignment: .leading) {
+                            Text("앱스토어에 리뷰 남기기")
+                                .font(.system(size: 15))
+                                .foregroundStyle(.darkGray)
+                                .fontWeight(.medium)
+                            
+                            Text("남겨주신 소중한 리뷰는 개발자에게 큰 힘이 됩니다")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.gray)
+                                .fontWeight(.medium)
+                        }
                         
                         Spacer()
                     }
@@ -612,7 +654,7 @@ struct MenuView: View {
                 
             }
         }, message: {
-            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 앱 - 펫스페이스 에서 권한을 수정할 수 있어요.")
+            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 - 유니페스 에서 권한을 수정할 수 있어요.")
         })
         // 기능 오류 신고 모달
         .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
