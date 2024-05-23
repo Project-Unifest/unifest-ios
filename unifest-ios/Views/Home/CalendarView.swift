@@ -246,7 +246,7 @@ struct CalendarWeekView: View {
                             simpleDot(.accent)
                         } else if festivalNum == 2 {
                             simpleDot(.defaultOrange)
-                        } else if festivalNum == 2 {
+                        } else if festivalNum == 1 {
                             simpleDot(.defaultGreen)
                         } else {
                             simpleDot(.clear)
