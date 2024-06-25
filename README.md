@@ -1,5 +1,9 @@
 # UNIFEST iOS
 
+### Developer
+@leehe228 <br>
+@jstar000
+<br>
+
 ### Open Contributor
-@leehe228
 @KhoraLee
