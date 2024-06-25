@@ -44,21 +44,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // 파이어베이스 Meesaging 설정
         Messaging.messaging().delegate = self
         
-        VersionService.shared.loadAppStoreVersion { latestVersion in
-            guard let latestVersion else { return }
-            guard let nowVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { return }
-            let compareResult = nowVersion.compare(latestVersion, options: .numeric)
-            print("now version: \(nowVersion)")
-            switch compareResult {
-            case .orderedAscending:
-                VersionService.shared.isOldVersion = true
-            case .orderedDescending:
-                VersionService.shared.isOldVersion = false
-            case .orderedSame:
-                VersionService.shared.isOldVersion = false
-            }
-        }
-        
         return true
     }
 }

@@ -107,8 +107,14 @@ struct RootView: View {
             }
             
             viewModel.boothModel.loadLikeBoothListDB()
-            
-            if VersionService.shared.isOldVersion {
+            }
+        .task {
+            let versionServce = VersionService.shared
+            guard let latestVersion = try? await versionServce.loadAppStoreVersion() else { return }
+            guard let currentVersion = versionServce.currentVersion() else { return }
+            let cmpResult = currentVersion.compare(latestVersion, options: .numeric)
+            versionServce.isOldVersion = cmpResult == .orderedAscending
+            if versionServce.isOldVersion {
                 print("This app is old. Updated Needed")
                 appVersionAlertPresented = true
             } else {

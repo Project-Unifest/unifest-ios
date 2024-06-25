@@ -7,6 +7,14 @@
 
 import Foundation
 
+struct AppStoreResponse: Decodable {
+    var results: [Result]
+    
+    struct Result: Decodable {
+        var version: String
+    }
+}
+
 final class VersionService {
     static let shared: VersionService = VersionService()
     
@@ -16,35 +24,15 @@ final class VersionService {
     private let bundleID = "com.hoeunlee228.unifest-ios"
     lazy var appStoreOpenUrlString = "itms-apps://itunes.apple.com/app/apple-store/\(appleID)"
     
-    func loadAppStoreVersion(completion: @escaping (String?) -> Void) {
+    func loadAppStoreVersion() async throws -> String? {
         let appStoreUrl = "http://itunes.apple.com/kr/lookup?bundleId=\(bundleID)"
-        
-        let task = URLSession.shared.dataTask(with: URL(string: appStoreUrl)!) { data, _, error in
-            guard let data = data, error == nil else {
-                completion(nil)
-                return
-            }
-            
-            do {
-                if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any],
-                   let results = json["results"] as? [[String: Any]],
-                   let appStoreVersion = results[0]["version"] as? String {
-                    print("App Store Version: \(appStoreVersion)")
-                    completion(appStoreVersion)
-                } else {
-                    completion(nil)
-                }
-            } catch {
-                completion(nil)
-            }
-        }
-        task.resume()
+
+        let (data, _) = try await URLSession.shared.data(from: URL(string: appStoreUrl)!)
+        let json = try JSONDecoder().decode(AppStoreResponse.self, from: data)
+        return json.results.first?.version
     }
     
-    func nowVersion() -> String {
-        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        
-        print("now Version: \(version)")
-        return version
+    func currentVersion() -> String? {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
 }
