@@ -15,6 +15,7 @@
 		0CB9F3282C2AA77B00BD5CC9 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9F3272C2AA77B00BD5CC9 /* APIManager.swift */; };
 		0CB9F32A2C2AA7A900BD5CC9 /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9F3292C2AA7A900BD5CC9 /* UserDataManager.swift */; };
 		0CB9F32C2C2AA7C900BD5CC9 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9F32B2C2AA7C900BD5CC9 /* ThemeManager.swift */; };
+		0CB9F32E2C2AA7E800BD5CC9 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB9F32D2C2AA7E800BD5CC9 /* HapticManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		0CB9F3272C2AA77B00BD5CC9 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		0CB9F3292C2AA7A900BD5CC9 /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
 		0CB9F32B2C2AA7C900BD5CC9 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		0CB9F32D2C2AA7E800BD5CC9 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 				0CB9F3272C2AA77B00BD5CC9 /* APIManager.swift */,
 				0CB9F3292C2AA7A900BD5CC9 /* UserDataManager.swift */,
 				0CB9F32B2C2AA7C900BD5CC9 /* ThemeManager.swift */,
+				0CB9F32D2C2AA7E800BD5CC9 /* HapticManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			files = (
 				0CB9F3282C2AA77B00BD5CC9 /* APIManager.swift in Sources */,
 				0CB9F3262C2AA6D200BD5CC9 /* NetworkManager.swift in Sources */,
+				0CB9F32E2C2AA7E800BD5CC9 /* HapticManager.swift in Sources */,
 				0CB9F32A2C2AA7A900BD5CC9 /* UserDataManager.swift in Sources */,
 				0C77CFF42C2A9BAB0031AD98 /* ContentView.swift in Sources */,
 				0C77CFF22C2A9BAB0031AD98 /* unifest_ios2App.swift in Sources */,
