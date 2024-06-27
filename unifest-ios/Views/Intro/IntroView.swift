@@ -258,10 +258,13 @@ struct SchoolBoxView: View {
     let endDate: String
     
     var body: some View {
-        Image(isSelected ? .selectedSchoolBoxBackground : .nonselectedSchoolBoxBackground)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 113, height: 121)
+        RoundedRectangle(cornerRadius: 10)
+            .stroke(.lightGray)
+        // Image(isSelected ? .selectedSchoolBoxBackground : .nonselectedSchoolBoxBackground)
+            // .resizable()
+            // .scaledToFit()
+            // .frame(width: 113, height: 121)
+            .frame(height: 120)
             .overlay {
                 VStack {
                     AsyncImage(url: URL(string: schoolImageURL)) { image in
