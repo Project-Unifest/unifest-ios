@@ -107,7 +107,7 @@ struct RootView: View {
             }
             
             viewModel.boothModel.loadLikeBoothListDB()
-            }
+        }
         .task {
             let versionServce = VersionService.shared
             guard let latestVersion = try? await versionServce.loadAppStoreVersion() else { return }
@@ -143,14 +143,6 @@ struct RootView: View {
             Text("새 버전이 출시되었습니다. 더 나은 사용자 경험을 위해 앱을 최신 버전으로 업데이트 해주세요.")
         })
     }
-}
-
-enum ViewState {
-    case intro
-    case home
-    case map
-    case waiting
-    case menu
 }
 
 #Preview {

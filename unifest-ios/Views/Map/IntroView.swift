@@ -70,31 +70,31 @@ struct IntroView: View {
                 .padding(.horizontal)
                 
                 /* ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 7) {
-                        /* if let festivalData = festivalData {
-                            ForEach(festivalData, id: \.self) { festival in
-                                if let festivalID = festival.festivalId {
-                                    if likedFestivalIDData.contains(festivalID) {
-                                        if let thumbnail = festival.thumbnail, let schoolName = festival.schoolName, let festivalName = festival.festivalName, let beginDate = festival.beginDate, let endDate = festival.endDate {
-                                            SchoolBoxView(isSelected: .constant(true), schoolImageURL: thumbnail, schoolName: schoolName, festivalName: festivalName, startDate: beginDate, endDate: endDate)
-                                                .onTapGesture {
-                                                    if let toDeleteIndex = likedFestivalIDData.firstIndex(of: festivalID) {
-                                                        likedFestivalIDData.remove(at: toDeleteIndex)
-                                                    }
-                                                }
-                                        }
-                                    }
-                                }
-                            }
-                        }*/
-                        /* SchoolBoxView(isSelected: .constant(true), schoolImage: , schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                        SchoolBoxView(isSelected: .constant(true), schoolImage: .hongikLogo, schoolName: "홍익대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                        SchoolBoxView(isSelected: .constant(true), schoolImage: .chungangLogo, schoolName: "중앙대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                        SchoolBoxView(isSelected: .constant(true), schoolImage: .snutLogo, schoolName: "서울과기대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                        SchoolBoxView(isSelected: .constant(true), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )*/
-                    }
-                    .padding(.horizontal)
-                }*/
+                 HStack(spacing: 7) {
+                 /* if let festivalData = festivalData {
+                  ForEach(festivalData, id: \.self) { festival in
+                  if let festivalID = festival.festivalId {
+                  if likedFestivalIDData.contains(festivalID) {
+                  if let thumbnail = festival.thumbnail, let schoolName = festival.schoolName, let festivalName = festival.festivalName, let beginDate = festival.beginDate, let endDate = festival.endDate {
+                  SchoolBoxView(isSelected: .constant(true), schoolImageURL: thumbnail, schoolName: schoolName, festivalName: festivalName, startDate: beginDate, endDate: endDate)
+                  .onTapGesture {
+                  if let toDeleteIndex = likedFestivalIDData.firstIndex(of: festivalID) {
+                  likedFestivalIDData.remove(at: toDeleteIndex)
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }
+                  }*/
+                 /* SchoolBoxView(isSelected: .constant(true), schoolImage: , schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                  SchoolBoxView(isSelected: .constant(true), schoolImage: .hongikLogo, schoolName: "홍익대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                  SchoolBoxView(isSelected: .constant(true), schoolImage: .chungangLogo, schoolName: "중앙대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                  SchoolBoxView(isSelected: .constant(true), schoolImage: .snutLogo, schoolName: "서울과기대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
+                  SchoolBoxView(isSelected: .constant(true), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )*/
+                 }
+                 .padding(.horizontal)
+                 }*/
                 
                 HStack {
                     Spacer()
@@ -138,49 +138,49 @@ struct IntroView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: columns) {
-//                        ForEach(viewModel.festivalModel.festivals.filter { $0.region! == regions[regionIndex] }, id: \.self) { festival in
-//                            SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
-//                        }
+                        //                        ForEach(viewModel.festivalModel.festivals.filter { $0.region! == regions[regionIndex] }, id: \.self) { festival in
+                        //                            SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
+                        //                        }
                         /* ForEach(viewModel.festivalModel.festivals.filter { $0.region == regions[regionIndex] }) { festival in
-                            // SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
-                        } */
+                         // SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
+                         } */
                         // let festivalList = viewModel.festivalModel.festivals.filter{ $0.region! == regions[regionIndex] }
                         let festivalList: [FestivalItem] = viewModel.festivalModel.festivals
                         
-                       /*  if (regionIndex > 0) {
-                            festivalList = festivalList.filter { $0.region == "서울" }
-                        }*/
+                        /*  if (regionIndex > 0) {
+                         festivalList = festivalList.filter { $0.region == "서울" }
+                         }*/
                         
                         /* ForEach(festivalList, id: \.self) { festival in
-                            if (regionIndex == 0 || festival.region == regions[regionIndex]) {
-                                Image(.nonselectedSchoolBoxBackground)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 113, height: 121)
-                                    .overlay {
-                                        VStack {
-                                            AsyncImage(url: URL(string: festival.thumbnail)) { image in
-                                                image.image?
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 35, height: 35)
-                                                    .padding(.bottom, 4)
-                                            }
-                                            
-                                            Text(festival.schoolName)
-                                                .font(.system(size: 13))
-                                            
-                                            Text(festival.festivalName)
-                                                .font(.system(size: 12))
-                                                .bold()
-                                            
-                                            Text(formattedDate(from: festival.beginDate) + "-" + formattedDate(from: festival.endDate))
-                                                .font(.system(size: 12))
-                                                .foregroundStyle(.gray)
-                                        }
-                                    }
-                            }
-                        }*/
+                         if (regionIndex == 0 || festival.region == regions[regionIndex]) {
+                         Image(.nonselectedSchoolBoxBackground)
+                         .resizable()
+                         .scaledToFit()
+                         .frame(width: 113, height: 121)
+                         .overlay {
+                         VStack {
+                         AsyncImage(url: URL(string: festival.thumbnail)) { image in
+                         image.image?
+                         .resizable()
+                         .scaledToFit()
+                         .frame(width: 35, height: 35)
+                         .padding(.bottom, 4)
+                         }
+                         
+                         Text(festival.schoolName)
+                         .font(.system(size: 13))
+                         
+                         Text(festival.festivalName)
+                         .font(.system(size: 12))
+                         .bold()
+                         
+                         Text(formattedDate(from: festival.beginDate) + "-" + formattedDate(from: festival.endDate))
+                         .font(.system(size: 12))
+                         .foregroundStyle(.gray)
+                         }
+                         }
+                         }
+                         }*/
                     }
                     .padding(.horizontal)
                 }
@@ -192,7 +192,6 @@ struct IntroView: View {
                 Image(.longButtonBlack)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: .infinity)
                     .overlay {
                         Text(StringLiterals.Intro.complete)
                             .font(.system(size: 17))
@@ -237,10 +236,10 @@ struct IntroView: View {
     func formattedDate(from dateString: String) -> String {
         let dateFormatterGet = DateFormatter()
         dateFormatterGet.dateFormat = "yyyy-MM-dd"
-
+        
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.dateFormat = "MM.dd"
-
+        
         if let date = dateFormatterGet.date(from: dateString) {
             return dateFormatterPrint.string(from: date)
         } else {

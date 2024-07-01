@@ -89,6 +89,6 @@ struct LikedBoothBoxView: View {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    LikedBoothBoxView(viewModel: RootViewModel(), boothID: 1, image: "", name: "Example Booth", description: "Example Description", location: "Example Location")
 }
 

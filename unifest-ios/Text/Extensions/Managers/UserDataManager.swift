@@ -7,6 +7,8 @@
 
 import Foundation
 
+// 사용 안됨
+
 final class UserDataManager: ObservableObject {
     static let shared = UserDataManager()
     static var likeBoothIDList: [Int] = []

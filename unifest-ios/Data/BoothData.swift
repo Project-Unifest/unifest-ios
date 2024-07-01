@@ -203,9 +203,12 @@ class BoothModel: ObservableObject {
     }
     
     func loadStoreListData(completion: @escaping () -> Void) {
+        // API 호출을 통해 부스 데이터를 가져옴
         APIManager.fetchDataGET("/api/booths/1/booths", api: .booth_all, apiType: .GET) { result in
+            // fetchDataGet: 해당 링크에서 데이터를 가져옴
             switch result {
             case .success(let data):
+                // 데이터를 가져오는 데 성공하면 self.booths에 데이터를 설정함(가져온 booth 정보를 BoothModel 클래스의 booths 프로퍼티에 저장)
                 print("Data received in View: \(data)")
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
@@ -572,7 +575,7 @@ struct BoothDataTestView: View {
     @ObservedObject var boothModel = BoothModel()
     
     var body: some View {
-        VStack {
+        ScrollView {
             Text("\(boothModel.booths.count)")
             
             ForEach(boothModel.booths) { festival in

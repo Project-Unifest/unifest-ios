@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+// CalendarTabView 안에 CalendarView, HomeView가 있음
+// CalendarView는 이 preview에서 위에 뜨는 달력
+// HomeView는 그 밑에 O월O일 축제 일정, 다가오는 축제 일정을 보여주는 뷰
+// CalendarWeekView는 ..?
+
 struct CalendarView: View {
     @ObservedObject var viewModel: RootViewModel
     
@@ -69,7 +74,7 @@ struct CalendarView: View {
                                         currentMonth = selectedMonth
                                     }
                                     
-                                    viewModel.festivalModel.getFestivalByDate(year: 2024, month: selectedMonth, day: selectedDay)
+                                    viewModel.festivalModel.getFestivalByDate(year: selectedYear, month: selectedMonth, day: selectedDay)
                                 }
                             
                             let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
