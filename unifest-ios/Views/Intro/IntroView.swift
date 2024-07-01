@@ -249,62 +249,6 @@ struct IntroView: View {
     }
 }
 
-struct SchoolBoxView: View {
-    @Binding var isSelected: Bool
-    let schoolImageURL: String
-    let schoolName: String
-    let festivalName: String
-    let startDate: String
-    let endDate: String
-    
-    var body: some View {
-        Image(isSelected ? .selectedSchoolBoxBackground : .nonselectedSchoolBoxBackground)
-            .resizable()
-            .scaledToFit()
-            .frame(width: 113, height: 121)
-            .overlay {
-                VStack {
-                    AsyncImage(url: URL(string: schoolImageURL)) { image in
-                        image.image?
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 35, height: 35)
-                            .padding(.bottom, 4)
-                    }
-                    
-                    Text(schoolName)
-                        .font(.system(size: 13))
-                    
-                    Text(festivalName)
-                        .font(.system(size: 12))
-                        .bold()
-                    
-                    Text(formattedDate(from: startDate) + "-" + formattedDate(from: endDate))
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                }
-            }
-    }
-    
-    func formattedDate(from dateString: String) -> String {
-        let dateFormatterGet = DateFormatter()
-        dateFormatterGet.dateFormat = "yyyy-MM-dd"
-
-        let dateFormatterPrint = DateFormatter()
-        dateFormatterPrint.dateFormat = "MM.dd"
-
-        if let date = dateFormatterGet.date(from: dateString) {
-            return dateFormatterPrint.string(from: date)
-        } else {
-            return "Error formatting date"
-        }
-    }
-}
-
 #Preview {
     IntroView(viewModel: RootViewModel())
 }
-
-//#Preview {
-//    SchoolBoxView(isSelected: .constant(true), schoolImage: .konkukLogo, schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-//}
