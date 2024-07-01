@@ -335,17 +335,17 @@ struct CalendarTabView: View {
     
     @State private var isInfoPresented: Bool = false
 
-    init(viewModel: RootViewModel) {
+    init(viewModel: RootViewModel) {        
         let date = Date()
-        currentYear = Calendar.current.component(.year, from: date)
-        currentMonth = Calendar.current.component(.month, from: date)
+        _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
+        _currentMonth = State(initialValue: Calendar.current.component(.month, from: date))
         
-        selectedYear = Calendar.current.component(.year, from: date)
-        selectedMonth = Calendar.current.component(.month, from: date)
-        selectedDay = Calendar.current.component(.day, from: date)
+        _selectedYear = State(initialValue: Calendar.current.component(.year, from: date))
+        _selectedMonth = State(initialValue: Calendar.current.component(.month, from: date))
+        _selectedDay = State(initialValue: Calendar.current.component(.day, from: date))
         
-        firstSundayOfYear = Date()
-        currentFirstSunday = Date()
+        _firstSundayOfYear = State(initialValue: Date())
+        _currentFirstSunday = State(initialValue: Date())
         
         self.viewModel = viewModel
     }
