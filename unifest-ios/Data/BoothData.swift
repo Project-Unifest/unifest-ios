@@ -176,6 +176,7 @@ class BoothModel: ObservableObject {
         }
     }
     
+    // 프로젝트 내의 JSON데이터로 테스트용 메서드
     func loadData() {
         if let url = Bundle.main.url(forResource: "boothTest", withExtension: "json") {
             do {
@@ -202,6 +203,7 @@ class BoothModel: ObservableObject {
         }
     }
     
+    // 실제로 서버에서 부스 데이터를 가져오는 메서드
     func loadStoreListData(completion: @escaping () -> Void) {
         // API 호출을 통해 부스 데이터를 가져옴
         APIManager.fetchDataGET("/api/booths/1/booths", api: .booth_all, apiType: .GET) { result in

@@ -57,6 +57,7 @@
 		F80071642C3351360001596F /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071632C3351360001596F /* MenuBarView.swift */; };
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
+		F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */; };
 		F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */; };
 		F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */; };
 		F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */; };
@@ -109,10 +110,11 @@
 		0CF092D02BC038C90009B782 /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeBoothListView.swift; sourceTree = "<group>"; };
 		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Map/IntroView.swift"; sourceTree = SOURCE_ROOT; };
+		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Intro/IntroView.swift"; sourceTree = SOURCE_ROOT; };
 		F80071632C3351360001596F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
+		F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingListView.swift; sourceTree = "<group>"; };
 		F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRequestView.swift; sourceTree = "<group>"; };
 		F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCompleteView.swift; sourceTree = "<group>"; };
 		F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageHeaderView.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				0C9641F12BB94DE700838DA9 /* WaitingView.swift */,
+				F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */,
 				F800716A2C3648390001596F /* WaitingInfoView.swift */,
 			);
 			path = Waiting;
@@ -232,6 +235,7 @@
 				0C2A2C032BE9AEA600EDF359 /* Info.plist */,
 				0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */,
 				0C9D0A5D2BA19DFE00156763 /* ContentView.swift */,
+				0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */,
 				0C9641F62BB94F2F00838DA9 /* ViewModel */,
 				0CE965082BAD678F00539E8C /* Extensions */,
 				0CE965052BAD66AC00539E8C /* Text */,
@@ -240,7 +244,6 @@
 				0C9D0A692BA1A42600156763 /* Views */,
 				0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */,
 				0C9D0A612BA19DFF00156763 /* Preview Content */,
-				0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */,
 			);
 			path = "unifest-ios";
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				0C1A2C6C2BB2718800AD0692 /* AdminMainView.swift in Sources */,
 				0C9D0A5C2BA19DFE00156763 /* unifest_iosApp.swift in Sources */,
 				0CE839D72BF38FBD003E211D /* LikedBoothBoxView.swift in Sources */,
+				F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */,
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
 				0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */,
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
@@ -618,10 +622,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = NCLJJYF4QS;
+				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
@@ -641,6 +646,7 @@
 				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -657,10 +663,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = NCLJJYF4QS;
+				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
@@ -680,6 +687,7 @@
 				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

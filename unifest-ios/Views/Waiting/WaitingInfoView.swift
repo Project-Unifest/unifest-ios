@@ -41,8 +41,18 @@ struct WaitingInfoView: View {
                             VStack {
                                 Spacer()
                                 Text("번째")
+                                    .padding(.bottom, 3)
                             }
                         }
+                        
+//                        VStack {
+//                            Spacer()
+//                            
+//                            Text("입장해주세요")
+//                                .font(.system(size: 30))
+//                                .bold()
+//                            .foregroundStyle(.defaultPink)
+//                        }
                         
                         Spacer()
                         
@@ -65,6 +75,7 @@ struct WaitingInfoView: View {
                                     .font(.system(size: 14))
                                     .bold()
                             }
+                            .padding(.bottom, 5)
                         }
                     }
                     

@@ -10,7 +10,9 @@
 		<true/>
 	</dict>
 	<key>UIBackgroundModes</key>
-	<array/>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIImageName</key>
