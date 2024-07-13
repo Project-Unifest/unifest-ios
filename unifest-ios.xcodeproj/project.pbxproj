@@ -311,6 +311,7 @@
 				F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */,
 				0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */,
 				0CDB46D62BB1E7F400C34AED /* OneMapView.swift */,
+				0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
