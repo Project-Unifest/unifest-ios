@@ -86,6 +86,7 @@ struct MenuView: View {
                     Spacer()
                     
                     if !viewModel.boothModel.likedBoothList.isEmpty {
+                        // 체크한 관심 있는 부스가 있는 경우
                         Button {
                             isListViewPresented.toggle()
                         } label: {
@@ -104,6 +105,7 @@ struct MenuView: View {
                 .padding(.horizontal)
                 
                 if viewModel.boothModel.likedBoothList.isEmpty || randomLikeList.isEmpty {
+                    // 체크한 관심 있는 부스가 없는 경우
                     VStack(alignment: .center) {
                         Text(StringLiterals.Menu.noLikedBoothTitle)
                             .font(.system(size: 16))
@@ -732,5 +734,5 @@ struct MenuView: View {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    MenuView(viewModel: RootViewModel())
 }
