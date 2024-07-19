@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// CalendarTabView에서 O월O일 축제 일정, 다가오는 축제 일정 있는 이 뷰가 HomeView
+
 struct HomeView: View {
     @ObservedObject var viewModel: RootViewModel
     @Binding var selectedMonth: Int

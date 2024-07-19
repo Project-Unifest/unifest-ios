@@ -7,6 +7,18 @@
 
 import SwiftUI
 
+// DetailView가 호출되는 뷰는 총 세 개가 있음
+// 1. MapPageHeaderView의 '인기 부스'를 눌러서 인기 부스 리스트가 나와 그 중 하나를 탭했을 때
+// 2. 탭뷰의 '메뉴'탭의 '관심 부스'에서
+//    viewModel.boothModel.likedBoothList.isEmpty || randomLikeList.isEmpty 조건의 else문 뷰가 나타나
+//    그 리스트의 항목을 탭했을 때
+// 3. 탭뷰의 '메뉴'탭의 '관심 부스'에서, '관심 부스' 리스트에 element가 있다면 '관심부스          더보기 >' 버튼을 보여줌
+//    그 버튼을 탭하면 LikeBoothListView로 이동하는데, 거기서 관심 부스 리스트의 항목을 탭했을 때
+
+// DetailView는 MenuBarView를 포함함
+// MenuBarView의 이미지를 탭하면 isOneImagePresented가 true로 바뀌고,
+// DetailView의 if isOneImagePresented 조건문이 activate되어 메뉴의 사진이 DetailView에 크게 뜸
+
 struct DetailView: View {
     @ObservedObject var viewModel: RootViewModel
     @State private var isMapViewPresented: Bool = false
@@ -170,7 +182,7 @@ struct DetailView: View {
                                 } else {
                                     VStack(spacing: 10) {
                                         ForEach(boothMenu, id: \.self) { menu in
-                                            MenuBar(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0, isImagePresented: $isOneImagePresented, selectedURL: $selectedMenuURL, selectedName: $selectedMenuName, selectedPrice: $selectedMenuPrice)
+                                            MenuBarView(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0, isImagePresented: $isOneImagePresented, selectedURL: $selectedMenuURL, selectedName: $selectedMenuName, selectedPrice: $selectedMenuPrice)
                                         }
                                     }
                                     .padding(.horizontal)
@@ -358,77 +370,4 @@ struct DetailView: View {
                     }
             })
     }
-}
-
-struct MenuBar: View {
-    let imageURL: String
-    let name: String
-    let price: Int
-    @Binding var isImagePresented: Bool
-    @Binding var selectedURL: String
-    @Binding var selectedName: String
-    @Binding var selectedPrice: String
-    
-    var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: imageURL)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 86, height: 86)
-                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                    .onTapGesture {
-                        selectedURL = imageURL
-                        selectedName = name
-                        selectedPrice = formattedPrice(price) + StringLiterals.Detail.won
-                        withAnimation(.spring(duration: 0.1)) {
-                            isImagePresented = true
-                        }
-                    }
-            } placeholder: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.defaultLightGray)
-                        .frame(width: 86, height: 86)
-                    
-                    Image(.noImagePlaceholder)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 50, height: 50)
-                }
-            }
-            .padding(.trailing, 8)
-            
-            VStack(alignment: .leading) {
-                
-                Text(name)
-                    .font(.system(size: 14))
-                    .fontWeight(.semibold)
-                    .padding(.bottom, 1)
-                
-                if price == 0 {
-                    Text("무료")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                } else {
-                    Text(formattedPrice(price) + StringLiterals.Detail.won)
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                }
-            }
-            
-            Spacer()
-        }
-    }
-    
-    func formattedPrice(_ price: Int) -> String {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            
-            if let formattedPrice = formatter.string(from: NSNumber(value: price)) {
-                return "\(formattedPrice)"
-            } else {
-                return "\(price)"
-            }
-        }
 }

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// DetailView에서 MenuBarView의 사진 클릭 시
+// DetailView에서 메뉴의 사진과 정보를 크게 보여줌
+
 struct OneImageView: View {
     @Binding var isPresented: Bool
     let imageURL: String
