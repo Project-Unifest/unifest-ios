@@ -118,6 +118,7 @@ struct APIResponseIntData: Codable {
 class BoothModel: ObservableObject {
     // static let shared = BoothModel()
     
+    // @Published가 objectWillChange.send()를 수행해주므로 willSet { } 구문이 꼭 필요하지는 않은 듯?
     @Published var booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {

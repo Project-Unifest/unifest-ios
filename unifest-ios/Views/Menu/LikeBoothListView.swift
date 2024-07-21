@@ -127,7 +127,7 @@ struct LikeBoothListView: View {
             }
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView(viewModel: viewModel)
+            BoothDetailView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
         }
     }
