@@ -636,7 +636,7 @@ struct MenuView: View {
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            DetailView(viewModel: viewModel)
+            BoothDetailView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)

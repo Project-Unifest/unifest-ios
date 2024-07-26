@@ -13,10 +13,8 @@ struct MenuBarView: View {
     let imageURL: String
     let name: String
     let price: Int
-    @Binding var isImagePresented: Bool
-    @Binding var selectedURL: String
-    @Binding var selectedName: String
-    @Binding var selectedPrice: String
+    @Binding var isMenuImagePresented: Bool
+    @Binding var selectedMenu: SelectedMenuInfo
     
     var body: some View {
         HStack {
@@ -27,11 +25,11 @@ struct MenuBarView: View {
                     .frame(width: 86, height: 86)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .onTapGesture {
-                        selectedURL = imageURL
-                        selectedName = name
-                        selectedPrice = formattedPrice(price) + StringLiterals.Detail.won
+                        selectedMenu.selectedMenuURL = imageURL
+                        selectedMenu.selectedMenuName = name
+                        selectedMenu.selectedMenuPrice = formattedPrice(price) + StringLiterals.Detail.won
                         withAnimation(.spring(duration: 0.1)) {
-                            isImagePresented = true
+                            isMenuImagePresented = true
                         }
                     }
             } placeholder: {
