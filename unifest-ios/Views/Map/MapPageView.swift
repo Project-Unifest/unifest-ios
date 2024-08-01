@@ -19,7 +19,7 @@ struct MapPageView: View {
     @ObservedObject var mapViewModel: MapViewModel
 
     @State private var isDetailViewPresented: Bool = false
-    
+    @State private var tappedBoothId = 0
     @State private var searchText: String = ""
     
     var body: some View {
@@ -141,6 +141,7 @@ struct MapPageView: View {
                                             .onTapGesture {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
                                                 viewModel.boothModel.loadBoothDetail(booth.id)
+                                                tappedBoothId = booth.id
                                                 isDetailViewPresented = true
                                             }
                                     }
@@ -155,7 +156,7 @@ struct MapPageView: View {
             
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel)
+            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {

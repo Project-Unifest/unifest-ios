@@ -10,6 +10,7 @@ import SwiftUI
 struct BoothFooterView: View {
     @ObservedObject var viewModel: RootViewModel
     @Binding var isReloadButtonPresent: Bool
+    @Binding var isWaitingRequestViewPresented: Bool
     
     var body: some View {
         VStack {
@@ -52,29 +53,31 @@ struct BoothFooterView: View {
                 .padding(.top, 8)
                 
                 Button {
-                    // TODO: To Waiting
+                    isWaitingRequestViewPresented = true
                 } label: {
                     Text("")
-                        .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
+//                        .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
+                        .roundedButton(background: .defaultPink, strokeColor: .clear, height: 45, cornerRadius: 10)
                         .overlay {
-                            if viewModel.boothModel.selectedBooth == nil {
-                                if !isReloadButtonPresent {
-                                    ProgressView()
-                                } else {
-                                    Text(StringLiterals.Detail.noWaitingBooth)
-                                        .foregroundStyle(.white)
-                                        .font(.system(size: 14))
-                                        .bold()
-                                }
-                            } else {
-                                Text(StringLiterals.Detail.noWaitingBooth)
+//                            if viewModel.boothModel.selectedBooth == nil {
+//                                if !isReloadButtonPresent {
+//                                    ProgressView()
+//                                } else {
+//                                    Text(StringLiterals.Detail.noWaitingBooth)
+//                                        .foregroundStyle(.white)
+//                                        .font(.system(size: 14))
+//                                        .bold()
+//                                }
+//                            } else {
+//                                Text(StringLiterals.Detail.noWaitingBooth)
+                            Text("웨이팅 신청")
                                     .foregroundStyle(.white)
                                     .font(.system(size: 14))
                                     .bold()
-                            }
+                            //}
                         }
                 }
-                .disabled(true)
+                // .disabled(true)
                 
                 Spacer()
                     .frame(width: 20)
@@ -88,5 +91,5 @@ struct BoothFooterView: View {
 }
 
 #Preview {
-    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true))
+    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingRequestViewPresented: .constant(false))
 }

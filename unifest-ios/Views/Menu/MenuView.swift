@@ -14,6 +14,7 @@ struct MenuView: View {
     
     @ObservedObject var viewModel: RootViewModel
     @State private var isListViewPresented: Bool = false
+    @State private var tappedBoothId = 0
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
     
@@ -129,6 +130,7 @@ struct MenuView: View {
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
+                                            tappedBoothId = boothID
                                             isDetailViewPresented = true
                                         }
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -164,6 +166,7 @@ struct MenuView: View {
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
+                                            tappedBoothId = boothID
                                             isDetailViewPresented = true
                                         }
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -636,7 +639,7 @@ struct MenuView: View {
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel)
+            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)

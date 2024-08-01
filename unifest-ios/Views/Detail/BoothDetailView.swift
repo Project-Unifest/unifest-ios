@@ -29,21 +29,28 @@ struct BoothDetailView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
     
+    let currentBoothId: Int
     @State private var isReloadButtonPresent: Bool = false
     @State private var isMenuImagePresented: Bool = false
     @State private var menu = SelectedMenuInfo() // MenuBarView에서 음식 사진을 탭했을 때 MenuImageView로 음식 정보를 전달하기 위해 선언한 변수
     @State private var selectedBoothHours = 0 // 주간부스(0), 야간부스(1)
+    @State private var isWaitingRequestViewPresented: Bool = false
+    @State private var isWaitingCompleteViewPresented: Bool = false
     
     var body: some View {
         VStack {
             ZStack {
-                ScrollView {
-                    BoothInfoView(viewModel: viewModel, selectedBoothHours: $selectedBoothHours, isReloadButtonPresent: $isReloadButtonPresent)
+                VStack {
+                    ScrollView {
+                        BoothInfoView(viewModel: viewModel, selectedBoothHours: $selectedBoothHours, isReloadButtonPresent: $isReloadButtonPresent)
+                        
+                        BoothMenuView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isMenuImagePresented: $isMenuImagePresented, selectedMenu: $menu)
+                    }
+                    .ignoresSafeArea(edges: .top)
+                    .background(.background)
                     
-                    BoothMenuView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isMenuImagePresented: $isMenuImagePresented, selectedMenu: $menu)
+                    BoothFooterView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isWaitingRequestViewPresented: $isWaitingRequestViewPresented)
                 }
-                .ignoresSafeArea(edges: .top)
-                .background(.background)
                 
                 if isMenuImagePresented {
                     MenuImageView(isPresented: $isMenuImagePresented, menu: menu)
@@ -53,11 +60,18 @@ struct BoothDetailView: View {
                             menu.selectedMenuPrice = ""
                         }
                 }
+                
+                if isWaitingRequestViewPresented {
+                    WaitingRequestView(isWaitingRequestViewPresented: $isWaitingRequestViewPresented, isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented, boothId: currentBoothId)
+                }
+                
+                if isWaitingCompleteViewPresented {
+                    WaitingCompleteView(isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented)
+                }
             }
-            
-            BoothFooterView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent)
         }
         .onAppear {
+            print("Current Booth ID: \(currentBoothId)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 self.isReloadButtonPresent = true
             }
@@ -76,7 +90,7 @@ struct BoothDetailView: View {
     return Group {
         //        Text("")
         //            .sheet(isPresented: .constant(true)) {
-        BoothDetailView(viewModel: viewModel)
+        BoothDetailView(viewModel: viewModel, currentBoothId: 0)
             .onAppear {
                 viewModel.boothModel.selectedBoothID = 119
                 viewModel.boothModel.loadBoothDetail(119)

@@ -16,7 +16,7 @@ struct WaitingInfoView: View {
                 VStack(spacing: 10) {
                     HStack {
                         Text("현재 내 순서")
-                            .font(.system(size: 14))
+                            .font(.pretendard(weight: .p4, size: 14))
                         
                         Spacer()
                         
@@ -24,35 +24,24 @@ struct WaitingInfoView: View {
                             .resizable()
                             .frame(width: 10.66, height: 14.38)
                         Text("컴공 주점")
-                            .font(.system(size: 15))
-                            .bold()
+                            .font(.pretendard(weight: .p6, size: 15))
                     }
                     
-                    HStack {
-                        HStack(spacing: 2) {
-                            VStack {
-                                Spacer()
-                                Text("35")
-                                    .font(.system(size: 40))
-                                    .bold()
+                    HStack(alignment: .bottom) {
+                        HStack(alignment: .bottom, spacing: 2) {
+                                Text("20")
+                                    .font(.pretendard(weight: .p7, size: 45))
                                     .foregroundStyle(.defaultPink)
-                            }
                             
-                            VStack {
-                                Spacer()
                                 Text("번째")
-                                    .padding(.bottom, 3)
-                            }
-                        }
-                        
-//                        VStack {
-//                            Spacer()
-//                            
+                                    .font(.pretendard(weight: .p5, size: 16))
+                                    .baselineOffset(9)
+                            
 //                            Text("입장해주세요")
-//                                .font(.system(size: 30))
-//                                .bold()
-//                            .foregroundStyle(.defaultPink)
-//                        }
+//                                .font(.pretendard(weight: .p7, size: 30))
+//                                .foregroundStyle(.defaultPink)
+//                                .baselineOffset(4)
+                        }
                         
                         Spacer()
                         
@@ -60,22 +49,19 @@ struct WaitingInfoView: View {
                             Spacer()
                             HStack(spacing: 5) {
                                 Text("웨이팅 번호")
-                                    .font(.system(size: 14))
                                 Text("112")
-                                    .font(.system(size: 14))
-                                    .bold()
+                                    .font(.pretendard(weight: .p7, size: 14))
                                 
                                 Divider()
                                     .padding(.horizontal, 7)
                                     .frame(height: 14)
                                 
                                 Text("인원")
-                                    .font(.system(size: 14))
                                 Text("3")
-                                    .font(.system(size: 14))
-                                    .bold()
+                                    .font(.pretendard(weight: .p7, size: 14))
                             }
-                            .padding(.bottom, 5)
+                            .font(.pretendard(weight: .p4, size: 14))
+                            .baselineOffset(9)
                         }
                     }
                     
@@ -88,7 +74,7 @@ struct WaitingInfoView: View {
                                 .frame(width: 158, height: 44)
                                 .overlay {
                                     Text("웨이팅 취소")
-                                        .font(.system(size: 14))
+                                        .font(.pretendard(weight: .p5, size: 14))
                                         .foregroundStyle(.gray)
                                 }
                         }
@@ -101,7 +87,7 @@ struct WaitingInfoView: View {
                                 .frame(width: 158, height: 44)
                                 .overlay {
                                     Text("부스 확인하기")
-                                        .font(.system(size: 14))
+                                        .font(.pretendard(weight: .p5, size: 14))
                                         .foregroundStyle(.gray)
                                 }
                         }

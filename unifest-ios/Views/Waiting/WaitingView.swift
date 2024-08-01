@@ -9,11 +9,8 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
-    @Binding var tabViewSelection: Int
-    
-    @State private var isWaitingRequested = true
-    
-    @State private var showAppInstallAlarmView = true
+    @State private var isWaitingRequested = false
+    // @State private var showAppInstallAlarmView = true
     
     var body: some View {
         ZStack {
@@ -42,16 +39,41 @@ struct WaitingView: View {
                         .padding(.horizontal, 30)
                     }
                 
-                WaitingListView(isWaitingRequested: $isWaitingRequested, tabViewSelection: $tabViewSelection)
+                HStack {
+                    Text("총 10건")
+                        .font(.pretendard(weight: .p6, size: 11))
+                        .foregroundStyle(.gray545454)
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Button {
+                            
+                        } label: {
+                            Image(systemName: "chevron.down")
+                                .resizable()
+                                .frame(width: 7, height: 7)
+                                .foregroundStyle(.gray545454)
+                            Text("정렬")
+                                .font(.pretendard(weight: .p6, size: 11))
+                                .foregroundStyle(.gray545454)
+                                .padding(.leading, -3)
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                
+                WaitingListView(isWaitingRequested: $isWaitingRequested)
             }
             
-            if showAppInstallAlarmView {
-                AppInstallAlarmView(showAppInstallAlarmView: $showAppInstallAlarmView)
-            }
+//            if showAppInstallAlarmView {
+//                AppInstallAlarmView(showAppInstallAlarmView: $showAppInstallAlarmView)
+//            }
         }
     }
 }
 
 #Preview {
-    WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
+    WaitingView(viewModel: RootViewModel())
 }

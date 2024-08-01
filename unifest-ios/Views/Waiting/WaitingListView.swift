@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WaitingListView: View {
     @Binding var isWaitingRequested: Bool
-    @Binding var tabViewSelection: Int
+    @EnvironmentObject var tabSelect: TabSelect
     
     var body: some View {
         if isWaitingRequested {
@@ -27,7 +27,7 @@ struct WaitingListView: View {
                 .padding(.bottom, 4)
             
             Button {
-                tabViewSelection = 1
+                tabSelect.selectedTab = 1
             } label: {
                 HStack(spacing: 0) {
                     Text(StringLiterals.Waiting.gotoMapView)
@@ -46,5 +46,5 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(isWaitingRequested: .constant(true), tabViewSelection: .constant(1))
+    WaitingListView(isWaitingRequested: .constant(true))
 }

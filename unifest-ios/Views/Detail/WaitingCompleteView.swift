@@ -9,7 +9,9 @@ import SwiftUI
 
 struct WaitingCompleteView: View {
     @State private var number: Int = 2
+    @Binding var isWaitingCompleteViewPresented: Bool
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var tabSelect: TabSelect
     
     var body: some View {
         ZStack {
@@ -18,7 +20,7 @@ struct WaitingCompleteView: View {
             
             Image(.waitingBackground)
                 .resizable()
-                .frame(width: 301, height: 290)
+                .frame(width: 301, height: 266)
                 .overlay {
                     VStack {
                         HStack {
@@ -35,7 +37,7 @@ struct WaitingCompleteView: View {
                             Spacer()
                             
                             Button {
-                                dismiss()
+                                isWaitingCompleteViewPresented = false
                             } label: {
                                 Image(systemName: "xmark")
                                     .resizable()
@@ -117,7 +119,9 @@ struct WaitingCompleteView: View {
                             }
                             
                             Button {
-                                
+                                // isWaitingCompleteViewPresented = false
+                                dismiss() // dismiss()하면 BoothDetailView도 같이 내려감 의도한 거긴 한데 왜 되지..?
+                                tabSelect.selectedTab = 2
                             } label: {
                                 Image(.shortPinkButton)
                                     .overlay {
@@ -135,5 +139,5 @@ struct WaitingCompleteView: View {
 }
 
 #Preview {
-    WaitingCompleteView()
+    WaitingCompleteView(isWaitingCompleteViewPresented: .constant(false))
 }

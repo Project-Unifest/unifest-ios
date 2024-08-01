@@ -75,6 +75,9 @@
 		F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */; };
 		F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */; };
 		F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */; };
+		F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */; };
+		F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */; };
+		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +149,8 @@
 		F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRequestView.swift; sourceTree = "<group>"; };
 		F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCompleteView.swift; sourceTree = "<group>"; };
 		F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageHeaderView.swift; sourceTree = "<group>"; };
+		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
+		F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-Model.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C683ABA2BF8F12C0076ECCF /* FirebaseMessaging in Frameworks */,
+				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
 				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
 			);
@@ -236,6 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
+				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -310,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
+				F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -433,6 +441,7 @@
 				0C244FCF2BF6837C0047F23D /* ConfettiSwiftUI */,
 				0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */,
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
+				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -465,6 +474,7 @@
 			packageReferences = (
 				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -505,6 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C7A117E2BF25F25008713B7 /* BoothData.swift in Sources */,
+				F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */,
 				0C6523932BC131F00085232D /* HomeView.swift in Sources */,
 				0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */,
 				0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */,
@@ -541,6 +552,7 @@
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
+				F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */,
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
@@ -802,6 +814,14 @@
 				minimumVersion = 10.26.0;
 			};
 		};
+		F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -819,6 +839,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		F8ABA9412C5A7DEF003A8CDB /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

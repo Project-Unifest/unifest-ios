@@ -14,8 +14,9 @@ struct unifest_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            // RootView(rootViewModel: RootViewModel())
-            WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
+            RootView(rootViewModel: RootViewModel())
+            // WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
+            // WaitingRequestView()
         }
     }
 }
