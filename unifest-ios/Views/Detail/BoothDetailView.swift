@@ -28,12 +28,14 @@ struct SelectedMenuInfo {
 struct BoothDetailView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.colorScheme) var colorScheme
     
     let currentBoothId: Int
     @State private var isReloadButtonPresent: Bool = false
     @State private var isMenuImagePresented: Bool = false
     @State private var menu = SelectedMenuInfo() // MenuBarView에서 음식 사진을 탭했을 때 MenuImageView로 음식 정보를 전달하기 위해 선언한 변수
     @State private var selectedBoothHours = 0 // 주간부스(0), 야간부스(1)
+    @State private var isWaitingPinViewPresented: Bool = false
     @State private var isWaitingRequestViewPresented: Bool = false
     @State private var isWaitingCompleteViewPresented: Bool = false
     
@@ -47,9 +49,9 @@ struct BoothDetailView: View {
                         BoothMenuView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isMenuImagePresented: $isMenuImagePresented, selectedMenu: $menu)
                     }
                     .ignoresSafeArea(edges: .top)
-                    .background(.background)
+                    .background(colorScheme == .dark ? Color.grey100 : Color.white)
                     
-                    BoothFooterView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isWaitingRequestViewPresented: $isWaitingRequestViewPresented)
+                    BoothFooterView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isWaitingPinViewPresented: $isWaitingPinViewPresented)
                 }
                 
                 if isMenuImagePresented {
@@ -59,6 +61,10 @@ struct BoothDetailView: View {
                             menu.selectedMenuName = ""
                             menu.selectedMenuPrice = ""
                         }
+                }
+                
+                if isWaitingPinViewPresented {
+                    WaitingPinView(boothId: currentBoothId, isWaitingPinViewPresented: $isWaitingPinViewPresented, isWaitingRequestViewPresented: $isWaitingRequestViewPresented)
                 }
                 
                 if isWaitingRequestViewPresented {
@@ -95,6 +101,7 @@ struct BoothDetailView: View {
                 viewModel.boothModel.selectedBoothID = 119
                 viewModel.boothModel.loadBoothDetail(119)
             }
+            .environmentObject(WaitingViewModel())
         //            }
     }
 }

@@ -14,9 +14,10 @@ struct WaitingRequestView: View {
     @State private var isPhoneNumberValid = false
     @State private var isComplete = false // 웨이팅 완료 여부
     @State private var isPolicyAgreed = false
-    @StateObject var waiting = WaitingViewModel()
+    @EnvironmentObject var waitingVM: WaitingViewModel
     @Binding var isWaitingRequestViewPresented: Bool
     @Binding var isWaitingCompleteViewPresented: Bool
+    @FocusState private var isPhoneNumberTextFieldFocused: Bool
     let boothId: Int
     @Environment(\.dismiss) var dismiss
     
@@ -25,8 +26,8 @@ struct WaitingRequestView: View {
             Color.black.opacity(0.66)
                 .ignoresSafeArea()
             
-            Image(.waitingBackground)
-                .resizable()
+            Color.ufWhite
+                .cornerRadius(10)
                 .frame(width: 301, height: 290)
                 .overlay {
                     VStack {
@@ -37,9 +38,12 @@ struct WaitingRequestView: View {
                             Spacer()
                             
                             Image(.marker)
+                                .resizable()
+                                .frame(width: 11, height: 15)
+                                .padding(.trailing, -1)
                             Text("컴공 주점")
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
+                                .font(.pretendard(weight: .p6, size: 15))
+                                .foregroundStyle(.grey900)
                             
                             Spacer()
                             
@@ -49,19 +53,20 @@ struct WaitingRequestView: View {
                                 Image(systemName: "xmark")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 15, height: 15)
-                                    .foregroundColor(.gray)
+                                    .frame(width: 11, height: 11)
+                                    .foregroundColor(.grey600)
                             }
                         }
                         .padding(.horizontal)
                         
                         Text("현재 내 앞 웨이팅")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.darkGray)
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey600)
+                            .padding(.bottom, -5)
                         
-                        Text(String(waiting.waitingTeamCount) + "팀")
-                            .font(.system(size: 28))
-                            .fontWeight(.bold)
+                        Text(String(waitingVM.waitingTeamCount) + "팀")
+                            .font(.pretendard(weight: .p7, size: 28))
+                            .foregroundStyle(.grey900)
                             .padding(.bottom, 1)
                         
                         Divider()
@@ -70,8 +75,8 @@ struct WaitingRequestView: View {
                         
                         HStack {
                             Text("인원 수")
-                                .font(.system(size: 13))
-                                .fontWeight(.semibold)
+                                .font(.pretendard(weight: .p6, size: 14))
+                                .foregroundStyle(.grey900)
                             
                             Spacer()
                             
@@ -82,16 +87,15 @@ struct WaitingRequestView: View {
                                     Image(.circleGrayButton)
                                         .overlay {
                                             Text("-")
-                                                .font(.system(size: 20))
-                                                .foregroundStyle(partySize == 1 ? .gray : .darkGray)
+                                                .font(.pretendard(weight: .p3, size: 20))
+                                                .foregroundStyle(partySize == 1 ? .grey400 : .grey900)
                                         }
                                 }
                                 .disabled(partySize == 1)
                                 
                                 Text("\(partySize)")
-                                    .font(.system(size: 15))
-                                    .bold()
-                                    .foregroundStyle(.darkGray)
+                                    .font(.pretendard(weight: .p7, size: 15))
+                                    .foregroundStyle(.grey900)
                                     .frame(width: 30)
                                 
                                 Button {
@@ -100,15 +104,17 @@ struct WaitingRequestView: View {
                                     Image(.circleGrayButton)
                                         .overlay {
                                             Text("+")
-                                                .font(.system(size: 20))
-                                                .foregroundStyle(.darkGray)
+                                                .font(.pretendard(weight: .p3, size: 20))
+                                                .foregroundStyle(partySize == 1 ? .grey400 : .grey900)
                                         }
                                 }
                             }
                         }
                         .padding(.horizontal)
                         
-                        Image(.waitingPopupTextFieldBackground)
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(Color.grey400, lineWidth: 1)
+                            .frame(width: 272, height: 39)
                             .overlay {
                                 TextField("전화번호를 입력해주세요", text: $formattedPhoneNumber)
                                     .font(.system(size: 13))
@@ -130,6 +136,7 @@ struct WaitingRequestView: View {
                                         
                                         print("저장된 전화번호: \(phoneNumber)")
                                     }
+                                    .focused($isPhoneNumberTextFieldFocused)
                             }
                             .padding(.bottom, 4)
                         
@@ -162,10 +169,13 @@ struct WaitingRequestView: View {
                         }
                         
                         Button {
+                            waitingVM.addWaiting(boothId: boothId, phoneNumber: phoneNumber, deviceId: UIDevice.current.deviceToken, partySize: partySize)
                             isWaitingRequestViewPresented = false
                             isWaitingCompleteViewPresented = true
                         } label: {
-                            Image(isPhoneNumberValid == false || isPolicyAgreed == false ? .waitingPopupButtonDisabled : .waitingPopupButton)
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(isPhoneNumberValid == false || isPolicyAgreed == false ? Color.grey600 : Color.primary500)
+                                .frame(width: 275, height: 45)
                                 .overlay {
                                     Text("웨이팅 신청")
                                         .font(.system(size: 13))
@@ -173,12 +183,16 @@ struct WaitingRequestView: View {
                                         .fontWeight(.semibold)
                                 }
                         }
+                        .padding(.top, 3)
                         .disabled(isPhoneNumberValid == false || isPolicyAgreed == false)
                     }
                 }
         }
+        .onAppear {
+            isPhoneNumberTextFieldFocused = true
+        }
         .task {
-            await waiting.fetchWaitingTeamCount(boothId: boothId)
+            await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
     }
     
@@ -219,4 +233,6 @@ struct WaitingRequestView: View {
 
 #Preview {
     WaitingRequestView(isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false), boothId: 0)
+        .environmentObject(WaitingViewModel())
+        // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }

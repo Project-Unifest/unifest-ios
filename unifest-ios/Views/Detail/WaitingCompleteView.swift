@@ -10,6 +10,7 @@ import SwiftUI
 struct WaitingCompleteView: View {
     @State private var number: Int = 2
     @Binding var isWaitingCompleteViewPresented: Bool
+    @EnvironmentObject var waitingVM: WaitingViewModel
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var tabSelect: TabSelect
     
@@ -18,21 +19,24 @@ struct WaitingCompleteView: View {
             Color.black.opacity(0.66)
                 .ignoresSafeArea()
             
-            Image(.waitingBackground)
-                .resizable()
+            Color.ufWhite
+                .cornerRadius(10)
                 .frame(width: 301, height: 266)
                 .overlay {
                     VStack {
                         HStack {
                             Spacer()
-                                .frame(width: 15, height: 15)
+                                .frame(width: 11, height: 11)
                             
                             Spacer()
                             
                             Image(.marker)
+                                .resizable()
+                                .frame(width: 11, height: 15)
+                                .padding(.trailing, -1)
                             Text("컴공 주점")
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
+                                .font(.pretendard(weight: .p6, size: 15))
+                                .foregroundStyle(.grey900)
                             
                             Spacer()
                             
@@ -42,64 +46,59 @@ struct WaitingCompleteView: View {
                                 Image(systemName: "xmark")
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 15, height: 15)
-                                    .foregroundColor(.gray)
+                                    .frame(width: 11, height: 11)
+                                    .foregroundColor(.grey600)
                             }
                         }
                         .padding(.horizontal)
+                        .padding(.bottom, 8)
                         
                         Text("웨이팅 등록 완료!")
-                            .font(.system(size: 20))
-                            .fontWeight(.semibold)
+                            .font(.pretendard(weight: .p7, size: 20))
+                            .foregroundStyle(.grey900)
                             .padding(.bottom, 1)
                         
                         Text("입장 순서가 되면 안내 해드릴게요.")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.gray)
+                            .font(.pretendard(weight: .p4, size: 13))
+                            .foregroundStyle(.grey600)
                         
                         Divider()
-                            .padding(.horizontal)
+                            .foregroundStyle(.grey200)
                             .padding(.bottom, 4)
                         
                         HStack {
                             Spacer()
                             VStack(spacing: 8) {
                                 Text("웨이팅 번호")
-                                    .font(.system(size: 13))
-                                    .fontWeight(.medium)
-                                Text("112번")
-                                    .font(.system(size: 20))
-                                    .bold()
+                                    .font(.pretendard(weight: .p5, size: 13))
+                                    .foregroundStyle(.grey900)
+                                Text(String(waitingVM.requestedWaitingInfo.waitingId) + "번")
+                                    .font(.pretendard(weight: .p7, size: 20))
+                                    .foregroundStyle(.grey900)
                             }
                             
                             Spacer()
-                            Text("∙")
-                                .font(.system(size: 13))
-                                .foregroundStyle(.gray)
                             Spacer()
                             
                             VStack(spacing: 8) {
                                 Text("인원 수")
-                                    .font(.system(size: 13))
-                                    .fontWeight(.medium)
-                                Text("3명")
-                                    .font(.system(size: 20))
-                                    .bold()
+                                    .font(.pretendard(weight: .p5, size: 13))
+                                    .foregroundStyle(.grey900)
+                                Text(String(waitingVM.requestedWaitingInfo.partySize) + "명")
+                                    .font(.pretendard(weight: .p7, size: 20))
+                                    .foregroundStyle(.grey900)
                             }
                             
                             Spacer()
-                            Text("∙")
-                                .font(.system(size: 13))
-                                .foregroundStyle(.gray)
                             Spacer()
                             
                             VStack(spacing: 8) {
                                 Text("내 앞 웨이팅")
-                                    .font(.system(size: 13))
-                                    .fontWeight(.medium)
-                                Text("35팀")
-                                    .font(.system(size: 20))
-                                    .bold()
+                                    .font(.pretendard(weight: .p5, size: 13))
+                                    .foregroundStyle(.grey900)
+                                Text(String(waitingVM.waitingTeamCount) + "팀")
+                                    .font(.pretendard(weight: .p7, size: 20))
+                                    .foregroundStyle(.grey900)
                             }
                             Spacer()
                         }
@@ -109,12 +108,13 @@ struct WaitingCompleteView: View {
                             Button {
                                 
                             } label: {
-                                Image(.shortGrayButton)
+                                RoundedRectangle(cornerRadius: 5)
+                                    .strokeBorder(Color.grey400, lineWidth: 1)
+                                    .frame(width: 133, height: 45)
                                     .overlay {
                                         Text("웨이팅 취소")
-                                            .font(.system(size: 13))
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(.darkGray)
+                                            .font(.pretendard(weight: .p6, size: 13))
+                                            .foregroundStyle(.grey500)
                                     }
                             }
                             
@@ -123,11 +123,12 @@ struct WaitingCompleteView: View {
                                 dismiss() // dismiss()하면 BoothDetailView도 같이 내려감 의도한 거긴 한데 왜 되지..?
                                 tabSelect.selectedTab = 2
                             } label: {
-                                Image(.shortPinkButton)
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(Color.primary500)
+                                    .frame(width: 133, height: 45)
                                     .overlay {
                                         Text("순서 확인하기")
-                                            .font(.system(size: 13))
-                                            .fontWeight(.semibold)
+                                            .font(.pretendard(weight: .p6, size: 13))
                                             .foregroundStyle(.white)
                                     }
                             }
@@ -140,4 +141,5 @@ struct WaitingCompleteView: View {
 
 #Preview {
     WaitingCompleteView(isWaitingCompleteViewPresented: .constant(false))
+        .environmentObject(WaitingViewModel())
 }

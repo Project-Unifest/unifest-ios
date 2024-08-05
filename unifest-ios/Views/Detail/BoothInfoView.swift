@@ -13,6 +13,7 @@ struct BoothInfoView: View {
     @Binding var selectedBoothHours: Int
     @Binding var isReloadButtonPresent: Bool
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     let boothHours = ["주간부스", "야간부스"]
     
     enum BoothHours: String, CaseIterable {
@@ -78,8 +79,8 @@ struct BoothInfoView: View {
                         Spacer()
                         Text(boothHours[index])
                             .padding(.bottom, 12)
-                            .font(.pretendard(weight: .p6, size: 15))
-                            .foregroundStyle(self.selectedBoothHours == index ? .black : .grayBABABF)
+                            .font(self.selectedBoothHours == index ? .pretendard(weight: .p7, size: 13) : .pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(self.selectedBoothHours == index ? .grey900 : .grey600)
                             .onTapGesture {
                                 withAnimation {
                                     self.selectedBoothHours = index
@@ -91,10 +92,10 @@ struct BoothInfoView: View {
                         VStack {
                             Spacer()
                             if self.selectedBoothHours == index {
-                                Color.black
+                                Color.grey900
                                     .frame(height: 1)
                             } else {
-                                Color.grayBABABF
+                                Color.grey200
                                     .frame(height: 1)
                             }
                         }
@@ -103,7 +104,7 @@ struct BoothInfoView: View {
                 .padding(.top, 5)
             }
             
-            // 부스 이름(쿠쿠네 분식)부터 ~
+            // 부스 이름(쿠쿠네 분식)부터 '위치 확인하기' 버튼까지
             if viewModel.boothModel.selectedBooth == nil {
                 VStack {
                     if !isReloadButtonPresent {
@@ -139,9 +140,8 @@ struct BoothInfoView: View {
                     if let warning = viewModel.boothModel.selectedBooth?.warning {
                         if !warning.isEmpty {
                             Text(viewModel.boothModel.selectedBooth?.warning ?? "")
-                                .font(.system(size: 11))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.accent)
+                                .font(.pretendard(weight: .p6, size: 10))
+                                .foregroundStyle(.primary500)
                                 .lineLimit(3)
                         }
                     }
@@ -154,8 +154,8 @@ struct BoothInfoView: View {
                     if !description.isEmpty {
                         VStack {
                             Text(viewModel.boothModel.selectedBooth?.description ?? "")
-                                .font(.system(size: 13))
-                                .foregroundStyle(.darkGray)
+                                .font(.pretendard(weight: .p4, size: 13))
+                                .foregroundStyle(.grey700)
                                 .padding(.bottom)
                                 .multilineTextAlignment(.leading)
                         }
@@ -165,7 +165,7 @@ struct BoothInfoView: View {
                 }
                 
                 HStack {
-                    Image(.greenMarker)
+                    Image(.marker)
                     
                     MarqueeText(text: viewModel.boothModel.selectedBooth?.location ?? "", font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
                     // Text(viewModel.boothModel.selectedBooth?.location ?? "")
@@ -181,25 +181,25 @@ struct BoothInfoView: View {
                 } label: {
                     // Image(.longPinkButton)
                     Text("")
-                        .roundedButton(background: .defaultWhite, strokeColor: .accent, height: 33, cornerRadius: 10)
+                        .roundedButton(background: colorScheme == .dark ? Color.grey100 : Color.white, strokeColor: .primary500, height: 33, cornerRadius: 10)
                         .padding(.horizontal)
                         .overlay {
                             Text(StringLiterals.Detail.openLocation)
-                                .font(.system(size: 13))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.accent)
+                                .font(.pretendard(weight: .p6, size: 13))
+                                .foregroundStyle(.primary500)
                         }
                 }
                 .padding(.bottom)
             }
             
-            Text("").boldLine().padding(.bottom, 8)
+            Text("").boldLine()
             /* Image(.boldLine)
              .resizable()
              .scaledToFit()
              .frame(maxWidth: .infinity)
              .padding(.bottom, 8)*/
         }
+        .background(colorScheme == .dark ? Color.grey100 : Color.white)
         .fullScreenCover(isPresented: $isMapViewPresented, content: {
             if #available(iOS 17, *) {
                 OneMapViewiOS17(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)

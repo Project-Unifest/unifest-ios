@@ -78,6 +78,7 @@
 		F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */; };
 		F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
+		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +152,7 @@
 		F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageHeaderView.swift; sourceTree = "<group>"; };
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-Model.swift"; sourceTree = "<group>"; };
+		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +380,7 @@
 				F80071632C3351360001596F /* MenuBarView.swift */,
 				0C2AA3C52BFBBBAF008FB5DF /* MenuImageView.swift */,
 				F84C6F902C4D1B7D00D9E414 /* BoothFooterView.swift */,
+				F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */,
 				F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */,
 				F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */,
 			);
@@ -554,6 +557,7 @@
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */,
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
+				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
 				F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */,

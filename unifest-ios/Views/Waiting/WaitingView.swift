@@ -9,7 +9,8 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
-    @State private var isWaitingRequested = false
+    @EnvironmentObject var waiting: WaitingViewModel
+    @State private var isRequestedWaitingExists = true
     // @State private var showAppInstallAlarmView = true
     
     var body: some View {
@@ -17,54 +18,28 @@ struct WaitingView: View {
             VStack {
                 HStack {
                     Text(StringLiterals.Waiting.title)
-                        .font(.system(size: 20))
-                        .fontWeight(.semibold)
+                        .font(.pretendard(weight: .p6, size: 20))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                 }
                 .padding()
                 
                 Text("")
-                    .roundedButton(background: .defaultLightPink, strokeColor: .accent, height: 34, cornerRadius: 30)
+                    .roundedButton(background: .primary50, strokeColor: .accent, height: 34, cornerRadius: 30)
                     .padding(.horizontal)
                     .overlay {
                         HStack {
                             Text(StringLiterals.Waiting.myWaiting)
-                                .font(.system(size: 13))
-                                .bold()
-                                .foregroundStyle(.defaultPink)
+                                .font(.pretendard(weight: .p7, size: 13))
+                                .foregroundStyle(.primary500)
                             
                             Spacer()
                         }
                         .padding(.horizontal, 30)
                     }
                 
-                HStack {
-                    Text("총 10건")
-                        .font(.pretendard(weight: .p6, size: 11))
-                        .foregroundStyle(.gray545454)
-                    
-                    Spacer()
-                    
-                    HStack {
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "chevron.down")
-                                .resizable()
-                                .frame(width: 7, height: 7)
-                                .foregroundStyle(.gray545454)
-                            Text("정렬")
-                                .font(.pretendard(weight: .p6, size: 11))
-                                .foregroundStyle(.gray545454)
-                                .padding(.leading, -3)
-                        }
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-                
-                WaitingListView(isWaitingRequested: $isWaitingRequested)
+                WaitingListView(isRequestedWaitingExists: $isRequestedWaitingExists)
             }
             
 //            if showAppInstallAlarmView {

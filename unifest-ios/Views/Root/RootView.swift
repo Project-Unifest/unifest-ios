@@ -12,6 +12,7 @@ struct RootView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @ObservedObject var networkManager: NetworkManager
     @StateObject var tabSelect = TabSelect()
+    @StateObject var waitingVM = WaitingViewModel()
     
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
@@ -87,6 +88,7 @@ struct RootView: View {
                         .tag(3)
                 }
                 .environmentObject(tabSelect)
+                .environmentObject(waitingVM)
             }
             
             if !networkManager.isConnected {

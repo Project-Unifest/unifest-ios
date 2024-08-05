@@ -11,7 +11,7 @@ import Foundation
 struct AddWaitingResponse: Codable {
     let code: String
     let message: String
-    let data: AddWaitingResult
+    let data: AddWaitingResult?
 }
 
 struct AddWaitingResult: Codable {
@@ -23,6 +23,16 @@ struct AddWaitingResult: Codable {
     let createdAt: String
     let updatedAt: String
     let status: String
+}
+
+// 완료 포함 전체 웨이팅 조회
+struct ViewAllWaitingResponse: Codable {
+    
+}
+
+// 예약된 대기열 조회
+struct ViewReservedWaitingResponse: Codable {
+    
 }
 
 // 웨이팅 대기 순 확인

@@ -10,6 +10,8 @@ import SwiftUI
 struct BoothMenuView: View {
     @ObservedObject var viewModel: RootViewModel
     
+    @Environment(\.colorScheme) var colorScheme
+    
     @Binding var isReloadButtonPresent: Bool
     @Binding var isMenuImagePresented: Bool
     @Binding var selectedMenu: SelectedMenuInfo
@@ -18,13 +20,14 @@ struct BoothMenuView: View {
         VStack {
             HStack {
                 Text(StringLiterals.Detail.menuTitle)
-                    .font(.system(size: 18))
-                    .fontWeight(.semibold)
+                    .font(.pretendard(weight: .p6, size: 18))
+                    .foregroundStyle(.ufBlack)
                 
                 Spacer()
             }
             .padding(.horizontal)
             .padding(.bottom, 6)
+            .padding(.top, 8)
             
             if let booth = viewModel.boothModel.selectedBooth {
                 if let boothMenu = booth.menus {
@@ -79,5 +82,6 @@ struct BoothMenuView: View {
                 .padding(.bottom, 20)
             }
         }
+        .background(colorScheme == .dark ? Color.grey100 : Color.white)
     }
 }

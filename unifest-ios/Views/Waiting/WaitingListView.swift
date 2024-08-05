@@ -8,22 +8,49 @@
 import SwiftUI
 
 struct WaitingListView: View {
-    @Binding var isWaitingRequested: Bool
+    @Binding var isRequestedWaitingExists: Bool
     @EnvironmentObject var tabSelect: TabSelect
     
     var body: some View {
-        if isWaitingRequested {
+        if isRequestedWaitingExists {
+            HStack {
+                Text("총 10건")
+                    .font(.pretendard(weight: .p6, size: 11))
+                    .foregroundStyle(.gray545454)
+                
+                Spacer()
+                
+                HStack {
+                    Button {
+                        
+                    } label: {
+                        Image(systemName: "chevron.down")
+                            .resizable()
+                            .frame(width: 7, height: 7)
+                            .foregroundStyle(.gray545454)
+                        Text("정렬")
+                            .font(.pretendard(weight: .p6, size: 11))
+                            .foregroundStyle(.gray545454)
+                            .padding(.leading, -3)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 5)
+            
             ScrollView {
                 ForEach(0 ..< 15, id: \.self) { _ in
                      WaitingInfoView()
+                        .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
                 }
+                .padding(.top, 8)
             }
         } else {
             Spacer()
             
             Text(StringLiterals.Waiting.noWaitingTitle)
-                .font(.system(size: 15))
-                .fontWeight(.medium)
+                .font(.pretendard(weight: .p6, size: 18))
+                .foregroundStyle(.grey900)
                 .padding(.bottom, 4)
             
             Button {
@@ -31,13 +58,11 @@ struct WaitingListView: View {
             } label: {
                 HStack(spacing: 0) {
                     Text(StringLiterals.Waiting.gotoMapView)
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
-                        .underline()
                     Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
                 }
+                .font(.pretendard(weight: .p5, size: 13))
+                .foregroundStyle(.grey600)
+                .underline()
             }
             
             Spacer()
@@ -46,5 +71,5 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(isWaitingRequested: .constant(true))
+    WaitingListView(isRequestedWaitingExists: .constant(true))
 }

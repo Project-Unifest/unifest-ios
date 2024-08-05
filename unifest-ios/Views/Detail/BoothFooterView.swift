@@ -10,7 +10,8 @@ import SwiftUI
 struct BoothFooterView: View {
     @ObservedObject var viewModel: RootViewModel
     @Binding var isReloadButtonPresent: Bool
-    @Binding var isWaitingRequestViewPresented: Bool
+    @Binding var isWaitingPinViewPresented: Bool
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -53,11 +54,11 @@ struct BoothFooterView: View {
                 .padding(.top, 8)
                 
                 Button {
-                    isWaitingRequestViewPresented = true
+                    isWaitingPinViewPresented = true
                 } label: {
                     Text("")
 //                        .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
-                        .roundedButton(background: .defaultPink, strokeColor: .clear, height: 45, cornerRadius: 10)
+                        .roundedButton(background: .primary500, strokeColor: .clear, height: 45, cornerRadius: 10)
                         .overlay {
 //                            if viewModel.boothModel.selectedBooth == nil {
 //                                if !isReloadButtonPresent {
@@ -84,12 +85,12 @@ struct BoothFooterView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(.background)
+        .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
     }
     
 }
 
 #Preview {
-    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingRequestViewPresented: .constant(false))
+    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingPinViewPresented: .constant(false))
 }
