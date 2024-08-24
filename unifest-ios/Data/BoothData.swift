@@ -126,6 +126,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 가장 인기 많은 부스 다섯개
     @Published var top5booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -133,6 +134,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 사용자가 선택한 부스
     @Published var selectedBooth: BoothDetailItem? {
         willSet {
             DispatchQueue.main.async {
@@ -147,6 +149,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 사용자가 선택한 부스의 boothId
     @Published var selectedBoothID: Int = -1 {
         willSet {
             DispatchQueue.main.async {
@@ -312,6 +315,7 @@ class BoothModel: ObservableObject {
         UserDefaults.standard.set(stringData, forKey: "LIKE_BOOTH_LIST")
     }
     
+    // 사용자가 부스를 관심있음 했는지 아닌지 확인하는 메서드(BoothFooterView에서 체크 가능)
     func isBoothContain(_ boothID: Int) -> Bool {
         if !likedBoothList.contains(boothID) {
             return false

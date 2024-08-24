@@ -22,15 +22,17 @@ struct BoothFooterView: View {
                 Spacer()
                     .frame(width: 10)
                 
+                // 사용자가 좋아요 처리한 부스는 서버가 아니라 로컬(UserDefaults)에 저장함
+                // 좋아요를 누르거나 해제하면 UserDefaults에서 해당 부스를 추가하거나 해제하고, 좋아요 수를 +-시키는 api를 호출함
                 VStack {
                     Button {
                         if viewModel.boothModel.isBoothContain(viewModel.boothModel.selectedBoothID) {
-                            // delete
+                            // 이미 부스를 관심있음(좋아요) 체크한 경우 -> 버튼을 누르면 관심있음 해제, 서버 좋아요 수 -1 api 호출
                             GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_CANCEL, params: ["boothID": viewModel.boothModel.selectedBoothID])
                             viewModel.boothModel.deleteLikeBoothListDB(viewModel.boothModel.selectedBoothID)
                             viewModel.boothModel.deleteLike(viewModel.boothModel.selectedBoothID)
                         } else {
-                            // add
+                            // 부스를 관심있음 하지 않은 경우 -> 버튼을 누르면 관심있음 추가, 서버 좋아요 수 +1 api 호출
                             GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_ADD, params: ["boothID": viewModel.boothModel.selectedBoothID])
                             viewModel.boothModel.insertLikeBoothDB(viewModel.boothModel.selectedBoothID)
                             viewModel.boothModel.addLike(viewModel.boothModel.selectedBoothID)
@@ -54,7 +56,9 @@ struct BoothFooterView: View {
                 .padding(.top, 8)
                 
                 Button {
-                    isWaitingPinViewPresented = true
+                    withAnimation {
+                        isWaitingPinViewPresented = true
+                    }
                 } label: {
                     Text("")
 //                        .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)

@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct WaitingInfoView: View {
+    @ObservedObject var viewModel: RootViewModel
+    let reservedWaitingListItem: ReservedWaitingResult
+    @Binding var cancelWaiting: Bool
+    @Binding var waitingIdToCancel: Int
+    @Binding var waitingCancelToast: Toast?
+    @EnvironmentObject var waitingVM: WaitingViewModel
+    @State private var isBoothDetailViewPresented = false
+    
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
             .fill(Color.ufWhite)
@@ -25,26 +34,28 @@ struct WaitingInfoView: View {
                         Image(.marker)
                             .resizable()
                             .frame(width: 10.66, height: 14.38)
-                        Text("컴공 주점")
+                        Text(reservedWaitingListItem.boothName)
                             .font(.pretendard(weight: .p6, size: 15))
                             .foregroundStyle(.grey900)
                     }
                     
                     HStack(alignment: .bottom) {
                         HStack(alignment: .bottom, spacing: 2) {
-                                Text("20")
+                            if reservedWaitingListItem.waitingOrder == 0 {
+                                Text("입장해주세요")
+                                    .font(.pretendard(weight: .p7, size: 30))
+                                    .foregroundStyle(.defaultPink)
+                                    .baselineOffset(4)
+                            } else {
+                                Text(String(reservedWaitingListItem.waitingOrder))
                                     .font(.pretendard(weight: .p6, size: 45))
                                     .foregroundStyle(.primary500)
-                            
+                                
                                 Text("번째")
                                     .font(.pretendard(weight: .p5, size: 16))
                                     .foregroundStyle(.grey900)
                                     .baselineOffset(9)
-                            
-//                            Text("입장해주세요")
-//                                .font(.pretendard(weight: .p7, size: 30))
-//                                .foregroundStyle(.defaultPink)
-//                                .baselineOffset(4)
+                            }
                         }
                         
                         Spacer()
@@ -54,7 +65,7 @@ struct WaitingInfoView: View {
                             HStack(spacing: 5) {
                                 Text("웨이팅 번호")
                                     .font(.pretendard(weight: .p4, size: 14))
-                                Text("112")
+                                Text(String(reservedWaitingListItem.waitingId))
                                     .font(.pretendard(weight: .p7, size: 14))
                                 
                                 Divider()
@@ -64,7 +75,7 @@ struct WaitingInfoView: View {
                                 
                                 Text("인원")
                                     .font(.pretendard(weight: .p4, size: 14))
-                                Text("3")
+                                Text(String(reservedWaitingListItem.partySize))
                                     .font(.pretendard(weight: .p7, size: 14))
                             }
                             .foregroundStyle(.grey900)
@@ -74,7 +85,10 @@ struct WaitingInfoView: View {
                     
                     HStack {
                         Button {
-                            
+                            withAnimation {
+                                cancelWaiting = true
+                            }
+                            waitingIdToCancel = reservedWaitingListItem.waitingId
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.grey100)
@@ -87,7 +101,9 @@ struct WaitingInfoView: View {
                         }
                         
                         Button {
-                            
+                            // viewModel.boothModel.loadBoothDetail(reservedWaitingListItem.boothId)
+                            viewModel.boothModel.loadBoothDetail(reservedWaitingListItem.boothId)
+                            isBoothDetailViewPresented = true
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.grey100)
@@ -102,9 +118,14 @@ struct WaitingInfoView: View {
                 }
                 .padding()
             }
+            .sheet(isPresented: $isBoothDetailViewPresented) {
+                BoothDetailView(viewModel: viewModel, currentBoothId: 156)
+                    .presentationDragIndicator(.visible)
+            }
     }
 }
 
 #Preview {
-    WaitingInfoView()
+    WaitingInfoView(viewModel: RootViewModel(), reservedWaitingListItem: .empty, cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+        .environmentObject(WaitingViewModel())
 }

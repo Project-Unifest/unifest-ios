@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct WaitingRequestView: View {
+    @ObservedObject var viewModel: RootViewModel
     @State private var partySize: Int = 2
     @State private var phoneNumber: String = ""
     @State private var formattedPhoneNumber: String = ""
@@ -15,10 +16,11 @@ struct WaitingRequestView: View {
     @State private var isComplete = false // 웨이팅 완료 여부
     @State private var isPolicyAgreed = false
     @EnvironmentObject var waitingVM: WaitingViewModel
+    let boothId: Int
+    @Binding var pin: String
     @Binding var isWaitingRequestViewPresented: Bool
     @Binding var isWaitingCompleteViewPresented: Bool
     @FocusState private var isPhoneNumberTextFieldFocused: Bool
-    let boothId: Int
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -41,14 +43,26 @@ struct WaitingRequestView: View {
                                 .resizable()
                                 .frame(width: 11, height: 15)
                                 .padding(.trailing, -1)
-                            Text("컴공 주점")
-                                .font(.pretendard(weight: .p6, size: 15))
-                                .foregroundStyle(.grey900)
+                            // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
+                                if let name = viewModel.boothModel.selectedBooth?.name {
+                                    if !name.isEmpty {
+                                        Text(name)
+                                            .font(.pretendard(weight: .p6, size: 15))
+                                            .foregroundStyle(.grey900)
+                                    }
+                                }
                             
                             Spacer()
                             
                             Button {
+                                pin = ""
+                                partySize = 2
+                                phoneNumber = ""
+                                formattedPhoneNumber = ""
                                 isWaitingRequestViewPresented = false
+                                isPhoneNumberValid = false
+                                isComplete = false
+                                isPolicyAgreed = false
                             } label: {
                                 Image(systemName: "xmark")
                                     .resizable()
@@ -105,9 +119,10 @@ struct WaitingRequestView: View {
                                         .overlay {
                                             Text("+")
                                                 .font(.pretendard(weight: .p3, size: 20))
-                                                .foregroundStyle(partySize == 1 ? .grey400 : .grey900)
+                                                .foregroundStyle(partySize == 100 ? .grey400 : .grey900)
                                         }
                                 }
+                                .disabled(partySize == 100)
                             }
                         }
                         .padding(.horizontal)
@@ -169,7 +184,21 @@ struct WaitingRequestView: View {
                         }
                         
                         Button {
-                            waitingVM.addWaiting(boothId: boothId, phoneNumber: phoneNumber, deviceId: UIDevice.current.deviceToken, partySize: partySize)
+                            waitingVM.addWaiting(
+                                boothId: boothId,
+                                phoneNumber: phoneNumber,
+                                deviceId: UIDevice.current.deviceToken,
+                                partySize: partySize,
+                                pinNumber: pin
+                            )
+                            pin = ""
+                            partySize = 2
+                            phoneNumber = ""
+                            formattedPhoneNumber = ""
+                            isWaitingRequestViewPresented = false
+                            isPhoneNumberValid = false
+                            isComplete = false
+                            isPolicyAgreed = false
                             isWaitingRequestViewPresented = false
                             isWaitingCompleteViewPresented = true
                         } label: {
@@ -232,7 +261,7 @@ struct WaitingRequestView: View {
 }
 
 #Preview {
-    WaitingRequestView(isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false), boothId: 0)
+    WaitingRequestView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
         .environmentObject(WaitingViewModel())
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }

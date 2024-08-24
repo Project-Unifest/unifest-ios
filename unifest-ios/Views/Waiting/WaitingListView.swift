@@ -8,39 +8,50 @@
 import SwiftUI
 
 struct WaitingListView: View {
-    @Binding var isRequestedWaitingExists: Bool
+    @ObservedObject var viewModel: RootViewModel
+    @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var tabSelect: TabSelect
+    @Binding var cancelWaiting: Bool
+    @Binding var waitingIdToCancel: Int
+    @Binding var waitingCancelToast: Toast?
     
     var body: some View {
-        if isRequestedWaitingExists {
+        if let reservedWaitingList = waitingVM.reservedWaitingList {
             HStack {
-                Text("총 10건")
+                Text("총 \(reservedWaitingList.count)건")
                     .font(.pretendard(weight: .p6, size: 11))
                     .foregroundStyle(.gray545454)
+                    .padding(.leading, 10)
                 
                 Spacer()
                 
-                HStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "chevron.down")
-                            .resizable()
-                            .frame(width: 7, height: 7)
-                            .foregroundStyle(.gray545454)
-                        Text("정렬")
-                            .font(.pretendard(weight: .p6, size: 11))
-                            .foregroundStyle(.gray545454)
-                            .padding(.leading, -3)
-                    }
-                }
+//                HStack {
+//                    Button {
+//                        
+//                    } label: {
+//                        Image(systemName: "chevron.down")
+//                            .resizable()
+//                            .frame(width: 7, height: 7)
+//                            .foregroundStyle(.gray545454)
+//                        Text("정렬")
+//                            .font(.pretendard(weight: .p6, size: 11))
+//                            .foregroundStyle(.gray545454)
+//                            .padding(.leading, -3)
+//                    }
+//                }
             }
             .padding(.horizontal)
             .padding(.vertical, 5)
             
             ScrollView {
-                ForEach(0 ..< 15, id: \.self) { _ in
-                     WaitingInfoView()
+                ForEach(reservedWaitingList.indices, id: \.self) { i in
+                    WaitingInfoView(
+                        viewModel: viewModel,
+                        reservedWaitingListItem: reservedWaitingList[i],
+                        cancelWaiting: $cancelWaiting,
+                        waitingIdToCancel: $waitingIdToCancel,
+                        waitingCancelToast: $waitingCancelToast
+                    )
                         .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
                 }
                 .padding(.top, 8)
@@ -71,5 +82,6 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(isRequestedWaitingExists: .constant(true))
+    WaitingListView(viewModel: RootViewModel(), cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+        .environmentObject(WaitingViewModel())
 }

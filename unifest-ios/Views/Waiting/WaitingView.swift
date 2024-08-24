@@ -9,9 +9,10 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
-    @EnvironmentObject var waiting: WaitingViewModel
-    @State private var isRequestedWaitingExists = true
-    // @State private var showAppInstallAlarmView = true
+    @EnvironmentObject var waitingVM: WaitingViewModel
+    @State private var cancelWaiting = false
+    @State private var waitingIdToCancel = -1
+    @State private var waitingCancelToast: Toast? = nil
     
     var body: some View {
         ZStack {
@@ -39,16 +40,33 @@ struct WaitingView: View {
                         .padding(.horizontal, 30)
                     }
                 
-                WaitingListView(isRequestedWaitingExists: $isRequestedWaitingExists)
+                WaitingListView(
+                    viewModel: viewModel,
+                    cancelWaiting: $cancelWaiting,
+                    waitingIdToCancel: $waitingIdToCancel,
+                    waitingCancelToast: $waitingCancelToast
+                )
             }
             
-//            if showAppInstallAlarmView {
-//                AppInstallAlarmView(showAppInstallAlarmView: $showAppInstallAlarmView)
-//            }
+            if cancelWaiting == true {
+                WaitingCancelView(
+                    cancelWaiting: $cancelWaiting,
+                    waitingIdToCancel: $waitingIdToCancel,
+                    waitingCancelToast: $waitingCancelToast
+                )
+            }
         }
+        .task {
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+        }
+        .refreshable {
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+        }
+        .toastView(toast: $waitingCancelToast)
     }
 }
 
 #Preview {
     WaitingView(viewModel: RootViewModel())
+        .environmentObject(WaitingViewModel())
 }

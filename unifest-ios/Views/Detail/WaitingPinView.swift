@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct WaitingPinView: View {
+    @ObservedObject var viewModel: RootViewModel
     let boothId: Int
     @EnvironmentObject var waitingVM: WaitingViewModel
     @Environment(\.dismiss) var dismiss
-    @State private var pin: String = ""
-    @State private var isPinValid: Bool = false
+    @Binding var pin: String
+    @State private var isPinFormatValid: Bool = false
     @Binding var isWaitingPinViewPresented: Bool
     @Binding var isWaitingRequestViewPresented: Bool
     @FocusState private var isPinTextFieldFocused: Bool
@@ -37,14 +38,21 @@ struct WaitingPinView: View {
                                 .resizable()
                                 .frame(width: 11, height: 15)
                                 .padding(.trailing, -1)
-                            Text("컴공 주점")
-                                .font(.pretendard(weight: .p6, size: 15))
-                                .foregroundStyle(.grey900)
+                            
+                            // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
+                                if let name = viewModel.boothModel.selectedBooth?.name {
+                                    if !name.isEmpty {
+                                        Text(name)
+                                            .font(.pretendard(weight: .p6, size: 15))
+                                            .foregroundStyle(.grey900)
+                                    }
+                                }
                             
                             Spacer()
                             
                             Button {
                                 isWaitingPinViewPresented = false
+                                pin = ""
                             } label: {
                                 Image(systemName: "xmark")
                                     .resizable()
@@ -83,26 +91,45 @@ struct WaitingPinView: View {
                             }
                             .padding(.top, 15)
                         
-                        HStack {
-                            Label("웨이팅 PIN은 부스 운영자에게 문의해주세요!", systemImage: "exclamationmark.circle.fill")
-                                .font(.pretendard(weight: .p5, size: 12))
-                                .foregroundStyle(.grey900)
-                            
-                            Spacer()
+                        if waitingVM.isValidPinNumber == nil {
+                            HStack {
+                                Label("웨이팅 PIN은 부스 운영자에게 문의해주세요!", systemImage: "exclamationmark.circle.fill")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey900)
+                                
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .padding(.top, 1)
+                        } else if waitingVM.isValidPinNumber == false {
+                            HStack {
+                                Label("올바르지 않은 PIN입니다. 부스 운영자에게 문의바랍니다", systemImage: "exclamationmark.triangle.fill")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.ufRed)
+                                    .kerning(-0.87)
+                                
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .padding(.top, 1)
                         }
-                        .padding(.horizontal)
-                        .padding(.top, 1)
                         
                         Spacer()
                         
                         Button {
-                            if isPinValid {
-                                isWaitingPinViewPresented = false
-                                isWaitingRequestViewPresented = true
+                            Task {
+                                await waitingVM.checkPinNumber(boothId: 79, pinNumber: pin)
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    if waitingVM.isValidPinNumber == true {
+                                        isWaitingPinViewPresented = false
+                                        isWaitingRequestViewPresented = true
+                                    }
+                                }
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 5)
-                                .fill(isPinValid ? Color.primary500 : Color.grey600)
+                                .fill(isPinFormatValid ? Color.primary500 : Color.grey600)
                                 .frame(width: 275, height: 45)
                                 .overlay {
                                     Text("PIN 입력")
@@ -110,12 +137,13 @@ struct WaitingPinView: View {
                                         .foregroundStyle(.white)
                                 }
                         }
-                        .disabled(isPinValid == false)
+                        .disabled(isPinFormatValid == false)
                         .padding(.bottom, 14)
                     }
                 }
         }
         .onAppear {
+            waitingVM.isValidPinNumber = nil
             isPinTextFieldFocused = true
         }
     }
@@ -123,14 +151,14 @@ struct WaitingPinView: View {
     func checkPinValidity(_ pin: String) {
         let regexPattern = "^[0-9]{4}$"
         guard let _ = pin.range(of: regexPattern, options: .regularExpression) else {
-            isPinValid = false
+            isPinFormatValid = false
             return
         }
         
-        isPinValid = true
+        isPinFormatValid = true
     }
 }
 
 #Preview {
-    WaitingPinView(boothId: 0, isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
+    WaitingPinView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
 }

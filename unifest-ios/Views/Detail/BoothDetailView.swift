@@ -29,8 +29,8 @@ struct BoothDetailView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
-    
     let currentBoothId: Int
+    @State private var pin: String = ""
     @State private var isReloadButtonPresent: Bool = false
     @State private var isMenuImagePresented: Bool = false
     @State private var menu = SelectedMenuInfo() // MenuBarView에서 음식 사진을 탭했을 때 MenuImageView로 음식 정보를 전달하기 위해 선언한 변수
@@ -44,35 +44,65 @@ struct BoothDetailView: View {
             ZStack {
                 VStack {
                     ScrollView {
-                        BoothInfoView(viewModel: viewModel, selectedBoothHours: $selectedBoothHours, isReloadButtonPresent: $isReloadButtonPresent)
+                        BoothInfoView(
+                            viewModel: viewModel,
+                            selectedBoothHours: $selectedBoothHours,
+                            isReloadButtonPresent: $isReloadButtonPresent
+                        )
                         
-                        BoothMenuView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isMenuImagePresented: $isMenuImagePresented, selectedMenu: $menu)
+                        BoothMenuView(
+                            viewModel: viewModel,
+                            isReloadButtonPresent: $isReloadButtonPresent,
+                            isMenuImagePresented: $isMenuImagePresented,
+                            selectedMenu: $menu
+                        )
                     }
                     .ignoresSafeArea(edges: .top)
                     .background(colorScheme == .dark ? Color.grey100 : Color.white)
                     
-                    BoothFooterView(viewModel: viewModel, isReloadButtonPresent: $isReloadButtonPresent, isWaitingPinViewPresented: $isWaitingPinViewPresented)
+                    BoothFooterView(
+                        viewModel: viewModel,
+                        isReloadButtonPresent: $isReloadButtonPresent,
+                        isWaitingPinViewPresented: $isWaitingPinViewPresented
+                    )
                 }
                 
                 if isMenuImagePresented {
-                    MenuImageView(isPresented: $isMenuImagePresented, menu: menu)
-                        .onDisappear {
-                            menu.selectedMenuURL = ""
-                            menu.selectedMenuName = ""
-                            menu.selectedMenuPrice = ""
-                        }
+                    MenuImageView(
+                        isPresented: $isMenuImagePresented,
+                        menu: menu
+                    )
+                    .onDisappear {
+                        menu.selectedMenuURL = ""
+                        menu.selectedMenuName = ""
+                        menu.selectedMenuPrice = ""
+                    }
                 }
                 
                 if isWaitingPinViewPresented {
-                    WaitingPinView(boothId: currentBoothId, isWaitingPinViewPresented: $isWaitingPinViewPresented, isWaitingRequestViewPresented: $isWaitingRequestViewPresented)
+                    WaitingPinView(
+                        viewModel: viewModel,
+                        boothId: currentBoothId,
+                        pin: $pin,
+                        isWaitingPinViewPresented: $isWaitingPinViewPresented,
+                        isWaitingRequestViewPresented: $isWaitingRequestViewPresented
+                    )
                 }
                 
                 if isWaitingRequestViewPresented {
-                    WaitingRequestView(isWaitingRequestViewPresented: $isWaitingRequestViewPresented, isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented, boothId: currentBoothId)
+                    WaitingRequestView(
+                        viewModel: viewModel,
+                        boothId: currentBoothId,
+                        pin: $pin,
+                        isWaitingRequestViewPresented: $isWaitingRequestViewPresented,
+                        isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented
+                    )
                 }
                 
                 if isWaitingCompleteViewPresented {
-                    WaitingCompleteView(isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented)
+                    WaitingCompleteView(
+                        isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented
+                    )
                 }
             }
         }
@@ -94,14 +124,14 @@ struct BoothDetailView: View {
     @ObservedObject var viewModel = RootViewModel()
     
     return Group {
-        //        Text("")
-        //            .sheet(isPresented: .constant(true)) {
-        BoothDetailView(viewModel: viewModel, currentBoothId: 0)
-            .onAppear {
-                viewModel.boothModel.selectedBoothID = 119
-                viewModel.boothModel.loadBoothDetail(119)
+        Text("")
+            .sheet(isPresented: .constant(true)) {
+                BoothDetailView(viewModel: viewModel, currentBoothId: 0)
+                    .onAppear {
+                        viewModel.boothModel.selectedBoothID = 156
+                        viewModel.boothModel.loadBoothDetail(156)
+                    }
+                    .environmentObject(WaitingViewModel())
             }
-            .environmentObject(WaitingViewModel())
-        //            }
     }
 }

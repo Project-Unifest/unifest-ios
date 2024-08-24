@@ -75,6 +75,9 @@
 		F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */; };
 		F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */; };
 		F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */; };
+		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
+		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
+		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
 		F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */; };
 		F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
@@ -150,6 +153,9 @@
 		F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRequestView.swift; sourceTree = "<group>"; };
 		F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCompleteView.swift; sourceTree = "<group>"; };
 		F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageHeaderView.swift; sourceTree = "<group>"; };
+		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
+		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-Model.swift"; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 				0C9641F12BB94DE700838DA9 /* WaitingView.swift */,
 				F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */,
 				F800716A2C3648390001596F /* WaitingInfoView.swift */,
+				F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */,
 				F872669B2C4A30C300687A0D /* AppInstallAlarmView.swift */,
 			);
 			path = Waiting;
@@ -358,6 +365,7 @@
 		0CBB05872BB074ED00EB56BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F88A6D0E2C7A05430025459F /* Toast */,
 				0C9641ED2BB94C8100838DA9 /* Root */,
 				0C244FD12BF685150047F23D /* Welcome */,
 				0CBB05822BB074ED00EB56BE /* Intro */,
@@ -422,6 +430,15 @@
 				F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		F88A6D0E2C7A05430025459F /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				F88A6D0F2C7A05570025459F /* Toast.swift */,
+				F88A6D112C7A05810025459F /* ToastView.swift */,
+			);
+			path = Toast;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -529,6 +546,7 @@
 				F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */,
 				0C9641F22BB94DE700838DA9 /* WaitingView.swift in Sources */,
 				0C244FD32BF6851E0047F23D /* WelcomeView.swift in Sources */,
+				F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */,
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
 				0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */,
@@ -544,6 +562,7 @@
 				0CE965072BAD66BA00539E8C /* StringLiterals.swift in Sources */,
 				0C1A2C6C2BB2718800AD0692 /* AdminMainView.swift in Sources */,
 				0C9D0A5C2BA19DFE00156763 /* unifest_iosApp.swift in Sources */,
+				F88A6D122C7A05810025459F /* ToastView.swift in Sources */,
 				0CE839D72BF38FBD003E211D /* LikedBoothBoxView.swift in Sources */,
 				F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */,
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
@@ -557,6 +576,7 @@
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */,
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
+				F88A6D102C7A05570025459F /* Toast.swift in Sources */,
 				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
@@ -712,6 +732,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -753,6 +774,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

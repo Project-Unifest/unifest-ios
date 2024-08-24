@@ -73,36 +73,36 @@ struct BoothInfoView: View {
             .frame(maxWidth: .infinity)
             
             // 주간, 야간 선택 탭바
-            HStack {
-                ForEach(boothHours.indices, id: \.self) { index in
-                    HStack {
-                        Spacer()
-                        Text(boothHours[index])
-                            .padding(.bottom, 12)
-                            .font(self.selectedBoothHours == index ? .pretendard(weight: .p7, size: 13) : .pretendard(weight: .p5, size: 13))
-                            .foregroundStyle(self.selectedBoothHours == index ? .grey900 : .grey600)
-                            .onTapGesture {
-                                withAnimation {
-                                    self.selectedBoothHours = index
-                                }
-                            }
-                        Spacer()
-                    }
-                    .overlay {
-                        VStack {
-                            Spacer()
-                            if self.selectedBoothHours == index {
-                                Color.grey900
-                                    .frame(height: 1)
-                            } else {
-                                Color.grey200
-                                    .frame(height: 1)
-                            }
-                        }
-                    }
-                }
-                .padding(.top, 5)
-            }
+//            HStack {
+//                ForEach(boothHours.indices, id: \.self) { index in
+//                    HStack {
+//                        Spacer()
+//                        Text(boothHours[index])
+//                            .padding(.bottom, 12)
+//                            .font(self.selectedBoothHours == index ? .pretendard(weight: .p7, size: 13) : .pretendard(weight: .p5, size: 13))
+//                            .foregroundStyle(self.selectedBoothHours == index ? .grey900 : .grey600)
+//                            .onTapGesture {
+//                                withAnimation {
+//                                    self.selectedBoothHours = index
+//                                }
+//                            }
+//                        Spacer()
+//                    }
+//                    .overlay {
+//                        VStack {
+//                            Spacer()
+//                            if self.selectedBoothHours == index {
+//                                Color.grey900
+//                                    .frame(height: 1)
+//                            } else {
+//                                Color.grey200
+//                                    .frame(height: 1)
+//                            }
+//                        }
+//                    }
+//                }
+//                .padding(.top, 5)
+//            }
             
             // 부스 이름(쿠쿠네 분식)부터 '위치 확인하기' 버튼까지
             if viewModel.boothModel.selectedBooth == nil {
