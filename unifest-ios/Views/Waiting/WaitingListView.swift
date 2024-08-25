@@ -8,36 +8,72 @@
 import SwiftUI
 
 struct WaitingListView: View {
-    @Binding var isWaitingRequested: Bool
-    @Binding var tabViewSelection: Int
+    @ObservedObject var viewModel: RootViewModel
+    @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var tabSelect: TabSelect
+    @Binding var cancelWaiting: Bool
+    @Binding var waitingIdToCancel: Int
+    @Binding var waitingCancelToast: Toast?
     
     var body: some View {
-        if isWaitingRequested {
+        if let reservedWaitingList = waitingVM.reservedWaitingList {
+            HStack {
+                Text("총 \(reservedWaitingList.count)건")
+                    .font(.pretendard(weight: .p6, size: 11))
+                    .foregroundStyle(.gray545454)
+                    .padding(.leading, 10)
+                
+                Spacer()
+                
+//                HStack {
+//                    Button {
+//                        
+//                    } label: {
+//                        Image(systemName: "chevron.down")
+//                            .resizable()
+//                            .frame(width: 7, height: 7)
+//                            .foregroundStyle(.gray545454)
+//                        Text("정렬")
+//                            .font(.pretendard(weight: .p6, size: 11))
+//                            .foregroundStyle(.gray545454)
+//                            .padding(.leading, -3)
+//                    }
+//                }
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 5)
+            
             ScrollView {
-                ForEach(0 ..< 15, id: \.self) { _ in
-                     WaitingInfoView()
+                ForEach(reservedWaitingList.indices, id: \.self) { i in
+                    WaitingInfoView(
+                        viewModel: viewModel,
+                        reservedWaitingListItem: reservedWaitingList[i],
+                        cancelWaiting: $cancelWaiting,
+                        waitingIdToCancel: $waitingIdToCancel,
+                        waitingCancelToast: $waitingCancelToast
+                    )
+                        .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
                 }
+                .padding(.top, 8)
             }
         } else {
             Spacer()
             
             Text(StringLiterals.Waiting.noWaitingTitle)
-                .font(.system(size: 15))
-                .fontWeight(.medium)
+                .font(.pretendard(weight: .p6, size: 18))
+                .foregroundStyle(.grey900)
                 .padding(.bottom, 4)
             
             Button {
-                tabViewSelection = 1
+                tabSelect.selectedTab = 1
             } label: {
                 HStack(spacing: 0) {
                     Text(StringLiterals.Waiting.gotoMapView)
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
-                        .underline()
                     Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
                 }
+                .font(.pretendard(weight: .p5, size: 13))
+                .foregroundStyle(.grey600)
+                .underline()
             }
             
             Spacer()
@@ -46,5 +82,6 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(isWaitingRequested: .constant(true), tabViewSelection: .constant(1))
+    WaitingListView(viewModel: RootViewModel(), cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+        .environmentObject(WaitingViewModel())
 }

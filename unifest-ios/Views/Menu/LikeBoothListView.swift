@@ -11,6 +11,7 @@ struct LikeBoothListView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) var dismiss
     @State private var isDetailViewPresented: Bool = false
+    @State private var tappedBoothId = 0 // 좋아요 한 부스 리스트에서 특정 부스를 탭했을 때, 해당 부스의 부스ID를 BoothDetailView로 넘김
     
     var body: some View {
         ZStack {
@@ -60,6 +61,7 @@ struct LikeBoothListView: View {
                                 .onTapGesture {
                                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                     viewModel.boothModel.loadBoothDetail(boothID)
+                                    tappedBoothId = boothID
                                     isDetailViewPresented = true
                                 }
                                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
@@ -127,7 +129,7 @@ struct LikeBoothListView: View {
             }
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel)
+            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
         }
     }

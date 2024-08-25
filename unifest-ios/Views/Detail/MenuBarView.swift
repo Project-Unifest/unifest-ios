@@ -15,6 +15,7 @@ struct MenuBarView: View {
     let price: Int
     @Binding var isMenuImagePresented: Bool
     @Binding var selectedMenu: SelectedMenuInfo
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         HStack {
@@ -47,25 +48,25 @@ struct MenuBarView: View {
             .padding(.trailing, 8)
             
             VStack(alignment: .leading) {
-                
                 Text(name)
-                    .font(.system(size: 14))
-                    .fontWeight(.semibold)
+                    .font(.pretendard(weight: .p6, size: 14))
+                    .foregroundStyle(.grey600)
                     .padding(.bottom, 1)
                 
                 if price == 0 {
                     Text("무료")
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
+                        .font(.pretendard(weight: .p6, size: 16))
+                        .foregroundStyle(.grey900)
                 } else {
                     Text(formattedPrice(price) + StringLiterals.Detail.won)
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
+                        .font(.pretendard(weight: .p6, size: 16))
+                        .foregroundStyle(.grey900)
                 }
             }
             
             Spacer()
         }
+        .background(colorScheme == .dark ? Color.grey100 : Color.white)
     }
     
     func formattedPrice(_ price: Int) -> String {

@@ -18,8 +18,8 @@ struct MapPageView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
 
-    @State private var isDetailViewPresented: Bool = false
-    
+    @State private var isBoothDetailViewPresented: Bool = false
+    @State private var tappedBoothId = 0
     @State private var searchText: String = ""
     
     var body: some View {
@@ -129,7 +129,7 @@ struct MapPageView: View {
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
                                             viewModel.boothModel.loadBoothDetail(topBooth.id)
-                                            isDetailViewPresented = true
+                                            isBoothDetailViewPresented = true
                                         }
                                 }
                             } else {
@@ -141,7 +141,8 @@ struct MapPageView: View {
                                             .onTapGesture {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
                                                 viewModel.boothModel.loadBoothDetail(booth.id)
-                                                isDetailViewPresented = true
+                                                tappedBoothId = booth.id
+                                                isBoothDetailViewPresented = true
                                             }
                                     }
                                 }
@@ -154,8 +155,8 @@ struct MapPageView: View {
             }
             
         }
-        .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel)
+        .sheet(isPresented: $isBoothDetailViewPresented) {
+            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {
