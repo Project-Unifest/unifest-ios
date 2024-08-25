@@ -91,7 +91,7 @@ struct WaitingPinView: View {
                             }
                             .padding(.top, 15)
                         
-                        if waitingVM.isValidPinNumber == nil {
+                        if waitingVM.isValidPinNumber == nil || waitingVM.isValidPinNumber == true {
                             HStack {
                                 Label("웨이팅 PIN은 부스 운영자에게 문의해주세요!", systemImage: "exclamationmark.circle.fill")
                                     .font(.pretendard(weight: .p5, size: 12))
@@ -124,12 +124,14 @@ struct WaitingPinView: View {
                                     if waitingVM.isValidPinNumber == true {
                                         isWaitingPinViewPresented = false
                                         isWaitingRequestViewPresented = true
+                                    } else {
+                                        pin = ""
                                     }
                                 }
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 5)
-                                .fill(isPinFormatValid ? Color.primary500 : Color.grey600)
+                                .fill(isPinFormatValid ? Color.primary500 : Color.grey400)
                                 .frame(width: 275, height: 45)
                                 .overlay {
                                     Text("PIN 입력")
@@ -162,3 +164,5 @@ struct WaitingPinView: View {
 #Preview {
     WaitingPinView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
 }
+
+

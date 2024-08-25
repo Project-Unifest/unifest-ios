@@ -1,5 +1,5 @@
 //
-//  WaitingCancelConfirmView.swift
+//  WaitingCancelView.swift
 //  unifest-ios
 //
 //  Created by 임지성 on 8/23/24.
@@ -65,7 +65,7 @@ struct WaitingCancelView: View {
                                 cancelWaiting = false
                             } label: {
                                 RoundedRectangle(cornerRadius: 5)
-                                    .fill(Color.grey200)
+                                    .fill(Color.grey300)
                                     .frame(width: 133, height: 45)
                                     .overlay {
                                         Text("취소")

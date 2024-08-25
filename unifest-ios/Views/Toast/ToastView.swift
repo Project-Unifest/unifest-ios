@@ -38,7 +38,7 @@ struct ToastView: View {
                 .padding()
             }
             .padding()
-            .shadow(color: Color.grey300, radius: 7)
+            // .shadow(color: Color.grey300, radius: 7)
     }
 }
 
