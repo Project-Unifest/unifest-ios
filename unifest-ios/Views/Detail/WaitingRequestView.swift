@@ -13,8 +13,9 @@ struct WaitingRequestView: View {
     @State private var phoneNumber: String = ""
     @State private var formattedPhoneNumber: String = ""
     @State private var isPhoneNumberValid = false
-    @State private var isComplete = false // 웨이팅 완료 여부
+    @State private var isCompleted = false // 웨이팅 완료 여부
     @State private var isPolicyAgreed = false
+    @State private var phoneNumberFormatError: Toast? = nil
     @EnvironmentObject var waitingVM: WaitingViewModel
     let boothId: Int
     @Binding var pin: String
@@ -61,7 +62,7 @@ struct WaitingRequestView: View {
                                 formattedPhoneNumber = ""
                                 isWaitingRequestViewPresented = false
                                 isPhoneNumberValid = false
-                                isComplete = false
+                                isCompleted = false
                                 isPolicyAgreed = false
                             } label: {
                                 Image(systemName: "xmark")
@@ -184,23 +185,29 @@ struct WaitingRequestView: View {
                         }
                         
                         Button {
-                            waitingVM.addWaiting(
-                                boothId: boothId,
-                                phoneNumber: phoneNumber,
-                                deviceId: UIDevice.current.deviceToken,
-                                partySize: partySize,
-                                pinNumber: pin
-                            )
-                            pin = ""
-                            partySize = 2
-                            phoneNumber = ""
-                            formattedPhoneNumber = ""
-                            isWaitingRequestViewPresented = false
-                            isPhoneNumberValid = false
-                            isComplete = false
-                            isPolicyAgreed = false
-                            isWaitingRequestViewPresented = false
-                            isWaitingCompleteViewPresented = true
+                            if checkPhoneNumberFormat(phoneNumber) == true {
+                                waitingVM.addWaiting(
+                                    boothId: boothId,
+                                    phoneNumber: phoneNumber,
+                                    deviceId: UIDevice.current.deviceToken,
+                                    partySize: partySize,
+                                    pinNumber: pin
+                                )
+                                pin = ""
+                                partySize = 2
+                                phoneNumber = ""
+                                formattedPhoneNumber = ""
+                                isWaitingRequestViewPresented = false
+                                isPhoneNumberValid = false
+                                isCompleted = false
+                                isPolicyAgreed = false
+                                phoneNumberFormatError = nil
+                                isWaitingRequestViewPresented = false
+                                isWaitingCompleteViewPresented = true
+                            } else {
+                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요")
+                                phoneNumber = ""
+                            }
                         } label: {
                             RoundedRectangle(cornerRadius: 5)
                                 .fill(isPhoneNumberValid == false || isPolicyAgreed == false ? Color.grey600 : Color.primary500)
@@ -223,32 +230,33 @@ struct WaitingRequestView: View {
         .task {
             await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
+        .toastView(toast: $phoneNumberFormatError)
     }
     
     func formatPhoneNumber(_ number: String) -> String {
-        let length = number.count
-        
-        if length > 11 {
-            return String(number.prefix(11))
-            // .prefix(11): 문자열의 최대 길이를 11자로 제한
-        }
-        
-        var formatted = ""
-        
-        if length > 3 {
-            formatted += number.prefix(3) + "-"
-            if length > 7 {
-                formatted += number[number.index(number.startIndex, offsetBy: 3) ..< number.index(number.startIndex, offsetBy: 7)] + "-"
-                formatted += number.suffix(length - 7)
-            } else {
-                formatted += number.suffix(length - 3)
+            let length = number.count
+            
+            if length > 11 {
+                return String(number.prefix(11))
+                // .prefix(11): 문자열의 최대 길이를 11자로 제한
             }
-        } else {
-            formatted = number
+            
+            var formatted = ""
+            
+            if length > 3 {
+                formatted += number.prefix(3) + "-"
+                if length > 7 {
+                    formatted += number[number.index(number.startIndex, offsetBy: 3) ..< number.index(number.startIndex, offsetBy: 7)] + "-"
+                    formatted += number.suffix(length - 7)
+                } else {
+                    formatted += number.suffix(length - 3)
+                }
+            } else {
+                formatted = number
+            }
+            
+            return formatted
         }
-        
-        return formatted
-    }
     
     func isValidPhoneNumber(_ number: String) {
         let regexPattern = "^[0-9]{11}$"
@@ -258,6 +266,14 @@ struct WaitingRequestView: View {
         }
         isPhoneNumberValid = true
     }
+    
+    func checkPhoneNumberFormat(_ number: String) -> Bool {
+        let regexPattern = "^010[0-9]{8}$"
+        guard let _ = number.range(of: regexPattern, options: .regularExpression) else {
+            return false
+        }
+        return true
+    }
 }
 
 #Preview {
@@ -265,3 +281,4 @@ struct WaitingRequestView: View {
         .environmentObject(WaitingViewModel())
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }
+
