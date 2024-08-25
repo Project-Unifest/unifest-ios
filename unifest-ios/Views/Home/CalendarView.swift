@@ -340,7 +340,7 @@ struct CalendarTabView: View {
     
     @State private var isInfoPresented: Bool = false
 
-    init(viewModel: RootViewModel) {
+    init(viewModel: RootViewModel) {        
         let date = Date()
         _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
         _currentMonth = State(initialValue: Calendar.current.component(.month, from: date))

@@ -61,7 +61,7 @@ extension View {
     @ViewBuilder
     func boldLine() -> some View {
         Rectangle()
-            .fill(.defaultBoldLine)
+            .fill(.grey200)
             .frame(height: 8)
     }
     

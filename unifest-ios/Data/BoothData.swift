@@ -118,6 +118,7 @@ struct APIResponseIntData: Codable {
 class BoothModel: ObservableObject {
     // static let shared = BoothModel()
     
+    // @Published가 objectWillChange.send()를 수행해주므로 willSet { } 구문이 꼭 필요하지는 않은 듯?
     @Published var booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -125,6 +126,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 가장 인기 많은 부스 다섯개
     @Published var top5booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -132,6 +134,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 사용자가 선택한 부스
     @Published var selectedBooth: BoothDetailItem? {
         willSet {
             DispatchQueue.main.async {
@@ -146,6 +149,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    // 사용자가 선택한 부스의 boothId
     @Published var selectedBoothID: Int = -1 {
         willSet {
             DispatchQueue.main.async {
@@ -176,6 +180,7 @@ class BoothModel: ObservableObject {
         }
     }
     
+    // 프로젝트 내의 JSON데이터로 테스트용 메서드
     func loadData() {
         if let url = Bundle.main.url(forResource: "boothTest", withExtension: "json") {
             do {
@@ -202,10 +207,14 @@ class BoothModel: ObservableObject {
         }
     }
     
+    // 실제로 서버에서 부스 데이터를 가져오는 메서드
     func loadStoreListData(completion: @escaping () -> Void) {
+        // API 호출을 통해 부스 데이터를 가져옴
         APIManager.fetchDataGET("/api/booths/1/booths", api: .booth_all, apiType: .GET) { result in
+            // fetchDataGet: 해당 링크에서 데이터를 가져옴
             switch result {
             case .success(let data):
+                // 데이터를 가져오는 데 성공하면 self.booths에 데이터를 설정함(가져온 booth 정보를 BoothModel 클래스의 booths 프로퍼티에 저장)
                 print("Data received in View: \(data)")
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
@@ -306,6 +315,7 @@ class BoothModel: ObservableObject {
         UserDefaults.standard.set(stringData, forKey: "LIKE_BOOTH_LIST")
     }
     
+    // 사용자가 부스를 관심있음 했는지 아닌지 확인하는 메서드(BoothFooterView에서 체크 가능)
     func isBoothContain(_ boothID: Int) -> Bool {
         if !likedBoothList.contains(boothID) {
             return false
@@ -572,7 +582,7 @@ struct BoothDataTestView: View {
     @ObservedObject var boothModel = BoothModel()
     
     var body: some View {
-        VStack {
+        ScrollView {
             Text("\(boothModel.booths.count)")
             
             ForEach(boothModel.booths) { festival in

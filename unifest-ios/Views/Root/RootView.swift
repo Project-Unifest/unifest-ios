@@ -11,6 +11,8 @@ struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
     @ObservedObject var networkManager: NetworkManager
+    @StateObject var tabSelect = TabSelect()
+    @StateObject var waitingVM = WaitingViewModel()
     
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
@@ -32,7 +34,7 @@ struct RootView: View {
             case .intro:
                 IntroView(viewModel: viewModel)
             case .home, .map, .waiting, .menu:
-                TabView(selection: $tabViewSelection) {
+                TabView(selection: $tabSelect.selectedTab) {
                     CalendarTabView(viewModel: viewModel)
                         .onAppear {
                             HapticManager.shared.hapticImpact(style: .light)
@@ -61,7 +63,7 @@ struct RootView: View {
                         }
                         .tag(1)
                     
-                    WaitingView(viewModel: viewModel, tabViewSelection: $tabViewSelection)
+                    WaitingView(viewModel: viewModel)
                         .onAppear {
                             HapticManager.shared.hapticImpact(style: .light)
                             GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
@@ -85,6 +87,8 @@ struct RootView: View {
                         }
                         .tag(3)
                 }
+                .environmentObject(tabSelect)
+                .environmentObject(waitingVM)
             }
             
             if !networkManager.isConnected {
@@ -107,7 +111,7 @@ struct RootView: View {
             }
             
             viewModel.boothModel.loadLikeBoothListDB()
-            }
+        }
         .task {
             let versionServce = VersionService.shared
             guard let latestVersion = try? await versionServce.loadAppStoreVersion() else { return }
@@ -145,12 +149,8 @@ struct RootView: View {
     }
 }
 
-enum ViewState {
-    case intro
-    case home
-    case map
-    case waiting
-    case menu
+class TabSelect: ObservableObject {
+    @Published var selectedTab: Int = 0
 }
 
 #Preview {

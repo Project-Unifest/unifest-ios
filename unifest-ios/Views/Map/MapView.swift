@@ -9,6 +9,8 @@ import SwiftUI
 import CoreLocation
 import MapKit
 
+// MapPageView에서 보이는 지도 뷰
+
 @available(iOS 17, *)
 struct MapViewiOS17: View {
     @Namespace private var mainMap
@@ -688,5 +690,11 @@ enum BoothType: String, CaseIterable {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    Group {
+        if #available(iOS 17, *) {
+            MapViewiOS17(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
+        } else {
+            MapViewiOS16(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
+        }
+    }
 }

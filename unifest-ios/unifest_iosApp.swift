@@ -5,8 +5,9 @@
 //  Created by Hoeun Lee on 3/13/24.
 //
 
-import SwiftUI
 import Firebase
+import SwiftUI
+import UserNotifications
 
 @main
 struct unifest_iosApp: App {
@@ -15,6 +16,8 @@ struct unifest_iosApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(rootViewModel: RootViewModel())
+            // WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
+            // WaitingRequestView()
         }
     }
 }

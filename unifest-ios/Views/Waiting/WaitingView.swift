@@ -9,63 +9,64 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
-    @Binding var tabViewSelection: Int
+    @EnvironmentObject var waitingVM: WaitingViewModel
+    @State private var cancelWaiting = false
+    @State private var waitingIdToCancel = -1
+    @State private var waitingCancelToast: Toast? = nil
     
     var body: some View {
-        VStack {
-            HStack {
-                Text(StringLiterals.Waiting.title)
-                    .font(.system(size: 20))
-                    .fontWeight(.semibold)
+        ZStack {
+            VStack {
+                HStack {
+                    Text(StringLiterals.Waiting.title)
+                        .font(.pretendard(weight: .p6, size: 20))
+                        .foregroundStyle(.grey900)
+                    
+                    Spacer()
+                }
+                .padding()
                 
-                Spacer()
-            }
-            .padding()
-            
-            Text("").roundedButton(background: .defaultLightPink, strokeColor: .accent, height: 34, cornerRadius: 30)
-                .padding(.horizontal)
-            // Image(.waitingBack)
-                // .resizable()
-                // .scaledToFit()
-                // .frame(maxWidth: .infinity)
-                .overlay {
-                    HStack {
-                        Text(StringLiterals.Waiting.myWaiting)
-                            .font(.system(size: 13))
-                            .bold()
-                            .foregroundStyle(.defaultPink)
-                        
-                        Spacer()
+                Text("")
+                    .roundedButton(background: .primary50, strokeColor: .accent, height: 34, cornerRadius: 30)
+                    .padding(.horizontal)
+                    .overlay {
+                        HStack {
+                            Text(StringLiterals.Waiting.myWaiting)
+                                .font(.pretendard(weight: .p7, size: 13))
+                                .foregroundStyle(.primary500)
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal, 30)
                     }
-                    .padding(.horizontal, 30)
-                }
-            
-            Spacer()
-            
-            Text(StringLiterals.Waiting.noWaitingTitle)
-                .font(.system(size: 15))
-                .fontWeight(.medium)
-                .padding(.bottom, 4)
-            
-            Button {
-                tabViewSelection = 1
-            } label: {
-                HStack(spacing: 0) {
-                    Text(StringLiterals.Waiting.gotoMapView)
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
-                        .underline()
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 11))
-                }
+                
+                WaitingListView(
+                    viewModel: viewModel,
+                    cancelWaiting: $cancelWaiting,
+                    waitingIdToCancel: $waitingIdToCancel,
+                    waitingCancelToast: $waitingCancelToast
+                )
             }
             
-            Spacer()
+            if cancelWaiting == true {
+                WaitingCancelView(
+                    cancelWaiting: $cancelWaiting,
+                    waitingIdToCancel: $waitingIdToCancel,
+                    waitingCancelToast: $waitingCancelToast
+                )
+            }
         }
+        .task {
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+        }
+        .refreshable {
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+        }
+        .toastView(toast: $waitingCancelToast)
     }
 }
 
 #Preview {
-    WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
+    WaitingView(viewModel: RootViewModel())
+        .environmentObject(WaitingViewModel())
 }

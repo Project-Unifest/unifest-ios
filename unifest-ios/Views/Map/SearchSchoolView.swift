@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+// MapPageHeaderView에서 학교이름(지금은 '건국대학교'로 고정) 버튼을 눌렀을 떄 나타나는 뷰
+// 검색을 하지 않았을 때는 '나의 관심축제' 뷰 <- SchoolBoxView
+// 검색을 했을 때는 '검색 결과' 뷰가 보이게 만듦 <- LongSchoolBoxView
+
 struct SearchSchoolView: View {
     @State private var searchText: String = ""
     let columns = [GridItem(.adaptive(minimum: 114))]
@@ -84,40 +88,4 @@ struct SearchSchoolView: View {
             SearchSchoolView()
                 .presentationDragIndicator(.visible)
         }
-}
-
-struct LongSchoolBoxView: View {
-    let schoolName: String
-    let festivalName: String
-    let startDate: String
-    let endDate: String
-    
-    var body: some View {
-        HStack {
-            Image(.konkukLogo)
-                .resizable()
-                .frame(width: 52, height: 52)
-                .scaledToFit()
-                .padding(.trailing, 4)
-            
-            VStack(alignment: .leading) {
-                Text(schoolName)
-                    .font(.system(size: 13))
-                
-                Text(festivalName)
-                    .font(.system(size: 12))
-                    .bold()
-                
-                Text(startDate + "-" + endDate)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.defaultDarkGray)
-            }
-            
-            Spacer()
-        }
-    }
-}
-
-#Preview {
-    LongSchoolBoxView(schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
 }

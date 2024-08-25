@@ -23,6 +23,14 @@ class RootViewModel: ObservableObject {
         setupBindings()
     }
     
+    enum ViewState {
+        case intro
+        case home
+        case map
+        case waiting
+        case menu
+    }
+    
     private func setupBindings() {
         boothModel.objectWillChange
             .sink { [weak self] in
