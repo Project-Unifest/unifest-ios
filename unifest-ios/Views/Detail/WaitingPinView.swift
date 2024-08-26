@@ -163,6 +163,7 @@ struct WaitingPinView: View {
 
 #Preview {
     WaitingPinView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
+        .environmentObject(WaitingViewModel())
 }
 
 

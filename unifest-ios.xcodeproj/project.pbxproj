@@ -56,6 +56,7 @@
 		F80071622C334ED00001596F /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071612C334ED00001596F /* IntroView.swift */; };
 		F80071642C3351360001596F /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071632C3351360001596F /* MenuBarView.swift */; };
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
+		F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
@@ -79,9 +80,10 @@
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
 		F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */; };
-		F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */; };
+		F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
+		F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -134,6 +136,7 @@
 		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Intro/IntroView.swift"; sourceTree = SOURCE_ROOT; };
 		F80071632C3351360001596F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
+		F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntroView-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
@@ -157,8 +160,9 @@
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
-		F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-Model.swift"; sourceTree = "<group>"; };
+		F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingModel.swift; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
+		F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFestivalModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,6 +256,7 @@
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
+				F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -326,7 +331,8 @@
 			isa = PBXGroup;
 			children = (
 				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
-				F8ABA93E2C5A7C96003A8CDB /* Waiting-Model.swift */,
+				F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */,
+				F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -571,10 +577,11 @@
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
 				0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */,
 				0CC40F422BF9276B002759DF /* View+.swift in Sources */,
+				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
-				F8ABA93F2C5A7C96003A8CDB /* Waiting-Model.swift in Sources */,
+				F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */,
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
 				F88A6D102C7A05570025459F /* Toast.swift in Sources */,
 				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
@@ -590,6 +597,7 @@
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* Extensions.swift in Sources */,
 				0CE839D92BF3A33C003E211D /* TeamView.swift in Sources */,
+				F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */,
 				F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
