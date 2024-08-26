@@ -40,49 +40,47 @@ struct LikedBoothBoxView: View {
             .padding(.trailing, 4)
             
             /* Image(image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 86, height: 86)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .padding(.trailing, 4)*/
-                
+             .resizable()
+             .scaledToFill()
+             .frame(width: 86, height: 86)
+             .clipShape(RoundedRectangle(cornerRadius: 10))
+             .padding(.trailing, 4)*/
+            
             VStack(alignment: .leading) {
-                HStack {
-                    Text(name)
-                        .font(.system(size: 18))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
-                        .lineLimit(1)
-                    
-                    Spacer()
-                    
-                    /* Button {
-                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                        viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                    } label: {
-                        Image(.pinkBookMark)
-                    }*/
-                }
+                Text(name)
+                    .font(.pretendard(weight: .p6, size: 18))
+                    .foregroundStyle(.grey900)
+                    .lineLimit(1)
+                    .padding(.top, 5)
+                
+                /* Button {
+                 GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                 viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                 } label: {
+                 Image(.pinkBookMark)
+                 }*/
                 
                 Text(description)
-                    .font(.system(size: 11))
-                    .foregroundStyle(.gray)
+                    .font(.pretendard(weight: .p6, size: 13))
+                    .foregroundStyle(.grey600)
                     .lineLimit(2)
+                    .padding(.top, -7)
                 
-                // Spacer()
+                Spacer()
                 
                 HStack(spacing: 2) {
                     Image(.marker)
+                        .padding(.trailing, 5)
                     Text(location)
-                        .font(.system(size: 11))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.darkGray)
+                        .font(.pretendard(weight: .p6, size: 13))
+                        .foregroundStyle(.grey700)
                         .lineLimit(1)
                     Spacer()
                 }
-                
+                .padding(.bottom, 6)
             }
         }
+        .background(.ufBackground)
         .frame(height: 90)
         // .padding(.horizontal)
     }

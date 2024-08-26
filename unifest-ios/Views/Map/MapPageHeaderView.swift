@@ -22,9 +22,8 @@ struct MapPageHeaderView: View {
                 } label: {
                     HStack {
                         Text("건국대학교")
-                            .font(.system(size: 20))
-                            .bold()
-                            .foregroundStyle(.defaultBlack)
+                            .font(.pretendard(weight: .p6, size: 20))
+                            .foregroundStyle(.grey900)
                         
                         /* Image(.downArrow)
                          .resizable()
@@ -55,7 +54,7 @@ struct MapPageHeaderView: View {
             .padding(.horizontal)
             
             Text("")
-                .roundedButton(background: .defaultWhite, strokeColor: .gray, height: 46, cornerRadius: 67)
+                .roundedButton(background: .ufBackground, strokeColor: .grey400, height: 46, cornerRadius: 67)
                 .padding(.horizontal)
             // Image(.searchBox)
                 .overlay {
@@ -92,7 +91,7 @@ struct MapPageHeaderView: View {
                                 UIApplication.shared.endEditing(true)
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(.grey600)
                             }
                         }
                     }
@@ -103,14 +102,14 @@ struct MapPageHeaderView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 7) {
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.drink] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.drink] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.drink] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.drink] ?? false) ? .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.drink] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.drinkBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.drink] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.drink] ?? false ? .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.drink.rawValue, "turn": (mapViewModel.isTagSelected[.drink] ?? false) ? "off" : "on"])
@@ -122,14 +121,14 @@ struct MapPageHeaderView: View {
                         }
                     
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.food] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.food] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.food] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.food] ?? false) ? .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.food] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.foodBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.food] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.food] ?? false ? .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.food.rawValue, "turn": (mapViewModel.isTagSelected[.food] ?? false) ? "off" : "on"])
@@ -141,14 +140,14 @@ struct MapPageHeaderView: View {
                         }
                     
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.event] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.event] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.event] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.event] ?? false) ? .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.event] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.eventBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.event] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.event] ?? false ?  .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.event.rawValue, "turn": (mapViewModel.isTagSelected[.event] ?? false) ? "off" : "on"])
@@ -160,14 +159,14 @@ struct MapPageHeaderView: View {
                         }
                     
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.booth] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.booth] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.booth] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.booth] ?? false) ? .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.booth] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.generalBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.booth] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.booth] ?? false ? .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.booth.rawValue, "turn": (mapViewModel.isTagSelected[.booth] ?? false) ? "off" : "on"])
@@ -179,14 +178,14 @@ struct MapPageHeaderView: View {
                         }
                     
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.hospital] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.hospital] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.hospital] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.hospital] ?? false) ? .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.hospital] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.hospitalBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.hospital] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.hospital] ?? false ? .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.hospital.rawValue, "turn": (mapViewModel.isTagSelected[.hospital] ?? false) ? "off" : "on"])
@@ -198,14 +197,14 @@ struct MapPageHeaderView: View {
                         }
                     
                     Text("")
-                        .roundedButton(background: (mapViewModel.isTagSelected[.toilet] ?? false) ? .defaultLightPink : .defaultWhite, strokeColor: (mapViewModel.isTagSelected[.toilet] ?? false) ? .accent : .gray, height: 26, cornerRadius: 34)
+                        .roundedButton(background: (mapViewModel.isTagSelected[.toilet] ?? false) ? .primary500.opacity(0.2) : .ufBackground, strokeColor: (mapViewModel.isTagSelected[.toilet] ?? false) ?  .primary500 : .grey400, height: 26, cornerRadius: 34)
                         .frame(width: 56)
                         .padding(.vertical, 1)
                     // Image(mapViewModel.isTagSelected[.toilet] ?? false ? .selectedTagBox : .nonselectedTagBox)
                         .overlay {
                             Text(StringLiterals.Map.toiletBoothTitle)
                                 .font(.system(size: 13))
-                                .foregroundStyle(mapViewModel.isTagSelected[.toilet] ?? false ? .defaultPink : .gray)
+                                .foregroundStyle(mapViewModel.isTagSelected[.toilet] ?? false ? .primary500 : .grey600)
                         }
                         .onTapGesture {
                             GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_TAG_BUTTON, params: ["tagType": BoothType.toilet.rawValue, "turn": (mapViewModel.isTagSelected[.toilet] ?? false) ? "off" : "on"])
@@ -219,6 +218,7 @@ struct MapPageHeaderView: View {
                 .padding(.horizontal)
             }
         }
+        .padding(.top, 60) 
         .padding(.bottom)
         .sheet(isPresented: $isSearchSchoolViewPresented) {
             SearchSchoolView()

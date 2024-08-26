@@ -68,7 +68,7 @@ enum StringLiterals {
     
     enum Menu {
         static let title = "메뉴"
-        static let LikedSchoolTitle = "나의 관심 축제"
+        static let LikedSchoolTitle = "나의 관심학교"
         static let LikedBoothTitle = "관심 부스"
         static let more = "더보기"
         static let noLikedBoothTitle = "관심 부스 없음"

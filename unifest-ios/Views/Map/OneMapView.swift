@@ -9,7 +9,7 @@ import SwiftUI
 import CoreLocation
 import MapKit
 
-// DetailView에서 '위치 확인하기' 버튼을 누르면 fullscreencover로 뜨는 뷰
+// BoothDetailView에서 '위치 확인하기' 버튼을 누르면 fullscreencover로 뜨는 뷰
 
 @available(iOS 17, *)
 struct OneMapViewiOS17: View {

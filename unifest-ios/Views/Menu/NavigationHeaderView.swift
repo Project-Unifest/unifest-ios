@@ -11,30 +11,34 @@ struct NavigationHeaderView: View {
     let text: String
     
     var body: some View {
-        HStack(alignment: .bottom) {
-            Text(text)
-                .font(.system(size: 20))
-                .fontWeight(.semibold)
-                .foregroundStyle(.defaultBlack)
-            Spacer()
-        }
-        .padding(.horizontal)
-        .frame(maxWidth: .infinity)
-        .background(.background)
-        .frame(height: 32)
-        .overlay {
-            Image(.navBottom)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity)
-                .offset(y: 32)
-        }
+        Rectangle()
+            .fill(Color.ufNetworkErrorBackground)
+            .frame(height: 115)
+            .clipShape(
+                .rect(
+                    topLeadingRadius: 0,
+                    bottomLeadingRadius: 23,
+                    bottomTrailingRadius: 23,
+                    topTrailingRadius: 0
+                )
+            )
+            .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+            .overlay {
+                VStack {
+                    Spacer()
+                    
+                    HStack(alignment: .bottom) {
+                        Text("\(text)")
+                            .font(.pretendard(weight: .p6, size: 20))
+                            .foregroundStyle(.grey900)
+                        Spacer()
+                    }
+                }
+                .padding()
+            }
     }
 }
 
 #Preview {
-    ZStack {
-        Color.gray.ignoresSafeArea()
-        NavigationHeaderView(text: "메뉴")
-    }
+    NavigationHeaderView(text: "메뉴")
 }

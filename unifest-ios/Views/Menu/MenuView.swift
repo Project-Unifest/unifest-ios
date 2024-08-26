@@ -34,13 +34,12 @@ struct MenuView: View {
         ZStack {
             ScrollView {
                 Spacer()
-                    .frame(height: 56)
+                    .frame(height: 110)
                 
                 HStack {
                     Text(StringLiterals.Menu.LikedSchoolTitle)
-                        .font(.system(size: 15))
-                        .bold()
-                        .foregroundStyle(.defaultBlack)
+                        .font(.pretendard(weight: .p7, size: 15))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                     
@@ -76,13 +75,14 @@ struct MenuView: View {
                 }
                 .padding(.horizontal)
                 
-                Text("").boldLine().padding(.vertical)
+                Text("")
+                    .boldLine()
+                    .padding(.vertical)
                 
                 HStack {
                     Text(StringLiterals.Menu.LikedBoothTitle)
-                        .font(.system(size: 15))
-                        .bold()
-                        .foregroundStyle(.defaultBlack)
+                        .font(.pretendard(weight: .p7, size: 15))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                     
@@ -94,12 +94,11 @@ struct MenuView: View {
                             HStack(spacing: 0) {
                                 Text(StringLiterals.Menu.more)
                                     .font(.system(size: 11))
-                                    .foregroundColor(.gray)
                                     .underline()
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 11))
-                                    .foregroundColor(.gray)
                             }
+                            .foregroundStyle(.grey600)
                         }
                     }
                 }
@@ -109,14 +108,13 @@ struct MenuView: View {
                     // 체크한 관심 있는 부스가 없는 경우
                     VStack(alignment: .center) {
                         Text(StringLiterals.Menu.noLikedBoothTitle)
-                            .font(.system(size: 16))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.defaultBlack)
-                            .padding(.bottom, 1)
+                            .font(.pretendard(weight: .p6, size: 18))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, 5)
                         
                         Text(StringLiterals.Menu.noLikedBoothMessage)
-                            .font(.system(size: 12))
-                            .foregroundColor(.gray)
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey600)
                             .padding(.bottom, 10)
                     }
                     .frame(height: 240)
@@ -127,6 +125,8 @@ struct MenuView: View {
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
                                     LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                                         // .padding(.vertical, 10)
+                                        .listRowBackground(Color.ufBackground)
+                                        .listRowSeparator(.hidden)
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
@@ -138,7 +138,7 @@ struct MenuView: View {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                                                 viewModel.boothModel.deleteLikeBoothListDB(boothID)
                                             } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.red)
+                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
                                             }
                                         }
                                 }
@@ -174,7 +174,7 @@ struct MenuView: View {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                                                 viewModel.boothModel.deleteLikeBoothListDB(boothID)
                                             } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.red)
+                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
                                             }
                                         }
                                 } else {
@@ -187,6 +187,7 @@ struct MenuView: View {
                                 }
                             }
                         }
+                        .background(.ufBackground)
                         .listStyle(.plain)
                         .frame(height: CGFloat(114 * randomLikeList.count))
                         .onChange(of: viewModel.boothModel.likedBoothList) { _ in
@@ -221,13 +222,12 @@ struct MenuView: View {
                         Image(systemName: "headphones.circle")
                             .resizable()
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
+                            .foregroundStyle(.grey900)
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.askTitle)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
                         
                         Spacer()
                     }
@@ -248,13 +248,12 @@ struct MenuView: View {
                         Image(systemName: "ellipsis.circle")
                             .resizable()
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
+                            .foregroundStyle(.grey900)
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.operatorModeTitle)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
                         
                         Spacer()
                     }
@@ -279,9 +278,8 @@ struct MenuView: View {
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.instagram)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
                         
                         Spacer()
                     }
@@ -295,7 +293,7 @@ struct MenuView: View {
                 HStack {
                     Text("설정")
                         .font(.system(size: 15))
-                        .foregroundStyle(.defaultBlack)
+                        .foregroundStyle(.ufBlack)
                         .bold()
                     
                     Spacer()
@@ -325,9 +323,9 @@ struct MenuView: View {
                     
                     VStack(alignment: .leading) {
                         Text("부스 묶어보기")
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, -2)
                         
                         Text("축소된 지도에서 가까운 부스를 묶어 표시합니다")
                             .font(.system(size: 12))
@@ -445,9 +443,8 @@ struct MenuView: View {
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.locationAuthText)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
                         
                         Spacer()
                     }
@@ -469,13 +466,12 @@ struct MenuView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
+                            .foregroundColor(.grey900)
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.privacyText)
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
                         
                         Spacer()
                     }
@@ -513,9 +509,9 @@ struct MenuView: View {
                         
                         VStack(alignment: .leading) {
                             Text("개발자에게 메일 보내기")
-                                .font(.system(size: 15))
-                                .foregroundStyle(.darkGray)
-                                .fontWeight(.medium)
+                                .font(.pretendard(weight: .p5, size: 15))
+                                .foregroundStyle(.grey900)
+                                .padding(.bottom, -2)
                             
                             Text("앱 오류 신고, 개선점, 피드백을 남겨주세요")
                                 .font(.system(size: 12))
@@ -548,9 +544,9 @@ struct MenuView: View {
                         
                         VStack(alignment: .leading) {
                             Text("앱스토어에 리뷰 남기기")
-                                .font(.system(size: 15))
-                                .foregroundStyle(.darkGray)
-                                .fontWeight(.medium)
+                                .font(.pretendard(weight: .p5, size: 15))
+                                .foregroundStyle(.grey900)
+                                .padding(.bottom, -2)
                             
                             Text("남겨주신 소중한 리뷰는 개발자에게 큰 힘이 됩니다")
                                 .font(.system(size: 12))
@@ -618,18 +614,22 @@ struct MenuView: View {
                     .padding(.bottom, 20)
                 
                 Spacer()
+                    .frame(height: 90)
             }
             .padding(.top, 32)
+            .background(.ufBackground)
             
             VStack {
                 NavigationHeaderView(text: StringLiterals.Menu.title)
                 Spacer()
             }
         }
+        .ignoresSafeArea()
         // .environmentObject(themeManager)
         // .environment(\.colorScheme, .getCurrentColorScheme())
         .fullScreenCover(isPresented: $isListViewPresented, content: {
             LikeBoothListView(viewModel: viewModel)
+                .ignoresSafeArea()
         })
         .onAppear {
             // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
