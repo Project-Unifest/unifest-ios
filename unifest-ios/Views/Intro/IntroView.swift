@@ -10,7 +10,6 @@ import SwiftUI
 struct IntroView: View {
     @ObservedObject var viewModel: RootViewModel
     @State private var likedList: [Int] = []
-    
     @State private var searchText: String = ""
     @State private var count: Int = 0
     
@@ -27,13 +26,13 @@ struct IntroView: View {
                     .frame(height: 78)
                 
                 Text(StringLiterals.Intro.infoTitle)
-                    .font(.system(size: 18))
-                    .bold()
+                    .font(.pretendard(weight: .p6, size: 18))
+                    .foregroundStyle(.grey900)
                     .padding(.bottom, 4)
                 
                 Text(StringLiterals.Intro.infoSubtitle)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.gray)
+                    .font(.pretendard(weight: .p5, size: 12))
+                    .foregroundStyle(.grey600)
                 
                 Spacer()
                     .frame(height: 52)
@@ -42,7 +41,8 @@ struct IntroView: View {
                     .overlay {
                         HStack {
                             TextField(StringLiterals.Intro.searchPlaceholder, text: $searchText)
-                                .font(.system(size: 13))
+                                .font(.pretendard(weight: .p5, size: 13))
+                                .foregroundStyle(.grey400)
                             Image(.searchIcon)
                         }
                         .padding(.horizontal, 15)
@@ -53,8 +53,8 @@ struct IntroView: View {
                 
                 HStack {
                     Text(StringLiterals.Intro.myFestivalTitle)
-                        .font(.system(size: 15))
-                        .bold()
+                        .font(.pretendard(weight: .p6, size: 15))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                     
@@ -62,8 +62,8 @@ struct IntroView: View {
                         
                     } label: {
                         Text(StringLiterals.Intro.discardAll)
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
+                            .font(.pretendard(weight: .p5, size: 12))
+                            .foregroundStyle(.grey600)
                             .underline()
                     }
                 }
@@ -100,22 +100,21 @@ struct IntroView: View {
                     Spacer()
                         .frame(width: .infinity, height: 7)
                 }
-                .background(.lightGray)
+                .background(.grey100)
                 .frame(width: .infinity, height: 7)
                 .padding(.top, 20)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
-                        ForEach(0..<7) { index in
+                        ForEach(0 ..< 7) { index in
                             Button {
                                 withAnimation(.spring) {
                                     regionIndex = index
                                 }
                             } label: {
                                 Text(regions[index])
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(index == regionIndex ? .accent : .gray)
-                                    .fontWeight(index == regionIndex ? .bold : .regular)
+                                    .font(index == regionIndex ? .pretendard(weight: .p7, size: 14) : .pretendard(weight: .p4, size: 14))
+                                    .foregroundStyle(index == regionIndex ? .primary500 : .grey900)
                             }
                         }
                     }
@@ -124,8 +123,8 @@ struct IntroView: View {
                 .padding(.vertical, 10)
                 
                 Divider()
-                    .frame(width: .infinity)
-                    .foregroundStyle(.lightGray)
+                    .frame(height: 1.5)
+                    .background(.grey100)
                 
                 HStack {
                     // Text("총 \(viewModel.festivalModel.festivals.count)개")
@@ -189,18 +188,18 @@ struct IntroView: View {
             Button {
                 viewModel.transtion(to: .home)
             } label: {
-                Image(.longButtonBlack)
-                    .resizable()
-                    .scaledToFit()
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.primary500)
+                    .frame(width: 349, height: 51)
                     .overlay {
-                        Text(StringLiterals.Intro.complete)
-                            .font(.system(size: 17))
-                            .bold()
+                        Text("추가 완료")
+                            .font(.pretendard(weight: .p7, size: 14))
                             .foregroundStyle(.white)
                     }
             }
             .padding(.horizontal)
         }
+        .background(.ufBackground)
     }
     
     @ViewBuilder

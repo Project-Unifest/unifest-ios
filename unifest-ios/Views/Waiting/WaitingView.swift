@@ -56,6 +56,7 @@ struct WaitingView: View {
                 )
             }
         }
+        .background(.ufBackground)
         .task {
             await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
         }

@@ -41,7 +41,7 @@ struct WaitingInfoView: View {
                     
                     HStack(alignment: .bottom) {
                         HStack(alignment: .bottom, spacing: 2) {
-                            if reservedWaitingListItem.waitingOrder == 0 {
+                            if reservedWaitingListItem.waitingOrder == 1 {
                                 Text("입장해주세요")
                                     .font(.pretendard(weight: .p7, size: 30))
                                     .foregroundStyle(.defaultPink)
