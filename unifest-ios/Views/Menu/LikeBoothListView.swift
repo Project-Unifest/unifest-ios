@@ -19,37 +19,37 @@ struct LikeBoothListView: View {
                 VStack(alignment: .center) {
                     Spacer()
                     Text(StringLiterals.Menu.noLikedBoothTitle)
-                        .font(.system(size: 16))
-                        .fontWeight(.semibold)
-                        .foregroundColor(.defaultBlack)
+                        .font(.pretendard(weight: .p6, size: 18))
+                        .foregroundStyle(.grey900)
                         .padding(.bottom, 1)
                     
                     Text(StringLiterals.Menu.noLikedBoothMessage)
-                        .font(.system(size: 12))
-                        .foregroundColor(.gray)
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey600)
                     Spacer()
                 }
+                .background(.ufBackground)
                 .padding(.top, 32)
             }
             else {
                 /* ScrollView {
-                    Spacer()
-                        .frame(height: 32)
-                    ForEach(viewModel.boothModel.likedBoothList, id: \.self) { boothID in
-                        if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                            // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                            LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                .padding(.vertical, 10)
-                                .onTapGesture {
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                    viewModel.boothModel.loadBoothDetail(boothID)
-                                    isDetailViewPresented = true
-                                }
-                            Divider()
-                        }
-                    }
-                }
-                .padding(.top, 32)*/
+                 Spacer()
+                 .frame(height: 32)
+                 ForEach(viewModel.boothModel.likedBoothList, id: \.self) { boothID in
+                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                 // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                 LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                 .padding(.vertical, 10)
+                 .onTapGesture {
+                 GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                 viewModel.boothModel.loadBoothDetail(boothID)
+                 isDetailViewPresented = true
+                 }
+                 Divider()
+                 }
+                 }
+                 }
+                 .padding(.top, 32)*/
                 
                 
                 List {
@@ -57,7 +57,9 @@ struct LikeBoothListView: View {
                         if let booth = viewModel.boothModel.getBoothByID(boothID) {
                             // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
                             LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                // .padding(.vertical, 10)
+                            // .padding(.vertical, 10)
+                                .listRowBackground(Color.ufBackground)
+                                .listRowSeparator(.hidden)
                                 .onTapGesture {
                                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                     viewModel.boothModel.loadBoothDetail(boothID)
@@ -69,7 +71,7 @@ struct LikeBoothListView: View {
                                         GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                                         viewModel.boothModel.deleteLikeBoothListDB(boothID)
                                     } label: {
-                                        Label("삭제", systemImage: "trash.circle").tint(.red)
+                                        Label("삭제", systemImage: "trash.circle").tint(.ufRed)
                                     }
                                 }
                             // Divider()
@@ -84,50 +86,56 @@ struct LikeBoothListView: View {
                         }
                     }
                 }
+                .background(.ufBackground)
                 .listStyle(.plain)
-                .padding(.top, 60)
+                .padding(.top, 115)
             }
             
             VStack {
-                HStack(alignment: .bottom) {
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity)
-                .background(.background)
-                .frame(height: 32)
-                .overlay {
-                    Image(.navBottom)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(maxWidth: .infinity)
-                        .offset(y: 32)
-                }
-                .overlay {
-                    HStack(alignment: .bottom) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.darkGray)
+                Rectangle()
+                    .fill(Color.ufNetworkErrorBackground)
+                    .frame(height: 115)
+                    .clipShape(
+                        .rect(
+                            topLeadingRadius: 0,
+                            bottomLeadingRadius: 23,
+                            bottomTrailingRadius: 23,
+                            topTrailingRadius: 0
+                        )
+                    )
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                    .overlay {
+                        VStack {
+                            Spacer()
+                            
+                            HStack(alignment: .bottom) {
+                                Button {
+                                    dismiss()
+                                } label: {
+                                    Image(systemName: "chevron.left")
+                                        .foregroundColor(.darkGray)
+                                }
+                                .frame(width: 20)
+                                
+                                Spacer()
+                                
+                                Text(StringLiterals.Menu.LikedBoothTitle)
+                                    .font(.pretendard(weight: .p6, size: 20))
+                                    .foregroundStyle(.grey900)
+                                
+                                Spacer()
+                                Spacer()
+                                    .frame(width: 20)
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 13)
                         }
-                        .frame(width: 20)
-                        Spacer()
-                        Text(StringLiterals.Menu.LikedBoothTitle)
-                            .font(.system(size: 20))
-                            .fontWeight(.semibold)
-                            .foregroundStyle(.defaultBlack)
-                        Spacer()
-                        Spacer()
-                            .frame(width: 20)
                     }
-                    .offset(y: 4)
-                    .padding(.horizontal)
-                }
                 
                 Spacer()
             }
         }
+        .background(.ufBackground)
         .sheet(isPresented: $isDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)

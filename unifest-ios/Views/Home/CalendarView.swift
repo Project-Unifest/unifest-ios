@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-// CalendarTabView 안에 CalendarView, HomeView가 있음
-// CalendarView는 이 preview에서 위에 뜨는 달력
+// CalendarTabView 안에 CalendarWeekView, CalendarView HomeView가 있음
+// CalendarWeekView는 달력이 expanded되기 전의 뷰(한 주)
+// CalendarView는 달력이 expanded된 후의 뷰(한 달)
 // HomeView는 그 밑에 O월O일 축제 일정, 다가오는 축제 일정을 보여주는 뷰
-// CalendarWeekView는 ..?
 
 struct CalendarView: View {
     @ObservedObject var viewModel: RootViewModel
@@ -50,13 +50,13 @@ struct CalendarView: View {
                         VStack {
                             Text("\(thisDay)")
                                 .font(.system(size: 13))
-                                .foregroundStyle(isToday ? .accentColor : fontColor)
+                                .foregroundStyle(isToday ? .primary500 : fontColor)
                                 .fontWeight(isToday ? .bold : .semibold)
                                 .overlay {
                                     if selectedMonth == thisMonth && selectedDay == thisDay {
                                         Circle()
-                                            .fill(Color.accentColor)
-                                            .frame(width: 20, height: 20)
+                                            .fill(Color.primary500)
+                                            .frame(width: 25, height: 25)
                                             .overlay {
                                                 Text("\(thisDay)")
                                                     .font(.system(size: 13))
@@ -79,16 +79,16 @@ struct CalendarView: View {
                             
                             let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
                             /* if (festivalNum > 0) {
-                                simpleDot(.defaultGreen)
-                            } else {
-                                simpleDot(.clear)
-                            }*/
+                             simpleDot(.defaultGreen)
+                             } else {
+                             simpleDot(.clear)
+                             }*/
                             if festivalNum >= 3 {
-                                simpleDot(.accent)
+                                simpleDot(.ufRed)
                             } else if festivalNum == 2 {
-                                simpleDot(.defaultOrange)
+                                simpleDot(.ufOrange)
                             } else if festivalNum == 1 {
-                                simpleDot(.defaultGreen)
+                                simpleDot(.ufBluegreen)
                             } else {
                                 simpleDot(.clear)
                             }
@@ -100,6 +100,7 @@ struct CalendarView: View {
             
             Spacer()
         }
+        .background(.ufWhite)
         .onAppear {
             calendar = getCalendar(calMonth: month)
             print("num of week: \(calendar.count)")
@@ -128,7 +129,7 @@ struct CalendarView: View {
         
         // get the sunday of this week
         let firstSunday = Calendar.current.date(from: Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: firstDay))!
-
+        
         var calendar: [[Date]] = []
         for i in 0..<6 {
             // 해당 주의 첫날 끝날이 모두 해당 월에 포함하지 않을 경우 break
@@ -211,13 +212,13 @@ struct CalendarWeekView: View {
                     VStack {
                         Text("\(thisDay)")
                             .font(.system(size: 13))
-                            .foregroundStyle(isToday ? .accentColor : fontColor)
+                            .foregroundStyle(isToday ? .primary500 : fontColor)
                             .fontWeight(isToday ? .bold : .semibold)
                             .overlay {
                                 if selectedMonth == thisMonth && selectedDay == thisDay {
                                     Circle()
-                                        .fill(Color.accentColor)
-                                        .frame(width: 20, height: 20)
+                                        .fill(Color.primary500)
+                                        .frame(width: 25, height: 25)
                                         .overlay {
                                             Text("\(thisDay)")
                                                 .font(.system(size: 13))
@@ -242,17 +243,17 @@ struct CalendarWeekView: View {
                         
                         let festivalNum: Int = viewModel.festivalModel.isFestival(year: Calendar.current.component(.year, from: day), month: Calendar.current.component(.month, from: day), day: Calendar.current.component(.day, from: day))
                         /* if (festivalNum > 0) {
-                            simpleDot(.defaultGreen)
-                        } else {
-                            simpleDot(.clear)
-                        }*/
+                         simpleDot(.defaultGreen)
+                         } else {
+                         simpleDot(.clear)
+                         }*/
                         
                         if festivalNum >= 3 {
-                            simpleDot(.accent)
+                            simpleDot(.ufRed)
                         } else if festivalNum == 2 {
-                            simpleDot(.defaultOrange)
+                            simpleDot(.ufOrange)
                         } else if festivalNum == 1 {
-                            simpleDot(.defaultGreen)
+                            simpleDot(.ufBluegreen)
                         } else {
                             simpleDot(.clear)
                         }
@@ -263,9 +264,10 @@ struct CalendarWeekView: View {
             
             Spacer()
         }
+        .background(.ufWhite)
         .onAppear {
-//            calendar =
-//            print(calendar)
+            //            calendar =
+            //            print(calendar)
         }
     }
     
@@ -339,8 +341,8 @@ struct CalendarTabView: View {
     @State private var calendar: [[Date]] = []
     
     @State private var isInfoPresented: Bool = false
-
-    init(viewModel: RootViewModel) {        
+    
+    init(viewModel: RootViewModel) {
         let date = Date()
         _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
         _currentMonth = State(initialValue: Calendar.current.component(.month, from: date))
@@ -360,6 +362,7 @@ struct CalendarTabView: View {
             VStack(spacing: 0) {
                 if isExpanded {
                     HStack {
+                        // 2024년 O월을 탭하면 원하는 달로 이동할 수 있는 Menu가 나타남
                         Menu {
                             ForEach(1..<13, id: \.self) { monthIndex in
                                 Button("\(monthIndex)" + StringLiterals.Calendar.month) {
@@ -376,19 +379,19 @@ struct CalendarTabView: View {
                         
                         if isInfoPresented {
                             HStack(alignment: .center, spacing: 0) {
-                                simpleDot(.defaultGreen)
+                                simpleDot(.ufBluegreen)
                                     .padding(.trailing, 3)
                                 Text("1개")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
                                     .padding(.trailing, 8)
-                                simpleDot(.defaultOrange)
+                                simpleDot(.ufOrange)
                                     .padding(.trailing, 3)
                                 Text("2개")
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
                                     .padding(.trailing, 8)
-                                simpleDot(.accent)
+                                simpleDot(.ufRed)
                                     .padding(.trailing, 3)
                                 Text("3개 이상")
                                     .font(.system(size: 12))
@@ -423,7 +426,7 @@ struct CalendarTabView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical)
-                    .background(.background)
+                    .background(.ufWhite)
                     .frame(maxWidth: .infinity)
                 }
                 
@@ -444,16 +447,36 @@ struct CalendarTabView: View {
                         }
                     }
                 }
-                .background(.background)
+                .background(.ufWhite)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 // .border(.red)
-                .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80) // 6주 340 5주 290 4주 240 1주 80
+                .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80)
+                // 6주 340 5주 290 4주 240 1주 80
+                // getHeightByWeekNum()으로 달력 탭뷰의 높이를 정함(몇 주냐에 따라서)
                 .overlay {
-                    Image(.navBottom)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .offset(y: isExpanded ? getViewOffsetY() : 62)
+                    // 달력 아래가 rounded rectangle처럼 보이는 이유는,
+                    // chevron.down을 포함한 이 뷰가 rectangle의 아래를 clipshape으로 둥글게 만든 뷰이고, 달력 tabview에 overlay한 뒤 offset으로 위치를 아래로 움직여 달력 탭뷰와 하나처럼 보이게 구현했기 때문
+                    // 달력이 접혔다 펴졌다 할 때 이 rectangle의 y축 offset도 함께 조정해야 달력 탭뷰와 하나처럼 보임
+                    Rectangle()
+                        .fill(Color.ufWhite)
+                        .frame(height: 25)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 23,
+                                bottomTrailingRadius: 23,
+                                topTrailingRadius: 0
+                            )
+                        )
+                        .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                        .mask(
+                            Rectangle()
+                                .fill(Color.black)
+                                .frame(height: 30) // 그림자를 적용할 높이 설정
+                                .offset(y: 5) // 그림자가 적용될 위치를 아래로 이동
+                        )
+                        .offset(y: isExpanded ? getViewOffsetY(monthPageIndex) : 47)
+                    //.shadow(color: Color.grey200.opacity(0.8), radius: 5, y: 8)
                         .overlay {
                             HStack {
                                 Button {
@@ -487,11 +510,12 @@ struct CalendarTabView: View {
                                         .rotationEffect(isExpanded ? .degrees(180) : .zero)
                                 }
                             }
-                            .offset(y: isExpanded ? getViewOffsetY() - 12 : 50)
-                            // .border(.green)
+                            .offset(y: isExpanded ? getViewOffsetY(monthPageIndex) - 12 : 40) // chevron 버튼의 위치 결정
+                            //.border(.green)
                         }
-                    // .border(.blue)
                 }
+                //.border(.blue)
+                
                 
                 /* TabView(selection: $currentMonth) {
                  ForEach(1...12, id: \.self) { month in
@@ -502,6 +526,7 @@ struct CalendarTabView: View {
                  .tabViewStyle(.page)
                  .frame(height: 340)*/
             }
+            .background(.ufBackground)
             .onAppear {
                 firstSundayOfYear = getFirstSundayOfYear()
                 currentFirstSunday = getFirstSunday(fromDate: Date())
@@ -549,10 +574,11 @@ struct CalendarTabView: View {
             )
             
             Spacer()
-                .frame(height: 24)
+                .frame(height: 44)
             
             HomeView(viewModel: viewModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
         }
+        .background(.ufBackground)
     }
     
     @ViewBuilder
@@ -562,6 +588,7 @@ struct CalendarTabView: View {
             .frame(width: 7, height: 7)
     }
     
+    // 사용 X
     func getViewHeight() -> CGFloat {
         let heightList: [CGFloat] = [80, 90, 140, 190, 240, 290, 340, 390, 440]
         let weekNumList = getWeekNumOfYear()
@@ -569,11 +596,21 @@ struct CalendarTabView: View {
         return heightList[weekNum]
     }
     
-    func getViewOffsetY() -> CGFloat {
-        let offsetYList: [CGFloat] = [0, 0, 0, 117, 142, 167, 192, 217, 0]
-        let weekNumList = getWeekNumOfYear()
-        let weekNum = weekNumList[currentMonth]
-        return offsetYList[weekNum]
+    // 달력 탭뷰가 펼쳐지거나 접혔을 때, 달력 탭뷰 아래의 chevron.down 버튼을 포함한 이 뷰(TabView에 overlay한 뷰)의 y축 offset을 조정하기 위한 메서드
+    func getViewOffsetY(_ monthPageIndex: Int) -> CGFloat {
+//        let offsetYList: [CGFloat] = [0, 0, 0, 117, 142, 167, 192, 217, 0]
+//        let weekNumList = getWeekNumOfYear()
+//        let weekNum = weekNumList[currentMonth]
+//        return offsetYList[weekNum]
+        // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 호은님 실수인 듯?
+        
+        // 2024년을 기준으로 3월, 6월은 6주 나머지는 모두 5주이므로 2024년에 맞게 하드코딩함
+        print("monthPageIndex: \(monthPageIndex)")
+        if monthPageIndex == 3 || monthPageIndex == 6 {
+            return 172
+        } else {
+            return 152
+        }
     }
     
     func getFirstSundayOfYear() -> Date {
@@ -605,12 +642,13 @@ struct CalendarTabView: View {
     
     func getHeightByWeekNum(_ numWeek: Int) -> CGFloat {
         // 6주 340 5주 290 4주 240 1주 80
+        print("이번 달은 \(numWeek)주")
         if numWeek >= 7 {
             return 490
         } else if numWeek == 6 {
-            return 390
+            return 325
         } else if numWeek == 5 {
-            return 290
+            return 285
         } else if numWeek == 4 {
             return 240
         } else if numWeek == 3 {

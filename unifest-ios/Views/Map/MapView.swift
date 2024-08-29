@@ -196,24 +196,23 @@ struct MapViewiOS17: View {
                 Spacer()
                 VStack(alignment: .trailing) {
                     Spacer()
-                        .frame(height: 140)
+                        .frame(height: 200)
                     
                     Group {
                         MapPitchToggle(scope: mainMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.defaultWhite)
+                                    .foregroundColor(.ufBackground)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
                         MapUserLocationButton(scope: mainMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.defaultWhite)
+                                    .foregroundColor(.ufBackground)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        
                         MapCompass(scope: mainMap)
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)

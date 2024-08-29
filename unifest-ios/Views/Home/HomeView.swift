@@ -50,14 +50,11 @@ struct HomeView: View {
     
     var body: some View {
         ScrollView {
-            Spacer()
-                .frame(height: 20)
-            
             HStack {
                 Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalTitle)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
-                    .foregroundStyle(.defaultBlack)
+                    .foregroundStyle(.grey900)
                 Spacer()
             }
             .padding(.horizontal)
@@ -86,12 +83,12 @@ struct HomeView: View {
                 } else {
                     if !viewModel.festivalModel.todayFestivals.isEmpty {
                         VStack(spacing: 16) {
-                            
                             ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
                                 let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
                                 schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
                                 
                                 Divider()
+                                    .foregroundStyle(.grey200)
                                     .padding(.trailing)
                             }
                         }
@@ -193,6 +190,7 @@ struct HomeView: View {
             }
             .padding(.horizontal)
         }
+        .background(.ufBackground)
         .sheet(isPresented: $isIntroViewPresented) {
             IntroView(viewModel: viewModel)
         }
@@ -323,8 +321,6 @@ struct HomeView: View {
                     }
                 }
                 
-                Spacer()
-                
                 if let celebs = celebs {
                     ZStack(alignment: .leading) {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -343,10 +339,20 @@ struct HomeView: View {
                         .frame(height: 72)
                         // .border(.red)
                         
-                        Image(.leftRowOverlay)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 72)
+//                        Image(.leftRowOverlay)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 72)
+                        
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.ufBackground, Color.clear]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(width: 30, height: 72)
                     }
                     .frame(height: 72)
                     // .border(.green)
