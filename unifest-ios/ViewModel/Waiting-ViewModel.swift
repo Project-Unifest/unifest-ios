@@ -11,8 +11,8 @@ import Foundation
 class WaitingViewModel: ObservableObject {
     @Published var waitingTeamCount: Int = -1
         // WaitingRequestView와 WaitingComplete에서 웨이팅 팀 수를 보여주는 변수
-    @Published var requestedWaitingInfo: AddWaitingResult? = nil // .empty
-    @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
+    @Published var requestedWaitingInfo: AddWaitingResult? = .empty // .empty
+    @Published var reservedWaitingList: [ReservedWaitingResult]? = [.empty] // [.empty]
     @Published var isValidPinNumber: Bool? = nil
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
