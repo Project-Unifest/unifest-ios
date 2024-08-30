@@ -78,6 +78,9 @@
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
+		F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F452C81E0B000DA4231 /* StampView.swift */; };
+		F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */; };
+		F8A91F4A2C81F68300DA4231 /* StampBoothListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */; };
 		F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */; };
 		F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
@@ -157,6 +160,9 @@
 		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F8A91F452C81E0B000DA4231 /* StampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampView.swift; sourceTree = "<group>"; };
+		F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListView.swift; sourceTree = "<group>"; };
+		F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListItemView.swift; sourceTree = "<group>"; };
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingModel.swift; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
@@ -369,15 +375,16 @@
 			isa = PBXGroup;
 			children = (
 				F88A6D0E2C7A05430025459F /* Toast */,
-				0C9641ED2BB94C8100838DA9 /* Root */,
+				0C4DFCAF2BBEFC1D00CAB98B /* Dialog */,
 				0C244FD12BF685150047F23D /* Welcome */,
 				0CBB05822BB074ED00EB56BE /* Intro */,
+				0C9641ED2BB94C8100838DA9 /* Root */,
 				0CBB05802BB074ED00EB56BE /* Home */,
 				0CBB05862BB074ED00EB56BE /* Map */,
-				0C9641F02BB94DDD00838DA9 /* Waiting */,
-				0C9641F32BB94E7400838DA9 /* Menu */,
-				0C4DFCAF2BBEFC1D00CAB98B /* Dialog */,
 				0CDB46D32BB1DC8300C34AED /* Detail */,
+				0C9641F02BB94DDD00838DA9 /* Waiting */,
+				F8A91F442C81DFD400DA4231 /* Stamp */,
+				0C9641F32BB94E7400838DA9 /* Menu */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -442,6 +449,16 @@
 				F88A6D112C7A05810025459F /* ToastView.swift */,
 			);
 			path = Toast;
+			sourceTree = "<group>";
+		};
+		F8A91F442C81DFD400DA4231 /* Stamp */ = {
+			isa = PBXGroup;
+			children = (
+				F8A91F452C81E0B000DA4231 /* StampView.swift */,
+				F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */,
+				F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */,
+			);
+			path = Stamp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -579,10 +596,13 @@
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */,
+				F8A91F4A2C81F68300DA4231 /* StampBoothListItemView.swift in Sources */,
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
 				F88A6D102C7A05570025459F /* Toast.swift in Sources */,
 				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
+				F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
+				F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
 				F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */,
 				0CBB058B2BB074ED00EB56BE /* MapPageView.swift in Sources */,

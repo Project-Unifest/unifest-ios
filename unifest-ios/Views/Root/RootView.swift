@@ -75,6 +75,15 @@ struct RootView: View {
                         }
                         .tag(2)
                     
+                    StampView(viewModel: viewModel)
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                        }
+                        .tabItem {
+                            Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+                        }
+                        .tag(3)
+                    
                     MenuView(viewModel: viewModel)
                         .onAppear {
                             HapticManager.shared.hapticImpact(style: .light)
@@ -85,7 +94,7 @@ struct RootView: View {
                             // Text(StringLiterals.Root.menu)
                             Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
                         }
-                        .tag(3)
+                        .tag(4)
                 }
                 .environmentObject(tabSelect)
                 .environmentObject(waitingVM)
