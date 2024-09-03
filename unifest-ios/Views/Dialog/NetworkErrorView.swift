@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NetworkErrorView: View {
     let errorType: NetworkErrorType
+    @Binding var isErrorConfirmed: Bool
     
     var body: some View {
         ZStack {
@@ -36,14 +37,17 @@ struct NetworkErrorView: View {
                             .padding(.bottom, 10)
                         
                         Button {
-                            // TODO: Retry
+                            if errorType == .server {
+                                
+                            } else {
+                                
+                            }
                         } label: {
                             Text("")
                                 .roundedButton(background: .primary500, strokeColor: .clear, height: 45, cornerRadius: 5)
                                 .padding(.horizontal)
-                            // Image(.mediumPinkButton)
                                 .overlay {
-                                    Text(StringLiterals.NetworkError.retry)
+                                    Text(errorType == .server ? StringLiterals.NetworkError.confirmError : StringLiterals.NetworkError.retry)
                                         .font(.pretendard(weight: .p6, size: 13))
                                         .foregroundStyle(.white)
                                         .fontWeight(.semibold)
@@ -63,9 +67,9 @@ struct NetworkErrorView: View {
 }
 
 #Preview {
-    NetworkErrorView(errorType: .network)
+    NetworkErrorView(errorType: .network, isErrorConfirmed: .constant(false))
 }
 
 #Preview {
-    NetworkErrorView(errorType: .server)
+    NetworkErrorView(errorType: .server, isErrorConfirmed: .constant(false))
 }

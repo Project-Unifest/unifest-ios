@@ -35,7 +35,6 @@
 		0C9D0A602BA19DFF00156763 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */; };
 		0C9D0A632BA19DFF00156763 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */; };
 		0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */; };
-		0CA4E1112BF3EC0A000B1B1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0CA4E1102BF3EC0A000B1B1B /* GoogleService-Info.plist */; };
 		0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */; };
 		0CB2170D2BF23E3A0003338B /* FestivalData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB2170C2BF23E3A0003338B /* FestivalData.swift */; };
 		0CB2170F2BF23F270003338B /* festivalTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2170E2BF23F270003338B /* festivalTest.json */; };
@@ -57,6 +56,7 @@
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
+		F820FD2F2C859ABF00010BB6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -86,6 +86,7 @@
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
 		F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */; };
+		F8FF96992C84550100654705 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F8FF96982C84550100654705 /* CodeScanner */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,7 +117,6 @@
 		0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
-		0CA4E1102BF3EC0A000B1B1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "unifest-ios.entitlements"; sourceTree = "<group>"; };
 		0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolBoxView.swift; sourceTree = "<group>"; };
 		0CB2170C2BF23E3A0003338B /* FestivalData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalData.swift; sourceTree = "<group>"; };
@@ -139,6 +139,7 @@
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntroView-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
+		F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -178,6 +179,7 @@
 				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
 				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
+				F8FF96992C84550100654705 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,8 +285,8 @@
 		0C9D0A5A2BA19DFE00156763 /* unifest-ios */ = {
 			isa = PBXGroup;
 			children = (
+				F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */,
 				0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */,
-				0CA4E1102BF3EC0A000B1B1B /* GoogleService-Info.plist */,
 				0C2A2C032BE9AEA600EDF359 /* Info.plist */,
 				0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */,
 				0C9D0A5D2BA19DFE00156763 /* ContentView.swift */,
@@ -482,6 +484,7 @@
 				0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */,
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
 				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
+				F8FF96982C84550100654705 /* CodeScanner */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -515,6 +518,7 @@
 				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -535,7 +539,6 @@
 				F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */,
 				0C9D0A632BA19DFF00156763 /* Preview Assets.xcassets in Resources */,
 				0C9D0A602BA19DFF00156763 /* Assets.xcassets in Resources */,
-				0CA4E1112BF3EC0A000B1B1B /* GoogleService-Info.plist in Resources */,
 				F84C6F802C4A3A8200D9E414 /* Pretendard-Light.ttf in Resources */,
 				F84C6F7B2C4A3A8200D9E414 /* Pretendard-Regular.ttf in Resources */,
 				0C7A11802BF25FDF008713B7 /* boothTest.json in Resources */,
@@ -544,6 +547,7 @@
 				0CB2170F2BF23F270003338B /* festivalTest.json in Resources */,
 				F84C6F7E2C4A3A8200D9E414 /* Pretendard-Bold.ttf in Resources */,
 				F84C6F7D2C4A3A8200D9E414 /* Pretendard-ExtraLight.ttf in Resources */,
+				F820FD2F2C859ABF00010BB6 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -756,6 +760,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드 스캔을 위해 카메라에 접근합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -769,7 +774,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -798,6 +803,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드 스캔을 위해 카메라에 접근합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -811,7 +817,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-app";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -872,6 +878,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -894,6 +908,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F8FF96982C84550100654705 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
