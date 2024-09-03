@@ -5,12 +5,16 @@
 //  Created by 임지성 on 8/30/24.
 //
 
+import CodeScanner
 import SwiftUI
 
 struct StampView: View {
     @ObservedObject var viewModel: RootViewModel
     @State private var rotationAmount = 0.0
     @State private var isStampBoothViewPresented = false
+    @State private var isShowingScanner = false
+    @State private var numberOfStamps = 5
+    @State private var addStampToast: Toast? = nil
     
     var body: some View {
         VStack {
@@ -29,7 +33,7 @@ struct StampView: View {
                 .overlay {
                     VStack {
                         HStack {
-                            VStack {
+                            VStack(alignment: .leading) {
                                 Text("한국교통대학교")
                                     .font(.pretendard(weight: .p6, size: 20))
                                     .foregroundStyle(.grey900)
@@ -38,13 +42,12 @@ struct StampView: View {
                                 Text("지금까지 모은 스탬프")
                                     .font(.pretendard(weight: .p4, size: 14))
                                     .foregroundStyle(.grey500)
-                                    .padding(.trailing, 2)
                             }
                             
                             Spacer()
                             
                             Button {
-                                
+                                isShowingScanner = true
                             } label: {
                                 Capsule()
                                     .fill(
@@ -71,12 +74,13 @@ struct StampView: View {
                         
                         HStack {
                             HStack {
-                                Text("1")
+                                Text("\(numberOfStamps)")
                                     .foregroundStyle(.grey900)
                                 Text("/ 12개")
                                     .foregroundStyle(.grey500)
                             }
                             .font(.pretendard(weight: .p7, size: 24))
+                            
                             
                             Spacer()
                             
@@ -91,39 +95,7 @@ struct StampView: View {
                         }
                         .padding(.bottom, 20)
                         
-                        Grid {
-                            ForEach(0 ..< 3) { row in
-                                GridRow {
-                                    ForEach(0 ..< 4) { _ in
-                                        // 스탬프 개수에 따라
-                                        // let emptyCircle = Circle() 생성하고
-                                        // 현재 스탬프 개수 if문으로 emptyCircle 대신 Image(.appLogo) 띄우는 식?
-                                        
-                                        Circle()
-                                            .fill(Color.grey200)
-                                            .frame(width: 62, height: 62)
-                                            .overlay {
-                                                Image(.appLogo)
-                                                    .resizable()
-                                                    .frame(width: 62, height: 62)
-                                                    .clipShape(Circle())
-                                            }
-                                            .onTapGesture {
-                                                HapticManager.shared.hapticImpact(style: .light)
-//                                                withAnimation(.spring(duration: 1, bounce: 0.7)) {
-//                                                    rotationAmount += 360
-//                                                }
-                                            }
-//                                            .rotation3DEffect(
-//                                                .degrees(rotationAmount),
-//                                                axis: (x: 1, y: 1, z: 1)
-//                                            )
-                                            .padding(.horizontal, 7)
-                                            .padding(.vertical, 8)
-                                    }
-                                }
-                            }
-                        }
+                        StampGrid(numberOfStamps: numberOfStamps)
                         
                         Spacer()
                         
@@ -159,6 +131,59 @@ struct StampView: View {
         .sheet(isPresented: $isStampBoothViewPresented) {
             StampBoothListView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $isShowingScanner) {
+            CodeScannerView(codeTypes: [.qr], completion: handleScan)
+        }
+        .toastView(toast: $addStampToast)
+    }
+    
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        isShowingScanner = false
+        
+        print("Scanning completed")
+        switch result {
+        case .success(let result):
+            print("Scanning succeeded")
+            print(result)
+            addStampToast = Toast(style: .success, message: "QR코드 스캔 성공")
+        case .failure(let error):
+            print("Scannign failed: \(error.localizedDescription)")
+            addStampToast = Toast(style: .success, message: "QR코드 스캔 실패")
+        }
+    }
+}
+
+struct StampGrid: View {
+    let numberOfStamps: Int
+    
+    var body: some View {
+        Grid {
+            ForEach(0 ..< 3) { i in
+                GridRow {
+                    ForEach(0 ..< 4) { j in
+                        let count = i * 4 + j + 1
+                        
+                        if numberOfStamps >= count {
+                            Image(.appLogo)
+                                .resizable()
+                                .frame(width: 62, height: 62)
+                                .clipShape(Circle())
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 8)
+                                .onTapGesture {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                }
+                        } else {
+                            Circle()
+                                .fill(Color.grey200)
+                                .frame(width: 62, height: 62)
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 8)
+                        }
+                    }
+                }
+            }
         }
     }
 }

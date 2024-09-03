@@ -29,6 +29,7 @@ enum StringLiterals {
         static let serverErrorMessage = "개발자에게 문의 바랍니다."
         static let networkErrorTitle = "네트워크 문제"
         static let networkErrorMessage = "와이파이나 데이터 접속을 확인해주세요."
+        static let confirmError = "확인"
         static let retry = "재시도"
     }
     

@@ -15,7 +15,7 @@ struct ToastView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 8)
-            .fill(Color.grey200)
+            .fill(Color.black)
             .frame(minWidth: 0, maxWidth: width, minHeight: 65, maxHeight: 65)
             .overlay {
                 HStack(alignment: .center, spacing: 12) {
@@ -24,7 +24,8 @@ struct ToastView: View {
                     
                     Text(message)
                         .font(.pretendard(weight: .p4, size: 13))
-                        .foregroundStyle(.grey900)
+                        // .foregroundStyle(.grey900)
+                        .foregroundStyle(.white)
                     
                     Spacer(minLength: 10)
                     

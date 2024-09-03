@@ -100,13 +100,6 @@ struct RootView: View {
                 .environmentObject(waitingVM)
             }
             
-            if !networkManager.isConnected {
-                NetworkErrorView(errorType: .network)
-                    .onAppear {
-                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
-                    }
-            }
-            
             if viewModel.isLoading {
                 ZStack {
                     Color.black.opacity(0.2).ignoresSafeArea()
