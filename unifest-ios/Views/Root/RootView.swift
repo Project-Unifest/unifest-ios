@@ -10,22 +10,19 @@ import SwiftUI
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-    @ObservedObject var networkManager: NetworkManager
+    @StateObject var networkManager = NetworkManager()
     @StateObject var tabSelect = TabSelect()
     @StateObject var waitingVM = WaitingViewModel()
-    
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
-    @State private var isNetworkAlertPresented: Bool = false
-    
+    @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
-    
     @State private var isWelcomeViewPresented: Bool = false
     
     init(rootViewModel: RootViewModel) {
         self.viewModel = rootViewModel
         self.mapViewModel = MapViewModel(viewModel: rootViewModel)
-        self.networkManager = NetworkManager()
+        // self.networkManager = NetworkManager()
     }
     
     var body: some View {
@@ -98,7 +95,22 @@ struct RootView: View {
                 }
                 .environmentObject(tabSelect)
                 .environmentObject(waitingVM)
+                .environmentObject(networkManager)
             }
+            
+            if networkManager.isNetworkConnected == false {
+                NetworkErrorView(errorType: .network)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                    }
+            }
+            
+//            if networkManager.isServerError == true {
+//                NetworkErrorView(errorType: .server)
+//                    .onAppear {
+//                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+//                    }
+//            }
             
             if viewModel.isLoading {
                 ZStack {
