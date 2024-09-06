@@ -134,6 +134,8 @@ struct StampView: View {
         }
         .sheet(isPresented: $isShowingScanner) {
             CodeScannerView(codeTypes: [.qr], completion: handleScan)
+                .presentationDragIndicator(.visible)
+                .ignoresSafeArea()
         }
         .toastView(toast: $addStampToast)
     }
