@@ -176,7 +176,7 @@ struct StampGrid: View {
                                 }
                         } else {
                             Circle()
-                                .fill(Color.grey200)
+                                .fill(Color.grey300)
                                 .frame(width: 62, height: 62)
                                 .padding(.horizontal, 7)
                                 .padding(.vertical, 8)
