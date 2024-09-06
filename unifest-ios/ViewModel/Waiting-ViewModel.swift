@@ -12,8 +12,9 @@ class WaitingViewModel: ObservableObject {
     @Published var waitingTeamCount: Int = -1
         // WaitingRequestView와 WaitingComplete에서 웨이팅 팀 수를 보여주는 변수
     @Published var requestedWaitingInfo: AddWaitingResult? = .empty // .empty
-    @Published var reservedWaitingList: [ReservedWaitingResult]? = [.empty] // [.empty]
-    @Published var isValidPinNumber: Bool? = nil
+    @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
+    @Published var isPinNumberValid: Bool? = nil
+    
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
         let url = APIManager.shared.serverType.rawValue + "/waiting"
@@ -200,19 +201,21 @@ class WaitingViewModel: ObservableObject {
         
         AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .responseDecodable(of: PinCheckResponse.self) { response in
+                print("Requested URL: \(response.request?.url?.absoluteString ?? "")")
+                
                 switch response.result {
                 case .success(let res):
                     print("pinNumberCheck 서버 요청 성공")
                     print(res)
                     if let waitingTeamCount = res.data {
                         if waitingTeamCount == -1 { // 잘못된 pin 번호
-                            self.isValidPinNumber = false
+                            self.isPinNumberValid = false
                         } else { // 올바른 pin 번호
                             self.waitingTeamCount = waitingTeamCount
-                            self.isValidPinNumber = true
+                            self.isPinNumberValid = true
                         }
                     } else { // 요청 실패, 잘못된 boothId 등
-                        self.isValidPinNumber = false
+                        self.isPinNumberValid = false
                     }
                 case .failure(let error):
                     print("pinNumberCheck 서버 요청 실패")

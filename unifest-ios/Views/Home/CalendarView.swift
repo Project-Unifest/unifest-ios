@@ -509,6 +509,8 @@ struct CalendarTabView: View {
                                         .foregroundColor(.gray)
                                         .rotationEffect(isExpanded ? .degrees(180) : .zero)
                                 }
+                                .padding(20)
+                                .contentShape(Rectangle())
                             }
                             .offset(y: isExpanded ? getViewOffsetY(monthPageIndex) - 12 : 40) // chevron 버튼의 위치 결정
                             //.border(.green)

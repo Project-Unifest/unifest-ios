@@ -29,6 +29,7 @@ struct BoothDetailView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var networkManager: NetworkManager
     let currentBoothId: Int
     @State private var pin: String = ""
     @State private var isReloadButtonPresent: Bool = false
@@ -38,6 +39,7 @@ struct BoothDetailView: View {
     @State private var isWaitingPinViewPresented: Bool = false
     @State private var isWaitingRequestViewPresented: Bool = false
     @State private var isWaitingCompleteViewPresented: Bool = false
+    @State private var isNetworkErrorViewPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -104,6 +106,20 @@ struct BoothDetailView: View {
                         isWaitingCompleteViewPresented: $isWaitingCompleteViewPresented
                     )
                 }
+                
+                if networkManager.isNetworkConnected == false {
+                    NetworkErrorView(errorType: .network)
+                        .onAppear {
+                            GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                        }
+                }
+                
+//                if networkManager.isServerError == true {
+//                    NetworkErrorView(errorType: .server)
+//                        .onAppear {
+//                            GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+//                        }
+//                }
             }
         }
         .onAppear {
@@ -132,6 +148,7 @@ struct BoothDetailView: View {
                         viewModel.boothModel.loadBoothDetail(156)
                     }
                     .environmentObject(WaitingViewModel())
+                    .environmentObject(NetworkManager())
             }
     }
 }

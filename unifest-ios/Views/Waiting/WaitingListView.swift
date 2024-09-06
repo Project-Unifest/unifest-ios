@@ -16,7 +16,7 @@ struct WaitingListView: View {
     @Binding var waitingCancelToast: Toast?
     
     var body: some View {
-        if let reservedWaitingList = waitingVM.reservedWaitingList {
+        if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
             HStack {
                 Text("총 \(reservedWaitingList.count)건")
                     .font(.pretendard(weight: .p6, size: 11))
@@ -56,27 +56,32 @@ struct WaitingListView: View {
                 }
                 .padding(.top, 8)
             }
-        } else {
-            Spacer()
-            
-            Text(StringLiterals.Waiting.noWaitingTitle)
-                .font(.pretendard(weight: .p6, size: 18))
-                .foregroundStyle(.grey900)
-                .padding(.bottom, 4)
-            
-            Button {
-                tabSelect.selectedTab = 1
-            } label: {
-                HStack(spacing: 0) {
-                    Text(StringLiterals.Waiting.gotoMapView)
-                    Image(systemName: "chevron.right")
+        } else { // reservedWaitingList가 nil이거나 빈 배열일 때
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack {
+                        Text(StringLiterals.Waiting.noWaitingTitle)
+                            .font(.pretendard(weight: .p6, size: 18))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, 4)
+                        
+                        Button {
+                            tabSelect.selectedTab = 1
+                        } label: {
+                            HStack(spacing: 0) {
+                                Text(StringLiterals.Waiting.gotoMapView)
+                                Image(systemName: "chevron.right")
+                            }
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey600)
+                            .underline()
+                        }
+                    }
+                    .frame(width: geometry.size.width)
+                    .frame(minHeight: geometry.size.height)
+                    // VStack의 최소 높이를 부모 뷰의 높이로 설정해서 ScrollView내에 중앙 정렬 가능(VStack은 기본적으로 content를 중앙에 정렬함)
                 }
-                .font(.pretendard(weight: .p5, size: 13))
-                .foregroundStyle(.grey600)
-                .underline()
             }
-            
-            Spacer()
         }
     }
 }
