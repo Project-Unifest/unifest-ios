@@ -78,6 +78,7 @@ struct WaitingRequestView: View {
                             .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.grey600)
                             .padding(.bottom, -5)
+                            .padding(.top, 1)
                         
                         Text(String(waitingVM.waitingTeamCount) + "팀")
                             .font(.pretendard(weight: .p7, size: 28))
@@ -277,7 +278,7 @@ struct WaitingRequestView: View {
 }
 
 #Preview {
-    WaitingRequestView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
+    WaitingRequestView(viewModel: RootViewModel(), boothId: 79, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
         .environmentObject(WaitingViewModel())
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }

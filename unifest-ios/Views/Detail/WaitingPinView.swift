@@ -62,7 +62,7 @@ struct WaitingPinView: View {
                             }
                         }
                         .padding(.horizontal)
-                        .padding(.top, 20)
+                        .padding(.top, 16)
                         
                         Text("부스 PIN 입력")
                             .font(.pretendard(weight: .p7, size: 28))
@@ -91,7 +91,7 @@ struct WaitingPinView: View {
                             }
                             .padding(.top, 15)
                         
-                        if waitingVM.isValidPinNumber == nil || waitingVM.isValidPinNumber == true {
+                        if waitingVM.isPinNumberValid == nil || waitingVM.isPinNumberValid == true {
                             HStack {
                                 Label("웨이팅 PIN은 부스 운영자에게 문의해주세요!", systemImage: "exclamationmark.circle.fill")
                                     .font(.pretendard(weight: .p5, size: 12))
@@ -101,7 +101,7 @@ struct WaitingPinView: View {
                             }
                             .padding(.horizontal)
                             .padding(.top, 1)
-                        } else if waitingVM.isValidPinNumber == false {
+                        } else if waitingVM.isPinNumberValid == false {
                             HStack {
                                 Label("올바르지 않은 PIN입니다. 부스 운영자에게 문의바랍니다", systemImage: "exclamationmark.triangle.fill")
                                     .font(.pretendard(weight: .p5, size: 12))
@@ -121,7 +121,7 @@ struct WaitingPinView: View {
                                 await waitingVM.checkPinNumber(boothId: 79, pinNumber: pin)
                                 
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    if waitingVM.isValidPinNumber == true {
+                                    if waitingVM.isPinNumberValid == true {
                                         isWaitingPinViewPresented = false
                                         isWaitingRequestViewPresented = true
                                     } else {
@@ -145,8 +145,9 @@ struct WaitingPinView: View {
                 }
         }
         .onAppear {
-            waitingVM.isValidPinNumber = nil
+            waitingVM.isPinNumberValid = nil
             isPinTextFieldFocused = true
+            pin = ""
         }
     }
     
