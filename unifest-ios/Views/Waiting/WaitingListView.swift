@@ -16,7 +16,7 @@ struct WaitingListView: View {
     @Binding var waitingCancelToast: Toast?
     
     var body: some View {
-        if let reservedWaitingList = waitingVM.reservedWaitingList {
+        if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
             HStack {
                 Text("총 \(reservedWaitingList.count)건")
                     .font(.pretendard(weight: .p6, size: 11))
@@ -56,7 +56,7 @@ struct WaitingListView: View {
                 }
                 .padding(.top, 8)
             }
-        } else {
+        } else { // reservedWaitingList가 nil이거나 빈 배열일 때
             GeometryReader { geometry in
                 ScrollView {
                     VStack {
