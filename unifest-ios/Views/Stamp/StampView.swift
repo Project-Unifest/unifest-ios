@@ -17,127 +17,131 @@ struct StampView: View {
     @State private var addStampToast: Toast? = nil
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("스탬프")
-                    .font(.pretendard(weight: .p6, size: 21))
-                    .foregroundStyle(.grey900)
+        GeometryReader { geometry in
+            let screenWidth = geometry.size.width
+            
+            VStack {
+                HStack {
+                    Text("스탬프")
+                        .font(.pretendard(weight: .p6, size: 21))
+                        .foregroundStyle(.grey900)
+                    
+                    Spacer()
+                }
+                .padding(.bottom, 20)
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.ufBoxBackground)
+                    .frame(width: screenWidth * 0.9, height: 530)
+                    .overlay {
+                        VStack {
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("한국교통대학교")
+                                        .font(.pretendard(weight: .p6, size: 20))
+                                        .foregroundStyle(.grey900)
+                                        .padding(.bottom, 3)
+                                    
+                                    Text("지금까지 모은 스탬프")
+                                        .font(.pretendard(weight: .p4, size: 14))
+                                        .foregroundStyle(.grey500)
+                                }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    isShowingScanner = true
+                                } label: {
+                                    Capsule()
+                                        .fill(
+                                            LinearGradient(
+                                                gradient: Gradient(stops: [
+                                                    .init(color: Color(red: 1.0, green: 0.525, blue: 0.6), location: 0.0),
+                                                    .init(color: Color(red: 1.0, green: 0.258, blue: 0.392), location: 1.0),
+                                                    .init(color: Color(red: 0.937, green: 0.224, blue: 1.0), location: 1.0)
+                                                ]),
+                                                startPoint: .topLeading,
+                                                endPoint: .bottom
+                                            )
+                                        )
+                                        .frame(width: 140, height: 52)
+                                        .overlay {
+                                            Text("스탬프 받기")
+                                                .font(.pretendard(weight: .p6, size: 18))
+                                                .foregroundStyle(.ufWhite)
+                                        }
+                                }
+                            }
+                            .padding(.top, 18)
+                            .padding(.bottom, 20)
+                            
+                            HStack {
+                                HStack {
+                                    Text("\(numberOfStamps)")
+                                        .foregroundStyle(.grey900)
+                                    Text("/ 12개")
+                                        .foregroundStyle(.grey500)
+                                }
+                                .font(.pretendard(weight: .p7, size: 24))
+                                
+                                
+                                Spacer()
+                                
+                                Button {
+                                    
+                                } label: {
+                                    Label("새로고침", systemImage: "arrow.triangle.2.circlepath")
+                                        .font(.system(size: 14))
+                                        .foregroundStyle(.grey600)
+                                }
+                                .padding(.trailing, 8)
+                            }
+                            .padding(.bottom, 20)
+                            
+                            StampGrid(numberOfStamps: numberOfStamps, screenWidth: screenWidth)
+                            
+                            Spacer()
+                            
+                            RoundedRectangle(cornerRadius: 7)
+                                .fill(Color.ufBackground)
+                                .frame(width: 305, height: 50)
+                                .overlay {
+                                    Button {
+                                        isStampBoothViewPresented = true
+                                    } label: {
+                                        HStack {
+                                            Text("스탬프 부스 찾아보기")
+                                                .font(.pretendard(weight: .p6, size: 15))
+                                                .foregroundStyle(.grey700)
+                                            
+                                            Spacer()
+                                            
+                                            Image(systemName: "chevron.right")
+                                                .foregroundStyle(.grey700)
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                                .padding(.bottom, 5)
+                        }
+                        .padding()
+                    }
                 
                 Spacer()
             }
-            .padding(.bottom, 20)
-            
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.ufBoxBackground)
-                .frame(width: 353, height: 530)
-                .overlay {
-                    VStack {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("한국교통대학교")
-                                    .font(.pretendard(weight: .p6, size: 20))
-                                    .foregroundStyle(.grey900)
-                                    .padding(.bottom, 3)
-                                
-                                Text("지금까지 모은 스탬프")
-                                    .font(.pretendard(weight: .p4, size: 14))
-                                    .foregroundStyle(.grey500)
-                            }
-                            
-                            Spacer()
-                            
-                            Button {
-                                isShowingScanner = true
-                            } label: {
-                                Capsule()
-                                    .fill(
-                                        LinearGradient(
-                                            gradient: Gradient(stops: [
-                                                .init(color: Color(red: 1.0, green: 0.525, blue: 0.6), location: 0.0),
-                                                .init(color: Color(red: 1.0, green: 0.258, blue: 0.392), location: 1.0),
-                                                .init(color: Color(red: 0.937, green: 0.224, blue: 1.0), location: 1.0)
-                                            ]),
-                                            startPoint: .topLeading,
-                                            endPoint: .bottom
-                                        )
-                                    )
-                                    .frame(width: 140, height: 52)
-                                    .overlay {
-                                        Text("스탬프 받기")
-                                            .font(.pretendard(weight: .p6, size: 18))
-                                            .foregroundStyle(.ufWhite)
-                                    }
-                            }
-                        }
-                        .padding(.top, 18)
-                        .padding(.bottom, 20)
-                        
-                        HStack {
-                            HStack {
-                                Text("\(numberOfStamps)")
-                                    .foregroundStyle(.grey900)
-                                Text("/ 12개")
-                                    .foregroundStyle(.grey500)
-                            }
-                            .font(.pretendard(weight: .p7, size: 24))
-                            
-                            
-                            Spacer()
-                            
-                            Button {
-                                
-                            } label: {
-                                Label("새로고침", systemImage: "arrow.triangle.2.circlepath")
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(.grey600)
-                            }
-                            .padding(.trailing, 8)
-                        }
-                        .padding(.bottom, 20)
-                        
-                        StampGrid(numberOfStamps: numberOfStamps)
-                        
-                        Spacer()
-                        
-                        RoundedRectangle(cornerRadius: 7)
-                            .fill(Color.ufBackground)
-                            .frame(width: 305, height: 50)
-                            .overlay {
-                                Button {
-                                    isStampBoothViewPresented = true
-                                } label: {
-                                    HStack {
-                                        Text("스탬프 부스 찾아보기")
-                                            .font(.pretendard(weight: .p6, size: 15))
-                                            .foregroundStyle(.grey700)
-                                        
-                                        Spacer()
-                                        
-                                        Image(systemName: "chevron.right")
-                                            .foregroundStyle(.grey700)
-                                    }
-                                    .padding(.horizontal)
-                                }
-                            }
-                            .padding(.bottom, 5)
-                    }
-                    .padding()
-                }
-            
-            Spacer()
-        }
-        .padding()
-        .background(.ufBackground)
-        .sheet(isPresented: $isStampBoothViewPresented) {
-            StampBoothListView(viewModel: viewModel)
-                .presentationDragIndicator(.visible)
-        }
-        .sheet(isPresented: $isShowingScanner) {
-            CodeScannerView(codeTypes: [.qr], completion: handleScan)
-                .presentationDragIndicator(.visible)
-                .ignoresSafeArea()
-        }
+            .padding()
+            .background(.ufBackground)
+            .sheet(isPresented: $isStampBoothViewPresented) {
+                StampBoothListView(viewModel: viewModel)
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $isShowingScanner) {
+                CodeScannerView(codeTypes: [.qr], completion: handleScan)
+                    .presentationDragIndicator(.visible)
+                    .ignoresSafeArea()
+            }
         .toastView(toast: $addStampToast)
+        }
     }
     
     func handleScan(result: Result<ScanResult, ScanError>) {
@@ -158,6 +162,7 @@ struct StampView: View {
 
 struct StampGrid: View {
     let numberOfStamps: Int
+    let screenWidth: CGFloat
     
     var body: some View {
         Grid {
@@ -171,17 +176,24 @@ struct StampGrid: View {
                                 .resizable()
                                 .frame(width: 62, height: 62)
                                 .clipShape(Circle())
-                                .padding(.horizontal, 7)
+                                .padding(.horizontal, screenWidth * 0.0215)
                                 .padding(.vertical, 8)
                                 .onTapGesture {
                                     HapticManager.shared.hapticImpact(style: .light)
                                 }
                         } else {
-                            Circle()
-                                .fill(Color.grey300)
-                                .frame(width: 62, height: 62)
-                                .padding(.horizontal, 7)
-                                .padding(.vertical, 8)
+                            ZStack {
+                                Circle()
+                                    .fill(Color.grey300)
+                                    .frame(width: 62, height: 62)
+                                
+                                Image(.noImagePlaceholder)
+                                    .resizable()
+                                    .frame(width: 42, height: 42)
+                                    .offset(x: 2, y: -2)
+                            }
+                            .padding(.horizontal, screenWidth * 0.0215)
+                            .padding(.vertical, 8)
                         }
                     }
                 }

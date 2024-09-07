@@ -142,7 +142,7 @@ struct BoothInfoView: View {
                             Text(viewModel.boothModel.selectedBooth?.warning ?? "")
                                 .font(.pretendard(weight: .p6, size: 10))
                                 .foregroundStyle(.primary500)
-                                .lineLimit(3)
+                                // .lineLimit(3)
                         }
                     }
                 }
