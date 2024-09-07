@@ -14,6 +14,9 @@ import SwiftUI
 // ZStack에 MapView(MapViewiOS17, mapViewiOS16)를 띄우고, 
 // 그 위에 VStack으로 MapPageHeaderView와 밑에 보이는 '인기부스' 버튼을 묶어서 띄움
 
+// isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
+// isBoothListPresented: map의 annotation을 탭했을 때 true/false
+
 struct MapPageView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
@@ -128,42 +131,50 @@ struct MapPageView: View {
                 
                 // isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
                 // isBoothListPresented: map의 annotation을 탭했을 때 true/false
-                if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
-                    VStack {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 12) {
-                                if mapViewModel.isPopularBoothPresented {
-                                    ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
-                                        BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
-                                            .onTapGesture {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
-                                                viewModel.boothModel.loadBoothDetail(topBooth.id)
-                                                isBoothDetailViewPresented = true
-                                            }
-                                    }
-                                } else {
-                                    if viewModel.boothModel.mapSelectedBoothList.isEmpty {
-                                        //
-                                    } else {
-                                        ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
-                                            BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
+                HStack {
+                    Spacer()
+                    
+                    if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
+                        VStack {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 12) {
+                                    if mapViewModel.isPopularBoothPresented {
+                                        ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
+                                            BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
                                                 .onTapGesture {
-                                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
-                                                    viewModel.boothModel.loadBoothDetail(booth.id)
-                                                    tappedBoothId = booth.id
+                                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
+                                                    viewModel.boothModel.loadBoothDetail(topBooth.id)
                                                     isBoothDetailViewPresented = true
                                                 }
                                         }
+                                    } else {
+                                        if viewModel.boothModel.mapSelectedBoothList.isEmpty {
+                                            //
+                                        } else {
+                                            ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
+                                                BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
+                                                    .onTapGesture {
+                                                        GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
+                                                        viewModel.boothModel.loadBoothDetail(booth.id)
+                                                        tappedBoothId = booth.id
+                                                        isBoothDetailViewPresented = true
+                                                    }
+                                            }
+                                        }
                                     }
                                 }
+                                .padding(.horizontal, 35)
+                                .frame(maxWidth: .infinity) // HStack을 화면 너비만큼 확장
                             }
-                            .padding(.horizontal, 35)
+                            .padding(.bottom)
+                            
+                            Spacer()
+                                .frame(height: 80)
                         }
-                        .padding(.bottom)
-                        
-                        Spacer()
-                            .frame(height: 80)
+                        .frame(maxWidth: .infinity)
                     }
+                    
+                    Spacer() // 우측 여백
                 }
             }
             

@@ -81,7 +81,7 @@ struct LikedBoothBoxView: View {
             }
         }
         .background(.ufBackground)
-        .frame(height: 90)
+        .frame(height: 95)
         // .padding(.horizontal)
     }
 }

@@ -56,7 +56,6 @@
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
-		F820FD2F2C859ABF00010BB6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -78,6 +77,7 @@
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
+		F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8A538B92C8D056200103E64 /* GoogleService-Info.plist */; };
 		F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F452C81E0B000DA4231 /* StampView.swift */; };
 		F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */; };
 		F8A91F4A2C81F68300DA4231 /* StampBoothListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */; };
@@ -139,7 +139,6 @@
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntroView-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
-		F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -161,6 +160,7 @@
 		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F8A538B92C8D056200103E64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F8A91F452C81E0B000DA4231 /* StampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampView.swift; sourceTree = "<group>"; };
 		F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListView.swift; sourceTree = "<group>"; };
 		F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListItemView.swift; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 		0C9D0A5A2BA19DFE00156763 /* unifest-ios */ = {
 			isa = PBXGroup;
 			children = (
-				F820FD2E2C859ABF00010BB6 /* GoogleService-Info.plist */,
+				F8A538B92C8D056200103E64 /* GoogleService-Info.plist */,
 				0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */,
 				0C2A2C032BE9AEA600EDF359 /* Info.plist */,
 				0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */,
@@ -547,7 +547,7 @@
 				0CB2170F2BF23F270003338B /* festivalTest.json in Resources */,
 				F84C6F7E2C4A3A8200D9E414 /* Pretendard-Bold.ttf in Resources */,
 				F84C6F7D2C4A3A8200D9E414 /* Pretendard-ExtraLight.ttf in Resources */,
-				F820FD2F2C859ABF00010BB6 /* GoogleService-Info.plist in Resources */,
+				F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,7 +774,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -817,7 +817,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.4;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

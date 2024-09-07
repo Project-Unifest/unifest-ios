@@ -88,7 +88,7 @@ struct LikeBoothListView: View {
                 }
                 .background(.ufBackground)
                 .listStyle(.plain)
-                .padding(.top, 115)
+                .padding(.top, 123)
             }
             
             VStack {
