@@ -11,7 +11,7 @@ import SwiftUI
 // MapPageView는 MapPageHeaderView와 MapView로 이루어져있음
 // MapPageHeaderView는 이 프리뷰에서 위에 보이는 검색창과 주점, 먹거리.. 가 있는 뷰
 // MapView는 그 밑에 있는 지도가 있는 뷰임
-// ZStack에 MapView(MapViewiOS17, mapViewiOS16)를 띄우고, 
+// ZStack에 MapView(MapViewiOS17, mapViewiOS16)를 띄우고,
 // 그 위에 VStack으로 MapPageHeaderView와 밑에 보이는 '인기부스' 버튼을 묶어서 띄움
 
 // isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
@@ -20,7 +20,7 @@ import SwiftUI
 struct MapPageView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-
+    
     @State private var isBoothDetailViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var searchText: String = ""
@@ -49,135 +49,126 @@ struct MapPageView: View {
                             topTrailingRadius: 0
                         )
                     )
-                    
+                
                 Spacer()
                 
-                HStack(alignment: .center, spacing: 0) {
-                    Spacer()
-                    
-                    // 지도에서 annotation을 탭했을 때 보이는 X버튼
-                    if mapViewModel.isBoothListPresented {
+                // 지도에서 annotation을 탭했을 때 보이는 X버튼
+                if mapViewModel.isBoothListPresented {
+                    Button {
+                        DispatchQueue.main.async {
+                            withAnimation(.spring) {
+                                mapViewModel.isBoothListPresented = false
+                            }
+                        }
+                        mapViewModel.setSelectedAnnotationID(-1)
+                        viewModel.boothModel.updateMapSelectedBoothList([])
+                    } label: {
+                        Text("").roundedButton(background: .ufBackground, strokeColor: .primary500, height: 36, cornerRadius: 18)
+                            .frame(width: 36)
+                            .overlay {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.primary500)
+                            }
+                        // Image(.popCloseButton)
+                    }
+                }
+                
+                if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
+                    VStack {
                         Button {
-                            DispatchQueue.main.async {
-                                withAnimation(.spring) {
-                                    mapViewModel.isBoothListPresented = false
+                            if mapViewModel.isPopularBoothPresented {
+                                // on -> off
+                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
+                                DispatchQueue.main.async {
+                                    withAnimation {
+                                        mapViewModel.isPopularBoothPresented = false
+                                    }
+                                }
+                            } else {
+                                // off -> on
+                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
+                                if mapViewModel.isBoothListPresented {
+                                    DispatchQueue.main.async {
+                                        withAnimation {
+                                            mapViewModel.isBoothListPresented = false
+                                        }
+                                    }
+                                }
+                                DispatchQueue.main.async {
+                                    withAnimation {
+                                        mapViewModel.isPopularBoothPresented = true
+                                    }
                                 }
                             }
-                            mapViewModel.setSelectedAnnotationID(-1)
-                            viewModel.boothModel.updateMapSelectedBoothList([])
                         } label: {
-                            Text("").roundedButton(background: .ufBackground, strokeColor: .primary500, height: 36, cornerRadius: 18)
-                                .frame(width: 36)
+                            Text("")
+                                .roundedButton(background: .ufNetworkErrorBackground, strokeColor: .primary500, height: 36, cornerRadius: 39)
+                                .frame(width: 120)
+                            // Image(.popBoothButton)
                                 .overlay {
-                                    Image(systemName: "xmark")
-                                        .foregroundColor(.primary500)
-                                }
-                            // Image(.popCloseButton)
-                        }
-                    }
-                    
-                    if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
-                        VStack {
-                            Button {
-                                if mapViewModel.isPopularBoothPresented {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
-                                    DispatchQueue.main.async {
-                                        withAnimation {
-                                            mapViewModel.isPopularBoothPresented = false
-                                        }
-                                    }
-                                } else {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
-                                    if mapViewModel.isBoothListPresented {
-                                        DispatchQueue.main.async {
-                                            withAnimation {
-                                                mapViewModel.isBoothListPresented = false
-                                            }
-                                        }
-                                    }
-                                    DispatchQueue.main.async {
-                                        withAnimation {
-                                            mapViewModel.isPopularBoothPresented = true
-                                        }
+                                    HStack {
+                                        Text(StringLiterals.Map.favoriteBoothTitle)
+                                            .font(.pretendard(weight: .p7, size: 13))
+                                            .foregroundStyle(.primary500)
+                                        Image(.upPinkArrow)
+                                            .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
                                     }
                                 }
-                            } label: {
-                                Text("")
-                                    .roundedButton(background: .ufNetworkErrorBackground, strokeColor: .primary500, height: 36, cornerRadius: 39)
-                                    .frame(width: 120)
-                                // Image(.popBoothButton)
-                                    .overlay {
-                                        HStack {
-                                            Text(StringLiterals.Map.favoriteBoothTitle)
-                                                .font(.pretendard(weight: .p7, size: 13))
-                                                .foregroundStyle(.primary500)
-                                            Image(.upPinkArrow)
-                                                .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
-                                        }
-                                    }
-                            }
-                            
-                            if mapViewModel.isPopularBoothPresented == false {
-                                Spacer()
-                                    .frame(height: 95)
-                            }
+                        }
+                        
+                        if mapViewModel.isPopularBoothPresented == false {
+                            Spacer()
+                                .frame(height: 95)
                         }
                     }
-                    
-                    Spacer()
                 }
                 
                 // isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
                 // isBoothListPresented: map의 annotation을 탭했을 때 true/false
-                HStack {
-                    Spacer()
-                    
-                    if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
+                if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
+                    if mapViewModel.isPopularBoothPresented {
                         VStack {
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 12) {
-                                    if mapViewModel.isPopularBoothPresented {
-                                        ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
-                                            BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
-                                                .onTapGesture {
-                                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
-                                                    viewModel.boothModel.loadBoothDetail(topBooth.id)
-                                                    isBoothDetailViewPresented = true
-                                                }
-                                        }
-                                    } else {
-                                        if viewModel.boothModel.mapSelectedBoothList.isEmpty {
-                                            //
-                                        } else {
-                                            ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
-                                                BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
-                                                    .onTapGesture {
-                                                        GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
-                                                        viewModel.boothModel.loadBoothDetail(booth.id)
-                                                        tappedBoothId = booth.id
-                                                        isBoothDetailViewPresented = true
-                                                    }
+                                HStack {
+                                    ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
+                                        BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
+                                            .onTapGesture {
+                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
+                                                viewModel.boothModel.loadBoothDetail(topBooth.id)
+                                                isBoothDetailViewPresented = true
                                             }
-                                        }
                                     }
                                 }
                                 .padding(.horizontal, 35)
-                                .frame(maxWidth: .infinity) // HStack을 화면 너비만큼 확장
+                                .frame(maxWidth: .infinity)
                             }
-                            .padding(.bottom)
                             
                             Spacer()
-                                .frame(height: 80)
+                                .frame(height: 93)
                         }
-                        .frame(maxWidth: .infinity)
+                        
+                    } else {
+                        if viewModel.boothModel.mapSelectedBoothList.isEmpty {
+                            //
+                        } else {
+                            VStack {
+                                ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
+                                    BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
+                                        .onTapGesture {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
+                                            viewModel.boothModel.loadBoothDetail(booth.id)
+                                            tappedBoothId = booth.id
+                                            isBoothDetailViewPresented = true
+                                        }
+                                }
+                                
+                                Spacer()
+                                    .frame(height: 93) // VStack
+                            }
+                        }
                     }
-                    
-                    Spacer() // 우측 여백
                 }
             }
-            
         }
         .ignoresSafeArea()
         .sheet(isPresented: $isBoothDetailViewPresented) {
@@ -261,7 +252,7 @@ struct BoothBox: View {
                         Text(description)
                             .font(.pretendard(weight: .p4, size: 13))
                             .foregroundStyle(.grey600)
-                            //.baselineOffset(4)
+                        //.baselineOffset(4)
                             .lineLimit(2)
                         
                         HStack(spacing: 2) {
