@@ -10,9 +10,6 @@ import SwiftUI
 struct WaitingInfoView: View {
     @ObservedObject var viewModel: RootViewModel
     let reservedWaitingListItem: ReservedWaitingResult
-    @Binding var cancelWaiting: Bool
-    @Binding var waitingIdToCancel: Int
-    @Binding var waitingCancelToast: Toast?
     @EnvironmentObject var waitingVM: WaitingViewModel
     @State private var isBoothDetailViewPresented = false
     
@@ -41,7 +38,7 @@ struct WaitingInfoView: View {
                     
                     HStack(alignment: .bottom) {
                         HStack(alignment: .bottom, spacing: 2) {
-                            if reservedWaitingListItem.waitingOrder == 1 || reservedWaitingListItem.status == "Called" {
+                            if reservedWaitingListItem.status == "CALLED" {
                                 Text("입장해주세요")
                                     .font(.pretendard(weight: .p7, size: 30))
                                     .foregroundStyle(.defaultPink)
@@ -86,9 +83,9 @@ struct WaitingInfoView: View {
                     HStack {
                         Button {
                             withAnimation {
-                                cancelWaiting = true
+                                waitingVM.cancelWaiting = true
                             }
-                            waitingIdToCancel = reservedWaitingListItem.waitingId
+                            waitingVM.waitingIdToCancel = reservedWaitingListItem.waitingId
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.grey100)
@@ -126,6 +123,6 @@ struct WaitingInfoView: View {
 }
 
 #Preview {
-    WaitingInfoView(viewModel: RootViewModel(), reservedWaitingListItem: .empty, cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+    WaitingInfoView(viewModel: RootViewModel(), reservedWaitingListItem: .empty)
         .environmentObject(WaitingViewModel())
 }

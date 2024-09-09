@@ -11,9 +11,6 @@ struct WaitingListView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var tabSelect: TabSelect
-    @Binding var cancelWaiting: Bool
-    @Binding var waitingIdToCancel: Int
-    @Binding var waitingCancelToast: Toast?
     
     var body: some View {
         if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
@@ -47,10 +44,7 @@ struct WaitingListView: View {
                 ForEach(reservedWaitingList.indices, id: \.self) { i in
                     WaitingInfoView(
                         viewModel: viewModel,
-                        reservedWaitingListItem: reservedWaitingList[i],
-                        cancelWaiting: $cancelWaiting,
-                        waitingIdToCancel: $waitingIdToCancel,
-                        waitingCancelToast: $waitingCancelToast
+                        reservedWaitingListItem: reservedWaitingList[i]
                     )
                         .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
                 }
@@ -87,6 +81,6 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(viewModel: RootViewModel(), cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+    WaitingListView(viewModel: RootViewModel())
         .environmentObject(WaitingViewModel())
 }

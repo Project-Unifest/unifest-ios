@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct WaitingCancelView: View {
-    @Binding var cancelWaiting: Bool
-    @Binding var waitingIdToCancel: Int
     @Binding var waitingCancelToast: Toast?
     @EnvironmentObject var waitingVM: WaitingViewModel
     
@@ -41,11 +39,15 @@ struct WaitingCancelView: View {
                         HStack {
                             Button {
                                 Task {
-                                    await waitingVM.cancelWaiting(waitingId: waitingIdToCancel, deviceId: UIDevice.current.deviceToken)
+                                    await waitingVM.cancelWaiting(
+                                        waitingId: waitingVM.waitingIdToCancel,
+                                        deviceId: UIDevice.current.deviceToken
+                                    )
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                         Task {
                                             await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
-                                            cancelWaiting = false
+                                            waitingVM.cancelWaiting = false
+                                            waitingVM.waitingIdToCancel = -1
                                             waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
                                         }
                                     }
@@ -56,21 +58,22 @@ struct WaitingCancelView: View {
                                     .frame(width: 133, height: 45)
                                     .overlay {
                                         Text("확인")
-                                            .font(.pretendard(weight: .p6, size: 13))
+                                            .font(.pretendard(weight: .p6, size: 14))
                                             .foregroundStyle(.ufWhite)
                                     }
                             }
                             
                             Button {
-                                cancelWaiting = false
+                                waitingVM.cancelWaiting = false
+                                waitingVM.waitingIdToCancel = -1
                             } label: {
                                 RoundedRectangle(cornerRadius: 5)
-                                    .fill(Color.grey300)
+                                    .fill(Color.grey100)
                                     .frame(width: 133, height: 45)
                                     .overlay {
                                         Text("취소")
-                                            .font(.pretendard(weight: .p6, size: 13))
-                                            .foregroundStyle(.ufBlack)
+                                            .font(.pretendard(weight: .p6, size: 14))
+                                            .foregroundStyle(.grey700)
                                     }
                             }
                         }
@@ -78,10 +81,11 @@ struct WaitingCancelView: View {
                     }
                 }
         }
+        .ignoresSafeArea()
     }
 }
 
 #Preview {
-    WaitingCancelView(cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
+    WaitingCancelView(waitingCancelToast: .constant(nil))
         .environmentObject(WaitingViewModel())
 }

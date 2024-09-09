@@ -14,6 +14,8 @@ class WaitingViewModel: ObservableObject {
     @Published var requestedWaitingInfo: AddWaitingResult? = .empty // .empty
     @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
     @Published var isPinNumberValid: Bool? = nil
+    @Published var cancelWaiting = false
+    @Published var waitingIdToCancel = -1
     
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {

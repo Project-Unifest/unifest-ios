@@ -162,28 +162,24 @@ struct WaitingRequestView: View {
                                 isPolicyAgreed.toggle()
                             } label: {
                                 Image(isPolicyAgreed ? .checkboxChecked : .checkbox)
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
                             }
                             
-                            Group {
-                                Link(destination: URL(string: "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4")!) {
-                                    Text("개인정보 처리방침")
-                                        .padding(.trailing, -8)
-                                        .foregroundStyle(.defaultBlack)
-                                        .underline()
-                                        .fontWeight(.bold)
-                                }
-                                Text(" 및 ")
-                                Link(destination: URL(string: "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4")!) {
-                                    Text("제 3자 제공방침")
-                                        .padding(.horizontal, -8)
-                                        .foregroundStyle(.defaultBlack)
-                                        .underline()
-                                        .fontWeight(.bold)
-                                }
-                                Text("에 동의합니다")
+                            Link(destination: URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74")!) {
+                                Text("개인정보 처리방침")
+                                    .padding(.trailing, -8)
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey900)
+                                    .underline()
                             }
-                            .font(.system(size: 12))
+                            Text("에 동의합니다")
+                                .font(.pretendard(weight: .p5, size: 12))
+                                .foregroundStyle(.grey400)
+                            
+                            Spacer()
                         }
+                        .padding(.leading)
                         
                         Button {
                             if checkPhoneNumberFormat(phoneNumber) == true {
