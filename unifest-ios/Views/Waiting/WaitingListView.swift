@@ -66,7 +66,7 @@ struct WaitingListView: View {
                             .padding(.bottom, 4)
                         
                         Button {
-                            tabSelect.selectedTab = 1
+                            tabSelect.selectedTab = 2
                         } label: {
                             HStack(spacing: 0) {
                                 Text(StringLiterals.Waiting.gotoMapView)

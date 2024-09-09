@@ -140,7 +140,7 @@ struct StampView: View {
                     .presentationDragIndicator(.visible)
                     .ignoresSafeArea()
             }
-        .toastView(toast: $addStampToast)
+            .toastView(toast: $addStampToast)
         }
     }
     

@@ -11,7 +11,7 @@ struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
     @StateObject var networkManager = NetworkManager()
-    @StateObject var tabSelect = TabSelect()
+    @StateObject var tabSelect = TabSelect() // 사용X
     @StateObject var waitingVM = WaitingViewModel()
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
@@ -46,6 +46,18 @@ struct RootView: View {
                             }
                             .tag(0)
                         
+                        WaitingView(viewModel: viewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                                GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
+                            }
+                            .tabItem {
+                                // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
+                                // Text(StringLiterals.Root.waiting)
+                                Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
+                            }
+                            .tag(1)
+                        
                         MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
                             .onAppear {
                                 HapticManager.shared.hapticImpact(style: .light)
@@ -59,18 +71,6 @@ struct RootView: View {
                                 // Image(viewState == .map ? .mapIcon : .mapGray)
                                 // Text(StringLiterals.Root.map)
                                 Label(StringLiterals.Root.map, systemImage: "map.circle")
-                            }
-                            .tag(1)
-                        
-                        WaitingView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
-                            }
-                            .tabItem {
-                                // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
-                                // Text(StringLiterals.Root.waiting)
-                                Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
                             }
                             .tag(2)
                         

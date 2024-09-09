@@ -63,6 +63,7 @@ struct ToastModifier: ViewModifier {
     @ViewBuilder func mainToastView() -> some View {
         if let toast = toast {
             VStack {
+                Spacer()
                 ToastView(
                     style: toast.style,
                     message: toast.message,
@@ -70,7 +71,6 @@ struct ToastModifier: ViewModifier {
                 ) {
                     dismissToast()
                 }
-                Spacer()
             }
         }
     }
