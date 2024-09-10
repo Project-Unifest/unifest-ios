@@ -14,41 +14,28 @@ struct WaitingListView: View {
     
     var body: some View {
         if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
-            HStack {
-                Text("총 \(reservedWaitingList.count)건")
-                    .font(.pretendard(weight: .p6, size: 11))
-                    .foregroundStyle(.gray545454)
-                    .padding(.leading, 10)
-                
-                Spacer()
-                
-//                HStack {
-//                    Button {
-//                        
-//                    } label: {
-//                        Image(systemName: "chevron.down")
-//                            .resizable()
-//                            .frame(width: 7, height: 7)
-//                            .foregroundStyle(.gray545454)
-//                        Text("정렬")
-//                            .font(.pretendard(weight: .p6, size: 11))
-//                            .foregroundStyle(.gray545454)
-//                            .padding(.leading, -3)
-//                    }
-//                }
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 5)
-            
-            ScrollView {
-                ForEach(reservedWaitingList.indices, id: \.self) { i in
-                    WaitingInfoView(
-                        viewModel: viewModel,
-                        reservedWaitingListItem: reservedWaitingList[i]
-                    )
-                        .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
+            VStack {
+                HStack {
+                    Text("총 \(reservedWaitingList.count)건")
+                        .font(.pretendard(weight: .p6, size: 11))
+                        .foregroundStyle(.gray545454)
+                        .padding(.leading, 10)
+                    
+                    Spacer()
                 }
-                .padding(.top, 8)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                
+                ScrollView {
+                    ForEach(reservedWaitingList.indices, id: \.self) { i in
+                        WaitingInfoView(
+                            viewModel: viewModel,
+                            reservedWaitingListItem: reservedWaitingList[i]
+                        )
+                            .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
+                    }
+                    .padding(.top, 8)
+                }
             }
         } else { // reservedWaitingList가 nil이거나 빈 배열일 때
             GeometryReader { geometry in

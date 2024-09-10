@@ -39,7 +39,15 @@ struct WaitingView: View {
                             .padding(.horizontal, 30)
                         }
                     
-                    WaitingListView(viewModel: viewModel)
+                    if waitingVM.isFetchingReservedWaitingCompleted {
+                        WaitingListView(viewModel: viewModel)
+                    } else {
+                        VStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    }
                 }
                 
                 if waitingVM.cancelWaiting == true {

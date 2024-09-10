@@ -9,6 +9,7 @@ import Alamofire
 import Foundation
 
 class WaitingViewModel: ObservableObject {
+    @Published var isFetchingReservedWaitingCompleted = false // 이 변수의 상태변화는 fetchReservedWaiting에서 일괄적으로 관리함
     @Published var waitingTeamCount: Int = -1
         // WaitingRequestView와 WaitingComplete에서 웨이팅 팀 수를 보여주는 변수
     @Published var requestedWaitingInfo: AddWaitingResult? = .empty // .empty
@@ -149,6 +150,10 @@ class WaitingViewModel: ObservableObject {
     
     /// 내 웨이팅 조회(WaitingView에서 호출)
     func fetchReservedWaiting(deviceId: String) async {
+        DispatchQueue.main.async {
+            self.isFetchingReservedWaitingCompleted = false
+        }
+        
         let url = APIManager.shared.serverType.rawValue + "/waiting/me/\(deviceId)"
         
         let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/me/\(deviceId)"
@@ -168,8 +173,12 @@ class WaitingViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.reservedWaitingList = res.data
                         // 웨이팅을 신청했다가 res.data가 nil(신청한 웨이팅이 없는 상태)로 돌아올 수도 있으므로 unwrap없이 바로 res.data 반환함
+                        self.isFetchingReservedWaitingCompleted = true
                     }
                 case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.isFetchingReservedWaitingCompleted = true
+                    }
                     print("FetchReservedWaiting 서버 요청 실패")
                     print("에러: \(error.localizedDescription)")
                     
