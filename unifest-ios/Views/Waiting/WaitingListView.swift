@@ -11,6 +11,7 @@ struct WaitingListView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var tabSelect: TabSelect
+    @EnvironmentObject var networkManager: NetworkManager
     
     var body: some View {
         if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
@@ -69,5 +70,6 @@ struct WaitingListView: View {
 
 #Preview {
     WaitingListView(viewModel: RootViewModel())
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }

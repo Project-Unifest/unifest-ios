@@ -160,5 +160,5 @@ struct WaitingCompleteView: View {
 
 #Preview {
     WaitingCompleteView(isWaitingCompleteViewPresented: .constant(false))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
 }

@@ -37,7 +37,9 @@ struct NetworkErrorView: View {
                             .padding(.bottom, 10)
                         
                         Button {
-                            
+                            if errorType == .server {
+                                networkManager.isServerError = false
+                            }
                         } label: {
                             Text("")
                                 .roundedButton(background: .primary500, strokeColor: .clear, height: 45, cornerRadius: 5)

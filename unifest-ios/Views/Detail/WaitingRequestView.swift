@@ -275,7 +275,7 @@ struct WaitingRequestView: View {
 
 #Preview {
     WaitingRequestView(viewModel: RootViewModel(), boothId: 79, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }
 

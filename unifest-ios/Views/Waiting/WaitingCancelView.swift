@@ -10,6 +10,7 @@ import SwiftUI
 struct WaitingCancelView: View {
     @Binding var waitingCancelToast: Toast?
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     
     var body: some View {
         ZStack {
@@ -39,16 +40,21 @@ struct WaitingCancelView: View {
                         HStack {
                             Button {
                                 Task {
+                                    waitingVM.cancelWaiting = false
+                                    
                                     await waitingVM.cancelWaiting(
                                         waitingId: waitingVM.waitingIdToCancel,
                                         deviceId: UIDevice.current.deviceToken
                                     )
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                        Task {
-                                            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
-                                            waitingVM.cancelWaiting = false
-                                            waitingVM.waitingIdToCancel = -1
-                                            waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
+                                    
+                                    if waitingVM.isCancelWaitingRequestCompleted {
+                                        if networkManager.isServerError == false { // true일 때는 RootView에서 NetworkErrorView 띄움
+                                            Task {
+                                                await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+                                                waitingVM.waitingIdToCancel = -1
+                                                waitingVM.isCancelWaitingRequestCompleted = false
+                                                waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
+                                            }
                                         }
                                     }
                                 }
@@ -87,5 +93,6 @@ struct WaitingCancelView: View {
 
 #Preview {
     WaitingCancelView(waitingCancelToast: .constant(nil))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }

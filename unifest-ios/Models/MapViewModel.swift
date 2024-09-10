@@ -313,7 +313,7 @@ struct MapViewTestView: View {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
 }
 
 

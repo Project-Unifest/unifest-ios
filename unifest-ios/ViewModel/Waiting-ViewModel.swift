@@ -9,17 +9,29 @@ import Alamofire
 import Foundation
 
 class WaitingViewModel: ObservableObject {
-    @Published var isFetchingReservedWaitingCompleted = false // 이 변수의 상태변화는 fetchReservedWaiting에서 일괄적으로 관리함
+    @Published var isReservedWaitingRequestCompleted = false // 웨이팅 리스트 요청의 응답 상태를 나타내는 변수
+    @Published var isCancelWaitingConfirmed = false // WaitingCancelView의 '확인'버튼의 탭 여부를 나타내는 변수
+    @Published var isCancelWaitingRequestCompleted = false // 웨이팅 취소 요청의 응답 상태를 나타내는 변수
     @Published var waitingTeamCount: Int = -1
-        // WaitingRequestView와 WaitingComplete에서 웨이팅 팀 수를 보여주는 변수
+    // WaitingRequestView와 WaitingComplete에서 웨이팅 팀 수를 보여주는 변수
     @Published var requestedWaitingInfo: AddWaitingResult? = .empty // .empty
     @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
     @Published var isPinNumberValid: Bool? = nil
     @Published var cancelWaiting = false
     @Published var waitingIdToCancel = -1
     
+    private let networkManager: NetworkManager
+    init(networkManager: NetworkManager) {
+        self.networkManager = networkManager
+    }
+    
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
+        DispatchQueue.main.async {
+            self.isCancelWaitingRequestCompleted = false
+            self.isCancelWaitingConfirmed = true
+        }
+        
         let url = APIManager.shared.serverType.rawValue + "/waiting"
         
         let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting"
@@ -40,10 +52,18 @@ class WaitingViewModel: ObservableObject {
                 
                 switch response.result {
                 case .success(let res):
+                    DispatchQueue.main.async {
+                        self.isCancelWaitingRequestCompleted = true
+                        self.isCancelWaitingConfirmed = false
+                    }
                     print("cancelWaiting 요청 성공")
                     print(res)
-                    
                 case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.isCancelWaitingRequestCompleted = true
+                        self.networkManager.isServerError = true
+                        self.isCancelWaitingConfirmed = false
+                    }
                     print("cancelWaiting 서버 요청 실패")
                     print("에러: \(error.localizedDescription)")
                     
@@ -151,7 +171,7 @@ class WaitingViewModel: ObservableObject {
     /// 내 웨이팅 조회(WaitingView에서 호출)
     func fetchReservedWaiting(deviceId: String) async {
         DispatchQueue.main.async {
-            self.isFetchingReservedWaitingCompleted = false
+            self.isReservedWaitingRequestCompleted = false
         }
         
         let url = APIManager.shared.serverType.rawValue + "/waiting/me/\(deviceId)"
@@ -173,11 +193,12 @@ class WaitingViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.reservedWaitingList = res.data
                         // 웨이팅을 신청했다가 res.data가 nil(신청한 웨이팅이 없는 상태)로 돌아올 수도 있으므로 unwrap없이 바로 res.data 반환함
-                        self.isFetchingReservedWaitingCompleted = true
+                        self.isReservedWaitingRequestCompleted = true
                     }
                 case .failure(let error):
                     DispatchQueue.main.async {
-                        self.isFetchingReservedWaitingCompleted = true
+                        self.isReservedWaitingRequestCompleted = true
+                        self.networkManager.isServerError = true
                     }
                     print("FetchReservedWaiting 서버 요청 실패")
                     print("에러: \(error.localizedDescription)")

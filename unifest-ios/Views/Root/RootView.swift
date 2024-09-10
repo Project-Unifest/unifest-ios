@@ -10,20 +10,22 @@ import SwiftUI
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-    @StateObject var networkManager = NetworkManager()
+    @ObservedObject var networkManager: NetworkManager
     @StateObject var tabSelect = TabSelect() // 사용X
-    @StateObject var waitingVM = WaitingViewModel()
+    @StateObject var waitingVM: WaitingViewModel
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
     @State private var isWelcomeViewPresented: Bool = false
     
-    init(rootViewModel: RootViewModel) {
+    init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
         self.viewModel = rootViewModel
         self.mapViewModel = MapViewModel(viewModel: rootViewModel)
         // self.networkManager = NetworkManager()
         // UITabBar.appearance().backgroundColor = UIColor(Color.grey100)
+        self.networkManager = networkManager
+        _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
     }
     
     var body: some View {
@@ -99,9 +101,6 @@ struct RootView: View {
                         .toolbarBackground(Color.ufBackground, for: .tabBar)
                         .toolbarBackground(.visible, for: .tabBar)
                     }
-                    .environmentObject(tabSelect)
-                    .environmentObject(waitingVM)
-                    .environmentObject(networkManager)
                     
                     // TabView와 TabBar를 구분하는 구분선 명시적으로 선언
 //                    VStack {
@@ -123,12 +122,12 @@ struct RootView: View {
                     }
             }
             
-            //            if networkManager.isServerError == true {
-            //                NetworkErrorView(errorType: .server)
-            //                    .onAppear {
-            //                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
-            //                    }
-            //            }
+            if networkManager.isServerError == true {
+                NetworkErrorView(errorType: .server)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                    }
+            }
             
             if viewModel.isLoading {
                 ZStack {
@@ -137,6 +136,9 @@ struct RootView: View {
                 }
             }
         }
+        .environmentObject(tabSelect)
+        .environmentObject(waitingVM)
+        .environmentObject(networkManager)
         .onAppear {
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
@@ -186,5 +188,5 @@ class TabSelect: ObservableObject {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
 }

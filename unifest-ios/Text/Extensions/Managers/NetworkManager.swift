@@ -16,7 +16,7 @@ final class NetworkManager: ObservableObject {
     private let queue = DispatchQueue(label: "NetworkManager")
     // 네트워크 연결 상태를 저장하는 published property
     @Published var isNetworkConnected = true
-    // @Published var isServerError = false
+    @Published var isServerError = false
     
     init() {
         // MWPathMonitor에 네트워크 상태 변경 핸들러를 설정,

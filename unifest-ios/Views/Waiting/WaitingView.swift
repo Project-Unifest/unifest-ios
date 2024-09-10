@@ -10,6 +10,7 @@ import SwiftUI
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @State private var waitingCancelToast: Toast? = nil
     
     var body: some View {
@@ -39,7 +40,7 @@ struct WaitingView: View {
                             .padding(.horizontal, 30)
                         }
                     
-                    if waitingVM.isFetchingReservedWaitingCompleted {
+                    if waitingVM.isReservedWaitingRequestCompleted {
                         WaitingListView(viewModel: viewModel)
                     } else {
                         VStack {
@@ -53,10 +54,29 @@ struct WaitingView: View {
                 if waitingVM.cancelWaiting == true {
                     WaitingCancelView(waitingCancelToast: $waitingCancelToast)
                 }
+                
+                if waitingVM.isCancelWaitingConfirmed && !waitingVM.isCancelWaitingRequestCompleted {
+                    // 사용자가 WaitingCancelView의 '확인'버튼을 누른 시점 ~ 웨이팅 취소 요청에 대한 응답이 도착하는 시점까지 뜨는 뷰
+                    ZStack {
+                        Color.black.opacity(0.66)
+                            .ignoresSafeArea()
+                        
+                        VStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .tint(Color.white)
+                            Spacer()
+                        }
+                    }
+                }
             }
             .background(.ufBackground)
             .task {
                 await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+            }
+            .onAppear {
+                print("WaitingView isServerError: \(networkManager.isServerError)")
             }
             .refreshable {
                 await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
@@ -68,5 +88,6 @@ struct WaitingView: View {
 
 #Preview {
     WaitingView(viewModel: RootViewModel())
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }

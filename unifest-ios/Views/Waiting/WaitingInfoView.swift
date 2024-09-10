@@ -11,6 +11,7 @@ struct WaitingInfoView: View {
     @ObservedObject var viewModel: RootViewModel
     let reservedWaitingListItem: ReservedWaitingResult
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @State private var isBoothDetailViewPresented = false
     
     
@@ -124,5 +125,6 @@ struct WaitingInfoView: View {
 
 #Preview {
     WaitingInfoView(viewModel: RootViewModel(), reservedWaitingListItem: .empty)
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }
