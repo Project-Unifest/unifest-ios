@@ -40,7 +40,6 @@ struct WaitingCompleteView: View {
                                         .font(.pretendard(weight: .p6, size: 15))
                                         .foregroundStyle(.grey900)
                                 
-                                
                                 Spacer()
                                 
                                 Button {

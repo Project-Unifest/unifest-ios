@@ -16,7 +16,11 @@ struct ToastView: View {
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
             .fill(Color.grey800)
-            .frame(minWidth: 0, maxWidth: width, minHeight: 38, maxHeight: 38)
+            .frame(minWidth: 0, maxWidth: width, minHeight: 38, maxHeight: 50)
+            .overlay {
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(style.themeColor, lineWidth: 2.5)
+            }
             .overlay {
                 HStack(alignment: .center, spacing: 12) {
 //                    Image(systemName: style.iconFileName)
@@ -28,17 +32,19 @@ struct ToastView: View {
                         .font(.pretendard(weight: .p4, size: 13))
                         // .foregroundStyle(.grey900)
                         .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(3)
                     
-//                    Spacer(minLength: 10)
-//                    
+                    // Spacer(minLength: 10)
+                    
+                    Spacer()
+                    
 //                    Button {
 //                        onCancelTapped()
 //                    } label: {
 //                        Image(systemName: "xmark")
 //                            .foregroundColor(style.themeColor)
 //                    }
-                    
-                    Spacer()
                 }
                 .padding()
             }

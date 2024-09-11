@@ -16,6 +16,7 @@ struct WaitingRequestView: View {
     @State private var isCompleted = false // 웨이팅 완료 여부
     @State private var isPolicyAgreed = false
     @State private var phoneNumberFormatError: Toast? = nil
+    @State private var requestWaitingError: Toast? = nil
     @EnvironmentObject var waitingVM: WaitingViewModel
     let boothId: Int
     @Binding var pin: String
@@ -183,26 +184,34 @@ struct WaitingRequestView: View {
                         
                         Button {
                             if checkPhoneNumberFormat(phoneNumber) == true {
-                                waitingVM.addWaiting(
-                                    boothId: boothId,
-                                    phoneNumber: phoneNumber,
-                                    deviceId: UIDevice.current.deviceToken,
-                                    partySize: partySize,
-                                    pinNumber: pin
-                                )
-                                pin = ""
-                                partySize = 2
-                                phoneNumber = ""
-                                formattedPhoneNumber = ""
-                                isWaitingRequestViewPresented = false
-                                isPhoneNumberValid = false
-                                isCompleted = false
-                                isPolicyAgreed = false
-                                phoneNumberFormatError = nil
-                                isWaitingRequestViewPresented = false
-                                isWaitingCompleteViewPresented = true
+                                Task {
+                                    await waitingVM.addWaiting(
+                                        boothId: boothId,
+                                        phoneNumber: phoneNumber,
+                                        deviceId: UIDevice.current.deviceToken,
+                                        partySize: partySize,
+                                        pinNumber: pin
+                                    )
+                                    
+                                    // addWaiting의 AF요청에 withCheckedContinuation을 적용했으므로 addWaiting 요청이 끝난 다음 아래 if문이 실행됨
+                                    if waitingVM.addWaitingResponseCode == "201" {
+                                        pin = ""
+                                        partySize = 2
+                                        phoneNumber = ""
+                                        formattedPhoneNumber = ""
+                                        isWaitingRequestViewPresented = false
+                                        isPhoneNumberValid = false
+                                        isCompleted = false
+                                        isPolicyAgreed = false
+                                        phoneNumberFormatError = nil
+                                        isWaitingRequestViewPresented = false
+                                        isWaitingCompleteViewPresented = true
+                                    } else {
+                                        requestWaitingError = Toast(style: .warning, message: waitingVM.addWaitingResponseMessage)
+                                    }
+                                }
                             } else {
-                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요")
+                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요.")
                                 phoneNumber = ""
                             }
                         } label: {
@@ -228,6 +237,7 @@ struct WaitingRequestView: View {
             await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
         .toastView(toast: $phoneNumberFormatError)
+        .toastView(toast: $requestWaitingError)
     }
     
     func formatPhoneNumber(_ number: String) -> String {
