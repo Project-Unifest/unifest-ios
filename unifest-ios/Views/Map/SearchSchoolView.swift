@@ -79,6 +79,7 @@ struct SearchSchoolView: View {
                 }
             }
         }
+        .dynamicTypeSize(.large)
     }
 }
 

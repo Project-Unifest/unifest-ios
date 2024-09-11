@@ -140,6 +140,7 @@ struct RootView: View {
                 }
             }
         }
+        .dynamicTypeSize(.large)
         .environmentObject(tabSelect)
         .environmentObject(waitingVM)
         .environmentObject(networkManager)

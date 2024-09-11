@@ -624,6 +624,7 @@ struct MenuView: View {
                 Spacer()
             }
         }
+        .dynamicTypeSize(.large)
         .ignoresSafeArea()
         // .environmentObject(themeManager)
         // .environment(\.colorScheme, .getCurrentColorScheme())

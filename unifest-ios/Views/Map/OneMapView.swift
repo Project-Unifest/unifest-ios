@@ -194,6 +194,7 @@ struct OneMapViewiOS17: View {
                 .padding(.horizontal, 5)
             }
         }
+        .dynamicTypeSize(.large)
         .mapScope(oneMap)
     }
     
@@ -428,6 +429,7 @@ struct OneMapViewiOS16: View {
                 .padding(.horizontal, 5)
             }*/
         }
+        .dynamicTypeSize(.large)
         // .mapScope(oneMap)
     }
     
@@ -526,6 +528,7 @@ struct OneBoothAnnotation: View {
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             }
         }
+        .dynamicTypeSize(.large)
     }
 }
 

@@ -47,6 +47,7 @@ struct ToastView: View {
                 }
                 .padding()
             }
+            .dynamicTypeSize(.large)
             .padding()
             // .shadow(color: Color.grey300, radius: 7)
     }

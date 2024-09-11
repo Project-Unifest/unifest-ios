@@ -62,6 +62,7 @@ struct WaitingView: View {
             }
             .toastView(toast: $waitingVM.waitingCancelToast)
         }
+        .dynamicTypeSize(.large)
     }
 }
 

@@ -56,6 +56,7 @@ struct NetworkErrorView: View {
                     }
                 }
         }
+        .dynamicTypeSize(.large)
     }
     
     enum NetworkErrorType {

@@ -53,6 +53,7 @@ struct StampQRScanView: View {
                 Spacer()
             }
         }
+        .dynamicTypeSize(.large)
         .background(Color.ufBackground)
     }
     

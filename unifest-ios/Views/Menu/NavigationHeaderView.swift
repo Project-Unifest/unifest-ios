@@ -36,6 +36,7 @@ struct NavigationHeaderView: View {
                 }
                 .padding()
             }
+            .dynamicTypeSize(.large)
     }
 }
 

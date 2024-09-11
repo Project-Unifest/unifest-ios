@@ -122,6 +122,7 @@ struct BoothDetailView: View {
 //                }
             }
         }
+        .dynamicTypeSize(.large)
         .onAppear {
             print("Current Booth ID: \(currentBoothId)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

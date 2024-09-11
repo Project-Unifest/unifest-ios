@@ -135,6 +135,7 @@ struct LikeBoothListView: View {
                 Spacer()
             }
         }
+        .dynamicTypeSize(.large)
         .background(.ufBackground)
         .sheet(isPresented: $isDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)

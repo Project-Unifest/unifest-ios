@@ -59,6 +59,7 @@ struct WelcomeView: View {
                 .foregroundStyle(.gray)
                 .padding(.bottom, 4)
         }
+        .dynamicTypeSize(.large)
         .background(.ufBackground)
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in

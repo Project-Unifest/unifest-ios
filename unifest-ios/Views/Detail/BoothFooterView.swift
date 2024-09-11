@@ -45,11 +45,11 @@ struct BoothFooterView: View {
                     
                     if viewModel.boothModel.selectedBooth == nil {
                         Text("-")
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                             .foregroundStyle(.darkGray)
                     } else {
                         Text("\(viewModel.boothModel.selectedBoothNumLike > 0 ? viewModel.boothModel.selectedBoothNumLike : 0)")
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                             .foregroundStyle(.darkGray)
                     }
                 }

@@ -199,6 +199,7 @@ struct IntroView: View {
             }
             .padding(.horizontal)
         }
+        .dynamicTypeSize(.large)
         .background(.ufBackground)
     }
     

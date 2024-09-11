@@ -140,7 +140,7 @@ struct BoothInfoView: View {
                     if let warning = viewModel.boothModel.selectedBooth?.warning {
                         if !warning.isEmpty {
                             Text(viewModel.boothModel.selectedBooth?.warning ?? "")
-                                .font(.pretendard(weight: .p6, size: 10))
+                                .font(.pretendard(weight: .p6, size: 11))
                                 .foregroundStyle(.primary500)
                                 // .lineLimit(3)
                         }
