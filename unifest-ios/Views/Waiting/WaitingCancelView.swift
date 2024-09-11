@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct WaitingCancelView: View {
-    @Binding var waitingCancelToast: Toast?
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var isCancellingWaiting = false
@@ -63,7 +62,7 @@ struct WaitingCancelView: View {
                                             await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
                                             waitingVM.waitingIdToCancel = -1
                                             waitingVM.waitingStatus = ""
-                                            waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
+                                            waitingVM.waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
                                         }
                                     }
                                 } label: {
@@ -101,7 +100,7 @@ struct WaitingCancelView: View {
 }
 
 #Preview {
-    WaitingCancelView(waitingCancelToast: .constant(nil))
+    WaitingCancelView()
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

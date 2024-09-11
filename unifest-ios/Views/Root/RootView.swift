@@ -115,6 +115,10 @@ struct RootView: View {
                 }
             }
             
+            if waitingVM.cancelWaiting == true {
+                WaitingCancelView()
+            }
+            
             if networkManager.isNetworkConnected == false {
                 NetworkErrorView(errorType: .network)
                     .onAppear {

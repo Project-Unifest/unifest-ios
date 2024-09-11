@@ -14,6 +14,7 @@ class WaitingViewModel: ObservableObject {
     @Published var cancelWaiting = false // WaitingCancelView를 띄움
     @Published var waitingIdToCancel = -1 // 취소할 웨이팅의 WaitingId 저장
     @Published var waitingStatus = "" // WaitingCancelView에 어떤 문구를 띄울 지 결정
+    @Published var waitingCancelToast: Toast? = nil
     
     // Detail그룹 상태 관리 변수
     @Published var waitingTeamCount: Int = -1 // WaitingRequestView와 WaitingCompleteView에서 웨이팅 팀 수를 보여주는 변수

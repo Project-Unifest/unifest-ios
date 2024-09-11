@@ -15,7 +15,7 @@ struct ToastView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
-            .fill(Color.grey800)
+            .fill(Color.ufBackground)
             .frame(minWidth: 0, maxWidth: width, minHeight: 38, maxHeight: 50)
             .overlay {
                 RoundedRectangle(cornerRadius: 5)
@@ -30,8 +30,7 @@ struct ToastView: View {
                     
                     Text(message)
                         .font(.pretendard(weight: .p4, size: 13))
-                        // .foregroundStyle(.grey900)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.grey900)
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(3)
                     
