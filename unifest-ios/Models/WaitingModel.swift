@@ -71,7 +71,7 @@ struct ReservedWaitingResult: Codable {
             deviceId: "",
             createdAt: "",
             updatedAt: "",
-            status: "",
+            status: "NOSHOW",
             waitingOrder: -1,
             boothName: "Dummy name"
         )
