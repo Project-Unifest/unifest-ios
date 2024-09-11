@@ -78,6 +78,7 @@
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
 		F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8A538B92C8D056200103E64 /* GoogleService-Info.plist */; };
+		F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */; };
 		F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F452C81E0B000DA4231 /* StampView.swift */; };
 		F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */; };
 		F8A91F4A2C81F68300DA4231 /* StampBoothListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */; };
@@ -161,6 +162,7 @@
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F8A538B92C8D056200103E64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampQRScanView.swift; sourceTree = "<group>"; };
 		F8A91F452C81E0B000DA4231 /* StampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampView.swift; sourceTree = "<group>"; };
 		F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListView.swift; sourceTree = "<group>"; };
 		F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampBoothListItemView.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 				F8A91F452C81E0B000DA4231 /* StampView.swift */,
 				F8A91F472C81F31B00DA4231 /* StampBoothListView.swift */,
 				F8A91F492C81F68300DA4231 /* StampBoothListItemView.swift */,
+				F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */,
 			);
 			path = Stamp;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
 				0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */,
+				F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */,
 				0C9641F52BB94E7D00838DA9 /* MenuView.swift in Sources */,
 				0CF092D12BC038C90009B782 /* NavigationHeaderView.swift in Sources */,
 				F80071622C334ED00001596F /* IntroView.swift in Sources */,

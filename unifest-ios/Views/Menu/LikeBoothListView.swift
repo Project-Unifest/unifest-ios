@@ -145,5 +145,5 @@ struct LikeBoothListView: View {
 
 #Preview {
     // LikeBoothListView(viewModel: RootViewModel())
-    RootView(rootViewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
 }

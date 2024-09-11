@@ -531,7 +531,7 @@ struct OneBoothAnnotation: View {
 
 #Preview {
     Group {
-        RootView(rootViewModel: RootViewModel())
+        RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
         OneBoothAnnotation(boothType: .booth)
     }
 }

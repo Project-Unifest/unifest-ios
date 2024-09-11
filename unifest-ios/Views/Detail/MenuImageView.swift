@@ -48,10 +48,11 @@ struct MenuImageView: View {
                             .resizable()
                             .scaledToFit()
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                            .frame(maxWidth: 353, maxHeight: 250)
                             .onTapGesture {
                                 // touch 방지
                             }
-                    case .failure(_):
+                    case .failure:
                         VStack {
                             Image(.noImagePlaceholder)
                                 .resizable()

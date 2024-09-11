@@ -16,6 +16,7 @@ struct WaitingRequestView: View {
     @State private var isCompleted = false // 웨이팅 완료 여부
     @State private var isPolicyAgreed = false
     @State private var phoneNumberFormatError: Toast? = nil
+    @State private var requestWaitingError: Toast? = nil
     @EnvironmentObject var waitingVM: WaitingViewModel
     let boothId: Int
     @Binding var pin: String
@@ -162,51 +163,55 @@ struct WaitingRequestView: View {
                                 isPolicyAgreed.toggle()
                             } label: {
                                 Image(isPolicyAgreed ? .checkboxChecked : .checkbox)
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
                             }
                             
-                            Group {
-                                Link(destination: URL(string: "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4")!) {
-                                    Text("개인정보 처리방침")
-                                        .padding(.trailing, -8)
-                                        .foregroundStyle(.defaultBlack)
-                                        .underline()
-                                        .fontWeight(.bold)
-                                }
-                                Text(" 및 ")
-                                Link(destination: URL(string: "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4")!) {
-                                    Text("제 3자 제공방침")
-                                        .padding(.horizontal, -8)
-                                        .foregroundStyle(.defaultBlack)
-                                        .underline()
-                                        .fontWeight(.bold)
-                                }
-                                Text("에 동의합니다")
+                            Link(destination: URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74")!) {
+                                Text("개인정보 처리방침")
+                                    .padding(.trailing, -8)
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey900)
+                                    .underline()
                             }
-                            .font(.system(size: 12))
+                            Text("에 동의합니다")
+                                .font(.pretendard(weight: .p5, size: 12))
+                                .foregroundStyle(.grey400)
+                            
+                            Spacer()
                         }
+                        .padding(.leading)
                         
                         Button {
                             if checkPhoneNumberFormat(phoneNumber) == true {
-                                waitingVM.addWaiting(
-                                    boothId: boothId,
-                                    phoneNumber: phoneNumber,
-                                    deviceId: UIDevice.current.deviceToken,
-                                    partySize: partySize,
-                                    pinNumber: pin
-                                )
-                                pin = ""
-                                partySize = 2
-                                phoneNumber = ""
-                                formattedPhoneNumber = ""
-                                isWaitingRequestViewPresented = false
-                                isPhoneNumberValid = false
-                                isCompleted = false
-                                isPolicyAgreed = false
-                                phoneNumberFormatError = nil
-                                isWaitingRequestViewPresented = false
-                                isWaitingCompleteViewPresented = true
+                                Task {
+                                    await waitingVM.addWaiting(
+                                        boothId: boothId,
+                                        phoneNumber: phoneNumber,
+                                        deviceId: UIDevice.current.deviceToken,
+                                        partySize: partySize,
+                                        pinNumber: pin
+                                    )
+                                    
+                                    // addWaiting의 AF요청에 withCheckedContinuation을 적용했으므로 addWaiting 요청이 끝난 다음 아래 if문이 실행됨
+                                    if waitingVM.addWaitingResponseCode == "201" {
+                                        pin = ""
+                                        partySize = 2
+                                        phoneNumber = ""
+                                        formattedPhoneNumber = ""
+                                        isWaitingRequestViewPresented = false
+                                        isPhoneNumberValid = false
+                                        isCompleted = false
+                                        isPolicyAgreed = false
+                                        phoneNumberFormatError = nil
+                                        isWaitingRequestViewPresented = false
+                                        isWaitingCompleteViewPresented = true
+                                    } else {
+                                        requestWaitingError = Toast(style: .warning, message: waitingVM.addWaitingResponseMessage)
+                                    }
+                                }
                             } else {
-                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요")
+                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요.")
                                 phoneNumber = ""
                             }
                         } label: {
@@ -232,6 +237,7 @@ struct WaitingRequestView: View {
             await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
         .toastView(toast: $phoneNumberFormatError)
+        .toastView(toast: $requestWaitingError)
     }
     
     func formatPhoneNumber(_ number: String) -> String {
@@ -279,7 +285,7 @@ struct WaitingRequestView: View {
 
 #Preview {
     WaitingRequestView(viewModel: RootViewModel(), boothId: 79, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }
 

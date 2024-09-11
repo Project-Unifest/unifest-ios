@@ -10,20 +10,22 @@ import SwiftUI
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-    @StateObject var networkManager = NetworkManager()
-    @StateObject var tabSelect = TabSelect()
-    @StateObject var waitingVM = WaitingViewModel()
+    @ObservedObject var networkManager: NetworkManager
+    @StateObject var tabSelect = TabSelect() // 사용X
+    @StateObject var waitingVM: WaitingViewModel
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
     @State private var isWelcomeViewPresented: Bool = false
     
-    init(rootViewModel: RootViewModel) {
+    init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
         self.viewModel = rootViewModel
         self.mapViewModel = MapViewModel(viewModel: rootViewModel)
         // self.networkManager = NetworkManager()
         // UITabBar.appearance().backgroundColor = UIColor(Color.grey100)
+        self.networkManager = networkManager
+        _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
     }
     
     var body: some View {
@@ -34,81 +36,82 @@ struct RootView: View {
             case .home, .map, .waiting, .menu:
                 ZStack {
                     TabView(selection: $tabSelect.selectedTab) {
-                        CalendarTabView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.homeView)
-                            }
-                            .tabItem {
-                                // Image(viewState == .home ? .homeIcon : .homeGray)
-                                // Text(StringLiterals.Root.home)
-                                Label(StringLiterals.Root.home, systemImage: "house.circle")
-                            }
-                            .tag(0)
-                        
-                        MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                mapViewModel.startUpdatingLocation()
-                                GATracking.eventScreenView(GATracking.ScreenNames.mapView)
-                            }
-                            .onDisappear {
-                                mapViewModel.stopUpdatingLocation()
-                            }
-                            .tabItem {
-                                // Image(viewState == .map ? .mapIcon : .mapGray)
-                                // Text(StringLiterals.Root.map)
-                                Label(StringLiterals.Root.map, systemImage: "map.circle")
-                            }
-                            .tag(1)
-                        
-                        WaitingView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
-                            }
-                            .tabItem {
-                                // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
-                                // Text(StringLiterals.Root.waiting)
-                                Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
-                            }
-                            .tag(2)
-                        
-                        StampView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                            }
-                            .tabItem {
-                                Label(StringLiterals.Root.stamp, systemImage: "star.circle")
-                            }
-                            .tag(3)
-                        
-                        MenuView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.menuView)
-                            }
-                            .tabItem {
-                                // Image(viewState == .menu ? .menuIcon : .menuGray)
-                                // Text(StringLiterals.Root.menu)
-                                Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
-                            }
-                            .tag(4)
+                        Group {
+                            CalendarTabView(viewModel: viewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                    GATracking.eventScreenView(GATracking.ScreenNames.homeView)
+                                }
+                                .tabItem {
+                                    // Image(viewState == .home ? .homeIcon : .homeGray)
+                                    // Text(StringLiterals.Root.home)
+                                    Label(StringLiterals.Root.home, systemImage: "house.circle")
+                                }
+                                .tag(0)
+                            
+                            WaitingView(viewModel: viewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                    GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
+                                }
+                                .tabItem {
+                                    // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
+                                    // Text(StringLiterals.Root.waiting)
+                                    Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
+                                }
+                                .tag(1)
+                            
+                            MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                    mapViewModel.startUpdatingLocation()
+                                    GATracking.eventScreenView(GATracking.ScreenNames.mapView)
+                                }
+                                .onDisappear {
+                                    mapViewModel.stopUpdatingLocation()
+                                }
+                                .tabItem {
+                                    // Image(viewState == .map ? .mapIcon : .mapGray)
+                                    // Text(StringLiterals.Root.map)
+                                    Label(StringLiterals.Root.map, systemImage: "map.circle")
+                                }
+                                .tag(2)
+                            
+                            StampView(viewModel: viewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                }
+                                .tabItem {
+                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+                                }
+                                .tag(3)
+                            
+                            MenuView(viewModel: viewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                    GATracking.eventScreenView(GATracking.ScreenNames.menuView)
+                                }
+                                .tabItem {
+                                    // Image(viewState == .menu ? .menuIcon : .menuGray)
+                                    // Text(StringLiterals.Root.menu)
+                                    Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
+                                }
+                                .tag(4)
+                        }
+                        .toolbarBackground(Color.ufBackground, for: .tabBar)
+                        .toolbarBackground(.visible, for: .tabBar)
                     }
-                    .environmentObject(tabSelect)
-                    .environmentObject(waitingVM)
-                    .environmentObject(networkManager)
                     
                     // TabView와 TabBar를 구분하는 구분선 명시적으로 선언
-                    VStack {
-                        Spacer()
-                        
-                        Divider()
-                            .frame(height: 1)
-                            .background(Color.grey100)
-                        
-                        Spacer().frame(height: 49) // 탭바 높이만큼 여백을 추가하여 탭바와의 겹침 방지
-                    }
+//                    VStack {
+//                        Spacer()
+//                        
+//                        Divider()
+//                            .frame(height: 1)
+//                            .background(Color.grey100)
+//                        
+//                        Spacer().frame(height: 49) // 탭바 높이만큼 여백을 추가하여 탭바와의 겹침 방지
+//                    }
                 }
             }
             
@@ -119,12 +122,12 @@ struct RootView: View {
                     }
             }
             
-            //            if networkManager.isServerError == true {
-            //                NetworkErrorView(errorType: .server)
-            //                    .onAppear {
-            //                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
-            //                    }
-            //            }
+            if networkManager.isServerError == true {
+                NetworkErrorView(errorType: .server)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                    }
+            }
             
             if viewModel.isLoading {
                 ZStack {
@@ -133,6 +136,9 @@ struct RootView: View {
                 }
             }
         }
+        .environmentObject(tabSelect)
+        .environmentObject(waitingVM)
+        .environmentObject(networkManager)
         .onAppear {
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
@@ -182,5 +188,5 @@ class TabSelect: ObservableObject {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
 }

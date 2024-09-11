@@ -147,7 +147,7 @@ struct BoothDetailView: View {
                         viewModel.boothModel.selectedBoothID = 156
                         viewModel.boothModel.loadBoothDetail(156)
                     }
-                    .environmentObject(WaitingViewModel())
+                    .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
                     .environmentObject(NetworkManager())
             }
     }

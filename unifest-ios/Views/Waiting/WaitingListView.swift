@@ -11,50 +11,32 @@ struct WaitingListView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var tabSelect: TabSelect
-    @Binding var cancelWaiting: Bool
-    @Binding var waitingIdToCancel: Int
-    @Binding var waitingCancelToast: Toast?
+    @EnvironmentObject var networkManager: NetworkManager
     
     var body: some View {
         if let reservedWaitingList = waitingVM.reservedWaitingList, reservedWaitingList.isEmpty == false {
-            HStack {
-                Text("총 \(reservedWaitingList.count)건")
-                    .font(.pretendard(weight: .p6, size: 11))
-                    .foregroundStyle(.gray545454)
-                    .padding(.leading, 10)
-                
-                Spacer()
-                
-//                HStack {
-//                    Button {
-//                        
-//                    } label: {
-//                        Image(systemName: "chevron.down")
-//                            .resizable()
-//                            .frame(width: 7, height: 7)
-//                            .foregroundStyle(.gray545454)
-//                        Text("정렬")
-//                            .font(.pretendard(weight: .p6, size: 11))
-//                            .foregroundStyle(.gray545454)
-//                            .padding(.leading, -3)
-//                    }
-//                }
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 5)
-            
-            ScrollView {
-                ForEach(reservedWaitingList.indices, id: \.self) { i in
-                    WaitingInfoView(
-                        viewModel: viewModel,
-                        reservedWaitingListItem: reservedWaitingList[i],
-                        cancelWaiting: $cancelWaiting,
-                        waitingIdToCancel: $waitingIdToCancel,
-                        waitingCancelToast: $waitingCancelToast
-                    )
-                        .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
+            VStack {
+                HStack {
+                    Text("총 \(reservedWaitingList.count)건")
+                        .font(.pretendard(weight: .p6, size: 11))
+                        .foregroundStyle(.gray545454)
+                        .padding(.leading, 10)
+                    
+                    Spacer()
                 }
-                .padding(.top, 8)
+                .padding(.horizontal)
+                .padding(.vertical, 5)
+                
+                ScrollView {
+                    ForEach(reservedWaitingList.indices, id: \.self) { i in
+                        WaitingInfoView(
+                            viewModel: viewModel,
+                            reservedWaitingListItem: reservedWaitingList[i]
+                        )
+                            .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
+                    }
+                    .padding(.top, 8)
+                }
             }
         } else { // reservedWaitingList가 nil이거나 빈 배열일 때
             GeometryReader { geometry in
@@ -66,7 +48,7 @@ struct WaitingListView: View {
                             .padding(.bottom, 4)
                         
                         Button {
-                            tabSelect.selectedTab = 1
+                            tabSelect.selectedTab = 2
                         } label: {
                             HStack(spacing: 0) {
                                 Text(StringLiterals.Waiting.gotoMapView)
@@ -87,6 +69,7 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(viewModel: RootViewModel(), cancelWaiting: .constant(false), waitingIdToCancel: .constant(-1), waitingCancelToast: .constant(nil))
-        .environmentObject(WaitingViewModel())
+    WaitingListView(viewModel: RootViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }

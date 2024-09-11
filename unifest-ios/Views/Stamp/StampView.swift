@@ -12,7 +12,7 @@ struct StampView: View {
     @ObservedObject var viewModel: RootViewModel
     @State private var rotationAmount = 0.0
     @State private var isStampBoothViewPresented = false
-    @State private var isShowingScanner = false
+    @State private var isStampQRScanViewPresented = false
     @State private var numberOfStamps = 5
     @State private var addStampToast: Toast? = nil
     
@@ -50,7 +50,7 @@ struct StampView: View {
                                 Spacer()
                                 
                                 Button {
-                                    isShowingScanner = true
+                                    isStampQRScanViewPresented = true
                                 } label: {
                                     Capsule()
                                         .fill(
@@ -135,27 +135,10 @@ struct StampView: View {
                 StampBoothListView(viewModel: viewModel)
                     .presentationDragIndicator(.visible)
             }
-            .sheet(isPresented: $isShowingScanner) {
-                CodeScannerView(codeTypes: [.qr], completion: handleScan)
-                    .presentationDragIndicator(.visible)
-                    .ignoresSafeArea()
+            .fullScreenCover(isPresented: $isStampQRScanViewPresented) {
+                StampQRScanView(addStampToast: $addStampToast)
             }
-        .toastView(toast: $addStampToast)
-        }
-    }
-    
-    func handleScan(result: Result<ScanResult, ScanError>) {
-        isShowingScanner = false
-        
-        print("Scanning completed")
-        switch result {
-        case .success(let result):
-            print("Scanning succeeded")
-            print(result)
-            addStampToast = Toast(style: .success, message: "QR코드 스캔 성공")
-        case .failure(let error):
-            print("Scannign failed: \(error.localizedDescription)")
-            addStampToast = Toast(style: .success, message: "QR코드 스캔 실패")
+            .toastView(toast: $addStampToast)
         }
     }
 }

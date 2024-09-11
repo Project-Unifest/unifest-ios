@@ -120,13 +120,11 @@ struct WaitingPinView: View {
                             Task {
                                 await waitingVM.checkPinNumber(boothId: 79, pinNumber: pin)
                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                    if waitingVM.isPinNumberValid == true {
-                                        isWaitingPinViewPresented = false
-                                        isWaitingRequestViewPresented = true
-                                    } else {
-                                        pin = ""
-                                    }
+                                if waitingVM.isPinNumberValid == true {
+                                    isWaitingPinViewPresented = false
+                                    isWaitingRequestViewPresented = true
+                                } else {
+                                    pin = ""
                                 }
                             }
                         } label: {
@@ -164,7 +162,7 @@ struct WaitingPinView: View {
 
 #Preview {
     WaitingPinView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
 }
 
 

@@ -14,27 +14,37 @@ struct ToastView: View {
     var onCancelTapped: (() -> Void)
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 8)
-            .fill(Color.black)
-            .frame(minWidth: 0, maxWidth: width, minHeight: 65, maxHeight: 65)
+        RoundedRectangle(cornerRadius: 5)
+            .fill(Color.grey800)
+            .frame(minWidth: 0, maxWidth: width, minHeight: 38, maxHeight: 50)
+            .overlay {
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(style.themeColor, lineWidth: 2.5)
+            }
             .overlay {
                 HStack(alignment: .center, spacing: 12) {
-                    Image(systemName: style.iconFileName)
-                        .foregroundColor(style.themeColor)
+//                    Image(systemName: style.iconFileName)
+//                        .foregroundColor(style.themeColor)
+                    
+                    Spacer()
                     
                     Text(message)
                         .font(.pretendard(weight: .p4, size: 13))
                         // .foregroundStyle(.grey900)
                         .foregroundStyle(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .lineLimit(3)
                     
-                    Spacer(minLength: 10)
+                    // Spacer(minLength: 10)
                     
-                    Button {
-                        onCancelTapped()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .foregroundColor(style.themeColor)
-                    }
+                    Spacer()
+                    
+//                    Button {
+//                        onCancelTapped()
+//                    } label: {
+//                        Image(systemName: "xmark")
+//                            .foregroundColor(style.themeColor)
+//                    }
                 }
                 .padding()
             }

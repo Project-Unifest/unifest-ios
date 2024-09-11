@@ -103,7 +103,7 @@ struct CalendarView: View {
         .background(.ufWhite)
         .onAppear {
             calendar = getCalendar(calMonth: month)
-            print("num of week: \(calendar.count)")
+            // print("num of week: \(calendar.count)")
         }
     }
     
@@ -607,7 +607,7 @@ struct CalendarTabView: View {
         // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 호은님 실수인 듯?
         
         // 2024년을 기준으로 3월, 6월은 6주 나머지는 모두 5주이므로 2024년에 맞게 하드코딩함
-        print("monthPageIndex: \(monthPageIndex)")
+        // print("monthPageIndex: \(monthPageIndex)")
         if monthPageIndex == 3 || monthPageIndex == 6 {
             return 172
         } else {
@@ -644,7 +644,7 @@ struct CalendarTabView: View {
     
     func getHeightByWeekNum(_ numWeek: Int) -> CGFloat {
         // 6주 340 5주 290 4주 240 1주 80
-        print("이번 달은 \(numWeek)주")
+        // print("이번 달은 \(numWeek)주")
         if numWeek >= 7 {
             return 490
         } else if numWeek == 6 {

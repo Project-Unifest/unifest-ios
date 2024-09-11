@@ -502,7 +502,7 @@ struct CelebCircleView: View {
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel())
+    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
 }
 
 struct CelebProfile: Codable, Identifiable {

@@ -40,7 +40,6 @@ struct WaitingCompleteView: View {
                                         .font(.pretendard(weight: .p6, size: 15))
                                         .foregroundStyle(.grey900)
                                 
-                                
                                 Spacer()
                                 
                                 Button {
@@ -160,5 +159,5 @@ struct WaitingCompleteView: View {
 
 #Preview {
     WaitingCompleteView(isWaitingCompleteViewPresented: .constant(false))
-        .environmentObject(WaitingViewModel())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
 }
