@@ -10,9 +10,6 @@ import Foundation
 
 class WaitingViewModel: ObservableObject {
     // Waiting그룹 관련 변수
-    @Published var isReservedWaitingRequestCompleted = false // 웨이팅 리스트 요청의 응답 상태를 나타내는 변수
-    @Published var isCancelWaitingConfirmed = false // WaitingCancelView의 '확인'버튼의 탭 여부를 나타내는 변수
-    @Published var isCancelWaitingRequestCompleted = false // 웨이팅 취소 요청의 응답 상태를 나타내는 변수
     @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
     @Published var cancelWaiting = false // WaitingCancelView를 띄움
     @Published var waitingIdToCancel = -1 // 취소할 웨이팅의 WaitingId 저장
@@ -31,56 +28,49 @@ class WaitingViewModel: ObservableObject {
     
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
-        DispatchQueue.main.async {
-            self.isCancelWaitingRequestCompleted = false
-            self.isCancelWaitingConfirmed = true
-        }
-        
-        let url = APIManager.shared.serverType.rawValue + "/waiting"
-        
-        let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting"
-        
-        let headers: HTTPHeaders = [
-            .accept("application/json"),
-            .contentType("application/json")
-        ]
-        
-        let parameters: [String: Any] = [
-            "waitingId": waitingId,
-            "deviceId": deviceId
-        ]
-        
-        AF.request(testUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-            .responseDecodable(of: CancelWaitingResponse.self) { response in
-                print("Request URL of cancelWaiting: \(response.request?.url?.absoluteString ?? "")")
-                
-                switch response.result {
-                case .success(let res):
-                    DispatchQueue.main.async {
-                        self.isCancelWaitingRequestCompleted = true
-                        self.isCancelWaitingConfirmed = false
-                    }
-                    print("cancelWaiting 요청 성공")
-                    print(res)
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.isCancelWaitingRequestCompleted = true
-                        self.networkManager.isServerError = true
-                        self.isCancelWaitingConfirmed = false
-                    }
-                    print("cancelWaiting 서버 요청 실패")
-                    print("에러: \(error.localizedDescription)")
+        await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/waiting"
+            
+            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting"
+            
+            let headers: HTTPHeaders = [
+                .accept("application/json"),
+                .contentType("application/json")
+            ]
+            
+            let parameters: [String: Any] = [
+                "waitingId": waitingId,
+                "deviceId": deviceId
+            ]
+            
+            AF.request(testUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                .responseDecodable(of: CancelWaitingResponse.self) { response in
+                    print("Request URL of cancelWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
-                    if let data = response.data {
-                        let responseData = String(data: data, encoding: .utf8)
-                        print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
+                    switch response.result {
+                    case .success(let res):
+                        print("cancelWaiting 요청 성공")
+                        print(res)
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.networkManager.isServerError = true
+                        }
+                        print("cancelWaiting 서버 요청 실패")
+                        print("에러: \(error.localizedDescription)")
+                        
+                        if let data = response.data {
+                            let responseData = String(data: data, encoding: .utf8)
+                            print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
+                        }
+                        
+                        if let httpResponse = response.response {
+                            print("HTTP 상태 코드: \(httpResponse.statusCode)")
+                        }
                     }
                     
-                    if let httpResponse = response.response {
-                        print("HTTP 상태 코드: \(httpResponse.statusCode)")
-                    }
+                    continuation.resume()
                 }
-            }
+        }
     }
     
     /// 웨이팅 추가(WaitingRequestView에서 호출)
@@ -189,49 +179,46 @@ class WaitingViewModel: ObservableObject {
     
     /// 내 웨이팅 조회(WaitingView에서 호출)
     func fetchReservedWaiting(deviceId: String) async {
-        DispatchQueue.main.async {
-            self.isReservedWaitingRequestCompleted = false
-        }
-        
-        let url = APIManager.shared.serverType.rawValue + "/waiting/me/\(deviceId)"
-        
-        let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/me/\(deviceId)"
-        
-        let headers: HTTPHeaders = [
-            .accept("application/json")
-        ]
-        
-        AF.request(testUrl, method: .get, headers: headers)
-            .responseDecodable(of: ReservedWaitingResponse.self) { response in
-                print("Request URL of fetchReservedWaiting: \(response.request?.url?.absoluteString ?? "")")
-                
-                switch response.result {
-                case .success(let res):
-                    print("FetchReservedWaiting 요청 성공")
-                    print(res)
-                    DispatchQueue.main.async {
-                        self.reservedWaitingList = res.data
-                        // 웨이팅을 신청했다가 res.data가 nil(신청한 웨이팅이 없는 상태)로 돌아올 수도 있으므로 unwrap없이 바로 res.data 반환함
-                        self.isReservedWaitingRequestCompleted = true
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.isReservedWaitingRequestCompleted = true
-                        self.networkManager.isServerError = true
-                    }
-                    print("FetchReservedWaiting 서버 요청 실패")
-                    print("에러: \(error.localizedDescription)")
+        await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/waiting/me/\(deviceId)"
+            
+            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/me/\(deviceId)"
+            
+            let headers: HTTPHeaders = [
+                .accept("application/json")
+            ]
+            
+            AF.request(testUrl, method: .get, headers: headers)
+                .responseDecodable(of: ReservedWaitingResponse.self) { response in
+                    print("Request URL of fetchReservedWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
-                    if let data = response.data {
-                        let responseData = String(data: data, encoding: .utf8)
-                        print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
+                    switch response.result {
+                    case .success(let res):
+                        print("FetchReservedWaiting 요청 성공")
+                        print(res)
+                        DispatchQueue.main.async {
+                            self.reservedWaitingList = res.data // 웨이팅을 신청했다가 res.data가 nil(신청한 웨이팅이 없는 상태)로 돌아올 수도 있으므로 unwrap없이 바로 res.data 반환함
+                        }
+                    case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.networkManager.isServerError = true
+                        }
+                        print("FetchReservedWaiting 서버 요청 실패")
+                        print("에러: \(error.localizedDescription)")
+                        
+                        if let data = response.data {
+                            let responseData = String(data: data, encoding: .utf8)
+                            print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
+                        }
+                        
+                        if let httpResponse = response.response {
+                            print("HTTP 상태 코드: \(httpResponse.statusCode)")
+                        }
                     }
                     
-                    if let httpResponse = response.response {
-                        print("HTTP 상태 코드: \(httpResponse.statusCode)")
-                    }
+                    continuation.resume()
                 }
-            }
+        }
     }
     
     /// 핀 번호 검증 및 웨이팅 대기팀 수 확인

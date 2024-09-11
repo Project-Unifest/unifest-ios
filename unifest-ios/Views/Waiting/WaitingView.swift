@@ -12,6 +12,7 @@ struct WaitingView: View {
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var waitingCancelToast: Toast? = nil
+    @State private var isFetchingWaitingList = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -40,43 +41,26 @@ struct WaitingView: View {
                             .padding(.horizontal, 30)
                         }
                     
-                    if waitingVM.isReservedWaitingRequestCompleted {
-                        WaitingListView(viewModel: viewModel)
-                    } else {
+                    if isFetchingWaitingList {
                         VStack {
                             Spacer()
                             ProgressView()
                             Spacer()
                         }
+                    } else {
+                        WaitingListView(viewModel: viewModel)
                     }
                 }
                 
                 if waitingVM.cancelWaiting == true {
                     WaitingCancelView(waitingCancelToast: $waitingCancelToast)
                 }
-                
-                if waitingVM.isCancelWaitingConfirmed && !waitingVM.isCancelWaitingRequestCompleted {
-                    // 사용자가 WaitingCancelView의 '확인'버튼을 누른 시점 ~ 웨이팅 취소 요청에 대한 응답이 도착하는 시점까지 뜨는 뷰
-                    ZStack {
-                        Color.black.opacity(0.66)
-                            .ignoresSafeArea()
-                        
-                        VStack {
-                            Spacer()
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle())
-                                .tint(Color.white)
-                            Spacer()
-                        }
-                    }
-                }
             }
             .background(.ufBackground)
             .task {
+                isFetchingWaitingList = true
                 await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
-            }
-            .onAppear {
-                print("WaitingView isServerError: \(networkManager.isServerError)")
+                isFetchingWaitingList = false
             }
             .refreshable {
                 await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
