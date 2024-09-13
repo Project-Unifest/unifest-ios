@@ -11,6 +11,7 @@ struct ToastView: View {
     var style: ToastStyle
     var message: String
     var width = CGFloat.infinity
+    var bottomPadding: CGFloat = 0
     var onCancelTapped: (() -> Void)
     
     var body: some View {
@@ -49,6 +50,7 @@ struct ToastView: View {
             }
             .dynamicTypeSize(.large)
             .padding()
+            .padding(.bottom, bottomPadding)
             // .shadow(color: Color.grey300, radius: 7)
     }
 }

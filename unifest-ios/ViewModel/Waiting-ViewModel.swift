@@ -16,12 +16,14 @@ class WaitingViewModel: ObservableObject {
     @Published var waitingStatus = "" // WaitingCancelView에 어떤 문구를 띄울 지 결정
     @Published var waitingCancelToast: Toast? = nil
     
-    // Detail그룹 상태 관리 변수
+    // Detail그룹 관련 변수
     @Published var waitingTeamCount: Int = -1 // WaitingRequestView와 WaitingCompleteView에서 웨이팅 팀 수를 보여주는 변수
     @Published var requestedWaitingInfo: AddWaitingResult? = nil // .empty
     @Published var isPinNumberValid: Bool? = nil
     @Published var addWaitingResponseCode = "" // 웨이팅 신청 API의 응답코드
     @Published var addWaitingResponseMessage = "" // 웨이팅 신청 API의 응답 메세지
+    @Published var reservedWaitingCount = 0 // 사용자가 예약한 웨이팅 개수
+    @Published var reservedWaitingCountExceededToast: Toast? = nil // 해당 축제에서 지정한 웨이팅 최대 개수를 초과해서 웨이팅을 시도하려고 할 때 Toast를 띄움
     
     private let networkManager: NetworkManager
     init(networkManager: NetworkManager) {
@@ -200,6 +202,12 @@ class WaitingViewModel: ObservableObject {
                         print(res)
                         DispatchQueue.main.async {
                             self.reservedWaitingList = res.data // 웨이팅을 신청했다가 res.data가 nil(신청한 웨이팅이 없는 상태)로 돌아올 수도 있으므로 unwrap없이 바로 res.data 반환함
+                            if let reservedWaitingList = self.reservedWaitingList {
+                                self.reservedWaitingCount = reservedWaitingList.count
+                            } else {
+                                self.reservedWaitingCount = 0
+                            }
+                            
                         }
                     case .failure(let error):
                         DispatchQueue.main.async {
