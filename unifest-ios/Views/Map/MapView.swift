@@ -21,12 +21,15 @@ struct MapViewiOS17: View {
 
     @Binding var searchText: String
     
+    // 학교의 중심 좌표 설정
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
     @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
     
+    // 지도가 이동하거나 확대,축소할 수 있는 경계영역 지정(지도의 특정 범위 넘어서 이동하지 못하도록 제한)
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
     let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
+    // 학교의 경계 좌표
     let polygonKonkuk: [CLLocationCoordinate2D] = [
         CLLocationCoordinate2D(latitude: 37.54508, longitude: 127.07658),
         CLLocationCoordinate2D(latitude: 37.54468, longitude: 127.07663),
@@ -98,8 +101,9 @@ struct MapViewiOS17: View {
     var body: some View {
         ZStack {
             Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: mainMap) {
-                UserAnnotation()
+                UserAnnotation() // 사용자의 현재 위치를 맵에 나타냄
                 
+                // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
                 if colorScheme == .dark {
                     MapPolygon(coordinates: polygonKonkuk)
                         .foregroundStyle(.background.opacity(0.0))
@@ -120,19 +124,22 @@ struct MapViewiOS17: View {
                     }
                 }
                 
-                // 개인 부스
-                /* MapPolygon(coordinates: personalBoothList)
-                    .foregroundStyle(.brown.opacity(0.1))
-                    .stroke(.brown.opacity(0.5), lineWidth: 0.5)
-                Annotation("개인 부스", coordinate: personalBoothCenter) { }
-                
-                // 푸드트럭
-                MapPolygon(coordinates: foodtruckBoothList)
-                    .foregroundStyle(.red.opacity(0.1))
-                    .stroke(.red.opacity(0.5), lineWidth: 0.5)
-                Annotation("푸드트럭", coordinate: foodtruckCenter) { } */
+                /*
+                 // 개인 부스
+                 MapPolygon(coordinates: personalBoothList)
+                     .foregroundStyle(.brown.opacity(0.1))
+                     .stroke(.brown.opacity(0.5), lineWidth: 0.5)
+                 Annotation("개인 부스", coordinate: personalBoothCenter) { }
+                 
+                 // 푸드트럭
+                 MapPolygon(coordinates: foodtruckBoothList)
+                     .foregroundStyle(.red.opacity(0.1))
+                     .stroke(.red.opacity(0.5), lineWidth: 0.5)
+                 Annotation("푸드트럭", coordinate: foodtruckCenter) { }
+                 */
                 
                 ForEach(mapViewModel.annotationList, id: \.self) { annData in
+                    // 지도에 annotation 생성
                     Annotation("", coordinate: CLLocationCoordinate2D(latitude: annData.latitude, longitude: annData.longitude)) {
                         BoothAnnotation(mapViewModel: mapViewModel, annID: annData.id, boothType: annData.annType, number: annData.boothIDList.count)
                             .onTapGesture {
@@ -191,7 +198,7 @@ struct MapViewiOS17: View {
                 // lastLongitude = mapCameraUpdateContext.camera.centerCoordinate.longitude
             }
             
-            
+            // 지도 우측의 3D, navigation 버튼 설정
             HStack(alignment: .center) {
                 Spacer()
                 VStack(alignment: .trailing) {
@@ -405,8 +412,8 @@ struct MapViewiOS16: View {
     
     @Binding var searchText: String
     
+    // MapViewiOS17의 mapCameraPosition변수와 비슷한 역할(지도의 카메라 위치(중심 좌표, 거리, 회전 각도 등)를 설정함)
     @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
-    // @State private var coordinateSpan =
                                                              
     // distance
     @State private var lastDelta: CGFloat = 0.009
