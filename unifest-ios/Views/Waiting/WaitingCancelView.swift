@@ -21,7 +21,7 @@ struct WaitingCancelView: View {
                 VStack {
                     Spacer()
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle())
+                        .progressViewStyle(.circular)
                         .tint(Color.white)
                     Spacer()
                 }
@@ -49,13 +49,12 @@ struct WaitingCancelView: View {
                             HStack {
                                 Button {
                                     Task {
-                                        waitingVM.cancelWaiting = false
-                                        
                                         isCancellingWaiting = true
                                         await waitingVM.cancelWaiting(
                                             waitingId: waitingVM.waitingIdToCancel,
                                             deviceId: UIDevice.current.deviceToken
                                         )
+                                        waitingVM.cancelWaiting = false
                                         isCancellingWaiting = false
                                         
                                         if networkManager.isServerError == false { // true일 때는 RootView에서 NetworkErrorView 띄움
