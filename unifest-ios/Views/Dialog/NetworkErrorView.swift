@@ -21,7 +21,7 @@ struct NetworkErrorView: View {
             // Image(.dialogBackground)
                 .overlay {
                     VStack(alignment: .center) {
-                        Image(systemName: errorType == .server ? "exclamationmark.triangle.fill" : "wifi")
+                        Image(systemName: errorType == .server ? "exclamationmark.triangle.fill" : "wifi.exclamationmark")
                             .foregroundStyle(errorType == .server ? .ufRed : .ufBlack)
                             .padding(.top, 26)
                             .padding(.bottom, 10)
@@ -56,6 +56,7 @@ struct NetworkErrorView: View {
                     }
                 }
         }
+        .dynamicTypeSize(.large)
     }
     
     enum NetworkErrorType {

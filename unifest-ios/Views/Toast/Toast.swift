@@ -13,6 +13,7 @@ struct Toast: Equatable {
     var message: String
     var duration: Double = 3
     var width: Double = .infinity
+    var bottomPadding: CGFloat = 0
 }
 
 enum ToastStyle {
@@ -67,7 +68,8 @@ struct ToastModifier: ViewModifier {
                 ToastView(
                     style: toast.style,
                     message: toast.message,
-                    width: toast.width
+                    width: toast.width,
+                    bottomPadding: toast.bottomPadding
                 ) {
                     dismissToast()
                 }

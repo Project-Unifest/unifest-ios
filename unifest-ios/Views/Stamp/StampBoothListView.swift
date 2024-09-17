@@ -58,6 +58,7 @@ struct StampBoothListView: View {
 //                    }
 //            }
         }
+        .dynamicTypeSize(.large)
     }
 }
 

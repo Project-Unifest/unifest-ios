@@ -115,6 +115,10 @@ struct RootView: View {
                 }
             }
             
+            if waitingVM.cancelWaiting == true {
+                WaitingCancelView()
+            }
+            
             if networkManager.isNetworkConnected == false {
                 NetworkErrorView(errorType: .network)
                     .onAppear {
@@ -136,6 +140,7 @@ struct RootView: View {
                 }
             }
         }
+        .dynamicTypeSize(.large)
         .environmentObject(tabSelect)
         .environmentObject(waitingVM)
         .environmentObject(networkManager)

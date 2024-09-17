@@ -30,6 +30,7 @@ struct BoothDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var networkManager: NetworkManager
+    @EnvironmentObject var waitingVM: WaitingViewModel
     let currentBoothId: Int
     @State private var pin: String = ""
     @State private var isReloadButtonPresent: Bool = false
@@ -122,6 +123,8 @@ struct BoothDetailView: View {
 //                }
             }
         }
+        .dynamicTypeSize(.large)
+        .toastView(toast: $waitingVM.reservedWaitingCountExceededToast)
         .onAppear {
             print("Current Booth ID: \(currentBoothId)")
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

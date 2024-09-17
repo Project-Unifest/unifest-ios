@@ -11,7 +11,6 @@ struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
-    @State private var waitingCancelToast: Toast? = nil
     @State private var isFetchingWaitingList = false
     
     var body: some View {
@@ -51,10 +50,6 @@ struct WaitingView: View {
                         WaitingListView(viewModel: viewModel)
                     }
                 }
-                
-                if waitingVM.cancelWaiting == true {
-                    WaitingCancelView(waitingCancelToast: $waitingCancelToast)
-                }
             }
             .background(.ufBackground)
             .task {
@@ -65,8 +60,9 @@ struct WaitingView: View {
             .refreshable {
                 await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
             }
-            .toastView(toast: $waitingCancelToast)
+            .toastView(toast: $waitingVM.waitingCancelToast)
         }
+        .dynamicTypeSize(.large)
     }
 }
 

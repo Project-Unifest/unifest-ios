@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BoothFooterView: View {
     @ObservedObject var viewModel: RootViewModel
+    @EnvironmentObject var waitingVM: WaitingViewModel
     @Binding var isReloadButtonPresent: Bool
     @Binding var isWaitingPinViewPresented: Bool
     @Environment(\.colorScheme) var colorScheme
@@ -45,19 +46,29 @@ struct BoothFooterView: View {
                     
                     if viewModel.boothModel.selectedBooth == nil {
                         Text("-")
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                             .foregroundStyle(.darkGray)
                     } else {
                         Text("\(viewModel.boothModel.selectedBoothNumLike > 0 ? viewModel.boothModel.selectedBoothNumLike : 0)")
-                            .font(.system(size: 10))
+                            .font(.system(size: 11))
                             .foregroundStyle(.darkGray)
                     }
                 }
                 .padding(.top, 8)
                 
                 Button {
-                    withAnimation {
-                        isWaitingPinViewPresented = true
+                    Task {
+                        await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+                        
+                        print("ReservedWaitingCount: \(waitingVM.reservedWaitingCount)")
+                        
+                        if waitingVM.reservedWaitingCount > 3 {
+                            waitingVM.reservedWaitingCountExceededToast = Toast(style: .warning, message: "웨이팅은 최대 3개까지 가능합니다", bottomPadding: 51)
+                        } else {
+                            withAnimation {
+                                isWaitingPinViewPresented = true
+                            }
+                        }
                     }
                 } label: {
                     Text("")
@@ -97,4 +108,5 @@ struct BoothFooterView: View {
 
 #Preview {
     BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingPinViewPresented: .constant(false))
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
 }

@@ -80,6 +80,7 @@ struct LikedBoothBoxView: View {
                 .padding(.bottom, 6)
             }
         }
+        .dynamicTypeSize(.large)
         .background(.ufBackground)
         .frame(height: 95)
         // .padding(.horizontal)

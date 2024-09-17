@@ -11,11 +11,12 @@ struct ToastView: View {
     var style: ToastStyle
     var message: String
     var width = CGFloat.infinity
+    var bottomPadding: CGFloat = 0
     var onCancelTapped: (() -> Void)
     
     var body: some View {
         RoundedRectangle(cornerRadius: 5)
-            .fill(Color.grey800)
+            .fill(Color.ufBackground)
             .frame(minWidth: 0, maxWidth: width, minHeight: 38, maxHeight: 50)
             .overlay {
                 RoundedRectangle(cornerRadius: 5)
@@ -30,8 +31,7 @@ struct ToastView: View {
                     
                     Text(message)
                         .font(.pretendard(weight: .p4, size: 13))
-                        // .foregroundStyle(.grey900)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.grey900)
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(3)
                     
@@ -48,7 +48,9 @@ struct ToastView: View {
                 }
                 .padding()
             }
+            .dynamicTypeSize(.large)
             .padding()
+            .padding(.bottom, bottomPadding)
             // .shadow(color: Color.grey300, radius: 7)
     }
 }

@@ -17,7 +17,7 @@ struct WaitingInfoView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .fill(Color.ufWhite)
+            .fill(reservedWaitingListItem.status == "NOSHOW" ? Color.primary50 : Color.ufWhite)
             .shadow(color: Color.black.opacity(0.12), radius: 7, y: 3)
             .frame(width: 355, height: 160)
             .overlay {
@@ -42,7 +42,12 @@ struct WaitingInfoView: View {
                             if reservedWaitingListItem.status == "CALLED" {
                                 Text("입장해주세요")
                                     .font(.pretendard(weight: .p7, size: 30))
-                                    .foregroundStyle(.defaultPink)
+                                    .foregroundStyle(.primary500)
+                                    .baselineOffset(4)
+                            } else if reservedWaitingListItem.status == "NOSHOW" {
+                                Text("부재 처리")
+                                    .font(.pretendard(weight: .p7, size: 30))
+                                    .foregroundStyle(.primary700)
                                     .baselineOffset(4)
                             } else {
                                 Text(String(reservedWaitingListItem.waitingOrder))
@@ -83,18 +88,19 @@ struct WaitingInfoView: View {
                     
                     HStack {
                         Button {
+                            waitingVM.waitingIdToCancel = reservedWaitingListItem.waitingId
+                            waitingVM.waitingStatus = reservedWaitingListItem.status
                             withAnimation {
                                 waitingVM.cancelWaiting = true
                             }
-                            waitingVM.waitingIdToCancel = reservedWaitingListItem.waitingId
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.grey100)
                                 .frame(width: 158, height: 44)
                                 .overlay {
-                                    Text("웨이팅 취소")
+                                    Text(reservedWaitingListItem.status == "NOSHOW" ? "부재 웨이팅 지우기" : "웨이팅 취소")
                                         .font(.pretendard(weight: .p7, size: 14))
-                                        .foregroundStyle(.primary500)
+                                        .foregroundStyle(.ufRed)
                                 }
                         }
                         

@@ -140,6 +140,7 @@ struct StampView: View {
             }
             .toastView(toast: $addStampToast)
         }
+        .dynamicTypeSize(.large)
     }
 }
 
