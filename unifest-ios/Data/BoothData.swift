@@ -73,6 +73,9 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var longitude: Double
     var menus: [MenuItem]?
     var enabled: Bool?
+    var waitingEnabled: Bool
+    var openTime: String?
+    var closeTime: String?
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {
@@ -80,6 +83,7 @@ struct MenuItem: Codable, Hashable, Identifiable {
     var name: String?
     var price: Int?
     var imgUrl: String?
+    var menuStatus: String?
 }
 
 struct APIResponseIntData: Codable {

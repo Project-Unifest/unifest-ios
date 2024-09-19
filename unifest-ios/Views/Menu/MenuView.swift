@@ -18,7 +18,9 @@ struct MenuView: View {
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
     
-    @State private var isPermissionAlertPresented: Bool = false
+    // 권한 수정
+    @State private var isLocationPermissionAlertPresented: Bool = false
+    @State private var isCameraPermissionAlertPresented: Bool = false
     
     // 메일
     @State private var isErrorDeclarationModalPresented: Bool = false
@@ -431,7 +433,7 @@ struct MenuView: View {
                 
                 // 권한 수정
                 Button {
-                    isPermissionAlertPresented = true
+                    isLocationPermissionAlertPresented = true
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING)
                 } label: {
                     HStack {
@@ -443,6 +445,30 @@ struct MenuView: View {
                             .padding(.trailing, 8)
                         
                         Text(StringLiterals.Menu.locationAuthText)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
+                Button {
+                    isCameraPermissionAlertPresented = true
+                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING) // 카메라 GATracking 추가하고 코드 수정하기
+                } label: {
+                    HStack {
+                        Image(systemName: "camera.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.cameraAuthText)
                             .font(.pretendard(weight: .p5, size: 15))
                             .foregroundStyle(.grey900)
                         
@@ -647,7 +673,7 @@ struct MenuView: View {
                 }
         }
         // 권한 허가 수정 안내 모달
-        .alert("권한 허가 수정 안내", isPresented: $isPermissionAlertPresented, actions: {
+        .alert("위치 권한 허가 수정 안내", isPresented: $isLocationPermissionAlertPresented, actions: {
             Button("설정 앱으로 이동할래요", role: .cancel) {
                 guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                 
@@ -656,12 +682,24 @@ struct MenuView: View {
                 }
                 
             }
-            Button("알겠어요", role: nil) {
-                
-            }
+            
+            Button("알겠어요", role: nil) { }
         }, message: {
             Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 - 유니페스 에서 권한을 수정할 수 있어요.")
         })
+        .alert("카메라 권한 허가 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            Button("알겠어요", role: nil) { }
+        } message: {
+            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 - 유니페스 에서 권한을 수정할 수 있어요.")
+        }
         // 기능 오류 신고 모달
         .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
             Button("메일을 작성할래요", role: nil) {
