@@ -51,7 +51,14 @@ struct BoothMenuView: View {
                     } else {
                         VStack(spacing: 10) {
                             ForEach(boothMenu, id: \.self) { menu in
-                                MenuBarView(imageURL: menu.imgUrl ?? "", name: menu.name ?? "", price: menu.price ?? 0, isMenuImagePresented: $isMenuImagePresented, selectedMenu: $selectedMenu)
+                                MenuBarView(
+                                    imageURL: menu.imgUrl ?? "",
+                                    name: menu.name ?? "",
+                                    price: menu.price ?? 0,
+                                    // menuStatus: menu.menuStatus,
+                                    menuStatus: "UNDER_50",
+                                    isMenuImagePresented: $isMenuImagePresented,
+                                    selectedMenu: $selectedMenu)
                             }
                         }
                         .padding(.horizontal)

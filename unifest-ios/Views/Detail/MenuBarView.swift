@@ -13,9 +13,17 @@ struct MenuBarView: View {
     let imageURL: String
     let name: String
     let price: Int
+    let menuStatus: String?
     @Binding var isMenuImagePresented: Bool
     @Binding var selectedMenu: SelectedMenuInfo
     @Environment(\.colorScheme) var colorScheme
+    
+    enum menuState: String {
+        case ENOUGH = ""
+        case UNDER_50 = "50개 미만"
+        case UNDER_10 = "10개 미만"
+        case SOLD_OUT = "품절"
+    }
     
     var body: some View {
         HStack {
@@ -62,6 +70,49 @@ struct MenuBarView: View {
                         .font(.pretendard(weight: .p6, size: 16))
                         .foregroundStyle(.grey900)
                 }
+                
+                if let menuStatus = menuStatus {
+                    if menuStatus == "UNDER_50" {
+                        RoundedRectangle(cornerRadius: 7)
+                            .fill(Color.grey200)
+                            .frame(width: 92, height: 21)
+                            .overlay {
+                                HStack {
+                                    Text("50개 미만")
+                                        .font(.pretendard(weight: .p6, size: 11))
+                                        .foregroundStyle(.grey600)
+                                    Text(" 남음")
+                                        .font(.pretendard(weight: .p4, size: 11))
+                                        .foregroundStyle(.grey600)
+                                        .padding(.leading, -8)
+                                }
+                            }
+                    } else if menuStatus == "UNDER_10" {
+                        RoundedRectangle(cornerRadius: 7)
+                            .fill(Color.grey200)
+                            .frame(width: 92, height: 21)
+                            .overlay {
+                                HStack {
+                                    Text("10개 미만")
+                                        .font(.pretendard(weight: .p6, size: 11))
+                                        .foregroundStyle(.grey600)
+                                    Text(" 남음")
+                                        .font(.pretendard(weight: .p4, size: 11))
+                                        .foregroundStyle(.grey600)
+                                        .padding(.leading, -8)
+                                }
+                            }
+                    } else if menuStatus == "SOLD_OUT" {
+                        RoundedRectangle(cornerRadius: 7)
+                            .fill(Color.grey200)
+                            .frame(width: 39, height: 21)
+                            .overlay {
+                                Text("품절")
+                                    .font(.pretendard(weight: .p6, size: 11))
+                                    .foregroundStyle(.ufRed)
+                            }
+                    }
+                }
             }
             
             Spacer()
@@ -79,4 +130,8 @@ struct MenuBarView: View {
                 return "\(price)"
             }
         }
+}
+
+#Preview {
+    MenuBarView(imageURL: "", name: "모둠 사시미", price: 45_000, menuStatus: "UNDER_50", isMenuImagePresented: .constant(false), selectedMenu: .constant(SelectedMenuInfo()))
 }
