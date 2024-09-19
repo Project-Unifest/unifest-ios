@@ -182,7 +182,7 @@ struct BoothInfoView: View {
                             
                             Image(systemName: "chevron.down")
                                 .resizable()
-                                .frame(width: 10, height: 8)
+                                .frame(width: 10, height: 6)
                                 .foregroundStyle(.grey600)
                                 .padding(.leading, -1)
                                 .rotationEffect(isOperatingHoursExpanded ? .degrees(180) : .zero)

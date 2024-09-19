@@ -280,7 +280,6 @@ class WaitingViewModel: ObservableObject {
                         }
                     }
                     
-                    print("CheckPinNumber 작업 종료")
                     continuation.resume() // async 작업 종료
                 }
             }
