@@ -10,6 +10,7 @@ import SwiftUI
 struct BoothInfoView: View {
     @ObservedObject var viewModel: RootViewModel
     @State private var isMapViewPresented: Bool = false
+    @State private var isOperatingHoursExpanded: Bool = false
     @Binding var selectedBoothHours: Int
     @Binding var isReloadButtonPresent: Bool
     @Environment(\.dismiss) var dismiss
@@ -142,7 +143,7 @@ struct BoothInfoView: View {
                             Text(viewModel.boothModel.selectedBooth?.warning ?? "")
                                 .font(.pretendard(weight: .p6, size: 11))
                                 .foregroundStyle(.primary500)
-                                // .lineLimit(3)
+                            // .lineLimit(3)
                         }
                     }
                 }
@@ -165,11 +166,79 @@ struct BoothInfoView: View {
                 }
                 
                 HStack {
+                    Button {
+                        withAnimation {
+                            isOperatingHoursExpanded.toggle()
+                        }
+                    } label: {
+                        HStack {
+                            Image(systemName: "clock")
+                                .foregroundStyle(.ufBluegreen)
+                                .font(.system(size: 15))
+                            
+                            Text("운영중")
+                                .font(.pretendard(weight: .p5, size: 13))
+                                .foregroundStyle(.grey900)
+                            
+                            Image(systemName: "chevron.down")
+                                .resizable()
+                                .frame(width: 10, height: 8)
+                                .foregroundStyle(.grey600)
+                                .padding(.leading, -1)
+                                .rotationEffect(isOperatingHoursExpanded ? .degrees(180) : .zero)
+                            
+                            Spacer()
+                        }
+                    }
+                }
+                .padding(.horizontal, 14)
+                
+                if isOperatingHoursExpanded {
+                    VStack {
+                        HStack {
+                            Text("Open Time: ")
+                                .padding(.trailing, -5)
+                            
+                            if let openTime = viewModel.boothModel.selectedBooth?.openTime {
+                                let timeString = formatTime(openTime)
+                                Text(timeString)
+                            } else {
+                                let timeString = formatTime("10:00:00")
+                                Text(timeString)
+                                // Text("등록된 정보가 없습니다")
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding(.bottom, 2)
+                        
+                        HStack {
+                            Text("Close Time: ")
+                                .padding(.trailing, -5)
+                            
+                            if let closeTime = viewModel.boothModel.selectedBooth?.closeTime {
+                                let timeString = formatTime(closeTime)
+                                Text(timeString)
+                            } else {
+                                Text("등록된 정보가 없습니다")
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .font(.pretendard(weight: .p5, size: 13))
+                    .foregroundStyle(.grey700)
+                    .padding(.leading, 40)
+                    .padding(.top, -1)
+                    .padding(.bottom, 5)
+                }
+                
+                HStack {
                     Image(.marker)
                     
-                    MarqueeText(text: viewModel.boothModel.selectedBooth?.location ?? "", font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
-                    // Text(viewModel.boothModel.selectedBooth?.location ?? "")
-                    // .font(.system(size: 13))
+                    Text(viewModel.boothModel.selectedBooth?.location ?? "")
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                 }
@@ -213,6 +282,24 @@ struct BoothInfoView: View {
                     }
             }
         })
+    }
+    
+    func formatTime(_ time: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        
+        if let date = dateFormatter.date(from: time) {
+            let calendar = Calendar.current
+            let hour = calendar.component(.hour, from: date)
+            let minute = calendar.component(.minute, from: date)
+            return String(format: "%02d시 %02d분", hour, minute) // 00을 포함한 형식으로 출력
+//            // OO:OO 형식으로 format하는 코드
+//            dateFormatter.dateFormat = "HH:mm"
+//            let formattedTime = dateFormatter.string(from: date)
+//            return formattedTime
+        } else {
+            return ""
+        }
     }
 }
 
