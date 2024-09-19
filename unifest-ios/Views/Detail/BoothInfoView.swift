@@ -186,10 +186,10 @@ struct BoothInfoView: View {
                                 .foregroundStyle(.grey600)
                                 .padding(.leading, -1)
                                 .rotationEffect(isOperatingHoursExpanded ? .degrees(180) : .zero)
-                            
-                            Spacer()
                         }
                     }
+                    
+                    Spacer()
                 }
                 .padding(.horizontal, 14)
                 

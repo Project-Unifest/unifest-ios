@@ -26,157 +26,169 @@ struct MapPageView: View {
     @State private var searchText: String = ""
     
     var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
-                
-                if #available(iOS 17, *) {
-                    MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                } else {
-                    MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                }
-            }
-            
-            VStack {
-                // MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
-                MapPageHeaderView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                    .background(.ufBackground)
-                    .clipShape(
-                        .rect(
-                            topLeadingRadius: 0,
-                            bottomLeadingRadius: 23,
-                            bottomTrailingRadius: 23,
-                            topTrailingRadius: 0
-                        )
-                    )
-                
-                Spacer()
-                
-                // 지도에서 annotation을 탭했을 때 보이는 X버튼
-                if mapViewModel.isBoothListPresented {
-                    Button {
-                        DispatchQueue.main.async {
-                            withAnimation(.spring) {
-                                mapViewModel.isBoothListPresented = false
-                            }
-                        }
-                        mapViewModel.setSelectedAnnotationID(-1)
-                        viewModel.boothModel.updateMapSelectedBoothList([])
-                    } label: {
-                        Text("").roundedButton(background: .ufBackground, strokeColor: .primary500, height: 36, cornerRadius: 18)
-                            .frame(width: 36)
-                            .overlay {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.primary500)
-                            }
-                        // Image(.popCloseButton)
+        GeometryReader { geometry in
+            ZStack {
+                VStack {
+                    Spacer()
+                    
+                    if #available(iOS 17, *) {
+                        MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+                    } else {
+                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
                     }
                 }
                 
-                if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
-                    VStack {
+                VStack {
+                    // MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
+                    MapPageHeaderView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+                        .background(.ufBackground)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 23,
+                                bottomTrailingRadius: 23,
+                                topTrailingRadius: 0
+                            )
+                        )
+                    
+                    Spacer()
+                    
+                    // 지도에서 annotation을 탭했을 때 보이는 X버튼
+                    if mapViewModel.isBoothListPresented {
                         Button {
-                            if mapViewModel.isPopularBoothPresented {
-                                // on -> off
-                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
-                                DispatchQueue.main.async {
-                                    withAnimation {
-                                        mapViewModel.isPopularBoothPresented = false
-                                    }
+                            DispatchQueue.main.async {
+                                withAnimation(.spring) {
+                                    mapViewModel.isBoothListPresented = false
                                 }
-                            } else {
-                                // off -> on
-                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
-                                if mapViewModel.isBoothListPresented {
+                            }
+                            mapViewModel.setSelectedAnnotationID(-1)
+                            viewModel.boothModel.updateMapSelectedBoothList([])
+                        } label: {
+                            Text("").roundedButton(background: .ufBackground, strokeColor: .primary500, height: 36, cornerRadius: 18)
+                                .frame(width: 36)
+                                .overlay {
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.primary500)
+                                }
+                            // Image(.popCloseButton)
+                        }
+                    }
+                    
+                    if !viewModel.boothModel.top5booths.isEmpty && searchText.isEmpty && !mapViewModel.isBoothListPresented {
+                        VStack {
+                            Button {
+                                if mapViewModel.isPopularBoothPresented {
+                                    // on -> off
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH)
                                     DispatchQueue.main.async {
                                         withAnimation {
-                                            mapViewModel.isBoothListPresented = false
+                                            mapViewModel.isPopularBoothPresented = false
+                                        }
+                                    }
+                                } else {
+                                    // off -> on
+                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_OPEN_FABOR_BOOTH)
+                                    if mapViewModel.isBoothListPresented {
+                                        DispatchQueue.main.async {
+                                            withAnimation {
+                                                mapViewModel.isBoothListPresented = false
+                                            }
+                                        }
+                                    }
+                                    DispatchQueue.main.async {
+                                        withAnimation {
+                                            mapViewModel.isPopularBoothPresented = true
                                         }
                                     }
                                 }
-                                DispatchQueue.main.async {
-                                    withAnimation {
-                                        mapViewModel.isPopularBoothPresented = true
+                            } label: {
+                                Text("")
+                                    .roundedButton(background: .ufNetworkErrorBackground, strokeColor: .primary500, height: 36, cornerRadius: 39)
+                                    .frame(width: 120)
+                                // Image(.popBoothButton)
+                                    .overlay {
+                                        HStack {
+                                            Text(StringLiterals.Map.favoriteBoothTitle)
+                                                .font(.pretendard(weight: .p7, size: 13))
+                                                .foregroundStyle(.primary500)
+                                            Image(.upPinkArrow)
+                                                .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
+                                        }
                                     }
-                                }
-                            }
-                        } label: {
-                            Text("")
-                                .roundedButton(background: .ufNetworkErrorBackground, strokeColor: .primary500, height: 36, cornerRadius: 39)
-                                .frame(width: 120)
-                            // Image(.popBoothButton)
-                                .overlay {
-                                    HStack {
-                                        Text(StringLiterals.Map.favoriteBoothTitle)
-                                            .font(.pretendard(weight: .p7, size: 13))
-                                            .foregroundStyle(.primary500)
-                                        Image(.upPinkArrow)
-                                            .rotationEffect(mapViewModel.isPopularBoothPresented ? .degrees(180) : .degrees(0))
-                                    }
-                                }
-                        }
-                        
-                        if mapViewModel.isPopularBoothPresented == false {
-                            Spacer()
-                                .frame(height: 95)
-                        }
-                    }
-                }
-                
-                // isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
-                // isBoothListPresented: map의 annotation을 탭했을 때 true/false
-                if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
-                    if mapViewModel.isPopularBoothPresented {
-                        VStack {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
-                                        BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
-                                            .onTapGesture {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
-                                                viewModel.boothModel.loadBoothDetail(topBooth.id)
-                                                isBoothDetailViewPresented = true
-                                            }
-                                    }
-                                }
-                                .padding(.horizontal, 35)
-                                .frame(maxWidth: .infinity)
                             }
                             
-                            Spacer()
-                                .frame(height: 93)
+                            if mapViewModel.isPopularBoothPresented == false {
+                                Spacer()
+                                    .frame(height: 95)
+                            }
                         }
-                        
-                    } else {
-                        if viewModel.boothModel.mapSelectedBoothList.isEmpty {
-                            //
-                        } else {
+                    }
+                    
+                    // isPopularBoothPresented: '인기 부스' 버튼을 탭할 때 true/false
+                    // isBoothListPresented: map의 annotation을 탭했을 때 true/false
+                    if mapViewModel.isPopularBoothPresented || mapViewModel.isBoothListPresented {
+                        if mapViewModel.isPopularBoothPresented {
                             VStack {
-                                ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
-                                    BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
-                                        .onTapGesture {
-                                            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
-                                            viewModel.boothModel.loadBoothDetail(booth.id)
-                                            tappedBoothId = booth.id
-                                            isBoothDetailViewPresented = true
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack {
+                                        ForEach(Array(viewModel.boothModel.top5booths.enumerated()), id: \.1) { index, topBooth in
+                                            BoothBox(rank: index, title: topBooth.name, description: topBooth.description, position: topBooth.location, imageURL: topBooth.thumbnail)
+                                                .onTapGesture {
+                                                    GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLOSE_FABOR_BOOTH, params: ["boothID": topBooth.id])
+                                                    viewModel.boothModel.loadBoothDetail(topBooth.id)
+                                                    isBoothDetailViewPresented = true
+                                                }
                                         }
+                                    }
+                                    .padding(.horizontal, (geometry.size.width - 306) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
+                                    .frame(minWidth: geometry.size.width)
                                 }
                                 
                                 Spacer()
-                                    .frame(height: 93) // VStack
+                                    .frame(height: 93)
+                            }
+                            
+                        } else {
+                            if viewModel.boothModel.mapSelectedBoothList.isEmpty {
+                                //
+                            } else {
+                                VStack {
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        HStack {
+                                            Spacer()
+                                            
+                                            ForEach(viewModel.boothModel.mapSelectedBoothList, id: \.self) { booth in
+                                                BoothBox(rank: -1, title: booth.name, description: booth.description, position: booth.location, imageURL: booth.thumbnail)
+                                                    .onTapGesture {
+                                                        GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ROW, params: ["boothID": booth.id])
+                                                        viewModel.boothModel.loadBoothDetail(booth.id)
+                                                        tappedBoothId = booth.id
+                                                        isBoothDetailViewPresented = true
+                                                    }
+                                            }
+                                            
+                                            Spacer()
+                                        }
+                                        .padding(.horizontal, (geometry.size.width - 306) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
+                                        .frame(minWidth: geometry.size.width)
+                                    }
+                                    
+                                    Spacer()
+                                        .frame(height: 93) // VStack
+                                }
                             }
                         }
                     }
                 }
             }
+            .ignoresSafeArea()
+            .sheet(isPresented: $isBoothDetailViewPresented) {
+                BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+                    .presentationDragIndicator(.visible)
+            }
+            .onAppear {
+                viewModel.boothModel.loadTop5Booth()
         }
-        .ignoresSafeArea()
-        .sheet(isPresented: $isBoothDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
-                .presentationDragIndicator(.visible)
-        }
-        .onAppear {
-            viewModel.boothModel.loadTop5Booth()
         }
     }
 }
