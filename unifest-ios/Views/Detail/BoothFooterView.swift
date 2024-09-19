@@ -71,29 +71,33 @@ struct BoothFooterView: View {
                         }
                     }
                 } label: {
-                    Text("")
-//                        .roundedButton(background: .defaultDarkGray, strokeColor: .clear, height: 45, cornerRadius: 10)
-                        .roundedButton(background: .primary500, strokeColor: .clear, height: 45, cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(viewModel.boothModel.selectedBooth?.waitingEnabled ?? false ? .primary500 : .grey600)
+                        .frame(width: 316, height: 45)
                         .overlay {
-//                            if viewModel.boothModel.selectedBooth == nil {
-//                                if !isReloadButtonPresent {
-//                                    ProgressView()
-//                                } else {
-//                                    Text(StringLiterals.Detail.noWaitingBooth)
-//                                        .foregroundStyle(.white)
-//                                        .font(.system(size: 14))
-//                                        .bold()
-//                                }
-//                            } else {
-//                                Text(StringLiterals.Detail.noWaitingBooth)
-                            Text("웨이팅 신청")
-                                    .foregroundStyle(.white)
-                                    .font(.system(size: 14))
-                                    .bold()
-                            //}
+                            if let selectedBooth = viewModel.boothModel.selectedBooth {
+                                if selectedBooth.waitingEnabled {
+                                    Text("웨이팅 하기")
+                                        .font(.pretendard(weight: .p7, size: 14))
+                                        .foregroundStyle(.white)
+                                } else {
+                                    Text(StringLiterals.Detail.noWaitingBooth)
+                                        .font(.pretendard(weight: .p7, size: 14))
+                                        .foregroundStyle(.white)
+                                }
+                            } else {
+                                if !isReloadButtonPresent {
+                                    ProgressView()
+                                } else {
+                                    Text(StringLiterals.Detail.noWaitingBooth)
+                                        .foregroundStyle(.white)
+                                        .font(.system(size: 14))
+                                        .bold()
+                                }
+                            }
                         }
                 }
-                // .disabled(true)
+                // .disabled(viewModel.boothModel.selectedBooth?.waitingEnabled == false || viewModel.boothModel.selectedBooth?.waitingEnabled == nil)
                 
                 Spacer()
                     .frame(width: 20)
