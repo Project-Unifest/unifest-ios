@@ -21,7 +21,7 @@ struct MapPageHeaderView: View {
                     isSearchSchoolViewPresented = true
                 } label: {
                     HStack {
-                        Text("건국대학교")
+                        Text("한경대학교")
                             .font(.pretendard(weight: .p6, size: 20))
                             .foregroundStyle(.grey900)
                         

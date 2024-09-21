@@ -23,11 +23,24 @@ struct MapViewiOS17: View {
     
     // 학교의 중심 좌표 설정
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
-    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
+    // @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
+    // 한경대학교 중심
+    @State var mapCameraPosition = MapCameraPosition.camera(
+        MapCamera(
+            centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), // 기존 좌표에서 살짝 조정
+            distance: 2600,
+            heading: 0.0,
+            pitch: 0
+        )
+    )
     
     // 지도가 이동하거나 확대,축소할 수 있는 경계영역 지정(지도의 특정 범위 넘어서 이동하지 못하도록 제한)
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
-    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    // 건국대학교 경계영역
+    // let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    
+    // 한경대학교 경계영역
+    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     // 학교의 경계 좌표
     let polygonKonkuk: [CLLocationCoordinate2D] = [
@@ -73,6 +86,43 @@ struct MapViewiOS17: View {
         CLLocationCoordinate2D(latitude: 37.54516, longitude: 127.07688)
     ]
     
+    let polygonHankyong: [CLLocationCoordinate2D] = [
+        CLLocationCoordinate2D(latitude: 37.0125281, longitude: 127.2598307),
+        CLLocationCoordinate2D(latitude: 37.0101251, longitude: 127.2631513),
+        CLLocationCoordinate2D(latitude: 37.0095553, longitude: 127.2639023),
+        CLLocationCoordinate2D(latitude: 37.0094097, longitude: 127.2642242),
+        CLLocationCoordinate2D(latitude: 37.0096453, longitude: 127.264546),
+        CLLocationCoordinate2D(latitude: 37.0098295, longitude: 127.2649537),
+        CLLocationCoordinate2D(latitude: 37.0100737, longitude: 127.2654687),
+        CLLocationCoordinate2D(latitude: 37.0102578, longitude: 127.2656458),
+        CLLocationCoordinate2D(latitude: 37.010502, longitude: 127.2659032),
+        CLLocationCoordinate2D(latitude: 37.0112431, longitude: 127.2661661),
+        CLLocationCoordinate2D(latitude: 37.0113802, longitude: 127.2661862),
+        CLLocationCoordinate2D(latitude: 37.0114947, longitude: 127.2661782),
+        CLLocationCoordinate2D(latitude: 37.0122818, longitude: 127.2659301),
+        CLLocationCoordinate2D(latitude: 37.0125174, longitude: 127.2658979),
+        CLLocationCoordinate2D(latitude: 37.0127305, longitude: 127.2659019),
+        CLLocationCoordinate2D(latitude: 37.0130015, longitude: 127.2659703),
+        CLLocationCoordinate2D(latitude: 37.0130464, longitude: 127.2657544),
+        CLLocationCoordinate2D(latitude: 37.0131846, longitude: 127.2654915),
+        CLLocationCoordinate2D(latitude: 37.0132178, longitude: 127.2654245),
+        CLLocationCoordinate2D(latitude: 37.0133816, longitude: 127.2649189),
+        CLLocationCoordinate2D(latitude: 37.0135626, longitude: 127.2649269),
+        CLLocationCoordinate2D(latitude: 37.0136301, longitude: 127.2645246),
+        CLLocationCoordinate2D(latitude: 37.013629, longitude: 127.2643958),
+        CLLocationCoordinate2D(latitude: 37.0134652, longitude: 127.2634343),
+        CLLocationCoordinate2D(latitude: 37.0141269, longitude: 127.2632143),
+        CLLocationCoordinate2D(latitude: 37.0140359, longitude: 127.262694),
+        CLLocationCoordinate2D(latitude: 37.0139781, longitude: 127.2626028),
+        CLLocationCoordinate2D(latitude: 37.013266, longitude: 127.2617921),
+        CLLocationCoordinate2D(latitude: 37.0133602, longitude: 127.2616184),
+        CLLocationCoordinate2D(latitude: 37.0133709, longitude: 127.2615789),
+        CLLocationCoordinate2D(latitude: 37.0128826, longitude: 127.2611242),
+        CLLocationCoordinate2D(latitude: 37.0128044, longitude: 127.2610478),
+        CLLocationCoordinate2D(latitude: 37.0131423, longitude: 127.2604087),
+        CLLocationCoordinate2D(latitude: 37.0125265, longitude: 127.2598301)
+    ]
+    
     let personalBoothList: [CLLocationCoordinate2D] = [
         CLLocationCoordinate2D(latitude: 37.54376, longitude: 127.07689),
         CLLocationCoordinate2D(latitude: 37.54367, longitude: 127.07789),
@@ -105,20 +155,20 @@ struct MapViewiOS17: View {
                 
                 // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
                 if colorScheme == .dark {
-                    MapPolygon(coordinates: polygonKonkuk)
+                    MapPolygon(coordinates: polygonHankyong)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.black.opacity(0.6))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonKonkuk)
+                    MapPolygon(coordinates: polygonHankyong)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.2))
                     }
@@ -413,8 +463,12 @@ struct MapViewiOS16: View {
     @Binding var searchText: String
     
     // MapViewiOS17의 mapCameraPosition변수와 비슷한 역할(지도의 카메라 위치(중심 좌표, 거리, 회전 각도 등)를 설정함)
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
-                                                             
+    // 건국대학교 중심
+    // @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
+              
+    // 한경대학교 중심
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
+    
     // distance
     @State private var lastDelta: CGFloat = 0.009
     

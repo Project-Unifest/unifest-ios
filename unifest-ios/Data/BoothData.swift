@@ -214,7 +214,7 @@ class BoothModel: ObservableObject {
     // 실제로 서버에서 부스 데이터를 가져오는 메서드
     func loadStoreListData(completion: @escaping () -> Void) {
         // API 호출을 통해 부스 데이터를 가져옴
-        APIManager.fetchDataGET("/api/booths/1/booths", api: .booth_all, apiType: .GET) { result in
+        APIManager.fetchDataGET("/api/booths/2/booths", api: .booth_all, apiType: .GET) { result in
             // fetchDataGet: 해당 링크에서 데이터를 가져옴
             switch result {
             case .success(let data):
