@@ -673,7 +673,7 @@ struct MenuView: View {
                 }
         }
         // 권한 허가 수정 안내 모달
-        .alert("위치 권한 허가 수정 안내", isPresented: $isLocationPermissionAlertPresented, actions: {
+        .alert("위치 권한 수정 안내", isPresented: $isLocationPermissionAlertPresented, actions: {
             Button("설정 앱으로 이동할래요", role: .cancel) {
                 guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                 
@@ -685,9 +685,9 @@ struct MenuView: View {
             
             Button("알겠어요", role: nil) { }
         }, message: {
-            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 - 유니페스 에서 권한을 수정할 수 있어요.")
+            Text("권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         })
-        .alert("카메라 권한 허가 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
+        .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
             Button("설정 앱으로 이동할래요", role: .cancel) {
                 guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                 
@@ -698,7 +698,7 @@ struct MenuView: View {
             
             Button("알겠어요", role: nil) { }
         } message: {
-            Text("권한 허가 수정은 Apple 정책 상 직접 iPhone 설정 - 유니페스 에서 권한을 수정할 수 있어요.")
+            Text("권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         }
         // 기능 오류 신고 모달
         .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
