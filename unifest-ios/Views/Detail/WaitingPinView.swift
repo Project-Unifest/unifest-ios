@@ -11,6 +11,7 @@ struct WaitingPinView: View {
     @ObservedObject var viewModel: RootViewModel
     let boothId: Int
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
     @Binding var pin: String
     @State private var isPinFormatValid: Bool = false
@@ -163,6 +164,7 @@ struct WaitingPinView: View {
 #Preview {
     WaitingPinView(viewModel: RootViewModel(), boothId: 0, pin: .constant(""), isWaitingPinViewPresented: .constant(true), isWaitingRequestViewPresented: .constant(false))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }
 
 
