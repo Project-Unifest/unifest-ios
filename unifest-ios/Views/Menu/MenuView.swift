@@ -482,7 +482,7 @@ struct MenuView: View {
                 
                 // 개인정보 처리방침
                 Button {
-                    if let url = URL(string: StringLiterals.URL.privacyPolicyLink) {
+                    if let url = URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74") {
                             UIApplication.shared.open(url, options: [:])
                         }
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_PRIVACY)
