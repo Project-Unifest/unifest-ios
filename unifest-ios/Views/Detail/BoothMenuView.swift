@@ -55,8 +55,8 @@ struct BoothMenuView: View {
                                     imageURL: menu.imgUrl ?? "",
                                     name: menu.name ?? "",
                                     price: menu.price ?? 0,
+                                    menuStatus: menu.menuStatus,
                                     // menuStatus: menu.menuStatus,
-                                    menuStatus: "UNDER_50",
                                     isMenuImagePresented: $isMenuImagePresented,
                                     selectedMenu: $selectedMenu)
                             }
