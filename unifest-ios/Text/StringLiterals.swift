@@ -83,6 +83,7 @@ enum StringLiterals {
         static let TeamTitle = "Team UNIFEST"
         static let locationAuthText = "위치 권한 수정"
         static let cameraAuthText = "카메라 권한 수정"
+        static let notificationAuthText = "알림 권한 수정"
         static let developerMail = "개발자에게 메일 보내기"
         static let privacyText = "개인정보 처리방침"
         static let clearApp = "앱 데이터 초기화"

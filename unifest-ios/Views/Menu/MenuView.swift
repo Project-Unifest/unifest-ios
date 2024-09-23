@@ -21,6 +21,7 @@ struct MenuView: View {
     // 권한 수정
     @State private var isLocationPermissionAlertPresented: Bool = false
     @State private var isCameraPermissionAlertPresented: Bool = false
+    @State private var isNotificationPermissionAlertPresented: Bool = false
     
     // 메일
     @State private var isErrorDeclarationModalPresented: Bool = false
@@ -480,6 +481,29 @@ struct MenuView: View {
                 
                 Divider()
                 
+                Button {
+                    isNotificationPermissionAlertPresented = true
+                } label: {
+                    HStack {
+                        Image(systemName: "bell.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.notificationAuthText)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
+                
                 // 개인정보 처리방침
                 Button {
                     if let url = URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74") {
@@ -685,7 +709,7 @@ struct MenuView: View {
             
             Button("알겠어요", role: nil) { }
         }, message: {
-            Text("권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+            Text("위치 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         })
         .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
             Button("설정 앱으로 이동할래요", role: .cancel) {
@@ -698,7 +722,20 @@ struct MenuView: View {
             
             Button("알겠어요", role: nil) { }
         } message: {
-            Text("권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+            Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+        }
+        .alert("알림 권한 수정 안내", isPresented: $isNotificationPermissionAlertPresented) {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            Button("알겠어요", role: nil) { }
+        } message: {
+            Text("알림 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         }
         // 기능 오류 신고 모달
         .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {

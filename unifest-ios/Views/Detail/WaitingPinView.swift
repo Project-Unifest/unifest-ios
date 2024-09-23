@@ -119,7 +119,7 @@ struct WaitingPinView: View {
                         
                         Button {
                             Task {
-                                await waitingVM.checkPinNumber(boothId: 79, pinNumber: pin)
+                                await waitingVM.checkPinNumber(boothId: boothId, pinNumber: pin)
                                 
                                 if waitingVM.isPinNumberValid == true {
                                     isWaitingPinViewPresented = false

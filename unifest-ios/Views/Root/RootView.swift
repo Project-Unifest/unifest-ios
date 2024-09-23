@@ -77,14 +77,14 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-                            StampView(viewModel: viewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                }
-                                .tabItem {
-                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
-                                }
-                                .tag(3)
+//                            StampView(viewModel: viewModel)
+//                                .onAppear {
+//                                    HapticManager.shared.hapticImpact(style: .light)
+//                                }
+//                                .tabItem {
+//                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+//                                }
+//                                .tag(3)
                             
                             MenuView(viewModel: viewModel)
                                 .onAppear {
