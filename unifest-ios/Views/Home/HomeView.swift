@@ -170,21 +170,21 @@ struct HomeView: View {
                     }
                 }
                 
-                if viewModel.festivalModel.festivals.count > self.maxLength {
-                    Button {
-                        // 5개씩 더 불러오기
-                        self.maxLength += 5
-                    } label: {
-                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
-                            .frame(width: 64)
-                            .overlay {
-                                Text("더보기")
-                                    .foregroundStyle(.gray)
-                                    .font(.system(size: 12))
-                            }
-                    }
-                    .padding(.top, 10)
-                }
+//                if viewModel.festivalModel.festivals.count > self.maxLength {
+//                    Button {
+//                        // 5개씩 더 불러오기
+//                        self.maxLength += 5
+//                    } label: {
+//                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
+//                            .frame(width: 64)
+//                            .overlay {
+//                                Text("더보기")
+//                                    .foregroundStyle(.gray)
+//                                    .font(.system(size: 12))
+//                            }
+//                    }
+//                    .padding(.top, 10)
+//                }
                 
                 Spacer().frame(height: 10)
             }
