@@ -54,7 +54,7 @@
 		F80071622C334ED00001596F /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071612C334ED00001596F /* IntroView.swift */; };
 		F80071642C3351360001596F /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071632C3351360001596F /* MenuBarView.swift */; };
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
-		F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */; };
+		F8059A1C2C7C94730061431E /* Megaphone-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
@@ -138,7 +138,7 @@
 		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Intro/IntroView.swift"; sourceTree = SOURCE_ROOT; };
 		F80071632C3351360001596F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
-		F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntroView-ViewModel.swift"; sourceTree = "<group>"; };
+		F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Megaphone-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
@@ -263,7 +263,7 @@
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
-				F8059A1B2C7C94730061431E /* IntroView-ViewModel.swift */,
+				F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -621,7 +621,7 @@
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* Extensions.swift in Sources */,
-				F8059A1C2C7C94730061431E /* IntroView-ViewModel.swift in Sources */,
+				F8059A1C2C7C94730061431E /* Megaphone-ViewModel.swift in Sources */,
 				F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
