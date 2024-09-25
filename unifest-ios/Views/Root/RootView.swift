@@ -189,7 +189,7 @@ struct RootView: View {
 }
 
 class TabSelect: ObservableObject {
-    @Published var selectedTab: Int = 0
+    @Published var selectedTab: Int = 2 // 앱 실행 시 기본 화면을 지도로 설정함
 }
 
 #Preview {
