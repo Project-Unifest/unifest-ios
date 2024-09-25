@@ -148,6 +148,7 @@ struct RootView: View {
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
             }
+            UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
             viewModel.boothModel.loadLikeBoothListDB()
         }
@@ -189,7 +190,7 @@ struct RootView: View {
 }
 
 class TabSelect: ObservableObject {
-    @Published var selectedTab: Int = 2 // 앱 실행 시 기본 화면을 지도로 설정함
+    @Published var selectedTab: Int = 0
 }
 
 #Preview {
