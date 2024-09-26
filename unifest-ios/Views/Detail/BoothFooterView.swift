@@ -13,6 +13,7 @@ struct BoothFooterView: View {
     @Binding var isReloadButtonPresent: Bool
     @Binding var isWaitingPinViewPresented: Bool
     @Environment(\.colorScheme) var colorScheme
+    @State private var isNotificationNotPermittedAlertPresented: Bool = false
     
     var body: some View {
         VStack {
@@ -65,9 +66,17 @@ struct BoothFooterView: View {
                         if waitingVM.reservedWaitingCount > 3 {
                             waitingVM.reservedWaitingCountExceededToast = Toast(style: .warning, message: "웨이팅은 최대 3개까지 가능합니다", bottomPadding: 51)
                         } else {
-                            withAnimation {
-                                isWaitingPinViewPresented = true
-                            }
+                            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                            UNUserNotificationCenter.current().requestAuthorization(
+                                options: authOptions) { granted, error in
+                                    if granted { // 알림 권한이 설정 되어있음
+                                        withAnimation {
+                                            isWaitingPinViewPresented = true
+                                        }
+                                    } else { // 알림 권한이 설정 되어있지 않음
+                                        isNotificationNotPermittedAlertPresented = true
+                                    }
+                                }
                         }
                     }
                 } label: {
@@ -97,7 +106,7 @@ struct BoothFooterView: View {
                             }
                         }
                 }
-                 .disabled(viewModel.boothModel.selectedBooth?.waitingEnabled == false || viewModel.boothModel.selectedBooth?.waitingEnabled == nil)
+                .disabled(viewModel.boothModel.selectedBooth?.waitingEnabled == false || viewModel.boothModel.selectedBooth?.waitingEnabled == nil)
                 
                 Spacer()
                     .frame(width: 20)
@@ -106,6 +115,23 @@ struct BoothFooterView: View {
         .frame(maxWidth: .infinity)
         .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
+        .alert("웨이팅 알림 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            Button("다음에 할게요", role: nil) {
+                withAnimation {
+                    isWaitingPinViewPresented = true
+                }
+            }
+        } message: {
+            Text("웨이팅 입장 안내를 받으려면 알림 권한을 허용해야돼요. 알림 권한 설정은 iPhone 설정 - 유니페스 에서 가능해요.")
+        }
     }
     
 }
