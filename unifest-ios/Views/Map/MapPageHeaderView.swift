@@ -17,9 +17,9 @@ struct MapPageHeaderView: View {
     var body: some View {
         VStack {
             HStack {
-                Button {
-                    isSearchSchoolViewPresented = true
-                } label: {
+//                Button {
+//                    isSearchSchoolViewPresented = true
+//                } label: {
                     HStack {
                         Text("한경대학교")
                             .font(.pretendard(weight: .p6, size: 20))
@@ -30,7 +30,7 @@ struct MapPageHeaderView: View {
                          .scaledToFit()
                          .frame(width: 16, height: 16) */
                     }
-                }
+//                }
                 
                 /*
                  Image(.blackBubble)
@@ -220,11 +220,11 @@ struct MapPageHeaderView: View {
         }
         .padding(.top, 60) 
         .padding(.bottom)
-        .sheet(isPresented: $isSearchSchoolViewPresented) {
-            SearchSchoolView()
-                .presentationDragIndicator(.visible)
-            // .presentationDetents([.height(700)])
-        }
+//        .sheet(isPresented: $isSearchSchoolViewPresented) {
+//            SearchSchoolView()
+//                .presentationDragIndicator(.visible)
+//            // .presentationDetents([.height(700)])
+//        }
     }
 }
 

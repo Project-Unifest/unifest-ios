@@ -27,8 +27,8 @@ struct MapViewiOS17: View {
     // 한경대학교 중심
     @State var mapCameraPosition = MapCameraPosition.camera(
         MapCamera(
-            centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), // 기존 좌표에서 살짝 조정
-            distance: 2600,
+            centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), // 기존 좌표에서 살짝 조정
+            distance: 2000,
             heading: 0.0,
             pitch: 0
         )
@@ -467,7 +467,7 @@ struct MapViewiOS16: View {
     // @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
               
     // 한경대학교 중심
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
     
     // distance
     @State private var lastDelta: CGFloat = 0.009

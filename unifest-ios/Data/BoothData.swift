@@ -235,8 +235,8 @@ class BoothModel: ObservableObject {
     }
     
     func loadTop5Booth() {
-        print(APIManager.shared.serverType.rawValue + "/api/booths?festivalId=1")
-        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=1")!,timeoutInterval: Double.infinity)
+        print(APIManager.shared.serverType.rawValue + "/api/booths?festivalId=2")
+        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=2")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
