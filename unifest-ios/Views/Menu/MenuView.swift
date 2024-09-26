@@ -6,17 +6,23 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    
     @StateObject private var themeManager = ThemeManager()
-    
     @ObservedObject var viewModel: RootViewModel
+    @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @State private var isListViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
+    
+    // 설정
+    @State private var clusterToggle: Bool = true // 클러스터링 여부 설정
+    @State private var subscribeFestival: Bool = UserDefaults.standard.bool(forKey: "subscribeFestival") // 관심축제 설정
+    @State private var isNotificationNotPermittedAlertPresented: Bool = false
     
     // 권한 수정
     @State private var isLocationPermissionAlertPresented: Bool = false
@@ -29,9 +35,6 @@ struct MenuView: View {
     
     // 앱 초기화
     @State private var isResetAlertPresented: Bool = false
-    
-    // 클러스터링 여부 설정
-    @State private var clusterToggle: Bool = true
     
     var body: some View {
         ZStack {
@@ -48,18 +51,18 @@ struct MenuView: View {
                     
                     
                     /* Button {
-                        
-                    } label: {
-                        HStack(spacing: 0) {
-                            Text("추가하기")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray)
-                                .underline()
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 11))
-                                .foregroundColor(.gray)
-                        }
-                    } */
+                     
+                     } label: {
+                     HStack(spacing: 0) {
+                     Text("추가하기")
+                     .font(.system(size: 11))
+                     .foregroundColor(.gray)
+                     .underline()
+                     Image(systemName: "chevron.right")
+                     .font(.system(size: 11))
+                     .foregroundColor(.gray)
+                     }
+                     } */
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
@@ -68,13 +71,13 @@ struct MenuView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
                     circleSchoolView(image: .konkukLogo, name: "건국대", festivalName: "녹색지대")
                     /* circleSchoolView(image: .chungangLogo, name: "중앙대")
-                    circleSchoolView(image: .uosLogo, name: "한국외대")
-                    circleSchoolView(image: .konkukLogo, name: "건국대")
-                    circleSchoolView(image: .chungangLogo, name: "중앙대")
-                    circleSchoolView(image: .uosLogo, name: "한국외대")
-                    circleSchoolView(image: .konkukLogo, name: "건국대")
-                    circleSchoolView(image: .chungangLogo, name: "중앙대")
-                    circleSchoolView(image: .uosLogo, name: "한국외대")*/
+                     circleSchoolView(image: .uosLogo, name: "한국외대")
+                     circleSchoolView(image: .konkukLogo, name: "건국대")
+                     circleSchoolView(image: .chungangLogo, name: "중앙대")
+                     circleSchoolView(image: .uosLogo, name: "한국외대")
+                     circleSchoolView(image: .konkukLogo, name: "건국대")
+                     circleSchoolView(image: .chungangLogo, name: "중앙대")
+                     circleSchoolView(image: .uosLogo, name: "한국외대")*/
                 }
                 .padding(.horizontal)
                 
@@ -127,7 +130,7 @@ struct MenuView: View {
                             ForEach(randomLikeList, id: \.self) { boothID in
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
                                     LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                        // .padding(.vertical, 10)
+                                    // .padding(.vertical, 10)
                                         .listRowBackground(Color.ufBackground)
                                         .listRowSeparator(.hidden)
                                         .onTapGesture {
@@ -165,7 +168,7 @@ struct MenuView: View {
                             ForEach(randomLikeList, id: \.self) { boothID in
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
                                     LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                        // .padding(.vertical, 10)
+                                    // .padding(.vertical, 10)
                                         .onTapGesture {
                                             GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
                                             viewModel.boothModel.loadBoothDetail(boothID)
@@ -217,8 +220,8 @@ struct MenuView: View {
                 // 이용 문의
                 Button {
                     if let url = URL(string: StringLiterals.URL.messageChannelLink) {
-                            UIApplication.shared.open(url, options: [:])
-                        }
+                        UIApplication.shared.open(url, options: [:])
+                    }
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_KAKAO_CHANNEL)
                 } label: {
                     HStack {
@@ -243,8 +246,8 @@ struct MenuView: View {
                 // 운영자 모드
                 Button {
                     if let url = URL(string: StringLiterals.URL.operatorModeLink) {
-                            UIApplication.shared.open(url, options: [:])
-                        }
+                        UIApplication.shared.open(url, options: [:])
+                    }
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_OPERATOR_SITE)
                 } label: {
                     HStack {
@@ -269,8 +272,8 @@ struct MenuView: View {
                 // 인스타
                 Button {
                     if let url = URL(string: StringLiterals.URL.instagramLink) {
-                            UIApplication.shared.open(url, options: [:])
-                        }
+                        UIApplication.shared.open(url, options: [:])
+                    }
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_INSTAGRAM)
                 } label: {
                     HStack {
@@ -377,47 +380,187 @@ struct MenuView: View {
                 
                 Divider()
                 
-                /* // 화면 모드
-                Menu {
-                    Button("라이트") {
-                        themeManager.colorScheme = .light
+                // 관심축제 on/off
+                HStack(alignment: .center) {
+                    Image(systemName: "sparkle.magnifyingglass")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.darkGray)
+                        .padding(.trailing, 8)
+                    
+                    VStack(alignment: .leading) {
+                        Text("관심축제 등록")
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, -2)
+                        
+                        Text("관심축제로 등록하면 부스 알림을 받을 수 있습니다")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.gray)
+                            .fontWeight(.medium)
                     }
                     
-                    Button("다크") {
-                        themeManager.colorScheme = .dark
-                    }
+                    Spacer()
                     
-                    Button("시스템") {
-                        themeManager.colorScheme = .system
+                    if #available(iOS 17, *) {
+                        Toggle("", isOn: $subscribeFestival)
+                            .frame(width: 60)
+                            .onChange(of: subscribeFestival) {
+                                if subscribeFestival {
+                                    // off -> on
+                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                                    UNUserNotificationCenter.current().requestAuthorization(
+                                        options: authOptions) { granted, error in
+                                            if granted { // 알림 권한이 설정되어있음
+                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                                                    Task {
+                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                                                    }
+                                                    if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                                                        // subscribeFestival == true
+                                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                                    } else { // 관심축제 등록 api 실패
+                                                        subscribeFestival = false
+                                                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                                    }
+                                                } else {
+                                                    subscribeFestival = false
+                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                                    print("fcmToken이 존재하지 않습니다")
+                                                }
+                                            } else { // 알림 권한이 설정 되어있지 않음
+                                                // 알림 권한을 허용해야 한다는 alert 띄우고
+                                                isNotificationNotPermittedAlertPresented = true
+                                                // subscribeFestival을 false로 바꾸기
+                                                subscribeFestival = false
+                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                            }
+                                        }
+                                } else {
+                                    // on -> off
+                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                                        Task {
+                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                                        }
+                                        if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                                            // subscribeFestival == false
+                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                        } else { // 관심축제 해제 api 실패
+                                            subscribeFestival = true
+                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                        }
+                                    } else {
+                                        subscribeFestival = true
+                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                        print("fcmToken이 존재하지 않습니다")
+                                    }
+                                }
+                            }
+                    } else {
+                        Toggle("", isOn: $subscribeFestival)
+                            .frame(width: 60)
+                            .onChange(of: subscribeFestival) { _ in
+                                if subscribeFestival {
+                                    // off -> on
+                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                                    UNUserNotificationCenter.current().requestAuthorization(
+                                        options: authOptions) { granted, error in
+                                            if granted { // 알림 권한이 설정되어있음
+                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                                                    Task {
+                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                                                    }
+                                                    if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                                                        // subscribeFestival == true
+                                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                                    } else { // 관심축제 등록 api 실패
+                                                        subscribeFestival = false
+                                                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                                        // 이때는 NetworkErrorView 뜨도록 구현함
+                                                    }
+                                                } else {
+                                                    subscribeFestival = false
+                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                                    print("fcmToken이 존재하지 않습니다")
+                                                }
+                                            } else { // 알림 권한이 설정 되어있지 않음
+                                                // 알림 권한을 허용해야 한다는 alert 띄우고
+                                                isNotificationNotPermittedAlertPresented = true
+                                                // subscribeFestival을 false로 바꾸기
+                                                subscribeFestival = false
+                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                            }
+                                        }
+                                } else {
+                                    // on -> off
+                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                                        Task {
+                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                                        }
+                                        if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                                            // subscribeFestival == false
+                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                        } else { // 관심축제 해제 api 실패
+                                            subscribeFestival = true
+                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                        }
+                                    } else {
+                                        subscribeFestival = true
+                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                        print("fcmToken이 존재하지 않습니다")
+                                    }
+                                }
+                            }
                     }
-                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CHANGE_SCREENMODE, params: ["screenMode": ""])
-                } label: {
-                    HStack {
-                        Image(systemName: colorScheme == .dark ? "moon.circle" : "sun.max.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
-                            .padding(.trailing, 8)
-                        
-                        Text("화면 모드")
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
-                        
-                        Spacer()
-                        
-                        Text("라이트")
-                            .font(.system(size: 15))
-                            .foregroundStyle(.darkGray)
-                            .fontWeight(.medium)
-                            .padding(.trailing, 6)
-                    }
-                    .frame(height: 60)
-                    .padding(.horizontal)
                 }
+                .frame(height: 60)
+                .padding(.horizontal)
                 
-                Divider()*/
+                Divider()
+                
+                
+                /* // 화면 모드
+                 Menu {
+                 Button("라이트") {
+                 themeManager.colorScheme = .light
+                 }
+                 
+                 Button("다크") {
+                 themeManager.colorScheme = .dark
+                 }
+                 
+                 Button("시스템") {
+                 themeManager.colorScheme = .system
+                 }
+                 // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CHANGE_SCREENMODE, params: ["screenMode": ""])
+                 } label: {
+                 HStack {
+                 Image(systemName: colorScheme == .dark ? "moon.circle" : "sun.max.circle")
+                 .resizable()
+                 .scaledToFit()
+                 .frame(width: 24, height: 24)
+                 .foregroundColor(.darkGray)
+                 .padding(.trailing, 8)
+                 
+                 Text("화면 모드")
+                 .font(.system(size: 15))
+                 .foregroundStyle(.darkGray)
+                 .fontWeight(.medium)
+                 
+                 Spacer()
+                 
+                 Text("라이트")
+                 .font(.system(size: 15))
+                 .foregroundStyle(.darkGray)
+                 .fontWeight(.medium)
+                 .padding(.trailing, 6)
+                 }
+                 .frame(height: 60)
+                 .padding(.horizontal)
+                 }
+                 
+                 Divider()*/
                 
                 HStack {
                     Text("권한 및 개인정보 처리방침")
@@ -457,29 +600,29 @@ struct MenuView: View {
                 
                 Divider()
                 
-//                Button {
-//                    isCameraPermissionAlertPresented = true
-//                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING) // 카메라 GATracking 추가하고 코드 수정하기
-//                } label: {
-//                    HStack {
-//                        Image(systemName: "camera.circle")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 24, height: 24)
-//                            .foregroundColor(.darkGray)
-//                            .padding(.trailing, 8)
-//                        
-//                        Text(StringLiterals.Menu.cameraAuthText)
-//                            .font(.pretendard(weight: .p5, size: 15))
-//                            .foregroundStyle(.grey900)
-//                        
-//                        Spacer()
-//                    }
-//                    .frame(height: 60)
-//                    .padding(.horizontal)
-//                }
-//                
-//                Divider()
+                //                Button {
+                //                    isCameraPermissionAlertPresented = true
+                //                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING) // 카메라 GATracking 추가하고 코드 수정하기
+                //                } label: {
+                //                    HStack {
+                //                        Image(systemName: "camera.circle")
+                //                            .resizable()
+                //                            .scaledToFit()
+                //                            .frame(width: 24, height: 24)
+                //                            .foregroundColor(.darkGray)
+                //                            .padding(.trailing, 8)
+                //
+                //                        Text(StringLiterals.Menu.cameraAuthText)
+                //                            .font(.pretendard(weight: .p5, size: 15))
+                //                            .foregroundStyle(.grey900)
+                //
+                //                        Spacer()
+                //                    }
+                //                    .frame(height: 60)
+                //                    .padding(.horizontal)
+                //                }
+                //
+                //                Divider()
                 
                 Button {
                     isNotificationPermissionAlertPresented = true
@@ -507,8 +650,8 @@ struct MenuView: View {
                 // 개인정보 처리방침
                 Button {
                     if let url = URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74") {
-                            UIApplication.shared.open(url, options: [:])
-                        }
+                        UIApplication.shared.open(url, options: [:])
+                    }
                     GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_PRIVACY)
                 } label: {
                     HStack {
@@ -611,41 +754,41 @@ struct MenuView: View {
                 }
                 
                 /* Divider()
-                
-                HStack {
-                    Text("초기화")
-                        .font(.system(size: 15))
-                        .foregroundStyle(.red)
-                        .bold()
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.top, 20)
-                
-                Divider()
-                
-                Button {
-                    isResetAlertPresented = true
-                } label: {
-                    HStack {
-                        Image(systemName: "xmark.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.red)
-                            .padding(.trailing, 8)
-                        
-                        Text(StringLiterals.Menu.clearApp)
-                            .font(.system(size: 15))
-                            .foregroundColor(.red)
-                            .fontWeight(.medium)
-                        
-                        Spacer()
-                    }
-                    .frame(height: 60)
-                    .padding(.horizontal)
-                }*/
+                 
+                 HStack {
+                 Text("초기화")
+                 .font(.system(size: 15))
+                 .foregroundStyle(.red)
+                 .bold()
+                 
+                 Spacer()
+                 }
+                 .padding(.horizontal)
+                 .padding(.top, 20)
+                 
+                 Divider()
+                 
+                 Button {
+                 isResetAlertPresented = true
+                 } label: {
+                 HStack {
+                 Image(systemName: "xmark.circle")
+                 .resizable()
+                 .scaledToFit()
+                 .frame(width: 24, height: 24)
+                 .foregroundColor(.red)
+                 .padding(.trailing, 8)
+                 
+                 Text(StringLiterals.Menu.clearApp)
+                 .font(.system(size: 15))
+                 .foregroundColor(.red)
+                 .fontWeight(.medium)
+                 
+                 Spacer()
+                 }
+                 .frame(height: 60)
+                 .padding(.horizontal)
+                 }*/
                 
                 Divider()
                     .padding(.bottom, 20)
@@ -688,6 +831,17 @@ struct MenuView: View {
             print("randomLikeList num: \(randomLikeList.count)")
             print(randomLikeList)
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+            
+            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+            UNUserNotificationCenter.current().requestAuthorization(
+                options: authOptions) { granted, error in
+                    if granted { // 알림 권한이 설정되어있음
+                        subscribeFestival = UserDefaults.standard.bool(forKey: "subscribeFestival")
+                    } else { // 알림 권한이 설정되어있지않음
+                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                        subscribeFestival = false
+                    }
+                }
         }
         .sheet(isPresented: $isDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
@@ -695,6 +849,25 @@ struct MenuView: View {
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)
                 }
+        }
+        // 알림 권한 허가 없이 관심 축제로 설정할 경우 alert 띄우기
+        .alert("관심축제 설정 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    subscribeFestival = false
+                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            Button("알겠어요", role: nil) { 
+                subscribeFestival = false
+                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+            }
+        } message: {
+            Text("관심축제 알림을 받으려면 알림 권한을 허용해야돼요. 알림 권한 설정은 iPhone 설정 - 유니페스 에서 가능해요.")
         }
         // 권한 허가 수정 안내 모달
         .alert("위치 권한 수정 안내", isPresented: $isLocationPermissionAlertPresented, actions: {
@@ -711,19 +884,19 @@ struct MenuView: View {
         }, message: {
             Text("위치 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         })
-//        .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
-//            Button("설정 앱으로 이동할래요", role: .cancel) {
-//                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-//                
-//                if UIApplication.shared.canOpenURL(url) {
-//                    UIApplication.shared.open(url)
-//                }
-//            }
-//            
-//            Button("알겠어요", role: nil) { }
-//        } message: {
-//            Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
-//        }
+        //        .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
+        //            Button("설정 앱으로 이동할래요", role: .cancel) {
+        //                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        //
+        //                if UIApplication.shared.canOpenURL(url) {
+        //                    UIApplication.shared.open(url)
+        //                }
+        //            }
+        //
+        //            Button("알겠어요", role: nil) { }
+        //        } message: {
+        //            Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+        //        }
         .alert("알림 권한 수정 안내", isPresented: $isNotificationPermissionAlertPresented) {
             Button("설정 앱으로 이동할래요", role: .cancel) {
                 guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -741,9 +914,9 @@ struct MenuView: View {
         .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
             Button("메일을 작성할래요", role: nil) {
                 // 메일 보내기
-//                let emailAddr = "mailto:leehe228@konkuk.ac.kr"
-//                guard let emailUrl = URL(string: emailAddr) else { return }
-//                UIApplication.shared.open(emailUrl)
+                //                let emailAddr = "mailto:leehe228@konkuk.ac.kr"
+                //                guard let emailUrl = URL(string: emailAddr) else { return }
+                //                UIApplication.shared.open(emailUrl)
                 if let emailUrl = URL(string: "mailto:hoeunlee228@gmail.com"), UIApplication.shared.canOpenURL(emailUrl) {
                     UIApplication.shared.open(emailUrl)
                 } else {
@@ -814,4 +987,5 @@ struct MenuView: View {
 
 #Preview {
     MenuView(viewModel: RootViewModel())
+        .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }

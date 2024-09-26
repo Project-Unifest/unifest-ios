@@ -35,9 +35,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound] // 필요한 알림 권한을 설정
         UNUserNotificationCenter.current().requestAuthorization(
-            options: authOptions,
-            completionHandler: { _, _ in }
-        )
+            options: authOptions) { granted, error in
+                if granted {
+                    
+                } else {
+                    
+                }
+            }
         
         // UNUserNotificationCenterDelegate를 구현한 메서드를 실행시킴
         application.registerForRemoteNotifications()
@@ -69,6 +73,11 @@ extension AppDelegate: MessagingDelegate {
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")
+        
+        UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
+        if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+            print("FCM Token in UserDefaults: \(fcmToken)")
+        }
         
         let dataDict: [String: String] = ["token": fcmToken ?? ""]
         NotificationCenter.default.post(

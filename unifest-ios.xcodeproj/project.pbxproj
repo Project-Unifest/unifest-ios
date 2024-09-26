@@ -54,7 +54,7 @@
 		F80071622C334ED00001596F /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071612C334ED00001596F /* IntroView.swift */; };
 		F80071642C3351360001596F /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071632C3351360001596F /* MenuBarView.swift */; };
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
-		F8059A1C2C7C94730061431E /* Megaphone-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */; };
+		F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
@@ -74,6 +74,7 @@
 		F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */; };
 		F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */; };
 		F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */; };
+		F8854E492CA4319800C8F8EF /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F8854E482CA4319800C8F8EF /* CodeScanner */; };
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
@@ -87,7 +88,6 @@
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
 		F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */; };
-		F8FF96992C84550100654705 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F8FF96982C84550100654705 /* CodeScanner */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -138,7 +138,7 @@
 		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Intro/IntroView.swift"; sourceTree = SOURCE_ROOT; };
 		F80071632C3351360001596F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
-		F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Megaphone-ViewModel.swift"; sourceTree = "<group>"; };
+		F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteFestival-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
@@ -181,7 +181,7 @@
 				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
 				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
-				F8FF96992C84550100654705 /* CodeScanner in Frameworks */,
+				F8854E492CA4319800C8F8EF /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,7 +263,7 @@
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
-				F8059A1B2C7C94730061431E /* Megaphone-ViewModel.swift */,
+				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -487,7 +487,7 @@
 				0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */,
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
 				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
-				F8FF96982C84550100654705 /* CodeScanner */,
+				F8854E482CA4319800C8F8EF /* CodeScanner */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -521,7 +521,7 @@
 				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
-				F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				F8854E472CA4319800C8F8EF /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -621,7 +621,7 @@
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* Extensions.swift in Sources */,
-				F8059A1C2C7C94730061431E /* Megaphone-ViewModel.swift in Sources */,
+				F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */,
 				F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -764,7 +764,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -807,7 +807,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해서 카메라 권한이 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -874,20 +874,20 @@
 				minimumVersion = 10.26.0;
 			};
 		};
+		F8854E472CA4319800C8F8EF /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 		F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.9.1;
-			};
-		};
-		F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/twostraws/CodeScanner";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -908,15 +908,15 @@
 			package = 0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
+		F8854E482CA4319800C8F8EF /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8854E472CA4319800C8F8EF /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
 		F8ABA9412C5A7DEF003A8CDB /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		F8FF96982C84550100654705 /* CodeScanner */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F8FF96972C84550100654705 /* XCRemoteSwiftPackageReference "CodeScanner" */;
-			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

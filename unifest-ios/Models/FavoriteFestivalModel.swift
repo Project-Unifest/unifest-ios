@@ -8,13 +8,13 @@
 import Foundation
 
 struct AddFavoriteFestivalResponse: Codable {
-    let code: Int
+    let code: String
     let message: String
     let data: String?
 }
 
 struct DeleteFavoriteFestivalResponse: Codable {
-    let code: Int
+    let code: String
     let message: String
     let data: String?
 }
