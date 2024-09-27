@@ -176,7 +176,7 @@ struct BoothInfoView: View {
                                 .foregroundStyle(.ufBluegreen)
                                 .font(.system(size: 15))
                             
-                            Text("운영중")
+                            Text("운영시간")
                                 .font(.pretendard(weight: .p5, size: 13))
                                 .foregroundStyle(.grey900)
                             
