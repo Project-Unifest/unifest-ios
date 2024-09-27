@@ -34,11 +34,13 @@ struct MenuBarView: View {
                     .frame(width: 86, height: 86)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .onTapGesture {
-                        selectedMenu.selectedMenuURL = imageURL
-                        selectedMenu.selectedMenuName = name
-                        selectedMenu.selectedMenuPrice = formattedPrice(price) + StringLiterals.Detail.won
-                        withAnimation(.spring(duration: 0.1)) {
-                            isMenuImagePresented = true
+                        if menuStatus != "SOLD_OUT" {
+                            selectedMenu.selectedMenuURL = imageURL
+                            selectedMenu.selectedMenuName = name
+                            selectedMenu.selectedMenuPrice = formattedPrice(price) + StringLiterals.Detail.won
+                            withAnimation(.spring(duration: 0.1)) {
+                                isMenuImagePresented = true
+                            }
                         }
                     }
             } placeholder: {
@@ -53,22 +55,34 @@ struct MenuBarView: View {
                         .frame(width: 50, height: 50)
                 }
             }
+            .overlay {
+                if menuStatus == "SOLD_OUT" {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.black.opacity(0.7))
+                            .frame(width: 86, height: 86)
+                        Text("품절")
+                            .font(.pretendard(weight: .p6, size: 11))
+                            .foregroundStyle(.white)
+                    }
+                }
+            }
             .padding(.trailing, 8)
             
             VStack(alignment: .leading) {
                 Text(name)
                     .font(.pretendard(weight: .p6, size: 14))
-                    .foregroundStyle(.grey600)
+                    .foregroundStyle(menuStatus == "SOLD_OUT" ? .grey400 : .grey600)
                     .padding(.bottom, 1)
                 
                 if price == 0 {
                     Text("무료")
                         .font(.pretendard(weight: .p6, size: 16))
-                        .foregroundStyle(.grey900)
+                        .foregroundStyle(menuStatus == "SOLD_OUT" ? .grey600 : .grey900)
                 } else {
                     Text(formattedPrice(price) + StringLiterals.Detail.won)
                         .font(.pretendard(weight: .p6, size: 16))
-                        .foregroundStyle(.grey900)
+                        .foregroundStyle(menuStatus == "SOLD_OUT" ? .grey600 : .grey900)
                 }
                 
                 if let menuStatus = menuStatus {
@@ -133,5 +147,5 @@ struct MenuBarView: View {
 }
 
 #Preview {
-    MenuBarView(imageURL: "", name: "모둠 사시미", price: 45_000, menuStatus: "UNDER_50", isMenuImagePresented: .constant(false), selectedMenu: .constant(SelectedMenuInfo()))
+    MenuBarView(imageURL: "", name: "모둠 사시미", price: 45_000, menuStatus: "SOLD_OUT", isMenuImagePresented: .constant(false), selectedMenu: .constant(SelectedMenuInfo()))
 }

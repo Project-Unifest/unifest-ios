@@ -115,12 +115,12 @@ struct BoothDetailView: View {
                         }
                 }
                 
-//                if networkManager.isServerError == true {
-//                    NetworkErrorView(errorType: .server)
-//                        .onAppear {
-//                            GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
-//                        }
-//                }
+                if networkManager.isServerError == true {
+                    NetworkErrorView(errorType: .server)
+                        .onAppear {
+                            GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                        }
+                }
             }
         }
         .dynamicTypeSize(.large)

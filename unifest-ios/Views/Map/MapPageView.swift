@@ -140,7 +140,7 @@ struct MapPageView: View {
                                                 }
                                         }
                                     }
-                                    .padding(.horizontal, (geometry.size.width - 306) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
+                                    .padding(.horizontal, (geometry.size.width - 322) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
                                     .frame(minWidth: geometry.size.width)
                                 }
                                 
@@ -169,7 +169,7 @@ struct MapPageView: View {
                                             
                                             Spacer()
                                         }
-                                        .padding(.horizontal, (geometry.size.width - 306) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
+                                        .padding(.horizontal, (geometry.size.width - 322) / 2) // (화면너비-BoothBox너비)/2를 padding으로 줌
                                         .frame(minWidth: geometry.size.width)
                                     }
                                     
@@ -188,7 +188,7 @@ struct MapPageView: View {
             }
             .onAppear {
                 viewModel.boothModel.loadTop5Booth()
-        }
+            }
         }
     }
 }

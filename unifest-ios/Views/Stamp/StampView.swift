@@ -5,6 +5,7 @@
 //  Created by 임지성 on 8/30/24.
 //
 
+import AVFoundation
 import CodeScanner
 import SwiftUI
 
@@ -15,6 +16,8 @@ struct StampView: View {
     @State private var isStampQRScanViewPresented = false
     @State private var numberOfStamps = 5
     @State private var addStampToast: Toast? = nil
+    @State private var isCameraPermissionAlertPresented = false
+    @State private var isCameraAuthorized = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -50,7 +53,8 @@ struct StampView: View {
                                 Spacer()
                                 
                                 Button {
-                                    isStampQRScanViewPresented = true
+                                    // isStampQRScanViewPresented = true
+                                    checkCameraAuthorizationStatus()
                                 } label: {
                                     Capsule()
                                         .fill(
@@ -139,8 +143,42 @@ struct StampView: View {
                 StampQRScanView(addStampToast: $addStampToast)
             }
             .toastView(toast: $addStampToast)
+            .dynamicTypeSize(.large)
+            .alert("카메라 권한 허가가 필요해요", isPresented: $isCameraPermissionAlertPresented) {
+                Button("설정 앱으로 이동할래요") {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+                
+                Button("취소", role: .cancel) { }
+            } message: {
+                Text("카메라 권한 허가는 iPhone 설정 - 유니페스 에서 가능해요.")
+            }
         }
-        .dynamicTypeSize(.large)
+    }
+    
+    func checkCameraAuthorizationStatus() {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            isStampQRScanViewPresented = true
+        case .denied, .restricted:
+            isCameraPermissionAlertPresented = true
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                DispatchQueue.main.async {
+                    if granted {
+                        isStampQRScanViewPresented = true
+                    } else {
+                        isCameraPermissionAlertPresented = true
+                    }
+                }
+            }
+        default:
+            break
+        }
     }
 }
 

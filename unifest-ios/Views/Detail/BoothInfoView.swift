@@ -203,9 +203,7 @@ struct BoothInfoView: View {
                                 let timeString = formatTime(openTime)
                                 Text(timeString)
                             } else {
-                                let timeString = formatTime("10:00:00")
-                                Text(timeString)
-                                // Text("등록된 정보가 없습니다")
+                                Text("등록된 정보가 없습니다")
                             }
                             
                             Spacer()

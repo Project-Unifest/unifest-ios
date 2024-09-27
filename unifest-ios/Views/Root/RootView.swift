@@ -13,6 +13,7 @@ struct RootView: View {
     @ObservedObject var networkManager: NetworkManager
     @StateObject var tabSelect = TabSelect() // 사용X
     @StateObject var waitingVM: WaitingViewModel
+    @StateObject var favoriteFestivalVM: FavoriteFestivalViewModel
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
@@ -26,6 +27,7 @@ struct RootView: View {
         // UITabBar.appearance().backgroundColor = UIColor(Color.grey100)
         self.networkManager = networkManager
         _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
+        _favoriteFestivalVM = StateObject(wrappedValue: FavoriteFestivalViewModel(networkManager: networkManager))
     }
     
     var body: some View {
@@ -77,14 +79,14 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-                            StampView(viewModel: viewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                }
-                                .tabItem {
-                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
-                                }
-                                .tag(3)
+//                            StampView(viewModel: viewModel)
+//                                .onAppear {
+//                                    HapticManager.shared.hapticImpact(style: .light)
+//                                }
+//                                .tabItem {
+//                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+//                                }
+//                                .tag(3)
                             
                             MenuView(viewModel: viewModel)
                                 .onAppear {
@@ -144,10 +146,12 @@ struct RootView: View {
         .environmentObject(tabSelect)
         .environmentObject(waitingVM)
         .environmentObject(networkManager)
+        .environmentObject(favoriteFestivalVM)
         .onAppear {
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
             }
+            UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
             viewModel.boothModel.loadLikeBoothListDB()
         }
@@ -194,4 +198,7 @@ class TabSelect: ObservableObject {
 
 #Preview {
     RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
+        .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
+        .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }

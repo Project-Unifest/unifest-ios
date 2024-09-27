@@ -11,6 +11,7 @@ struct WaitingCompleteView: View {
     @State private var number: Int = 2
     @Binding var isWaitingCompleteViewPresented: Bool
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var tabSelect: TabSelect
     
@@ -160,4 +161,5 @@ struct WaitingCompleteView: View {
 #Preview {
     WaitingCompleteView(isWaitingCompleteViewPresented: .constant(false))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
 }

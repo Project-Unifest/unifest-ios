@@ -186,7 +186,7 @@ struct IntroView: View {
             }
             
             Button {
-                viewModel.transtion(to: .home)
+                viewModel.transition(to: .home)
             } label: {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.primary500)

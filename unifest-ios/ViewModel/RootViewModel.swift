@@ -45,18 +45,19 @@ class RootViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func transtion(to: ViewState) {
+    func transition(to: ViewState) {
         withAnimation(.spring(duration: 0.2, bounce: 0.3)) {
             viewState = to
         }
     }
     
+    // 사용 안됨
     func checkFirstLaunch() {
         let isFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
         if isFirstLaunch {
-            self.transtion(to: .intro)
+            self.transition(to: .intro)
         } else {
-            self.transtion(to: .home)
+            self.transition(to: .home)
         }
     }
 }

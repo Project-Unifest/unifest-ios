@@ -18,6 +18,7 @@ struct WaitingRequestView: View {
     @State private var phoneNumberFormatError: Toast? = nil
     @State private var requestWaitingError: Toast? = nil
     @EnvironmentObject var waitingVM: WaitingViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     let boothId: Int
     @Binding var pin: String
     @Binding var isWaitingRequestViewPresented: Bool
@@ -286,6 +287,7 @@ struct WaitingRequestView: View {
 #Preview {
     WaitingRequestView(viewModel: RootViewModel(), boothId: 79, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
         // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }
 
