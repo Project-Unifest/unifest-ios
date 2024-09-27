@@ -14,6 +14,7 @@ struct MenuView: View {
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @EnvironmentObject var networkManager: NetworkManager
+    @EnvironmentObject var tabSelect: TabSelect
     @State private var isListViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var isDetailViewPresented: Bool = false
@@ -68,18 +69,39 @@ struct MenuView: View {
                 .padding(.bottom, 10)
                 
                 // LazyHGrid
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
-                    circleSchoolView(image: .konkukLogo, name: "건국대", festivalName: "녹색지대")
-                    /* circleSchoolView(image: .chungangLogo, name: "중앙대")
-                     circleSchoolView(image: .uosLogo, name: "한국외대")
-                     circleSchoolView(image: .konkukLogo, name: "건국대")
-                     circleSchoolView(image: .chungangLogo, name: "중앙대")
-                     circleSchoolView(image: .uosLogo, name: "한국외대")
-                     circleSchoolView(image: .konkukLogo, name: "건국대")
-                     circleSchoolView(image: .chungangLogo, name: "중앙대")
-                     circleSchoolView(image: .uosLogo, name: "한국외대")*/
+                if subscribeFestival {
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
+                        Button {
+                            tabSelect.selectedTab = 2
+                        } label: {
+                            circleSchoolView(image: .hankyongLogo, name: "한경대", festivalName: "ACCENDIO")
+                        }
+                        
+                        /* circleSchoolView(image: .chungangLogo, name: "중앙대")
+                         circleSchoolView(image: .uosLogo, name: "한국외대")
+                         circleSchoolView(image: .konkukLogo, name: "건국대")
+                         circleSchoolView(image: .chungangLogo, name: "중앙대")
+                         circleSchoolView(image: .uosLogo, name: "한국외대")
+                         circleSchoolView(image: .konkukLogo, name: "건국대")
+                         circleSchoolView(image: .chungangLogo, name: "중앙대")
+                         circleSchoolView(image: .uosLogo, name: "한국외대")*/
+                    }
+                    .padding(.horizontal)
+                } else {
+                    VStack(alignment: .center) {
+                        Text("관심축제 없음")
+                            .font(.pretendard(weight: .p6, size: 18))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, 5)
+                        
+                        Text("관심축제 등록은 메뉴탭의 설정-관심축제 등록에서 가능합니다")
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey600)
+                            .padding(.bottom, 10)
+                    }
+                    .frame(height: 150)
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
                 
                 Text("")
                     .boldLine()
@@ -862,7 +884,7 @@ struct MenuView: View {
                 }
             }
             
-            Button("알겠어요", role: nil) { 
+            Button("알겠어요", role: nil) {
                 subscribeFestival = false
                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
             }
@@ -978,7 +1000,7 @@ struct MenuView: View {
                 .padding(.bottom, 2)
             
             Text(festivalName)
-                .font(.system(size: 15))
+                .font(.system(size: 11))
                 .fontWeight(.semibold)
                 .foregroundStyle(.darkGray)
         }
