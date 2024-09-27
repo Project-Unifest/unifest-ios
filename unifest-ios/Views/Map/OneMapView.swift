@@ -24,7 +24,7 @@ struct OneMapViewiOS17: View {
     // let boothLocation: String
     
     // 건국대학교 중심: 북 37.54263°, 동 127.07687°
-    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), distance: 2600, heading: 0.0, pitch: 0))
+    @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_100, longitude: 127.263_500), distance: 1500, heading: 0.0, pitch: 0))
     
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
     let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
@@ -381,7 +381,7 @@ struct OneMapViewiOS16: View {
         CLLocationCoordinate2D(latitude: 37.0125265, longitude: 127.2598301)
     ]
     
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_100, longitude: 127.263_500), span: MKCoordinateSpan(latitudeDelta: 0.007, longitudeDelta: 0.007))
     
     var body: some View {
         ZStack {
