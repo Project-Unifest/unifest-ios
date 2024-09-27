@@ -68,7 +68,7 @@ struct StampQRScanView: View {
             addStampToast = Toast(style: .success, message: "QR코드 스캔 성공")
         case .failure(let error):
             print("Scannign failed: \(error.localizedDescription)")
-            addStampToast = Toast(style: .success, message: "QR코드 스캔 실패")
+            addStampToast = Toast(style: .warning, message: "QR코드 스캔 실패")
         }
     }
 }

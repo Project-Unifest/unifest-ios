@@ -120,6 +120,9 @@ class WaitingViewModel: ObservableObject {
                             }
                         }
                     case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.networkManager.isServerError = true
+                        }
                         print("addWaiting 서버 요청 실패")
                         print("에러: \(error.localizedDescription)")
                         
@@ -163,6 +166,9 @@ class WaitingViewModel: ObservableObject {
                             }
                         }
                     case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.networkManager.isServerError = true
+                        }
                         print("fetchWaitingTeamCount 서버 요청 실패")
                         print("에러: \(error.localizedDescription)")
                         
@@ -267,6 +273,9 @@ class WaitingViewModel: ObservableObject {
                             self.isPinNumberValid = false
                         }
                     case .failure(let error):
+                        DispatchQueue.main.async {
+                            self.networkManager.isServerError = true
+                        }
                         print("pinNumberCheck 서버 요청 실패")
                         print("에러: \(error.localizedDescription)")
                         

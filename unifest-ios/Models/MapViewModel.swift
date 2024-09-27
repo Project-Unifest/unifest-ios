@@ -160,10 +160,12 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         // 검색
         if !searchText.isEmpty {
             for booth in viewModel.boothModel.booths.filter({ searchKeyword(booth: $0.self, keyword: searchText) }) {
-                if isTagSelected[stringToBoothType(booth.category)] ?? false {
-                    let newAnn = MapAnnotationData(id: counter, annType: stringToBoothType(booth.category), boothIDList: [booth.id], latitude: booth.latitude, longitude: booth.longitude)
-                    newList.append(newAnn)
-                    counter += 1
+                if booth.enabled {
+                    if isTagSelected[stringToBoothType(booth.category)] ?? false {
+                        let newAnn = MapAnnotationData(id: counter, annType: stringToBoothType(booth.category), boothIDList: [booth.id], latitude: booth.latitude, longitude: booth.longitude)
+                        newList.append(newAnn)
+                        counter += 1
+                    }
                 }
             }
         }
@@ -186,10 +188,12 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         // 분리
         else {
             for booth in viewModel.boothModel.booths {
-                if isTagSelected[stringToBoothType(booth.category)] ?? false {
-                    let newAnn = MapAnnotationData(id: counter, annType: stringToBoothType(booth.category), boothIDList: [booth.id], latitude: booth.latitude, longitude: booth.longitude)
-                    newList.append(newAnn)
-                    counter += 1
+                if booth.enabled {
+                    if isTagSelected[stringToBoothType(booth.category)] ?? false {
+                        let newAnn = MapAnnotationData(id: counter, annType: stringToBoothType(booth.category), boothIDList: [booth.id], latitude: booth.latitude, longitude: booth.longitude)
+                        newList.append(newAnn)
+                        counter += 1
+                    }
                 }
             }
         }
@@ -211,7 +215,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     func clusterAnnotations(clusterRadius: Double, boothType: BoothType) -> [Cluster] {
         var clusters: [Cluster] = []
         
-        let filteredBooths = viewModel.boothModel.booths.filter({ $0.category == boothType.rawValue })
+        let filteredBooths = viewModel.boothModel.booths.filter({ $0.category == boothType.rawValue && $0.enabled == true })
         
         for booth in filteredBooths {
             var isClustered = false
