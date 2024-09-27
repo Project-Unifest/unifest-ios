@@ -92,7 +92,7 @@ class WaitingViewModel: ObservableObject {
             ]
             
             let parameters: [String: Any] = [
-                "boothId": 79,
+                "boothId": boothId,
                 "tel": phoneNumber,
                 "deviceId": deviceId,
                 "partySize": partySize,
