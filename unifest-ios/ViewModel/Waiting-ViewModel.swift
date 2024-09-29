@@ -91,13 +91,18 @@ class WaitingViewModel: ObservableObject {
                 .contentType("application/json")
             ]
             
-            let parameters: [String: Any] = [
+            var parameters: [String: Any] = [
                 "boothId": boothId,
                 "tel": phoneNumber,
                 "deviceId": deviceId,
                 "partySize": partySize,
-                "pinNumber": pinNumber
+                "pinNumber": pinNumber,
             ]
+            if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                parameters["fcmToken"] = fcmToken
+            }
+            
+            print(parameters)
             
             AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: AddWaitingResponse.self) { response in
@@ -213,7 +218,6 @@ class WaitingViewModel: ObservableObject {
                             } else {
                                 self.reservedWaitingCount = 0
                             }
-                            
                         }
                     case .failure(let error):
                         DispatchQueue.main.async {
