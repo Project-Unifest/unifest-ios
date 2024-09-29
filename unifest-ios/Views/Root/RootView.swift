@@ -19,6 +19,8 @@ struct RootView: View {
     @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
     @State private var isWelcomeViewPresented: Bool = false
+    @State private var isBoothDetailViewPresented: Bool = false
+    @State private var selectedBoothId = 0
     
     init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
         self.viewModel = rootViewModel
@@ -167,6 +169,28 @@ struct RootView: View {
             } else {
                 print("This app is latest.")
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigationToMapPage"))) { notification in
+            // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
+            // 감지된 알림을 통해 boothId를 추출하고, tabSelect.selectedTab을 업데이트해 MapPageView로 이동한 뒤 BoothDetailView를 열어줌
+            
+            if let userInfo = notification.userInfo, let boothId = userInfo["boothId"] as? Int {
+                
+                // 탭 변경
+                tabSelect.selectedTab = 2
+                
+                // BoothDetailView를 열기 위해 viewModel에 boothId를 설정
+                selectedBoothId = boothId
+                viewModel.boothModel.loadBoothDetail(boothId)
+                
+                isBoothDetailViewPresented = true
+            }
+        }
+        .sheet(isPresented: $isBoothDetailViewPresented) {
+            BoothDetailView(viewModel: viewModel, currentBoothId: selectedBoothId)
+                .environmentObject(waitingVM)
+                .environmentObject(networkManager)
+                .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $isWelcomeViewPresented) {
             WelcomeView()

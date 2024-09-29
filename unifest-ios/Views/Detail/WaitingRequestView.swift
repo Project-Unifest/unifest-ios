@@ -235,7 +235,8 @@ struct WaitingRequestView: View {
             isPhoneNumberTextFieldFocused = true
         }
         .task {
-            await waitingVM.fetchWaitingTeamCount(boothId: boothId)
+            // checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 fetchWaitingTeamCount 호출할 필요가 없음
+            // await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
         .toastView(toast: $phoneNumberFormatError)
         .toastView(toast: $requestWaitingError)

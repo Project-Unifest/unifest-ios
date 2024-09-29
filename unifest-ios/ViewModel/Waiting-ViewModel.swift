@@ -254,6 +254,8 @@ class WaitingViewModel: ObservableObject {
                 "pinNumber": pinNumber
             ]
             
+            print("checkPinNumber: \(parameters)")
+            
             AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: PinCheckResponse.self) { response in
                     print("Requested URL: \(response.request?.url?.absoluteString ?? "")")
