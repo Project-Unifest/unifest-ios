@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
@@ -170,12 +171,10 @@ struct RootView: View {
                 print("This app is latest.")
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigationToMapPage"))) { notification in
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
             // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
             // 감지된 알림을 통해 boothId를 추출하고, tabSelect.selectedTab을 업데이트해 MapPageView로 이동한 뒤 BoothDetailView를 열어줌
-            
             if let userInfo = notification.userInfo, let boothId = userInfo["boothId"] as? Int {
-                
                 // 탭 변경
                 tabSelect.selectedTab = 2
                 
