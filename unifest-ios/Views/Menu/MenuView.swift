@@ -24,6 +24,7 @@ struct MenuView: View {
     @State private var clusterToggle: Bool = true // 클러스터링 여부 설정
     @State private var subscribeFestival: Bool = UserDefaults.standard.bool(forKey: "subscribeFestival") // 관심축제 설정
     @State private var isNotificationNotPermittedAlertPresented: Bool = false
+    @State private var isFavoriteFestivalRequestLoading: Bool = false
     
     // 권한 수정
     @State private var isLocationPermissionAlertPresented: Bool = false
@@ -438,13 +439,13 @@ struct MenuView: View {
                                                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                                                     Task {
                                                         await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                    }
-                                                    if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                        // subscribeFestival == true
-                                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                    } else { // 관심축제 등록 api 실패
-                                                        subscribeFestival = false
-                                                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                                                            // subscribeFestival == true
+                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                                        } else { // 관심축제 등록 api 실패
+                                                            subscribeFestival = false
+                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                                        }
                                                     }
                                                 } else {
                                                     subscribeFestival = false
@@ -464,13 +465,13 @@ struct MenuView: View {
                                     if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                                         Task {
                                             await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                        }
-                                        if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                            // subscribeFestival == false
-                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                        } else { // 관심축제 해제 api 실패
-                                            subscribeFestival = true
-                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                                                // subscribeFestival == false
+                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                            } else { // 관심축제 해제 api 실패
+                                                subscribeFestival = true
+                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                            }
                                         }
                                     } else {
                                         subscribeFestival = true
@@ -492,14 +493,14 @@ struct MenuView: View {
                                                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                                                     Task {
                                                         await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                    }
-                                                    if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                        // subscribeFestival == true
-                                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                    } else { // 관심축제 등록 api 실패
-                                                        subscribeFestival = false
-                                                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                        // 이때는 NetworkErrorView 뜨도록 구현함
+                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                                                            // subscribeFestival == true
+                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                                                        } else { // 관심축제 등록 api 실패
+                                                            subscribeFestival = false
+                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                                            // 이때는 NetworkErrorView 뜨도록 구현함
+                                                        }
                                                     }
                                                 } else {
                                                     subscribeFestival = false
@@ -519,13 +520,13 @@ struct MenuView: View {
                                     if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
                                         Task {
                                             await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                        }
-                                        if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                            // subscribeFestival == false
-                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                        } else { // 관심축제 해제 api 실패
-                                            subscribeFestival = true
-                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                                                // subscribeFestival == false
+                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                                            } else { // 관심축제 해제 api 실패
+                                                subscribeFestival = true
+                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                                            }
                                         }
                                     } else {
                                         subscribeFestival = true
