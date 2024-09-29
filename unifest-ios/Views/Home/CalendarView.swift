@@ -377,7 +377,7 @@ struct CalendarTabView: View {
                         }
                         .padding(.trailing, 10)
                         
-                        if isInfoPresented {
+                        // if isInfoPresented {
                             HStack(alignment: .center, spacing: 0) {
                                 simpleDot(.ufBluegreen)
                                     .padding(.trailing, 3)
@@ -397,7 +397,7 @@ struct CalendarTabView: View {
                                     .font(.system(size: 12))
                                     .foregroundStyle(.gray)
                             }
-                        }
+                        // }
                         
                         Spacer()
                         

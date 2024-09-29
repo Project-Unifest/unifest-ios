@@ -146,7 +146,7 @@ struct MenuView: View {
                             .foregroundStyle(.grey600)
                             .padding(.bottom, 10)
                     }
-                    .frame(height: 240)
+                    .frame(height: 150)
                 } else {
                     if #available(iOS 17, *) {
                         List {
