@@ -63,21 +63,31 @@ struct BoothFooterView: View {
                         
                         print("ReservedWaitingCount: \(waitingVM.reservedWaitingCount)")
                         
+                        if let reservedWaitingList = waitingVM.reservedWaitingList {
+                            for list in reservedWaitingList {
+                                if list.boothId == viewModel.boothModel.selectedBoothID {
+                                    waitingVM.alreadyReservedToast = Toast(style: .warning, message: "이미 웨이팅 대기열에 존재합니다", bottomPadding: 51)
+                                    return // Task 내에서의 return은 일반 함수에서의 return과 동일한 방식으로 작동함
+                                }
+                            }
+                        }
+                        
                         if waitingVM.reservedWaitingCount > 3 {
                             waitingVM.reservedWaitingCountExceededToast = Toast(style: .warning, message: "웨이팅은 최대 3개까지 가능합니다", bottomPadding: 51)
-                        } else {
-                            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                            UNUserNotificationCenter.current().requestAuthorization(
-                                options: authOptions) { granted, error in
-                                    if granted { // 알림 권한이 설정 되어있음
-                                        withAnimation {
-                                            isWaitingPinViewPresented = true
-                                        }
-                                    } else { // 알림 권한이 설정 되어있지 않음
-                                        isNotificationNotPermittedAlertPresented = true
-                                    }
-                                }
+                            return
                         }
+                        
+                        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                        UNUserNotificationCenter.current().requestAuthorization(
+                            options: authOptions) { granted, error in
+                                if granted { // 알림 권한이 설정 되어있음
+                                    withAnimation {
+                                        isWaitingPinViewPresented = true
+                                    }
+                                } else { // 알림 권한이 설정 되어있지 않음
+                                    isNotificationNotPermittedAlertPresented = true
+                                }
+                            }
                     }
                 } label: {
                     RoundedRectangle(cornerRadius: 10)

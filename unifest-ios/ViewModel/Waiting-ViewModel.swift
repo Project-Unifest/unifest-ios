@@ -24,6 +24,7 @@ class WaitingViewModel: ObservableObject {
     @Published var addWaitingResponseMessage = "" // 웨이팅 신청 API의 응답 메세지
     @Published var reservedWaitingCount = 0 // 사용자가 예약한 웨이팅 개수
     @Published var reservedWaitingCountExceededToast: Toast? = nil // 해당 축제에서 지정한 웨이팅 최대 개수를 초과해서 웨이팅을 시도하려고 할 때 Toast를 띄움
+    @Published var alreadyReservedToast: Toast? = nil // 이미 웨이팅을 신청한 부스에 다시 웨이팅하기 버튼을 탭했을 때 Toast를 띄움
     
     private let networkManager: NetworkManager
     init(networkManager: NetworkManager) {

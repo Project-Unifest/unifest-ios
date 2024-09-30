@@ -19,6 +19,8 @@ struct MapViewiOS17: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
 
+    @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
+    
     @Binding var searchText: String
     
     // 학교의 중심 좌표 설정
@@ -263,13 +265,29 @@ struct MapViewiOS17: View {
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        MapUserLocationButton(scope: mainMap)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.ufBackground)
-                            )
-                            .mapControlVisibility(.automatic)
-                            .controlSize(.mini)
+                        
+//                        // 위치 권한이 있을 떄, 없을 때로 구분
+//                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
+//                            Button {
+//                                isLocationAuthNotPermittedAlertPresented = true
+//                            } label: {
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .fill(Color.ufBackground)
+//                                    .controlSize(.mini)
+//                                    .overlay {
+//                                        Image(systemName: "location")
+//                                            .foregroundStyle(.primary500)
+//                                    }
+//                            }
+//                        } else {
+                            MapUserLocationButton(scope: mainMap)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(.ufBackground)
+                                )
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+//                        }
                         MapCompass(scope: mainMap)
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
@@ -280,6 +298,19 @@ struct MapViewiOS17: View {
                 .padding(.horizontal, 5)
             }
             
+        }
+        .alert("위치 권한 안내", isPresented: $isLocationAuthNotPermittedAlertPresented) {
+            Button("설정 앱으로 이동할래요", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
+            Button("알겠어요", role: nil) { }
+        } message: {
+            Text("현재 위치를 확인하려면 위치 권한을 허용해야돼요. 위치 권한 설정은 iPhone 설정 - 유니페스 에서 가능해요.")
         }
         .mapScope(mainMap)
         .onAppear() {

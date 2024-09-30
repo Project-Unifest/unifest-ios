@@ -123,10 +123,10 @@ struct WaitingRequestView: View {
                                         .overlay {
                                             Text("+")
                                                 .font(.pretendard(weight: .p3, size: 20))
-                                                .foregroundStyle(partySize == 100 ? .grey400 : .grey900)
+                                                .foregroundStyle(partySize == 99 ? .grey400 : .grey900)
                                         }
                                 }
-                                .disabled(partySize == 100)
+                                .disabled(partySize == 99)
                             }
                         }
                         .padding(.horizontal)
