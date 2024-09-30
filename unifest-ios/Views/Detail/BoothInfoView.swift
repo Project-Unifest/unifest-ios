@@ -234,9 +234,15 @@ struct BoothInfoView: View {
                 HStack {
                     Image(.marker)
                     
-                    Text(viewModel.boothModel.selectedBooth?.location ?? "")
-                        .font(.pretendard(weight: .p5, size: 13))
-                        .foregroundStyle(.grey900)
+                    if let location = viewModel.boothModel.selectedBooth?.location {
+                        Text(location.isEmpty ? "등록된 정보가 없습니다" : location)
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey900)
+                    } else {
+                        Text("등록된 정보가 없습니다")
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey900)
+                    }
                     
                     Spacer()
                 }
