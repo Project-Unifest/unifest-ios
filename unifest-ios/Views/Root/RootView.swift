@@ -185,6 +185,9 @@ struct RootView: View {
                 isBoothDetailViewPresented = true
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToWaitingTab"))) { _ in
+            tabSelect.selectedTab = 1
+        }
         .sheet(isPresented: $isBoothDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, currentBoothId: selectedBoothId)
                 .environmentObject(waitingVM)

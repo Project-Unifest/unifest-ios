@@ -89,6 +89,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             // 알림을 통해 특정 뷰로 이동하도록 알림 게시
             NotificationCenter.default.post(name: NSNotification.Name("NavigateToMapPage"), object: nil, userInfo: ["boothId": boothId])
             // object: nil <- 어떤 객체가 알림을 보냈는지 상관없이 모든 알림을 처리하도록 함(이렇게 해도 상관없을 듯)
+        } else {
+            NotificationCenter.default.post(name: NSNotification.Name("NavigateToWaitingTab"), object: nil)
         }
         
         completionHandler()
