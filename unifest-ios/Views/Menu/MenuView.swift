@@ -941,7 +941,7 @@ struct MenuView: View {
                 //                let emailAddr = "mailto:leehe228@konkuk.ac.kr"
                 //                guard let emailUrl = URL(string: emailAddr) else { return }
                 //                UIApplication.shared.open(emailUrl)
-                if let emailUrl = URL(string: "mailto:hoeunlee228@gmail.com"), UIApplication.shared.canOpenURL(emailUrl) {
+                if let emailUrl = URL(string: "mailto:wltjd6300@naver.com"), UIApplication.shared.canOpenURL(emailUrl) {
                     UIApplication.shared.open(emailUrl)
                 } else {
                     print("Failed to open email URL")
@@ -949,14 +949,14 @@ struct MenuView: View {
             }
             Button("메일 주소를 복사할래요", role: nil) {
                 // 클립보드에 복사
-                UIPasteboard.general.string = "hoeunlee228@gmail.com"
+                UIPasteboard.general.string = "wltjd6300@naver.com"
                 isCopyFinishPresented = true
             }
             Button("알겠어요", role: nil) {
                 //
             }
         }, message: {
-            Text("피드백은 hoeunlee228@gmail.com으로 메일을 작성해주세요. 소중한 의견 감사합니다.")
+            Text("피드백은 wltjd6300@naver.com으로 메일을 작성해주세요. 소중한 의견 감사합니다.")
         })
         // 복사 완료 모달
         .alert("복사 완료", isPresented: $isCopyFinishPresented, actions: {
