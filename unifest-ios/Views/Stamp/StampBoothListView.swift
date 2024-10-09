@@ -57,10 +57,10 @@ struct StampBoothListView: View {
                                 StampBoothListItemView(
                                     viewModel: viewModel,
                                     boothID: booth.id,
-                                    image: booth.thumbnail,
+                                    image: booth.thumbnail ?? "",
                                     name: booth.name,
-                                    description: booth.description,
-                                    location: booth.location
+                                    description: booth.description ?? "",
+                                    location: booth.location ?? ""
                                 )
                                 .listRowBackground(Color.ufBackground)
                                 .listRowSeparator(.hidden)

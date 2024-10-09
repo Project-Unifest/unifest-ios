@@ -115,7 +115,12 @@ struct StampView: View {
                                     }
                                     .padding(.bottom, 20)
                                     
-                                    StampGrid(totalStampCount: 9, currentStampCount: 3, screenWidth: screenWidth)
+                                    StampGrid(
+                                        totalStampCount: stampVM.stampEnabledBoothsCount,
+                                        currentStampCount: stampVM.stampCount,
+                                        screenWidth: screenWidth
+                                    )
+                                    //                                    StampGrid(totalStampCount: 5, currentStampCount: 3, screenWidth: screenWidth)
                                     
                                     Spacer()
                                     
@@ -160,9 +165,9 @@ struct StampView: View {
                             .presentationDragIndicator(.visible)
                     }
                     .fullScreenCover(isPresented: $isStampQRScanViewPresented) {
-                        StampQRScanView(addStampToast: $addStampToast)
+                        StampQRScanView()
                     }
-                    .toastView(toast: $addStampToast)
+                    .toastView(toast: $stampVM.qrScanToastMsg)
                     .dynamicTypeSize(.large)
                     .alert("QR코드를 스캔하려면 카메라 권한 허가가 필요해요", isPresented: $isCameraPermissionAlertPresented) {
                         Button("설정 앱으로 이동할래요") {
@@ -225,7 +230,11 @@ struct StampGrid: View {
                         let count = i * 4 + j + 1
                         
                         if count > totalStampCount {
-                            EmptyView()
+                            Color.clear
+                                .frame(width: 62, height: 62)
+                                .clipShape(Circle())
+                                .padding(.horizontal, screenWidth * 0.0215)
+                                .padding(.vertical, 8)
                         } else {
                             if currentStampCount >= count {
                                 Image(.appLogo)
@@ -253,5 +262,15 @@ struct StampGrid: View {
                 }
             }
         }
+        .frame(width: screenWidth * 0.85)
+        .padding(.horizontal, 9)
     }
 }
+
+
+#Preview {
+    StampView(viewModel: RootViewModel())
+        .environmentObject(StampViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
+}
+

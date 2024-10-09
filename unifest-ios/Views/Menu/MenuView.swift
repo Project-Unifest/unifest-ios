@@ -910,19 +910,19 @@ struct MenuView: View {
         }, message: {
             Text("위치 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
         })
-        //        .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
-        //            Button("설정 앱으로 이동할래요", role: .cancel) {
-        //                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        //
-        //                if UIApplication.shared.canOpenURL(url) {
-        //                    UIApplication.shared.open(url)
-        //                }
-        //            }
-        //
-        //            Button("알겠어요", role: nil) { }
-        //        } message: {
-        //            Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
-        //        }
+                .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
+                    Button("설정 앱으로 이동할래요", role: .cancel) {
+                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        
+                        if UIApplication.shared.canOpenURL(url) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+        
+                    Button("알겠어요", role: nil) { }
+                } message: {
+                    Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+                }
         .alert("알림 권한 수정 안내", isPresented: $isNotificationPermissionAlertPresented) {
             Button("설정 앱으로 이동할래요", role: .cancel) {
                 guard let url = URL(string: UIApplication.openSettingsURLString) else { return }

@@ -23,14 +23,20 @@ struct StampEnabledBoothResult: Codable {
     let id: Int
     let name: String
     let category: String
-    let description: String
-    let thumbnail: String
-    let location: String
-    let latitude: Int
-    let longitude: Int
-    let enabled: Bool
+    let description: String?
+    let thumbnail: String?
+    let location: String?
+    let latitude: Double
+    let longitude: Double
+    let enabled: Bool?
     let waitingEnabled: Bool
-    let openTime: String
-    let closeTime: String
+    let openTime: String?
+    let closeTime: String?
     let stampEnabled: Bool
+}
+
+struct AddStampResponse: Codable {
+    let code: String
+    let message: String
+    let data: Int?
 }
