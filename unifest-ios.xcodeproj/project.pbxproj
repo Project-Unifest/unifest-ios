@@ -56,6 +56,9 @@
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
+		F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F81BD3052CB3E88F0083134F /* CodeScanner */; };
+		F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */; };
+		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -139,6 +142,8 @@
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteFestival-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
+		F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stamp-ViewModel.swift"; sourceTree = "<group>"; };
+		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -180,6 +185,7 @@
 				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
 				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
+				F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +268,7 @@
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
 				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
+				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -338,6 +345,7 @@
 				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
 				F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */,
 				F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */,
+				F82C55222CB3F06A00EBCA68 /* StampModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -485,6 +493,7 @@
 				0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */,
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
 				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
+				F81BD3052CB3E88F0083134F /* CodeScanner */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -518,6 +527,7 @@
 				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -558,6 +568,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C7A117E2BF25F25008713B7 /* BoothData.swift in Sources */,
+				F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */,
 				F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */,
 				0C6523932BC131F00085232D /* HomeView.swift in Sources */,
 				0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */,
@@ -589,6 +600,7 @@
 				F88A6D122C7A05810025459F /* ToastView.swift in Sources */,
 				0CE839D72BF38FBD003E211D /* LikedBoothBoxView.swift in Sources */,
 				F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */,
+				F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */,
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
 				F84C6F8D2C4D0D4600D9E414 /* BoothInfoView.swift in Sources */,
 				0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */,
@@ -760,6 +772,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -802,6 +815,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -868,6 +882,14 @@
 				minimumVersion = 10.26.0;
 			};
 		};
+		F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 		F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -893,6 +915,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		F81BD3052CB3E88F0083134F /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 		F8ABA9412C5A7DEF003A8CDB /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

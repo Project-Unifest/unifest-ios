@@ -76,6 +76,7 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var waitingEnabled: Bool
     var openTime: String?
     var closeTime: String?
+    var stampEnabled: Bool
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {

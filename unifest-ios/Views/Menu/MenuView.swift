@@ -108,6 +108,8 @@ struct MenuView: View {
                     .boldLine()
                     .padding(.vertical)
                 
+                // 관심부스 뷰
+                // 관심부스는 사용자가 BoothFooter에서 저장 버튼을 탭하면 로컬에 저장함
                 HStack {
                     Text(StringLiterals.Menu.LikedBoothTitle)
                         .font(.pretendard(weight: .p7, size: 15))
@@ -624,29 +626,29 @@ struct MenuView: View {
                 
                 Divider()
                 
-                //                Button {
-                //                    isCameraPermissionAlertPresented = true
-                //                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING) // 카메라 GATracking 추가하고 코드 수정하기
-                //                } label: {
-                //                    HStack {
-                //                        Image(systemName: "camera.circle")
-                //                            .resizable()
-                //                            .scaledToFit()
-                //                            .frame(width: 24, height: 24)
-                //                            .foregroundColor(.darkGray)
-                //                            .padding(.trailing, 8)
-                //
-                //                        Text(StringLiterals.Menu.cameraAuthText)
-                //                            .font(.pretendard(weight: .p5, size: 15))
-                //                            .foregroundStyle(.grey900)
-                //
-                //                        Spacer()
-                //                    }
-                //                    .frame(height: 60)
-                //                    .padding(.horizontal)
-                //                }
-                //
-                //                Divider()
+                Button {
+                    isCameraPermissionAlertPresented = true
+                    // GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_OPEN_SETTING) // 카메라 GATracking 추가하고 코드 수정하기
+                } label: {
+                    HStack {
+                        Image(systemName: "camera.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.darkGray)
+                            .padding(.trailing, 8)
+                        
+                        Text(StringLiterals.Menu.cameraAuthText)
+                            .font(.pretendard(weight: .p5, size: 15))
+                            .foregroundStyle(.grey900)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 60)
+                    .padding(.horizontal)
+                }
+                
+                Divider()
                 
                 Button {
                     isNotificationPermissionAlertPresented = true
