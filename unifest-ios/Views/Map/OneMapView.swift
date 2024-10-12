@@ -27,7 +27,7 @@ struct OneMapViewiOS17: View {
     @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_100, longitude: 127.263_500), distance: 1500, heading: 0.0, pitch: 0))
     
     // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
-    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    let mapCameraBoundsHankyong: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     let polygonKonkuk: [CLLocationCoordinate2D] = [
         CLLocationCoordinate2D(latitude: 37.54508, longitude: 127.07658),
@@ -111,7 +111,7 @@ struct OneMapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: oneMap) {
+            Map(initialPosition: mapCameraPosition, bounds: mapCameraBoundsHankyong, scope: oneMap) {
                 UserAnnotation()
                 
                 if colorScheme == .dark {
