@@ -71,7 +71,7 @@ struct StampBoothListItemView: View {
                 HStack(spacing: 2) {
                     Image(.marker)
                         .padding(.trailing, 5)
-                    Text(location.isEmpty ? "등록된 정보가 없습니다" : location)
+                    Text(location.isEmpty ? "등록된 위치 설명이 없습니다" : location)
                         .font(.pretendard(weight: .p6, size: 13))
                         .foregroundStyle(.grey700)
                         .lineLimit(1)

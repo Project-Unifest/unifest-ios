@@ -75,7 +75,7 @@ struct MenuView: View {
                         Button {
                             tabSelect.selectedTab = 2
                         } label: {
-                            circleSchoolView(image: .hankyongLogo, name: "한경대", festivalName: "ACCENDIO")
+                            circleSchoolView(image: .uotLogo, name: "한국교통대", festivalName: "Young:one")
                         }
                         
                         /* circleSchoolView(image: .chungangLogo, name: "중앙대")
@@ -185,6 +185,7 @@ struct MenuView: View {
                             }
                         }
                         .listStyle(.plain)
+                        .scrollDisabled(true)
                         .frame(height: CGFloat(114 * randomLikeList.count))
                         .onChange(of: viewModel.boothModel.likedBoothList) {
                             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
@@ -221,6 +222,7 @@ struct MenuView: View {
                         }
                         .background(.ufBackground)
                         .listStyle(.plain)
+                        .scrollDisabled(true)
                         .frame(height: CGFloat(114 * randomLikeList.count))
                         .onChange(of: viewModel.boothModel.likedBoothList) { _ in
                             randomLikeList = viewModel.boothModel.getRandomLikedBooths()

@@ -250,6 +250,7 @@ struct HomeView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 60, height: 60)
+                                .cornerRadius(10)
                         case .failure(_):
                             Image(.noImagePlaceholder)
                                 .resizable()

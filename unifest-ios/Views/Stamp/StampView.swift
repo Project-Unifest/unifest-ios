@@ -102,7 +102,8 @@ struct StampView: View {
                                         Button {
                                             Task {
                                                 isFetchingStampInfo = true
-                                                await stampVM.stampCount(token: UIDevice.current.deviceToken)
+                                                // await stampVM.stampCount(token: UIDevice.current.deviceToken)
+                                                await stampVM.stampCount(token: "ios-test-token-1")
                                                 await stampVM.getStampEnabledBooths(festivalId: 2)
                                                 isFetchingStampInfo = false
                                             }
@@ -120,7 +121,7 @@ struct StampView: View {
                                         currentStampCount: stampVM.stampCount,
                                         screenWidth: screenWidth
                                     )
-                                    //                                    StampGrid(totalStampCount: 5, currentStampCount: 3, screenWidth: screenWidth)
+//                                                                        StampGrid(totalStampCount: 14, currentStampCount: 9, screenWidth: screenWidth)
                                     
                                     Spacer()
                                     
@@ -187,7 +188,8 @@ struct StampView: View {
         }
         .task {
             isFetchingStampInfo = true
-            await stampVM.stampCount(token: UIDevice.current.deviceToken)
+            // await stampVM.stampCount(token: UIDevice.current.deviceToken)
+            await stampVM.stampCount(token: "ios-test-token-1")
             await stampVM.getStampEnabledBooths(festivalId: 2)
             isFetchingStampInfo = false
         }

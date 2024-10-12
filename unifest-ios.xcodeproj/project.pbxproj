@@ -59,6 +59,7 @@
 		F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F81BD3052CB3E88F0083134F /* CodeScanner */; };
 		F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */; };
 		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
+		F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55252CB6BD8B00EBCA68 /* VoteView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -144,6 +145,7 @@
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
 		F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stamp-ViewModel.swift"; sourceTree = "<group>"; };
 		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
+		F82C55252CB6BD8B00EBCA68 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				0C9641ED2BB94C8100838DA9 /* Root */,
 				0CBB05802BB074ED00EB56BE /* Home */,
 				0CBB05862BB074ED00EB56BE /* Map */,
+				F82C55242CB6BD4D00EBCA68 /* Vote */,
 				0CDB46D32BB1DC8300C34AED /* Detail */,
 				0C9641F02BB94DDD00838DA9 /* Waiting */,
 				F8A91F442C81DFD400DA4231 /* Stamp */,
@@ -434,6 +437,14 @@
 			);
 			name = Extensions;
 			path = Text/Extensions;
+			sourceTree = "<group>";
+		};
+		F82C55242CB6BD4D00EBCA68 /* Vote */ = {
+			isa = PBXGroup;
+			children = (
+				F82C55252CB6BD8B00EBCA68 /* VoteView.swift */,
+			);
+			path = Vote;
 			sourceTree = "<group>";
 		};
 		F872669D2C4A342900687A0D /* Font */ = {
@@ -605,6 +616,7 @@
 				F84C6F8D2C4D0D4600D9E414 /* BoothInfoView.swift in Sources */,
 				0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */,
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
+				F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */,
 				0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */,
 				0CC40F422BF9276B002759DF /* View+.swift in Sources */,
 				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,

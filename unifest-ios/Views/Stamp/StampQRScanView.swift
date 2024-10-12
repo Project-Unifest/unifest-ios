@@ -67,30 +67,38 @@ struct StampQRScanView: View {
             print(result)
             // 적절한 QR코드인 경우(축제 부스 qr인 경우) -> 스탬프 추가 api 호출
             // 1. QR코드의 string데이터 가져오기
-            let scannedString = result.string
+            let scannedString = result.string // QR코드 스캔이 성공했을 때 string 속성은 항상 포함되므로 string 파라미터가 없는 경우는 고려하지 않아도 됨
             
-            // 2. string이 비어있는지 확인(QR코드에 string파라미터가 없으면 비어있음)
+            // 2. string이 비어있는지 확인
             if scannedString.isEmpty {
-                stampVM.qrScanToastMsg = Toast(style: .warning, message: "확인할 수 없는 QR코드입니다")
+                stampVM.qrScanToastMsg = Toast(style: .warning, message: "올바르지 않은 QR코드입니다")
                 return
             }
             
-            // 3. string에 boothId라는 값이 있는 지 확인하고 해당 값을 추출
-            if scannedString.hasPrefix("boothId") {
-                let boothIdString = scannedString.replacingOccurrences(of: "boothId:", with: "").trimmingCharacters(in: .whitespaces)
-                
-                if let boothId = Int(boothIdString) {
-                    Task {
-                        print("boothId: \(boothId)")
-                        await stampVM.addStamp(boothId: boothId, token: UIDevice.current.deviceToken)
-                    }
-                } else {
-                    print("QR코드의 boothId 형식이 잘못되었습니다")
-                }
-            }
+            // 3. string: "boothId: __" 형식으로 전달되는 경우
+//            if scannedString.hasPrefix("boothId") {
+//                let boothIdString = scannedString.replacingOccurrences(of: "boothId:", with: "").trimmingCharacters(in: .whitespaces)
+//                
+//                if let boothId = Int(boothIdString) {
+//                    Task {
+//                        print("boothId: \(boothId)")
+//                        await stampVM.addStamp(boothId: boothId, token: UIDevice.current.deviceToken)
+//                    }
+//                } else {
+//                    print("QR코드의 boothId 형식이 잘못되었습니다")
+//                }
+//            }
             
-            // 적절하지 않은 QR코드인 경우 -> 토스트뷰 띄우기
-            stampVM.qrScanToastMsg = Toast(style: .warning, message: "확인할 수 없는 QR코드입니다")
+            // 3. string: "__" 형식으로 전달되는 경우
+            if let boothId = Int(scannedString) {
+                Task {
+                    print("boothId: \(boothId)")
+                    // await stampVM.addStamp(boothId: boothId, token: UIDevice.current.deviceToken)
+                    await stampVM.addStamp(boothId: boothId, token: "ios-test-token-1")
+                }
+            } else {
+                stampVM.qrScanToastMsg = Toast(style: .warning, message: "올바르지 않은 QR코드입니다")
+            }
         case .failure(let error): // 스캔 실패
             // 카메라 접근 권한 X, QR코드 인식 자체에 실패, CodeScanner init 실패, 카메라 접근 권한 거부되는 경우
             print("Scanning failed: \(error.localizedDescription)")

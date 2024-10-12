@@ -13,6 +13,7 @@ struct MapPageHeaderView: View {
     @State private var isInfoTextPresented: Bool = true
     @Binding var searchText: String
     @State private var isSearchSchoolViewPresented = false
+    @State private var isVoteViewPresented = false
     
     var body: some View {
         VStack {
@@ -21,7 +22,7 @@ struct MapPageHeaderView: View {
 //                    isSearchSchoolViewPresented = true
 //                } label: {
                     HStack {
-                        Text("한경대학교")
+                        Text("한국교통대학교")
                             .font(.pretendard(weight: .p6, size: 20))
                             .foregroundStyle(.grey900)
                         
@@ -50,8 +51,16 @@ struct MapPageHeaderView: View {
                  .opacity(isInfoTextPresented ? 1 : 0)*/
                 
                 Spacer()
+                
+//                Button {
+//                    isVoteViewPresented = true
+//                } label: {
+//                    Image(.vote)
+//                        .resizable()
+//                        .frame(width: 24, height: 24)
+//                }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 18)
             
             Text("")
                 .roundedButton(background: .ufBackground, strokeColor: .grey400, height: 46, cornerRadius: 67)
@@ -220,6 +229,9 @@ struct MapPageHeaderView: View {
         }
         .padding(.top, 60) 
         .padding(.bottom)
+//        .fullScreenCover(isPresented: $isVoteViewPresented) {
+//            VoteView()
+//        }
 //        .sheet(isPresented: $isSearchSchoolViewPresented) {
 //            SearchSchoolView()
 //                .presentationDragIndicator(.visible)

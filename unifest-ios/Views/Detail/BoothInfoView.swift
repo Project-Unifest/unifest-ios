@@ -235,11 +235,11 @@ struct BoothInfoView: View {
                     Image(.marker)
                     
                     if let location = viewModel.boothModel.selectedBooth?.location {
-                        Text(location.isEmpty ? "등록된 정보가 없습니다" : location)
+                        Text(location.isEmpty ? "등록된 위치 설명이 없습니다" : location)
                             .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.grey900)
                     } else {
-                        Text("등록된 정보가 없습니다")
+                        Text("등록된 위치 설명이 없습니다")
                             .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.grey900)
                     }

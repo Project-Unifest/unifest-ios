@@ -277,7 +277,7 @@ struct BoothBox: View {
                                 .frame(width: 16, height: 16)
                             
                             // MarqueeText(text: position, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
-                            Text(position.isEmpty ? "등록된 정보가 없습니다" : position)
+                            Text(position.isEmpty ? "등록된 위치 설명이 없습니다" : position)
                                 .font(.pretendard(weight: .p6, size: 13))
                                 .foregroundStyle(.grey700)
                                 .lineLimit(1)
