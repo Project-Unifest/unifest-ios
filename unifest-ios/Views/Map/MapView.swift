@@ -329,29 +329,39 @@ struct MapViewiOS17: View {
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        
-                        //                        // 위치 권한이 있을 떄, 없을 때로 구분
-                        //                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
-                        //                            Button {
-                        //                                isLocationAuthNotPermittedAlertPresented = true
-                        //                            } label: {
-                        //                                RoundedRectangle(cornerRadius: 10)
-                        //                                    .fill(Color.ufBackground)
-                        //                                    .controlSize(.mini)
-                        //                                    .overlay {
-                        //                                        Image(systemName: "location")
-                        //                                            .foregroundStyle(.primary500)
-                        //                                    }
-                        //                            }
-                        //                        } else {
-                        MapUserLocationButton(scope: mainMap)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.ufBackground)
-                            )
-                            .mapControlVisibility(.automatic)
-                            .controlSize(.mini)
-                        //                        }
+                        // 위치 권한이 있을 떄, 없을 때로 구분
+                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
+//                            Button {
+//                                isLocationAuthNotPermittedAlertPresented = true
+//                            } label: {
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .fill(Color.ufBackground)
+//                                    .controlSize(.mini)
+//                                    .overlay {
+//                                        Image(systemName: "location")
+//                                            .foregroundStyle(.primary500)
+//                                    }
+//                            }
+                            MapUserLocationButton(scope: mainMap)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(.ufBackground)
+                                )
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                                .onTapGesture {
+                                    isLocationAuthNotPermittedAlertPresented = true
+                                    // 추후에 onTapGesture 말고 정상적인 방법으로 위치권한 체크하도록 코드 수정하기
+                                }
+                        } else {
+                            MapUserLocationButton(scope: mainMap)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(.ufBackground)
+                                )
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                        }
                         MapCompass(scope: mainMap)
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)

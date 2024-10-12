@@ -103,7 +103,7 @@ struct StampView: View {
                                             Task {
                                                 isFetchingStampInfo = true
                                                 // await stampVM.stampCount(token: UIDevice.current.deviceToken)
-                                                await stampVM.stampCount(token: "ios-test-token-1")
+                                                await stampVM.stampCount(token: "ios-test-token-2")
                                                 await stampVM.getStampEnabledBooths(festivalId: 2)
                                                 isFetchingStampInfo = false
                                             }
@@ -160,7 +160,7 @@ struct StampView: View {
                         isFetchingStampInfo = false
                     }
                     .padding()
-                    .background(.ufBackground)
+                    // .background(.ufBackground)
                     .sheet(isPresented: $isStampBoothViewPresented) {
                         StampBoothListView(viewModel: viewModel)
                             .presentationDragIndicator(.visible)
@@ -189,7 +189,7 @@ struct StampView: View {
         .task {
             isFetchingStampInfo = true
             // await stampVM.stampCount(token: UIDevice.current.deviceToken)
-            await stampVM.stampCount(token: "ios-test-token-1")
+            await stampVM.stampCount(token: "ios-test-token-2")
             await stampVM.getStampEnabledBooths(festivalId: 2)
             isFetchingStampInfo = false
         }

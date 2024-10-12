@@ -95,13 +95,16 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         switch locationManager.authorizationStatus {
         case .notDetermined:
             print("not determined")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .restricted:
             print("restricted")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .denied:
             print("denied")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .authorizedAlways, .authorizedWhenInUse:
             print("allowed")
             break
@@ -114,7 +117,9 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationAuthorization()
+        DispatchQueue.main.async {
+                self.checkLocationAuthorization()
+            }
     }
     
     // 이 함수 호출 시 사용자 위치 정보 업데이트 시작
