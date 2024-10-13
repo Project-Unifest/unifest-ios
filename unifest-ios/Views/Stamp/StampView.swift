@@ -116,12 +116,25 @@ struct StampView: View {
                                     }
                                     .padding(.bottom, 20)
                                     
-                                    StampGrid(
-                                        totalStampCount: stampVM.stampEnabledBoothsCount,
-                                        currentStampCount: stampVM.stampCount,
-                                        screenWidth: screenWidth
-                                    )
-//                                                                        StampGrid(totalStampCount: 14, currentStampCount: 9, screenWidth: screenWidth)
+                                    ScrollView {
+//                                        StampGrid(
+//                                            totalStampCount: stampVM.stampEnabledBoothsCount,
+//                                            currentStampCount: stampVM.stampCount,
+//                                            screenWidth: screenWidth
+//                                        )
+                                        
+                                        StampGrid(
+                                            totalStampCount: 13,
+                                            currentStampCount: 5,
+                                            screenWidth: screenWidth
+                                        )
+                                    }
+//                                    .refreshable {
+//                                        isFetchingStampInfo = true
+//                                        await stampVM.stampCount(token: UIDevice.current.deviceToken)
+//                                        await stampVM.getStampEnabledBooths(festivalId: 2)
+//                                        isFetchingStampInfo = false
+//                                    }
                                     
                                     Spacer()
                                     
@@ -152,12 +165,6 @@ struct StampView: View {
                             }
                         
                         Spacer()
-                    }
-                    .refreshable {
-                        isFetchingStampInfo = true
-                        await stampVM.stampCount(token: UIDevice.current.deviceToken)
-                        await stampVM.getStampEnabledBooths(festivalId: 2)
-                        isFetchingStampInfo = false
                     }
                     .padding()
                     // .background(.ufBackground)
