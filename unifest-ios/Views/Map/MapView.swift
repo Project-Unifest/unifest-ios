@@ -216,25 +216,25 @@ struct MapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPositionUOT, bounds: mapCameraBoundsUOT, scope: mainMap) {
+            Map(initialPosition: mapCameraPositionHankyong, bounds: mapCameraBoundsHankyong, scope: mainMap) {
                 UserAnnotation() // 사용자의 현재 위치를 맵에 나타냄
                 
                 // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
                 if colorScheme == .dark {
-                    MapPolygon(coordinates: polygonUOT)
+                    MapPolygon(coordinates: polygonHankyong)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.black.opacity(0.5))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonUOT)
+                    MapPolygon(coordinates: polygonHankyong)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.25))
                     }

@@ -50,14 +50,16 @@ struct WaitingInfoView: View {
                                     .foregroundStyle(.primary700)
                                     .baselineOffset(4)
                             } else {
-                                Text(String(reservedWaitingListItem.waitingOrder))
-                                    .font(.pretendard(weight: .p6, size: 45))
-                                    .foregroundStyle(.primary500)
-                                
-                                Text("번째")
-                                    .font(.pretendard(weight: .p5, size: 16))
-                                    .foregroundStyle(.grey900)
-                                    .baselineOffset(9)
+                                if let waitingOrder = reservedWaitingListItem.waitingOrder {
+                                    Text(String(waitingOrder))
+                                        .font(.pretendard(weight: .p6, size: 45))
+                                        .foregroundStyle(.primary500)
+                                    
+                                    Text("번째")
+                                        .font(.pretendard(weight: .p5, size: 16))
+                                        .foregroundStyle(.grey900)
+                                        .baselineOffset(9)
+                                }
                             }
                         }
                         
@@ -71,10 +73,13 @@ struct WaitingInfoView: View {
                                 Text(String(reservedWaitingListItem.waitingId))
                                     .font(.pretendard(weight: .p7, size: 14))
                                 
-                                Divider()
-                                    .foregroundStyle(.grey400)
-                                    .padding(.horizontal, 7)
-                                    .frame(height: 14)
+//                                Divider()
+//                                    .foregroundStyle(.grey400)
+//                                    .padding(.horizontal, 7)
+//                                    .frame(height: 14)
+                                
+                                Spacer()
+                                    .frame(width: 0)
                                 
                                 Text("인원")
                                     .font(.pretendard(weight: .p4, size: 14))
