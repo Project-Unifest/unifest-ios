@@ -423,7 +423,7 @@ struct MenuView: View {
                             .foregroundStyle(.grey900)
                             .padding(.bottom, -2)
                         
-                        Text("관심축제로 등록하면 부스 알림을 받을 수 있습니다")
+                        Text("관심축제로 등록하면 부스 소식을 알림으로\n받을 수 있습니다")
                             .font(.system(size: 12))
                             .foregroundStyle(.gray)
                             .fontWeight(.medium)
@@ -880,67 +880,76 @@ struct MenuView: View {
         }
         // 알림 권한 허가 없이 관심 축제로 설정할 경우 alert 띄우기
         .alert("관심축제 설정 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
-            Button("설정 앱으로 이동할래요", role: .cancel) {
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                
-                if UIApplication.shared.canOpenURL(url) {
+            HStack {Button("닫기", role: .cancel) {
                     subscribeFestival = false
                     UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                    UIApplication.shared.open(url)
+                }
+                
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        subscribeFestival = false
+                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                        UIApplication.shared.open(url)
+                    }
                 }
             }
-            
-            Button("알겠어요", role: nil) {
-                subscribeFestival = false
-                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-            }
         } message: {
-            Text("관심축제 알림을 받으려면 알림 권한을 허용해야돼요. 알림 권한 설정은 iPhone 설정 - 유니페스 에서 가능해요.")
+            Text("관심축제 알림을 받으려면 알림 권한을 허용해야돼요. 앱 설정으로 가서 알림 권한을 수정할 수 있어요.")
         }
         // 권한 허가 수정 안내 모달
         .alert("위치 권한 수정 안내", isPresented: $isLocationPermissionAlertPresented, actions: {
-            Button("설정 앱으로 이동할래요", role: .cancel) {
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+            HStack {
+                Button("닫기", role: .cancel) { }
                 
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
-                }
-                
-            }
-            
-            Button("알겠어요", role: nil) { }
-        }, message: {
-            Text("위치 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
-        })
-                .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
-                    Button("설정 앱으로 이동할래요", role: .cancel) {
-                        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        
-                        if UIApplication.shared.canOpenURL(url) {
-                            UIApplication.shared.open(url)
-                        }
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
                     }
-        
-                    Button("알겠어요", role: nil) { }
-                } message: {
-                    Text("카메라 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
-                }
-        .alert("알림 권한 수정 안내", isPresented: $isNotificationPermissionAlertPresented) {
-            Button("설정 앱으로 이동할래요", role: .cancel) {
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
+                    
                 }
             }
-            
-            Button("알겠어요", role: nil) { }
+        }, message: {
+            Text("앱 설정에서 위치 권한을 수정할 수 있어요. 이동하시겠어요?")
+        })
+        .alert("카메라 권한 수정 안내", isPresented: $isCameraPermissionAlertPresented) {
+            HStack {
+                Button("닫기", role: .cancel) { }
+                
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                    
+                }
+            }
         } message: {
-            Text("알림 권한 수정은 iPhone 설정 - 유니페스 에서 가능해요.")
+            Text("앱 설정에서 카메라 권한을 수정할 수 있어요. 이동하시겠어요?")
+        }
+        .alert("알림 권한 수정 안내", isPresented: $isNotificationPermissionAlertPresented) {
+            HStack {
+                Button("닫기", role: .cancel) { }
+                
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                    
+                }
+            }
+        } message: {
+            Text("앱 설정에서 알림 권한을 수정할 수 있어요. 이동하시겠어요?")
         }
         // 기능 오류 신고 모달
-        .alert("피드백 안내", isPresented: $isErrorDeclarationModalPresented, actions: {
-            Button("메일을 작성할래요", role: nil) {
+        .alert("메일 보내기", isPresented: $isErrorDeclarationModalPresented, actions: {
+            Button("메일을 작성할게요", role: nil) {
                 // 메일 보내기
                 //                let emailAddr = "mailto:leehe228@konkuk.ac.kr"
                 //                guard let emailUrl = URL(string: emailAddr) else { return }
@@ -951,32 +960,28 @@ struct MenuView: View {
                     print("Failed to open email URL")
                 }
             }
-            Button("메일 주소를 복사할래요", role: nil) {
+            Button("메일 주소를 복사할게요", role: nil) {
                 // 클립보드에 복사
                 UIPasteboard.general.string = "wltjd6300@naver.com"
                 isCopyFinishPresented = true
             }
-            Button("알겠어요", role: nil) {
-                //
-            }
+            Button("닫기", role: nil) { }
         }, message: {
-            Text("피드백은 wltjd6300@naver.com으로 메일을 작성해주세요. 소중한 의견 감사합니다.")
+            Text("wltjd6300@naver.com으로 메일을 작성해주세요. 소중한 의견 감사합니다.")
         })
         // 복사 완료 모달
         .alert("복사 완료", isPresented: $isCopyFinishPresented, actions: {
-            Button("알겠어요", role: nil) {
-                
-            }
+            Button("닫기", role: nil) { }
         }, message: {
             Text("클립보드에 복사가 완료되었어요. 소중한 의견을 작성해 보내주세요.")
         })
         
         // 앱 데이터 초기화
         .alert("앱을 초기화할까요?", isPresented: $isResetAlertPresented, actions: {
-            Button("초기화할게요", role: .destructive) {
+            Button("초기화하기", role: .destructive) {
                 
             }
-            Button("취소할게요", role: .cancel) {
+            Button("취소", role: .cancel) {
                 
             }
         }, message: {

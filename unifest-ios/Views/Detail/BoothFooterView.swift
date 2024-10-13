@@ -126,21 +126,21 @@ struct BoothFooterView: View {
         .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
         .alert("웨이팅 알림 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
-            Button("설정 앱으로 이동할래요", role: .cancel) {
-                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                
-                if UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
-                }
-            }
-            
-            Button("다음에 할게요", role: nil) {
+            Button("다음에 설정할게요", role: nil) {
                 withAnimation {
                     isWaitingPinViewPresented = true
                 }
             }
+                
+            Button("설정 화면으로 이동", role: .cancel) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                }
         } message: {
-            Text("웨이팅 입장 안내를 받으려면 알림 권한을 허용해야돼요. 알림 권한 설정은 iPhone 설정 - 유니페스 에서 가능해요.")
+            Text("웨이팅 입장 알림을 받으려면 알림 권한을 허용해야돼요. 앱 설정에서 알림 권한을 수정할 수 있어요.")
         }
     }
     

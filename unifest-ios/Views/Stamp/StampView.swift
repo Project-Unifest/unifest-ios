@@ -117,17 +117,17 @@ struct StampView: View {
                                     .padding(.bottom, 20)
                                     
                                     ScrollView {
-//                                        StampGrid(
-//                                            totalStampCount: stampVM.stampEnabledBoothsCount,
-//                                            currentStampCount: stampVM.stampCount,
-//                                            screenWidth: screenWidth
-//                                        )
-                                        
                                         StampGrid(
-                                            totalStampCount: 13,
-                                            currentStampCount: 5,
+                                            totalStampCount: stampVM.stampEnabledBoothsCount,
+                                            currentStampCount: stampVM.stampCount,
                                             screenWidth: screenWidth
                                         )
+                                        
+//                                        StampGrid(
+//                                            totalStampCount: 13,
+//                                            currentStampCount: 5,
+//                                            screenWidth: screenWidth
+//                                        )
                                     }
 //                                    .refreshable {
 //                                        isFetchingStampInfo = true
@@ -177,18 +177,21 @@ struct StampView: View {
                     }
                     .toastView(toast: $stampVM.qrScanToastMsg)
                     .dynamicTypeSize(.large)
-                    .alert("QR코드를 스캔하려면 카메라 권한 허가가 필요해요", isPresented: $isCameraPermissionAlertPresented) {
-                        Button("설정 앱으로 이동할래요") {
-                            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    .alert("카메라 권한 안내", isPresented: $isCameraPermissionAlertPresented) {
+                        HStack {
+                            Button("닫기", role: .cancel) { }
                             
-                            if UIApplication.shared.canOpenURL(url) {
-                                UIApplication.shared.open(url)
+                            Button("설정하기", role: nil) {
+                                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                                
+                                if UIApplication.shared.canOpenURL(url) {
+                                    UIApplication.shared.open(url)
+                                }
+                                
                             }
                         }
-                        
-                        Button("취소", role: .cancel) { }
                     } message: {
-                        Text("카메라 권한 허가는 iPhone 설정 - 유니페스 에서 가능해요.")
+                        Text("스탬프를 받으려면 QR코드를 스캔해야 하며, 이를 위해 카메라 권한 허가가 필요해요. 앱 설정에서 카메라 권한을 수정할 수 있어요.")
                     }
                 }
             }
