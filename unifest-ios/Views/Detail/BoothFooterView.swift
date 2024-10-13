@@ -29,12 +29,12 @@ struct BoothFooterView: View {
                 VStack {
                     Button {
                         if viewModel.boothModel.isBoothContain(viewModel.boothModel.selectedBoothID) {
-                            // 이미 부스를 관심있음(좋아요) 체크한 경우 -> 버튼을 누르면 관심있음 해제, 서버 좋아요 수 -1 api 호출
+                            // 이미 부스를 관심있음(좋아요) 체크한 경우 -> 버튼을 누르면 로컬의 관심있음 부스 삭제, 서버 좋아요 수 -1 api 호출
                             GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_CANCEL, params: ["boothID": viewModel.boothModel.selectedBoothID])
                             viewModel.boothModel.deleteLikeBoothListDB(viewModel.boothModel.selectedBoothID)
                             viewModel.boothModel.deleteLike(viewModel.boothModel.selectedBoothID)
                         } else {
-                            // 부스를 관심있음 하지 않은 경우 -> 버튼을 누르면 관심있음 추가, 서버 좋아요 수 +1 api 호출
+                            // 부스를 관심있음 하지 않은 경우 -> 버튼을 누르면 로컬에 관심있음 부스 추가, 서버 좋아요 수 +1 api 호출
                             GATracking.sendLogEvent(GATracking.LogEventType.BoothDetailView.BOOTH_DETAIL_LIKE_ADD, params: ["boothID": viewModel.boothModel.selectedBoothID])
                             viewModel.boothModel.insertLikeBoothDB(viewModel.boothModel.selectedBoothID)
                             viewModel.boothModel.addLike(viewModel.boothModel.selectedBoothID)

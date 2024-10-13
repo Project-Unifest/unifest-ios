@@ -206,6 +206,7 @@ struct MenuView: View {
                                             Button {
                                                 GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
                                                 viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                                viewModel.boothModel.deleteLike(boothID)
                                             } label: {
                                                 Label("삭제", systemImage: "trash.circle").tint(.ufRed)
                                             }

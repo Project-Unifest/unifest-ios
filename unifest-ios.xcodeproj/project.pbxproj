@@ -268,6 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
+				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
 				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
 				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
@@ -344,7 +345,6 @@
 		0C9D0A6B2BA1A43900156763 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
 				F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */,
 				F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */,
 				F82C55222CB3F06A00EBCA68 /* StampModel.swift */,
