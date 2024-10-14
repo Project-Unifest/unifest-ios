@@ -22,13 +22,15 @@ class StampViewModel: ObservableObject {
     
     func stampCount(token: String) async {
         await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/stamps?token=\(token)"
+            
             let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/stamps?token=\(token)"
             
             let headers: HTTPHeaders = [
                 .accept("application/json")
             ]
             
-            AF.request(testUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: StampCountResponse.self) { response in
                     switch response.result {
                     case .success(let res):
@@ -67,13 +69,15 @@ class StampViewModel: ObservableObject {
     
     func getStampEnabledBooths(festivalId: Int) async {
         await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/stamps/\(festivalId)"
+            
             let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/stamps/\(festivalId)"
             
             let headers: HTTPHeaders = [
                 .accept("application/json")
             ]
             
-            AF.request(testUrl, method: .get, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: StampEnabledBoothResponse.self) { response in
                     switch response.result {
                     case .success(let res):
@@ -113,6 +117,8 @@ class StampViewModel: ObservableObject {
     
     func addStamp(boothId: Int, token: String) async {
         await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/stamps"
+            
             let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/stamps"
             
             let headers: HTTPHeaders = [
@@ -125,7 +131,7 @@ class StampViewModel: ObservableObject {
                 "boothId": boothId
             ]
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: AddStampResponse.self) { response in
                     switch response.result {
                     case .success(let res):

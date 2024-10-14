@@ -48,7 +48,7 @@ class WaitingViewModel: ObservableObject {
                 "deviceId": deviceId
             ]
             
-            AF.request(testUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: CancelWaitingResponse.self) { response in
                     print("Request URL of cancelWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -105,7 +105,7 @@ class WaitingViewModel: ObservableObject {
             
             print(parameters)
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: AddWaitingResponse.self) { response in
                     print("Request URL of addWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -154,11 +154,11 @@ class WaitingViewModel: ObservableObject {
             
             let url = APIManager.shared.serverType.rawValue + "/waiting/\(boothId)/count"
             
-            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/79/count"
+            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/\(boothId)/count"
             
             let headers: HTTPHeaders = [.accept("application/json")]
             
-            AF.request(testUrl, method: .get, headers: headers)
+            AF.request(url, method: .get, headers: headers)
                 .responseDecodable(of: WaitingOrderResponse.self) { response in
                     print("Request URL of fetchWaitingTeamCount: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -204,7 +204,7 @@ class WaitingViewModel: ObservableObject {
                 .accept("application/json")
             ]
             
-            AF.request(testUrl, method: .get, headers: headers)
+            AF.request(url, method: .get, headers: headers)
                 .responseDecodable(of: ReservedWaitingResponse.self) { response in
                     print("Request URL of fetchReservedWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -261,7 +261,7 @@ class WaitingViewModel: ObservableObject {
             
             print("checkPinNumber: \(parameters)")
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: PinCheckResponse.self) { response in
                     print("Requested URL: \(response.request?.url?.absoluteString ?? "")")
                     

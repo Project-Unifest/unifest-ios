@@ -18,6 +18,8 @@ class FavoriteFestivalViewModel: ObservableObject {
     
     func addFavoriteFestival(festivalId: Int, fcmToken: String) async {
         await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/megaphone/subscribe"
+            
             let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/megaphone/subscribe"
             let parameters: [String: Any] = [
                 "festivalId": 2,
@@ -29,7 +31,7 @@ class FavoriteFestivalViewModel: ObservableObject {
             ]
             print("addFavoriteFestival: \(parameters)")
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: AddFavoriteFestivalResponse.self) { response in
                     switch response.result {
                     case .success(let res):
@@ -64,6 +66,8 @@ class FavoriteFestivalViewModel: ObservableObject {
     
     func deleteFavoriteFestival(festivalId: Int, fcmToken: String) async {
         await withCheckedContinuation { continuation in
+            let url = APIManager.shared.serverType.rawValue + "/megaphone/subscribe"
+            
             let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/megaphone/subscribe"
             let parameters: [String: Any] = [
                 "festivalId": 2,
@@ -74,7 +78,7 @@ class FavoriteFestivalViewModel: ObservableObject {
                 .contentType("application/json")
             ]
             
-            AF.request(testUrl, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: DeleteFavoriteFestivalResponse.self) { response in
                     switch response.result {
                     case .success(let res):

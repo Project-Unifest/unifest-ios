@@ -67,7 +67,8 @@ struct MapViewiOS17: View {
     let mapCameraBoundsHankyong: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     // 한국교통대학교 경계영역
-    let mapCameraBoundsUOT: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    let mapCameraBoundsUOT: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+        // span의 latitudeDelta, longitudeDelta의 비율이 적절해야 확대했을 때도 지도 상에서 원하는 위치로 이동 가능(비율이 맞지 않으면 확대한 상태에서 스크롤해도 원하는 위치로 이동하지 않는 문제가 발생할 수 있음)
     
     // 학교의 경계 좌표
     let polygonKonkuk: [CLLocationCoordinate2D] = [
@@ -298,11 +299,12 @@ struct MapViewiOS17: View {
                     print("last dist: \(lastDistance), new dist: \(mapCameraUpdateContext.camera.distance)")
                     let newDistance = mapCameraUpdateContext.camera.distance
                     
-                    if newDistance > 1000 && lastDistance <= 1000 {
+                    // newDistance값이 작으면 지도를 더 많이 확대해야 clustering이 풀림
+                    if newDistance > 500 && lastDistance <= 500 {
                         isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
                         mapViewModel.updateAnnotationList(makeCluster: isClustering)
                     }
-                    else if newDistance < 1000 && lastDistance >= 1000 {
+                    else if newDistance < 500 && lastDistance >= 500 {
                         // 1000 이상 -> 1000 미만
                         isClustering = false
                         mapViewModel.updateAnnotationList(makeCluster: false)
