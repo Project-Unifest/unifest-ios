@@ -21,8 +21,8 @@ struct BoothFooterView: View {
                 let screenWidth = geometry.size.width
                 
                 HStack {
-    //                Spacer()
-    //                    .frame(width: 10)
+                    //                Spacer()
+                    //                    .frame(width: 10)
                     
                     // 사용자가 좋아요 처리한 부스는 서버가 아니라 로컬(UserDefaults)에 저장함
                     // 좋아요를 누르거나 해제하면 UserDefaults에서 해당 부스를 추가하거나 해제하고, 좋아요 수를 +-시키는 api를 호출함
@@ -56,7 +56,7 @@ struct BoothFooterView: View {
                     }
                     .padding(.top, 8)
                     .frame(width: 30)
-                   
+                    
                     Spacer()
                     
                     Button {
@@ -120,8 +120,8 @@ struct BoothFooterView: View {
                     }
                     .disabled(viewModel.boothModel.selectedBooth?.waitingEnabled == false || viewModel.boothModel.selectedBooth?.waitingEnabled == nil)
                     
-    //                Spacer()
-    //                    .frame(width: 20)
+                    //                Spacer()
+                    //                    .frame(width: 20)
                 }
                 .padding(.horizontal)
                 .padding(.top, 7)
@@ -132,19 +132,19 @@ struct BoothFooterView: View {
         .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
         .alert("웨이팅 알림 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
+            Button("설정 화면으로 이동", role: .cancel) {
+                guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                
+                if UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            
             Button("다음에 설정할게요", role: nil) {
                 withAnimation {
                     isWaitingPinViewPresented = true
                 }
             }
-                
-            Button("설정 화면으로 이동", role: .cancel) {
-                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-                    
-                    if UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url)
-                    }
-                }
         } message: {
             Text("웨이팅 입장 알림을 받으려면 알림 권한을 허용해야돼요. 앱 설정에서 알림 권한을 수정할 수 있어요.")
         }

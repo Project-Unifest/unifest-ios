@@ -565,7 +565,8 @@ struct OneBoothAnnotation: View {
         ZStack {
             switch boothType {
             case .drink:
-                Image(.drinkBooth1)
+//                Image(.drinkBooth1)
+                Image(.activity1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)
@@ -577,7 +578,8 @@ struct OneBoothAnnotation: View {
                     .frame(width: 70, height: 70)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(.generalBooth1)
+//                Image(.generalBooth1)
+                Image(.outsideSchool1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)
@@ -595,7 +597,8 @@ struct OneBoothAnnotation: View {
                     .frame(width: 70, height: 70)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-                Image(.eventBooth1)
+//                Image(.eventBooth1)
+                Image(.insideSchool1)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 70, height: 70)

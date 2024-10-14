@@ -730,7 +730,8 @@ struct BoothAnnotation: View {
             
             switch boothType {
             case .drink:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+                // Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -742,7 +743,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -760,7 +762,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)

@@ -58,11 +58,11 @@ enum StringLiterals {
     
     enum Map {
         static let favoriteBoothTitle = "인기 부스"
-        static let searchPlaceholder = "부스/주점을 검색해보세요."
-        static let drinkBoothTitle = "주점"
-        static let foodBoothTitle = "먹거리"
-        static let eventBoothTitle = "이벤트"
-        static let generalBoothTitle = "일반"
+        static let searchPlaceholder = "부스를 검색해보세요." // "부스/주점을 검색해보세요."
+        static let drinkBoothTitle = "체험" // "주점"
+        static let foodBoothTitle = "푸드트럭" // "먹거리"
+        static let eventBoothTitle = "교내" // "이벤트"
+        static let generalBoothTitle = "교외" // "일반"
         static let hospitalBoothTitle = "의무실"
         static let toiletBoothTitle = "화장실"
         static let ranking = "위"

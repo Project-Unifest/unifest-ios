@@ -125,7 +125,7 @@ struct WaitingInfoView: View {
                         }
                     }
                 }
-                .padding()
+                .padding() // RoundedRectangle() 안쪽 padding
             }
             .sheet(isPresented: $isBoothDetailViewPresented) {
                 BoothDetailView(viewModel: viewModel, currentBoothId: 156)
