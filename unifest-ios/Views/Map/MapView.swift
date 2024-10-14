@@ -50,9 +50,10 @@ struct MapViewiOS17: View {
     @State var mapCameraPositionUOT = MapCameraPosition.camera(
         MapCamera(
             centerCoordinate: CLLocationCoordinate2D(
-                latitude: 36.969_868, longitude: 127.871_726
-            ), // 기존 좌표에서 살짝 조정
-            distance: 2000,
+//                latitude: 36.969_868, longitude: 127.871_726
+                latitude: 36.970_368, longitude: 127.871_726
+            ),
+            distance: 2500, // 클수록 축소
             heading: 0.0,
             pitch: 0
         )
@@ -216,25 +217,25 @@ struct MapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPositionHankyong, bounds: mapCameraBoundsHankyong, scope: mainMap) {
+            Map(initialPosition: mapCameraPositionUOT, bounds: mapCameraBoundsUOT, scope: mainMap) {
                 UserAnnotation() // 사용자의 현재 위치를 맵에 나타냄
                 
                 // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
                 if colorScheme == .dark {
-                    MapPolygon(coordinates: polygonHankyong)
+                    MapPolygon(coordinates: polygonUOT)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.black.opacity(0.5))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonHankyong)
+                    MapPolygon(coordinates: polygonUOT)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.25))
                     }
@@ -577,13 +578,16 @@ struct MapViewiOS16: View {
     // 한경대학교 중심
     @State private var regionCenterHankyong = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
     
+    // 한국교통대학교 중심
+    @State private var regionCenterUOT = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
+    
     // distance
     @State private var lastDelta: CGFloat = 0.009
     
     @State private var isClustering: Bool = false
     
     var body: some View {
-        Map(coordinateRegion: $regionCenterHankyong, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
+        Map(coordinateRegion: $regionCenterUOT, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotation.latitude, longitude: annotation.longitude)) {
                 BoothAnnotation(mapViewModel: mapViewModel, annID: annotation.id, boothType: annotation.annType, number: annotation.boothIDList.count)
                     .onTapGesture {
@@ -591,7 +595,7 @@ struct MapViewiOS16: View {
                     }
             }
         }
-        .onChange(of: regionCenterHankyong.span.latitudeDelta) { newDelta in
+        .onChange(of: regionCenterUOT.span.latitudeDelta) { newDelta in
             handleRegionDeltaChange(newDelta)
         }
         .onChange(of: searchText) { _ in

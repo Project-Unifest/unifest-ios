@@ -11,7 +11,7 @@ import SwiftUI
 
 final class APIManager: ObservableObject {
     
-    static let shared = APIManager(serverType: .dev)
+    static let shared = APIManager(serverType: .prod)
     private var cancellables = Set<AnyCancellable>()
     
     // API 서버 종류별 address
