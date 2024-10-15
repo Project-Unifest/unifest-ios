@@ -604,7 +604,7 @@ struct CalendarTabView: View {
 //        let weekNumList = getWeekNumOfYear()
 //        let weekNum = weekNumList[currentMonth]
 //        return offsetYList[weekNum]
-        // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 호은님 실수인 듯?
+        // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 실수인 듯?
         
         // 2024년을 기준으로 3월, 6월은 6주 나머지는 모두 5주이므로 2024년에 맞게 하드코딩함
         // print("monthPageIndex: \(monthPageIndex)")
