@@ -102,8 +102,7 @@ struct StampView: View {
                                         Button {
                                             Task {
                                                 isFetchingStampInfo = true
-                                                // await stampVM.stampCount(token: UIDevice.current.deviceToken)
-                                                await stampVM.stampCount(token: "ios-test-token-3")
+                                                await stampVM.stampCount(token: UIDevice.current.deviceToken)
                                                 await stampVM.getStampEnabledBooths(festivalId: 2)
                                                 isFetchingStampInfo = false
                                             }
@@ -198,8 +197,7 @@ struct StampView: View {
         }
         .task {
             isFetchingStampInfo = true
-            // await stampVM.stampCount(token: UIDevice.current.deviceToken)
-            await stampVM.stampCount(token: "ios-test-token-3")
+            await stampVM.stampCount(token: UIDevice.current.deviceToken)
             await stampVM.getStampEnabledBooths(festivalId: 2)
             isFetchingStampInfo = false
         }
