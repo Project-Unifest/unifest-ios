@@ -732,7 +732,8 @@ struct BoothAnnotation: View {
     
     var body: some View {
         ZStack {
-            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+//            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 50 : 40)
             
             switch boothType {
             case .drink:
@@ -787,7 +788,7 @@ struct BoothAnnotation: View {
                                 .frame(width: 16, height: 16)
                                 .overlay {
                                     Text("\(number)")
-                                        .font(.system(size: 9))
+                                        .font(.system(size: 10))
                                         .foregroundStyle(.white)
                                         .bold()
                                 }
@@ -802,7 +803,7 @@ struct BoothAnnotation: View {
                             }
                             .overlay {
                                 Text("\(number)")
-                                    .font(.system(size: 9))
+                                    .font(.system(size: 10))
                                     .foregroundStyle(.white)
                                     .bold()
                             }
@@ -810,7 +811,8 @@ struct BoothAnnotation: View {
                         Spacer()
                     }
                 }
-                .frame(width: 44, height: 49)
+                // .frame(width: 44, height: 49)
+                .frame(width: 39, height: 44)
             }
         }
     }

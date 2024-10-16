@@ -19,7 +19,7 @@ struct WaitingListView: View {
                 HStack {
                     Text("총 \(reservedWaitingList.count)건")
                         .font(.pretendard(weight: .p6, size: 11))
-                        .foregroundStyle(.gray545454)
+                        .foregroundStyle(.grey900)
                         .padding(.leading, 10)
                     
                     Spacer()
