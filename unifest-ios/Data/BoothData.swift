@@ -500,7 +500,7 @@ class BoothModel: ObservableObject {
     }
     
     private func uploadLikeNum(_ boothID: Int) {
-        let parameters = "{\"boothId\": \(boothID),\"token\": \"\(UIDevice.current.deviceToken)\"}"
+        let parameters = "{\"boothId\": \(boothID),\"token\": \"\(DeviceUUIDManager.shared.getDeviceToken())\"}"
         print(parameters)
         let postData = parameters.data(using: .utf8)
         
@@ -573,6 +573,7 @@ class BoothModel: ObservableObject {
     }
 }
 
+// DeviceUUIDManager에서 deviceToken을 생성 및 저장하도록 수정, 이 Extension은 더이상 사용되지 않음
 extension UIDevice {
     var deviceToken: String {
         if let identifierForVendor = UIDevice.current.identifierForVendor {
@@ -594,7 +595,7 @@ struct BoothDataTestView: View {
                 Text(festival.name)
             }
             
-            Text("Device UUID: \(UIDevice.current.deviceToken)")
+            Text("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
         }
     }
 }

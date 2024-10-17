@@ -61,7 +61,7 @@ struct BoothFooterView: View {
                     
                     Button {
                         Task {
-                            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+                            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                             
                             print("ReservedWaitingCount: \(waitingVM.reservedWaitingCount)")
                             

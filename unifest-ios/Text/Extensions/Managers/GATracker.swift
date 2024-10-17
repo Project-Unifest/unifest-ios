@@ -67,7 +67,7 @@ struct GATracking {
     // 로그 전송
     static func sendLogEvent(_ eventName: String, params: [String : Any]?=nil) {
         // user ID 가져오기
-        let userID = UIDevice.current.deviceToken
+        let userID = DeviceUUIDManager.shared.getDeviceToken()
         
         // version 가져오기
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String

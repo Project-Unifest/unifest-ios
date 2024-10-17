@@ -57,6 +57,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // 디바이스가 APNs로부터 받은 디바이스 토큰을 처리하는 메서드
     // device token: APNs에서 디바이스를 식별할 때 사용
     // fcm token: fcm을 통해 디바이스에 푸시 알림을 보낼 때 사용, FCM이 APNs 토큰을 기반으로 생성함
+    // fcm token은 아래의 messaging()메서드에서 처리
+    
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("APNS token: \(deviceToken)")
@@ -99,6 +101,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 }
 
 extension AppDelegate: MessagingDelegate {
+    // 푸시알림을 FCM을 통해서 보낸다면 FCM토큰이 APNs 토큰과 연계됨
+    // FCM은 APNs 토큰을 기반으로 자체적으로 생성한 토큰을 사용해 디바이스를 식별함
+    // 아래의 messaging메서드가 이 기능 수행
+    
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")

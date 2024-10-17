@@ -143,6 +143,15 @@
         "revision" : "e17d61f26df0f0e06f58f6977ba05a097a720106",
         "version" : "1.27.1"
       }
+    },
+    {
+      "identity" : "takuuid",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/taka0125/TAKUUID",
+      "state" : {
+        "revision" : "5eab7cd648fc4f6dc5844438fed8eaafb0e48063",
+        "version" : "1.6.0"
+      }
     }
   ],
   "version" : 2

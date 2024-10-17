@@ -90,6 +90,8 @@
 		F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
+		F8EC28832CC12FDA00F2B218 /* TAKUUID in Frameworks */ = {isa = PBXBuildFile; productRef = F8EC28822CC12FDA00F2B218 /* TAKUUID */; };
+		F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */; };
 		F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -175,6 +177,7 @@
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingModel.swift; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
+		F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUUIDManager.swift; sourceTree = "<group>"; };
 		F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFestivalModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -183,6 +186,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8EC28832CC12FDA00F2B218 /* TAKUUID in Frameworks */,
 				0C683ABA2BF8F12C0076ECCF /* FirebaseMessaging in Frameworks */,
 				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
@@ -212,6 +216,7 @@
 				0C244FCC2BF67E6B0047F23D /* VersionService.swift */,
 				0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */,
 				0C72FAAB2BFA443200782B61 /* HapticManager.swift */,
+				F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -505,6 +510,7 @@
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
 				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
 				F81BD3052CB3E88F0083134F /* CodeScanner */,
+				F8EC28822CC12FDA00F2B218 /* TAKUUID */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -539,6 +545,7 @@
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
 				F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -594,6 +601,7 @@
 				F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */,
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
+				F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */,
 				0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */,
 				F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */,
 				0C9641F52BB94E7D00838DA9 /* MenuView.swift in Sources */,
@@ -776,7 +784,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -797,7 +805,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -819,7 +827,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -840,7 +848,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -910,6 +918,14 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/taka0125/TAKUUID";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -937,6 +953,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F8EC28822CC12FDA00F2B218 /* TAKUUID */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */;
+			productName = TAKUUID;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
