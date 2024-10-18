@@ -91,7 +91,7 @@ struct StampQRScanView: View {
             //                if let boothId = Int(boothIdString) {
             //                    Task {
             //                        print("boothId: \(boothId)")
-            //                        await stampVM.addStamp(boothId: boothId, token: DeviceUUIDManager.shared.getDeviceToken())
+            //                        await stampVM.addStamp(boothId: boothId, token: UIDevice.current.deviceToken)
             //                    }
             //                } else {
             //                    print("QR코드의 boothId 형식이 잘못되었습니다")
@@ -103,7 +103,7 @@ struct StampQRScanView: View {
                 Task {
                     print("boothId: \(boothId)")
                     isScanning = true
-                     await stampVM.addStamp(boothId: boothId, token: DeviceUUIDManager.shared.getDeviceToken())
+                     await stampVM.addStamp(boothId: boothId, token: UIDevice.current.deviceToken)
                     isScanning = false
                     dismiss()
                 }

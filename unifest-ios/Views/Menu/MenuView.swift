@@ -75,7 +75,7 @@ struct MenuView: View {
                         Button {
                             tabSelect.selectedTab = 2
                         } label: {
-                            circleSchoolView(image: .uotLogo, name: "한국교통대", festivalName: "Young:one")
+                            circleSchoolView(image: .uotLogo2, name: "한국교통대", festivalName: "Young:one")
                         }
                         
                         /* circleSchoolView(image: .chungangLogo, name: "중앙대")
@@ -1000,6 +1000,7 @@ struct MenuView: View {
                 .overlay {
                     Image(image)
                         .resizable()
+                        .clipShape(.circle) // 이미지가 사각형일 경우 추가
                         .scaledToFit()
                         .frame(width: 46, height: 46)
                 }

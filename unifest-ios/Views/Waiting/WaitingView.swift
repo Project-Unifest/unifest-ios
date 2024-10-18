@@ -53,11 +53,11 @@ struct WaitingView: View {
         .background(.ufBackground)
         .task {
             isFetchingWaitingList = true
-            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
             isFetchingWaitingList = false
         }
         .refreshable {
-            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
         }
         .toastView(toast: $waitingVM.waitingCancelToast)
         .dynamicTypeSize(.large)

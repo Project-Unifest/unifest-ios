@@ -192,7 +192,7 @@ struct WaitingRequestView: View {
                                         await waitingVM.addWaiting(
                                             boothId: boothId,
                                             phoneNumber: phoneNumber,
-                                            deviceId: DeviceUUIDManager.shared.getDeviceToken(),
+                                            deviceId: UIDevice.current.deviceToken,
                                             partySize: partySize,
                                             pinNumber: pin
                                         )

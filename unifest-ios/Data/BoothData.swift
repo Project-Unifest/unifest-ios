@@ -500,7 +500,7 @@ class BoothModel: ObservableObject {
     }
     
     private func uploadLikeNum(_ boothID: Int) {
-        let parameters = "{\"boothId\": \(boothID),\"token\": \"\(DeviceUUIDManager.shared.getDeviceToken())\"}"
+        let parameters = "{\"boothId\": \(boothID),\"token\": \"\(UIDevice.current.deviceToken)\"}"
         print(parameters)
         let postData = parameters.data(using: .utf8)
         
@@ -595,7 +595,7 @@ struct BoothDataTestView: View {
                 Text(festival.name)
             }
             
-            Text("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
+            Text("Device UUID: \(UIDevice.current.deviceToken)")
         }
     }
 }

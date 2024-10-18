@@ -52,13 +52,13 @@ struct WaitingCancelView: View {
                                         isCancellingWaiting = true
                                         await waitingVM.cancelWaiting(
                                             waitingId: waitingVM.waitingIdToCancel,
-                                            deviceId: DeviceUUIDManager.shared.getDeviceToken()
+                                            deviceId: UIDevice.current.deviceToken
                                         )
                                         waitingVM.cancelWaiting = false
                                         isCancellingWaiting = false
                                         
                                         if networkManager.isServerError == false { // true일 때는 RootView에서 NetworkErrorView 띄움
-                                            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                                            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
                                             waitingVM.waitingIdToCancel = -1
                                             waitingVM.waitingStatus = ""
                                             waitingVM.waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")
