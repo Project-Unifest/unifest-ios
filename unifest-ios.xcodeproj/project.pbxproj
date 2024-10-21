@@ -784,7 +784,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -805,7 +805,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -827,7 +827,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -848,7 +848,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.1;
+				MARKETING_VERSION = 2.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
