@@ -12,6 +12,7 @@ struct WaitingView: View {
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var isFetchingWaitingList = false
+    @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
     
     var body: some View {
         ZStack {
@@ -53,11 +54,17 @@ struct WaitingView: View {
         .background(.ufBackground)
         .task {
             isFetchingWaitingList = true
-            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            await throttleManager.throttle {
+                    await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            }
             isFetchingWaitingList = false
         }
         .refreshable {
-            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            isFetchingWaitingList = true
+            await throttleManager.throttle {
+                    await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+            }
+            isFetchingWaitingList = false
         }
         .toastView(toast: $waitingVM.waitingCancelToast)
         .dynamicTypeSize(.large)

@@ -20,6 +20,7 @@ struct StampView: View {
     @State private var isCameraPermissionAlertPresented = false
     @State private var isCameraAuthorized = false
     @State private var isFetchingStampInfo = false
+    @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
     
     var body: some View {
         VStack {
@@ -102,8 +103,12 @@ struct StampView: View {
                                         Button {
                                             Task {
                                                 isFetchingStampInfo = true
-                                                await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
-                                                await stampVM.getStampEnabledBooths(festivalId: 2)
+                                                await throttleManager.throttle {
+                                                        isFetchingStampInfo = true
+                                                        await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
+                                                        await stampVM.getStampEnabledBooths(festivalId: 2)
+                                                        isFetchingStampInfo = false
+                                                }
                                                 isFetchingStampInfo = false
                                             }
                                         } label: {
@@ -196,10 +201,14 @@ struct StampView: View {
             }
         }
         .task {
-            print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
+            // print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
             isFetchingStampInfo = true
-            await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
-            await stampVM.getStampEnabledBooths(festivalId: 2)
+            await throttleManager.throttle {
+                    isFetchingStampInfo = true
+                    await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
+                    await stampVM.getStampEnabledBooths(festivalId: 2)
+                    isFetchingStampInfo = false
+            }
             isFetchingStampInfo = false
         }
     }

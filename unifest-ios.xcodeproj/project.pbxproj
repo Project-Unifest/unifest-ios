@@ -56,6 +56,7 @@
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
+		F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */; };
 		F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F81BD3052CB3E88F0083134F /* CodeScanner */; };
 		F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */; };
 		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
@@ -145,6 +146,7 @@
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteFestival-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
+		F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleManager.swift; sourceTree = "<group>"; };
 		F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stamp-ViewModel.swift"; sourceTree = "<group>"; };
 		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
 		F82C55252CB6BD8B00EBCA68 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */,
 				0C72FAAB2BFA443200782B61 /* HapticManager.swift */,
 				F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */,
+				F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -627,6 +630,7 @@
 				F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */,
 				0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */,
 				0CC40F422BF9276B002759DF /* View+.swift in Sources */,
+				F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */,
 				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
