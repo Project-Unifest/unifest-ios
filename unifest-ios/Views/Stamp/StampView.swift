@@ -102,7 +102,7 @@ struct StampView: View {
                                         Button {
                                             Task {
                                                 isFetchingStampInfo = true
-                                                await stampVM.stampCount(token: UIDevice.current.deviceToken)
+                                                await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
                                                 await stampVM.getStampEnabledBooths(festivalId: 2)
                                                 isFetchingStampInfo = false
                                             }
@@ -130,7 +130,7 @@ struct StampView: View {
                                     }
 //                                    .refreshable {
 //                                        isFetchingStampInfo = true
-//                                        await stampVM.stampCount(token: UIDevice.current.deviceToken)
+//                                        await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
 //                                        await stampVM.getStampEnabledBooths(festivalId: 2)
 //                                        isFetchingStampInfo = false
 //                                    }
@@ -196,9 +196,9 @@ struct StampView: View {
             }
         }
         .task {
-            print("Device UUID: \(UIDevice.current.deviceToken)")
+            print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
             isFetchingStampInfo = true
-            await stampVM.stampCount(token: UIDevice.current.deviceToken)
+            await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
             await stampVM.getStampEnabledBooths(festivalId: 2)
             isFetchingStampInfo = false
         }
