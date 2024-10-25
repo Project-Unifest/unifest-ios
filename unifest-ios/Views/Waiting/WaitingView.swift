@@ -12,7 +12,7 @@ struct WaitingView: View {
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var isFetchingWaitingList = false
-    @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
+    @State private var throttleManager = ThrottleManager(throttleInterval: 1.0)
     
     var body: some View {
         ZStack {

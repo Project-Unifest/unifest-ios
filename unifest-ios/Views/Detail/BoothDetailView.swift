@@ -36,7 +36,8 @@ struct BoothDetailView: View {
     @State private var isReloadButtonPresent: Bool = false
     @State private var isMenuImagePresented: Bool = false
     @State private var menu = SelectedMenuInfo() // MenuBarView에서 음식 사진을 탭했을 때 MenuImageView로 음식 정보를 전달하기 위해 선언한 변수
-    @State private var selectedBoothHours = 0 // 주간부스(0), 야간부스(1)
+    @State private var selectedBoothHours = 0 // 주간부스(0), 야간부스(1), 현재 사용 X
+    @State private var isNoshowDialogPresented: Bool = false // 노쇼 처리된 부스에 웨이팅하기 버튼을 탭하면, 웨이팅 탭으로 이동해서 노쇼 부스를 지우도록 유도하는 다이얼로그 띄움
     @State private var isWaitingPinViewPresented: Bool = false
     @State private var isWaitingRequestViewPresented: Bool = false
     @State private var isWaitingCompleteViewPresented: Bool = false
@@ -66,7 +67,8 @@ struct BoothDetailView: View {
                     BoothFooterView(
                         viewModel: viewModel,
                         isReloadButtonPresent: $isReloadButtonPresent,
-                        isWaitingPinViewPresented: $isWaitingPinViewPresented
+                        isWaitingPinViewPresented: $isWaitingPinViewPresented,
+                        isNoshowDialogPresented: $isNoshowDialogPresented
                     )
                 }
                 
@@ -80,6 +82,10 @@ struct BoothDetailView: View {
                         menu.selectedMenuName = ""
                         menu.selectedMenuPrice = ""
                     }
+                }
+                
+                if isNoshowDialogPresented {
+                    BoothNoshowDialogView(isNoshowDialogPresented: $isNoshowDialogPresented)
                 }
                 
                 if isWaitingPinViewPresented {

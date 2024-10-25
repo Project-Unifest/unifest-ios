@@ -82,6 +82,7 @@
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
+		F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */; };
 		F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8A538B92C8D056200103E64 /* GoogleService-Info.plist */; };
 		F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */; };
 		F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F452C81E0B000DA4231 /* StampView.swift */; };
@@ -171,6 +172,7 @@
 		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothNoshowDialogView.swift; sourceTree = "<group>"; };
 		F8A538B92C8D056200103E64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampQRScanView.swift; sourceTree = "<group>"; };
 		F8A91F452C81E0B000DA4231 /* StampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampView.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				F80071632C3351360001596F /* MenuBarView.swift */,
 				0C2AA3C52BFBBBAF008FB5DF /* MenuImageView.swift */,
 				F84C6F902C4D1B7D00D9E414 /* BoothFooterView.swift */,
+				F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */,
 				F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */,
 				F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */,
 				F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */,
@@ -650,6 +653,7 @@
 				0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */,
 				0CBB058D2BB074ED00EB56BE /* SearchSchoolView.swift in Sources */,
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
+				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* Extensions.swift in Sources */,
@@ -788,7 +792,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -809,7 +813,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -831,7 +835,7 @@
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
 				DEVELOPMENT_TEAM = 9AGJDM8592;
 				ENABLE_PREVIEWS = YES;
@@ -852,7 +856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -12,6 +12,7 @@ struct BoothFooterView: View {
     @EnvironmentObject var waitingVM: WaitingViewModel
     @Binding var isReloadButtonPresent: Bool
     @Binding var isWaitingPinViewPresented: Bool
+    @Binding var isNoshowDialogPresented: Bool
     @Environment(\.colorScheme) var colorScheme
     @State private var isNotificationNotPermittedAlertPresented: Bool = false
     
@@ -68,7 +69,11 @@ struct BoothFooterView: View {
                             if let reservedWaitingList = waitingVM.reservedWaitingList {
                                 for list in reservedWaitingList {
                                     if list.boothId == viewModel.boothModel.selectedBoothID {
-                                        waitingVM.alreadyReservedToast = Toast(style: .warning, message: "이미 웨이팅 대기열에 존재합니다", bottomPadding: 51)
+                                        if list.status == "NOSHOW" {
+                                            isNoshowDialogPresented = true
+                                        } else {
+                                            waitingVM.alreadyReservedToast = Toast(style: .warning, message: "이미 웨이팅 대기열에 존재합니다", bottomPadding: 51)
+                                        }
                                         return // Task 내에서의 return은 일반 함수에서의 return과 동일한 방식으로 작동함
                                     }
                                 }
@@ -155,6 +160,6 @@ struct BoothFooterView: View {
 }
 
 #Preview {
-    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingPinViewPresented: .constant(false))
+    BoothFooterView(viewModel: RootViewModel(), isReloadButtonPresent: .constant(true), isWaitingPinViewPresented: .constant(false), isNoshowDialogPresented: .constant(false))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
 }

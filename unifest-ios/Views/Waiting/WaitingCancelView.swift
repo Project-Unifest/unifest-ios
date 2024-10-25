@@ -34,7 +34,7 @@ struct WaitingCancelView: View {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.system(size: 20))
                                 .foregroundStyle(.ufRed)
-                                .padding(.top, 10)
+                                .padding(.top, 3)
                             
                             Text(waitingVM.waitingStatus == "NOSHOW" ? "부재 웨이팅을 지웁니다" : "웨이팅을 취소합니다")
                                 .font(.pretendard(weight: .p6, size: 18))
