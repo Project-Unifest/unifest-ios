@@ -96,7 +96,7 @@ struct WaitingPinView: View {
                             
                             if waitingVM.isPinNumberValid == nil || waitingVM.isPinNumberValid == true {
                                 HStack {
-                                    Label("웨이팅 PIN은 부스 운영자에게 문의해주세요!", systemImage: "exclamationmark.circle.fill")
+                                    Label("웨이팅 PIN은 부스 운영자에게 문의해주세요", systemImage: "exclamationmark.circle.fill")
                                         .font(.pretendard(weight: .p5, size: 12))
                                         .foregroundStyle(.grey900)
                                     
@@ -106,7 +106,7 @@ struct WaitingPinView: View {
                                 .padding(.top, 1)
                             } else if waitingVM.isPinNumberValid == false {
                                 HStack {
-                                    Label("올바르지 않은 PIN입니다. 부스 운영자에게 문의바랍니다", systemImage: "exclamationmark.triangle.fill")
+                                    Label("올바르지 않은 PIN이에요. 부스 운영자에게 문의해주세요", systemImage: "exclamationmark.triangle.fill")
                                         .font(.pretendard(weight: .p5, size: 12))
                                         .foregroundStyle(.ufRed)
                                         .kerning(-0.87)

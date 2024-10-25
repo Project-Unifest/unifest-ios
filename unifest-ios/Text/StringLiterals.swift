@@ -16,7 +16,7 @@ enum StringLiterals {
     
     enum Intro {
         static let infoTitle = "관심있는 학교 축제를 추가해보세요"
-        static let infoSubtitle = "관심 학교는 언제든지 수정 가능합니다"
+        static let infoSubtitle = "관심 학교는 언제든지 수정 가능해요"
         static let searchPlaceholder = "학교를 검색해보세요"
         static let myFestivalTitle = "나의 관심 축제"
         static let discardAll = "모두 선택 해제"
@@ -26,9 +26,9 @@ enum StringLiterals {
     
     enum NetworkError {
         static let serverErrorTitle = "서버 문제 발생"
-        static let serverErrorMessage = "개발자에게 문의 바랍니다."
+        static let serverErrorMessage = "개발자에게 문의 바랍니다"
         static let networkErrorTitle = "네트워크 문제"
-        static let networkErrorMessage = "와이파이나 데이터 접속을 확인해주세요."
+        static let networkErrorMessage = "와이파이나 데이터 접속을 확인해 주시기 바랍니다"
         static let confirmError = "확인"
         static let retry = "재시도"
     }
@@ -37,7 +37,7 @@ enum StringLiterals {
         static let openLocation = "위치 확인하기"
         static let menuTitle = "메뉴"
         static let noMenuTitle = "등록된 메뉴가 없어요"
-        static let noWaitingBooth = "웨이팅을 지원하지 않는 부스입니다"
+        static let noWaitingBooth = "웨이팅을 지원하지 않는 부스예요"
         static let doWaiting = "웨이팅"
         static let won = "원"
     }

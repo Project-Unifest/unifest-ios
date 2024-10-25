@@ -27,7 +27,7 @@ struct BoothNoshowDialogView: View {
                             .foregroundStyle(.ufRed)
                             .padding(.top, 3)
                         
-                        Text("웨이팅 부재 처리된 부스입니다")
+                        Text("부재 처리된 부스예요")
                             .font(.pretendard(weight: .p6, size: 18))
                             .foregroundStyle(.grey900)
                             .padding(.top, 15)

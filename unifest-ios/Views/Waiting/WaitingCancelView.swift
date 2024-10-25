@@ -36,12 +36,12 @@ struct WaitingCancelView: View {
                                 .foregroundStyle(.ufRed)
                                 .padding(.top, 3)
                             
-                            Text(waitingVM.waitingStatus == "NOSHOW" ? "부재 웨이팅을 지웁니다" : "웨이팅을 취소합니다")
+                            Text(waitingVM.waitingStatus == "NOSHOW" ? "부재 중인 웨이팅을 지울게요" : "웨이팅을 취소할게요")
                                 .font(.pretendard(weight: .p6, size: 18))
                                 .foregroundStyle(.grey900)
                                 .padding(.top, 15)
                             
-                            Text(waitingVM.waitingStatus == "NOSHOW" ? "문제가 있는 경우 해당 부스 운영자에게 문의 바랍니다" : "정말 취소하시겠습니까?")
+                            Text(waitingVM.waitingStatus == "NOSHOW" ? "문제가 있는 경우 해당 부스 운영자에게 문의해주세요" : "정말로 취소하시겠어요?")
                                 .font(.pretendard(weight: .p5, size: 13))
                                 .foregroundStyle(.grey600)
                                 .padding(.top, -5)
