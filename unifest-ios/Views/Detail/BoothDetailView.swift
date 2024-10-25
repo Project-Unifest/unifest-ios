@@ -51,7 +51,9 @@ struct BoothDetailView: View {
                         BoothInfoView(
                             viewModel: viewModel,
                             selectedBoothHours: $selectedBoothHours,
-                            isReloadButtonPresent: $isReloadButtonPresent
+                            isReloadButtonPresent: $isReloadButtonPresent,
+                            isBoothThumbnailPresented: $isMenuImagePresented,
+                            boothThumbnail: $menu
                         )
                         
                         BoothMenuView(

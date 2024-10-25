@@ -46,12 +46,12 @@ struct MenuImageView: View {
                     case .success(let image):
                         image
                             .resizable()
-                            .scaledToFit()
+                            .scaledToFit() // 부모 뷰 내에서 비율을 유지하며 이미지를 최대한 크게 표시
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            .frame(maxWidth: 353, maxHeight: 250)
-                            .onTapGesture {
-                                // touch 방지
-                            }
+                            // .frame(maxWidth: 353, maxHeight: 430)
+//                            .onTapGesture {
+//                                // touch 방지
+//                            }
                     case .failure:
                         VStack {
                             Image(.noImagePlaceholder)
