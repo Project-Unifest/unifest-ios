@@ -82,6 +82,11 @@ struct BoothInfoView: View {
             }
             .frame(height: 260)
             .frame(maxWidth: .infinity)
+            .contentShape(Rectangle()) // contentShape: 원하는 터치 영역을 정확히 설정 가능
+            .onTapGesture {
+                // 부모 뷰로 터치 이벤트가 전달되지 않도록 차단
+                // 이미지 이외의 부분을 탭해도 MenuImageView가 뜨지 않도록 보장함
+            }
             
             // 주간, 야간 선택 탭바
 //            HStack {
