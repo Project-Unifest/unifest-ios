@@ -52,43 +52,47 @@ struct LikeBoothListView: View {
                  .padding(.top, 32)*/
                 
                 
-                List {
-                    ForEach(viewModel.boothModel.getFullLikedBoothList(), id: \.self) { boothID in
-                        if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                            // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                            LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                            // .padding(.vertical, 10)
-                                .listRowBackground(Color.ufBackground)
-                                .listRowSeparator(.hidden)
-                                .onTapGesture {
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                    viewModel.boothModel.loadBoothDetail(boothID)
-                                    tappedBoothId = boothID
-                                    isDetailViewPresented = true
-                                }
-                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                    Button {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                                        viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                                    } label: {
-                                        Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+                VStack {
+                    List {
+                        ForEach(viewModel.boothModel.getFullLikedBoothList(), id: \.self) { boothID in
+                            if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                // boothBox(image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                // .padding(.vertical, 10)
+                                    .listRowBackground(Color.ufBackground)
+                                    .listRowSeparator(.hidden)
+                                    .onTapGesture {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                        viewModel.boothModel.loadBoothDetail(boothID)
+                                        tappedBoothId = boothID
+                                        isDetailViewPresented = true
                                     }
-                                }
-                            // Divider()
-                        }
-                        else {
-                            HStack {
-                                Spacer()
-                                ProgressView()
-                                Spacer()
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                            viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                            viewModel.boothModel.deleteLike(boothID)
+                                        } label: {
+                                            Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+                                        }
+                                    }
+                                // Divider()
                             }
-                            .frame(height: 114)
+                            else {
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
+                                }
+                                .frame(height: 114)
+                            }
                         }
                     }
+                    .background(.ufBackground)
+                    .listStyle(.plain)
+                    .padding(.top, 23)
                 }
-                .background(.ufBackground)
-                .listStyle(.plain)
-                .padding(.top, 123)
+                .padding(.top, 100)
             }
             
             VStack {
@@ -108,7 +112,7 @@ struct LikeBoothListView: View {
                         VStack {
                             Spacer()
                             
-                            HStack(alignment: .bottom) {
+                            HStack {
                                 Button {
                                     dismiss()
                                 } label: {

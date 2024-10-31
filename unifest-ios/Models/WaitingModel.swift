@@ -59,7 +59,7 @@ struct ReservedWaitingResult: Codable {
     let createdAt: String
     let updatedAt: String
     let status: String
-    let waitingOrder: Int
+    let waitingOrder: Int?
     let boothName: String
     
     static var empty: ReservedWaitingResult {
@@ -71,7 +71,7 @@ struct ReservedWaitingResult: Codable {
             deviceId: "",
             createdAt: "",
             updatedAt: "",
-            status: "NOSHOW",
+            status: "CALLED",
             waitingOrder: -1,
             boothName: "Dummy name"
         )

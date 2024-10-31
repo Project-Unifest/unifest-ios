@@ -17,6 +17,7 @@ struct WaitingRequestView: View {
     @State private var isPolicyAgreed = false
     @State private var phoneNumberFormatError: Toast? = nil
     @State private var requestWaitingError: Toast? = nil
+    @State private var isAddingWaiting = false
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     let boothId: Int
@@ -31,211 +32,221 @@ struct WaitingRequestView: View {
             Color.black.opacity(0.66)
                 .ignoresSafeArea()
             
-            Color.ufWhite
-                .cornerRadius(10)
-                .frame(width: 301, height: 290)
-                .overlay {
-                    VStack {
-                        HStack {
-                            Spacer()
-                                .frame(width: 15, height: 15)
-                            
-                            Spacer()
-                            
-                            Image(.marker)
-                                .resizable()
-                                .frame(width: 11, height: 15)
-                                .padding(.trailing, -1)
-                            // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
-                                if let name = viewModel.boothModel.selectedBooth?.name {
-                                    if !name.isEmpty {
-                                        Text(name)
-                                            .font(.pretendard(weight: .p6, size: 15))
-                                            .foregroundStyle(.grey900)
-                                    }
-                                }
-                            
-                            Spacer()
-                            
-                            Button {
-                                pin = ""
-                                partySize = 2
-                                phoneNumber = ""
-                                formattedPhoneNumber = ""
-                                isWaitingRequestViewPresented = false
-                                isPhoneNumberValid = false
-                                isCompleted = false
-                                isPolicyAgreed = false
-                            } label: {
-                                Image(systemName: "xmark")
+            ZStack {
+                Color.ufWhite
+                    .cornerRadius(10)
+                    .frame(width: 301, height: 290)
+                    .overlay {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                    .frame(width: 15, height: 15)
+                                
+                                Spacer()
+                                
+                                Image(.marker)
                                     .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 11, height: 11)
-                                    .foregroundColor(.grey600)
+                                    .frame(width: 11, height: 15)
+                                    .padding(.trailing, -1)
+                                // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
+                                    if let name = viewModel.boothModel.selectedBooth?.name {
+                                        if !name.isEmpty {
+                                            Text(name)
+                                                .font(.pretendard(weight: .p6, size: 15))
+                                                .foregroundStyle(.grey900)
+                                        }
+                                    }
+                                
+                                Spacer()
+                                
+                                Button {
+                                    pin = ""
+                                    partySize = 2
+                                    phoneNumber = ""
+                                    formattedPhoneNumber = ""
+                                    isWaitingRequestViewPresented = false
+                                    isPhoneNumberValid = false
+                                    isCompleted = false
+                                    isPolicyAgreed = false
+                                } label: {
+                                    Image(systemName: "xmark")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 11, height: 11)
+                                        .foregroundColor(.grey600)
+                                }
                             }
-                        }
-                        .padding(.horizontal)
-                        
-                        Text("현재 내 앞 웨이팅")
-                            .font(.pretendard(weight: .p5, size: 13))
-                            .foregroundStyle(.grey600)
-                            .padding(.bottom, -5)
-                            .padding(.top, 1)
-                        
-                        Text(String(waitingVM.waitingTeamCount) + "팀")
-                            .font(.pretendard(weight: .p7, size: 28))
-                            .foregroundStyle(.grey900)
-                            .padding(.bottom, 1)
-                        
-                        Divider()
                             .padding(.horizontal)
-                            .padding(.bottom, 4)
-                        
-                        HStack {
-                            Text("인원 수")
-                                .font(.pretendard(weight: .p6, size: 14))
+                            
+                            Text("현재 내 앞 웨이팅")
+                                .font(.pretendard(weight: .p5, size: 13))
+                                .foregroundStyle(.grey600)
+                                .padding(.bottom, -5)
+                                .padding(.top, 1)
+                            
+                            Text(String(waitingVM.waitingTeamCount) + "팀")
+                                .font(.pretendard(weight: .p7, size: 28))
                                 .foregroundStyle(.grey900)
+                                .padding(.bottom, 1)
                             
-                            Spacer()
+                            Divider()
+                                .padding(.horizontal)
+                                .padding(.bottom, 4)
                             
-                            HStack(spacing: 10) {
-                                Button {
-                                    partySize -= 1
-                                } label: {
-                                    Image(.circleGrayButton)
-                                        .overlay {
-                                            Text("-")
-                                                .font(.pretendard(weight: .p3, size: 20))
-                                                .foregroundStyle(partySize == 1 ? .grey400 : .grey900)
-                                        }
-                                }
-                                .disabled(partySize == 1)
-                                
-                                Text("\(partySize)")
-                                    .font(.pretendard(weight: .p7, size: 15))
+                            HStack {
+                                Text("인원 수")
+                                    .font(.pretendard(weight: .p6, size: 14))
                                     .foregroundStyle(.grey900)
-                                    .frame(width: 30)
                                 
-                                Button {
-                                    partySize += 1
-                                } label: {
-                                    Image(.circleGrayButton)
-                                        .overlay {
-                                            Text("+")
-                                                .font(.pretendard(weight: .p3, size: 20))
-                                                .foregroundStyle(partySize == 100 ? .grey400 : .grey900)
-                                        }
-                                }
-                                .disabled(partySize == 100)
-                            }
-                        }
-                        .padding(.horizontal)
-                        
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(Color.grey400, lineWidth: 1)
-                            .frame(width: 272, height: 39)
-                            .overlay {
-                                TextField("전화번호를 입력해주세요", text: $formattedPhoneNumber)
-                                    .font(.system(size: 13))
-                                    .autocorrectionDisabled()
-                                    .textInputAutocapitalization(.never)
-                                    .fontWeight(.medium)
-                                    .padding(.horizontal)
-                                    .keyboardType(.numberPad)
-                                    .onChange(of: formattedPhoneNumber) { newValue in
-                                        let digits = newValue.filter { $0.isNumber }
-                                        
-                                        let limitedDigits = String(digits.prefix(11))
-                                        // 010123456789 이렇게 한자리 더 입력했을 때 phoneNumber에 잠깐 010123456789가 저장됐다가 01012345678이 되는데, 이거 방지
-                                        
-                                        formattedPhoneNumber = formatPhoneNumber(limitedDigits)
-                                        phoneNumber = limitedDigits
-                                        
-                                        isValidPhoneNumber(phoneNumber)
-                                        
-                                        print("저장된 전화번호: \(phoneNumber)")
+                                Spacer()
+                                
+                                HStack(spacing: 10) {
+                                    Button {
+                                        partySize -= 1
+                                    } label: {
+                                        Image(.circleGrayButton)
+                                            .overlay {
+                                                Text("-")
+                                                    .font(.pretendard(weight: .p3, size: 20))
+                                                    .foregroundStyle(partySize == 1 ? .grey400 : .grey900)
+                                            }
                                     }
-                                    .focused($isPhoneNumberTextFieldFocused)
-                            }
-                            .padding(.bottom, 4)
-                        
-                        HStack {
-                            Button {
-                                isPolicyAgreed.toggle()
-                            } label: {
-                                Image(isPolicyAgreed ? .checkboxChecked : .checkbox)
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                            }
-                            
-                            Link(destination: URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74")!) {
-                                Text("개인정보 처리방침")
-                                    .padding(.trailing, -8)
-                                    .font(.pretendard(weight: .p5, size: 12))
-                                    .foregroundStyle(.grey900)
-                                    .underline()
-                            }
-                            Text("에 동의합니다")
-                                .font(.pretendard(weight: .p5, size: 12))
-                                .foregroundStyle(.grey400)
-                            
-                            Spacer()
-                        }
-                        .padding(.leading)
-                        
-                        Button {
-                            if checkPhoneNumberFormat(phoneNumber) == true {
-                                Task {
-                                    await waitingVM.addWaiting(
-                                        boothId: boothId,
-                                        phoneNumber: phoneNumber,
-                                        deviceId: UIDevice.current.deviceToken,
-                                        partySize: partySize,
-                                        pinNumber: pin
-                                    )
+                                    .disabled(partySize == 1)
                                     
-                                    // addWaiting의 AF요청에 withCheckedContinuation을 적용했으므로 addWaiting 요청이 끝난 다음 아래 if문이 실행됨
-                                    if waitingVM.addWaitingResponseCode == "201" {
-                                        pin = ""
-                                        partySize = 2
-                                        phoneNumber = ""
-                                        formattedPhoneNumber = ""
-                                        isWaitingRequestViewPresented = false
-                                        isPhoneNumberValid = false
-                                        isCompleted = false
-                                        isPolicyAgreed = false
-                                        phoneNumberFormatError = nil
-                                        isWaitingRequestViewPresented = false
-                                        isWaitingCompleteViewPresented = true
-                                    } else {
-                                        requestWaitingError = Toast(style: .warning, message: waitingVM.addWaitingResponseMessage)
+                                    Text("\(partySize)")
+                                        .font(.pretendard(weight: .p7, size: 15))
+                                        .foregroundStyle(.grey900)
+                                        .frame(width: 30)
+                                    
+                                    Button {
+                                        partySize += 1
+                                    } label: {
+                                        Image(.circleGrayButton)
+                                            .overlay {
+                                                Text("+")
+                                                    .font(.pretendard(weight: .p3, size: 20))
+                                                    .foregroundStyle(partySize == 99 ? .grey400 : .grey900)
+                                            }
                                     }
+                                    .disabled(partySize == 99)
                                 }
-                            } else {
-                                phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요.")
-                                phoneNumber = ""
                             }
-                        } label: {
-                            RoundedRectangle(cornerRadius: 5)
-                                .fill(isPhoneNumberValid == false || isPolicyAgreed == false ? Color.grey600 : Color.primary500)
-                                .frame(width: 275, height: 45)
+                            .padding(.horizontal)
+                            
+                            RoundedRectangle(cornerRadius: 10)
+                                .strokeBorder(Color.grey400, lineWidth: 1)
+                                .frame(width: 272, height: 39)
                                 .overlay {
-                                    Text("웨이팅 신청")
+                                    TextField("전화번호를 입력해주세요", text: $formattedPhoneNumber)
                                         .font(.system(size: 13))
-                                        .foregroundStyle(.white)
-                                        .fontWeight(.semibold)
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                        .fontWeight(.medium)
+                                        .padding(.horizontal)
+                                        .keyboardType(.numberPad)
+                                        .onChange(of: formattedPhoneNumber) { newValue in
+                                            let digits = newValue.filter { $0.isNumber }
+                                            
+                                            let limitedDigits = String(digits.prefix(11))
+                                            // 010123456789 이렇게 한자리 더 입력했을 때 phoneNumber에 잠깐 010123456789가 저장됐다가 01012345678이 되는데, 이거 방지
+                                            
+                                            formattedPhoneNumber = formatPhoneNumber(limitedDigits)
+                                            phoneNumber = limitedDigits
+                                            
+                                            isValidPhoneNumber(phoneNumber)
+                                            
+                                            print("저장된 전화번호: \(phoneNumber)")
+                                        }
+                                        .focused($isPhoneNumberTextFieldFocused)
                                 }
+                                .padding(.bottom, 4)
+                            
+                            HStack {
+                                Button {
+                                    isPolicyAgreed.toggle()
+                                } label: {
+                                    Image(isPolicyAgreed ? .checkboxChecked : .checkbox)
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+                                }
+                                
+                                Link(destination: URL(string: "https://beaded-alley-5ed.notion.site/0398cc021c9d4879bdfbcd031d56da5e?pvs=74")!) {
+                                    Text("개인정보 처리방침")
+                                        .padding(.trailing, -8)
+                                        .font(.pretendard(weight: .p5, size: 12))
+                                        .foregroundStyle(.grey900)
+                                        .underline()
+                                }
+                                Text("에 동의합니다")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey400)
+                                
+                                Spacer()
+                            }
+                            .padding(.leading)
+                            
+                            Button {
+                                if checkPhoneNumberFormat(phoneNumber) == true {
+                                    Task {
+                                        isAddingWaiting = true
+                                        await waitingVM.addWaiting(
+                                            boothId: boothId,
+                                            phoneNumber: phoneNumber,
+                                            deviceId: DeviceUUIDManager.shared.getDeviceToken(),
+                                            partySize: partySize,
+                                            pinNumber: pin
+                                        )
+                                        
+                                        // addWaiting의 AF요청에 withCheckedContinuation을 적용했으므로 addWaiting 요청이 끝난 다음 아래 if문이 실행됨
+                                        if waitingVM.addWaitingResponseCode == "201" {
+                                            pin = ""
+                                            partySize = 2
+                                            phoneNumber = ""
+                                            formattedPhoneNumber = ""
+                                            isWaitingRequestViewPresented = false
+                                            isPhoneNumberValid = false
+                                            isCompleted = false
+                                            isPolicyAgreed = false
+                                            phoneNumberFormatError = nil
+                                            isWaitingRequestViewPresented = false
+                                            isWaitingCompleteViewPresented = true
+                                        } else {
+                                            requestWaitingError = Toast(style: .warning, message: waitingVM.addWaitingResponseMessage)
+                                        }
+                                        isAddingWaiting = false
+                                    }
+                                } else {
+                                    phoneNumberFormatError = Toast(style: .warning, message: "잘못된 전화번호 형식입니다. 다시 확인해 주세요.")
+                                    phoneNumber = ""
+                                }
+                            } label: {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .fill(isPhoneNumberValid == false || isPolicyAgreed == false ? Color.grey600 : Color.primary500)
+                                    .frame(width: 275, height: 45)
+                                    .overlay {
+                                        Text("웨이팅 신청")
+                                            .font(.system(size: 13))
+                                            .foregroundStyle(.white)
+                                            .fontWeight(.semibold)
+                                    }
+                            }
+                            .padding(.top, 3)
+                            .disabled(isPhoneNumberValid == false || isPolicyAgreed == false)
                         }
-                        .padding(.top, 3)
-                        .disabled(isPhoneNumberValid == false || isPolicyAgreed == false)
-                    }
                 }
+                
+                if isAddingWaiting {
+                    Color.black.opacity(0.2).ignoresSafeArea()
+                    ProgressView()
+                }
+            }
         }
         .onAppear {
             isPhoneNumberTextFieldFocused = true
         }
         .task {
-            await waitingVM.fetchWaitingTeamCount(boothId: boothId)
+            // checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 fetchWaitingTeamCount 호출할 필요가 없음
+            // await waitingVM.fetchWaitingTeamCount(boothId: boothId)
         }
         .toastView(toast: $phoneNumberFormatError)
         .toastView(toast: $requestWaitingError)

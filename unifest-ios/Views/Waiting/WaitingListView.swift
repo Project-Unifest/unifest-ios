@@ -19,7 +19,7 @@ struct WaitingListView: View {
                 HStack {
                     Text("총 \(reservedWaitingList.count)건")
                         .font(.pretendard(weight: .p6, size: 11))
-                        .foregroundStyle(.gray545454)
+                        .foregroundStyle(.grey900)
                         .padding(.leading, 10)
                     
                     Spacer()
@@ -33,9 +33,10 @@ struct WaitingListView: View {
                             viewModel: viewModel,
                             reservedWaitingListItem: reservedWaitingList[i]
                         )
-                            .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
+                        // .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
                     }
-                    .padding(.top, 8)
+                    .padding(.top, 8) // '총 O건'과 첫번째 WaitingInfoView 사이의 간격
+                    .padding(.bottom, 13) // 마지막 WaitingInfoView와 탭바 사이의 간격
                 }
             }
         } else { // reservedWaitingList가 nil이거나 빈 배열일 때

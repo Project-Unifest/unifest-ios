@@ -377,27 +377,27 @@ struct CalendarTabView: View {
                         }
                         .padding(.trailing, 10)
                         
-                        if isInfoPresented {
+                        // if isInfoPresented {
                             HStack(alignment: .center, spacing: 0) {
                                 simpleDot(.ufBluegreen)
                                     .padding(.trailing, 3)
                                 Text("1개")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 11))
                                     .foregroundStyle(.gray)
-                                    .padding(.trailing, 8)
+                                    .padding(.trailing, 6)
                                 simpleDot(.ufOrange)
                                     .padding(.trailing, 3)
                                 Text("2개")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 11))
                                     .foregroundStyle(.gray)
-                                    .padding(.trailing, 8)
+                                    .padding(.trailing, 6)
                                 simpleDot(.ufRed)
                                     .padding(.trailing, 3)
                                 Text("3개 이상")
-                                    .font(.system(size: 12))
+                                    .font(.system(size: 11))
                                     .foregroundStyle(.gray)
                             }
-                        }
+                        // }
                         
                         Spacer()
                         
@@ -604,7 +604,7 @@ struct CalendarTabView: View {
 //        let weekNumList = getWeekNumOfYear()
 //        let weekNum = weekNumList[currentMonth]
 //        return offsetYList[weekNum]
-        // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 호은님 실수인 듯?
+        // 위 코드에서 weekNum = weekNumList[currentMonth]인데 코드 상 currentMonth는 현재 8월이라면 8월로 fix됨 <- 실수인 듯?
         
         // 2024년을 기준으로 3월, 6월은 6주 나머지는 모두 5주이므로 2024년에 맞게 하드코딩함
         // print("monthPageIndex: \(monthPageIndex)")

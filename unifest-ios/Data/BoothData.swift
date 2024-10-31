@@ -76,6 +76,7 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var waitingEnabled: Bool
     var openTime: String?
     var closeTime: String?
+    var stampEnabled: Bool
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {
@@ -572,6 +573,7 @@ class BoothModel: ObservableObject {
     }
 }
 
+// DeviceUUIDManager에서 deviceToken을 생성 및 저장하도록 수정, 이 Extension은 더이상 사용되지 않음
 extension UIDevice {
     var deviceToken: String {
         if let identifierForVendor = UIDevice.current.identifierForVendor {

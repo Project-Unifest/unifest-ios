@@ -34,14 +34,14 @@ struct WaitingCancelView: View {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.system(size: 20))
                                 .foregroundStyle(.ufRed)
-                                .padding(.top, 10)
+                                .padding(.top, 3)
                             
-                            Text(waitingVM.waitingStatus == "NOSHOW" ? "부재 웨이팅을 지웁니다" : "웨이팅을 취소합니다")
+                            Text(waitingVM.waitingStatus == "NOSHOW" ? "부재 중인 웨이팅을 지울게요" : "웨이팅을 취소할게요")
                                 .font(.pretendard(weight: .p6, size: 18))
                                 .foregroundStyle(.grey900)
                                 .padding(.top, 15)
                             
-                            Text(waitingVM.waitingStatus == "NOSHOW" ? "문제가 있는 경우 해당 부스 운영자에게 문의 바랍니다" : "정말 취소하시겠습니까?")
+                            Text(waitingVM.waitingStatus == "NOSHOW" ? "문제가 있는 경우 해당 부스 운영자에게 문의해주세요" : "정말로 취소하시겠어요?")
                                 .font(.pretendard(weight: .p5, size: 13))
                                 .foregroundStyle(.grey600)
                                 .padding(.top, -5)
@@ -52,13 +52,13 @@ struct WaitingCancelView: View {
                                         isCancellingWaiting = true
                                         await waitingVM.cancelWaiting(
                                             waitingId: waitingVM.waitingIdToCancel,
-                                            deviceId: UIDevice.current.deviceToken
+                                            deviceId: DeviceUUIDManager.shared.getDeviceToken()
                                         )
                                         waitingVM.cancelWaiting = false
                                         isCancellingWaiting = false
                                         
                                         if networkManager.isServerError == false { // true일 때는 RootView에서 NetworkErrorView 띄움
-                                            await waitingVM.fetchReservedWaiting(deviceId: UIDevice.current.deviceToken)
+                                            await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                                             waitingVM.waitingIdToCancel = -1
                                             waitingVM.waitingStatus = ""
                                             waitingVM.waitingCancelToast = Toast(style: .success, message: "웨이팅을 취소했습니다")

@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "codescanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/twostraws/CodeScanner",
+      "state" : {
+        "revision" : "9fa582f4b36c69c2a55bff5fb3377eb170ae273c",
+        "version" : "2.5.1"
+      }
+    },
+    {
       "identity" : "confettiswiftui",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/simibac/ConfettiSwiftUI.git",
@@ -133,6 +142,15 @@
       "state" : {
         "revision" : "e17d61f26df0f0e06f58f6977ba05a097a720106",
         "version" : "1.27.1"
+      }
+    },
+    {
+      "identity" : "takuuid",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/taka0125/TAKUUID",
+      "state" : {
+        "revision" : "5eab7cd648fc4f6dc5844438fed8eaafb0e48063",
+        "version" : "1.6.0"
       }
     }
   ],

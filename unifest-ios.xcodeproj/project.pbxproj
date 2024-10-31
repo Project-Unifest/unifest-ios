@@ -56,6 +56,11 @@
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
 		F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */; };
 		F815E1402C330064002C61DB /* LongSchoolBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */; };
+		F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */; };
+		F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F81BD3052CB3E88F0083134F /* CodeScanner */; };
+		F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */; };
+		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
+		F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55252CB6BD8B00EBCA68 /* VoteView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -77,6 +82,7 @@
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
+		F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */; };
 		F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8A538B92C8D056200103E64 /* GoogleService-Info.plist */; };
 		F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */; };
 		F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A91F452C81E0B000DA4231 /* StampView.swift */; };
@@ -86,6 +92,8 @@
 		F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
+		F8EC28832CC12FDA00F2B218 /* TAKUUID in Frameworks */ = {isa = PBXBuildFile; productRef = F8EC28822CC12FDA00F2B218 /* TAKUUID */; };
+		F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */; };
 		F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -139,6 +147,10 @@
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
 		F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteFestival-ViewModel.swift"; sourceTree = "<group>"; };
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
+		F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleManager.swift; sourceTree = "<group>"; };
+		F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stamp-ViewModel.swift"; sourceTree = "<group>"; };
+		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
+		F82C55252CB6BD8B00EBCA68 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -160,6 +172,7 @@
 		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothNoshowDialogView.swift; sourceTree = "<group>"; };
 		F8A538B92C8D056200103E64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampQRScanView.swift; sourceTree = "<group>"; };
 		F8A91F452C81E0B000DA4231 /* StampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampView.swift; sourceTree = "<group>"; };
@@ -168,6 +181,7 @@
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingModel.swift; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
+		F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUUIDManager.swift; sourceTree = "<group>"; };
 		F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFestivalModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -176,10 +190,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8EC28832CC12FDA00F2B218 /* TAKUUID in Frameworks */,
 				0C683ABA2BF8F12C0076ECCF /* FirebaseMessaging in Frameworks */,
 				F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */,
 				0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */,
 				0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */,
+				F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +220,8 @@
 				0C244FCC2BF67E6B0047F23D /* VersionService.swift */,
 				0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */,
 				0C72FAAB2BFA443200782B61 /* HapticManager.swift */,
+				F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */,
+				F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -260,8 +278,10 @@
 			isa = PBXGroup;
 			children = (
 				0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */,
+				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
 				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
+				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -335,9 +355,9 @@
 		0C9D0A6B2BA1A43900156763 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */,
 				F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */,
 				F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */,
+				F82C55222CB3F06A00EBCA68 /* StampModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -383,6 +403,7 @@
 				0C9641ED2BB94C8100838DA9 /* Root */,
 				0CBB05802BB074ED00EB56BE /* Home */,
 				0CBB05862BB074ED00EB56BE /* Map */,
+				F82C55242CB6BD4D00EBCA68 /* Vote */,
 				0CDB46D32BB1DC8300C34AED /* Detail */,
 				0C9641F02BB94DDD00838DA9 /* Waiting */,
 				F8A91F442C81DFD400DA4231 /* Stamp */,
@@ -400,6 +421,7 @@
 				F80071632C3351360001596F /* MenuBarView.swift */,
 				0C2AA3C52BFBBBAF008FB5DF /* MenuImageView.swift */,
 				F84C6F902C4D1B7D00D9E414 /* BoothFooterView.swift */,
+				F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */,
 				F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */,
 				F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */,
 				F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */,
@@ -426,6 +448,14 @@
 			);
 			name = Extensions;
 			path = Text/Extensions;
+			sourceTree = "<group>";
+		};
+		F82C55242CB6BD4D00EBCA68 /* Vote */ = {
+			isa = PBXGroup;
+			children = (
+				F82C55252CB6BD8B00EBCA68 /* VoteView.swift */,
+			);
+			path = Vote;
 			sourceTree = "<group>";
 		};
 		F872669D2C4A342900687A0D /* Font */ = {
@@ -485,6 +515,8 @@
 				0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */,
 				0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */,
 				F8ABA9412C5A7DEF003A8CDB /* Alamofire */,
+				F81BD3052CB3E88F0083134F /* CodeScanner */,
+				F8EC28822CC12FDA00F2B218 /* TAKUUID */,
 			);
 			productName = "unifest-ios";
 			productReference = 0C9D0A582BA19DFE00156763 /* unifest-ios.app */;
@@ -518,6 +550,8 @@
 				0C244FCE2BF6837C0047F23D /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */,
+				F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */,
 			);
 			productRefGroup = 0C9D0A592BA19DFE00156763 /* Products */;
 			projectDirPath = "";
@@ -558,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C7A117E2BF25F25008713B7 /* BoothData.swift in Sources */,
+				F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */,
 				F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */,
 				0C6523932BC131F00085232D /* HomeView.swift in Sources */,
 				0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */,
@@ -572,6 +607,7 @@
 				F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */,
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
+				F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */,
 				0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */,
 				F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */,
 				0C9641F52BB94E7D00838DA9 /* MenuView.swift in Sources */,
@@ -589,12 +625,15 @@
 				F88A6D122C7A05810025459F /* ToastView.swift in Sources */,
 				0CE839D72BF38FBD003E211D /* LikedBoothBoxView.swift in Sources */,
 				F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */,
+				F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */,
 				0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */,
 				F84C6F8D2C4D0D4600D9E414 /* BoothInfoView.swift in Sources */,
 				0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */,
 				0C2A2BFE2BE9A87900EDF359 /* APIManager.swift in Sources */,
+				F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */,
 				0C72FAAC2BFA443200782B61 /* HapticManager.swift in Sources */,
 				0CC40F422BF9276B002759DF /* View+.swift in Sources */,
+				F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */,
 				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
@@ -614,6 +653,7 @@
 				0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */,
 				0CBB058D2BB074ED00EB56BE /* SearchSchoolView.swift in Sources */,
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
+				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* Extensions.swift in Sources */,
@@ -760,6 +800,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -772,7 +813,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 2.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -802,6 +843,7 @@
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "유니페스";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSCameraUsageDescription = "QR코드를 스캔하기 위해 카메라 권한 설정이 필요합니다";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "앱은 사용자의 위치 정보를 사용하여 지도 상의 내 위치를 확인하고 가까운 부스를 찾을 수 있습니다. 이를 통해 사용자와 가까운 상점 추천 및 거리 기반 서비스 제공이 가능합니다. 위치 정보는 서버로 수집되지 않으며, 언제든 메뉴에서 철회할 수 있습니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -814,7 +856,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 2.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -868,12 +910,28 @@
 				minimumVersion = 10.26.0;
 			};
 		};
+		F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 		F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.9.1;
+			};
+		};
+		F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/taka0125/TAKUUID";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -894,10 +952,20 @@
 			package = 0C683AB62BF8F12C0076ECCF /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
+		F81BD3052CB3E88F0083134F /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F81BD3042CB3E88F0083134F /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
 		F8ABA9412C5A7DEF003A8CDB /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F8ABA9402C5A7DEF003A8CDB /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		F8EC28822CC12FDA00F2B218 /* TAKUUID */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8EC28812CC12FDA00F2B218 /* XCRemoteSwiftPackageReference "TAKUUID" */;
+			productName = TAKUUID;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

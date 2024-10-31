@@ -18,29 +18,57 @@ struct MapViewiOS17: View {
     
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-
+    
+    @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
+    
     @Binding var searchText: String
     
     // 학교의 중심 좌표 설정
-    // 건국대학교 중심: 북 37.54263°, 동 127.07687°
-    // @State var mapCameraPosition = MapCameraPosition.camera(MapCamera(centerCoordinate: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), distance: 3000, heading: 0.0, pitch: 0))
+    // 건국대학교 중심
+    @State var mapCameraPositionKonkuk = MapCameraPosition.camera(MapCamera(
+        centerCoordinate: CLLocationCoordinate2D(
+            latitude: 37.542_634, longitude: 127.076_769
+        ),
+        distance: 3000,
+        heading: 0.0,
+        pitch: 0)
+    )
+    
     // 한경대학교 중심
-    @State var mapCameraPosition = MapCameraPosition.camera(
+    @State var mapCameraPositionHankyong = MapCameraPosition.camera(
         MapCamera(
-            centerCoordinate: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), // 기존 좌표에서 살짝 조정
+            centerCoordinate: CLLocationCoordinate2D(
+                latitude: 37.012_315, longitude: 127.263_380
+            ),
             distance: 2000,
             heading: 0.0,
             pitch: 0
         )
     )
     
+    // 한국교통대학교 중심
+    @State var mapCameraPositionUOT = MapCameraPosition.camera(
+        MapCamera(
+            centerCoordinate: CLLocationCoordinate2D(
+//                latitude: 36.969_868, longitude: 127.871_726
+                latitude: 36.970_368, longitude: 127.871_726
+            ),
+            distance: 2500, // 클수록 축소
+            heading: 0.0,
+            pitch: 0
+        )
+    )
+    
     // 지도가 이동하거나 확대,축소할 수 있는 경계영역 지정(지도의 특정 범위 넘어서 이동하지 못하도록 제한)
-    // let mapCameraBounds: MapCameraBounds = MapCameraBounds(minimumDistance: 0, maximumDistance: 4000)
     // 건국대학교 경계영역
-    // let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    let mapCameraBoundsKonkuk: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
     
     // 한경대학교 경계영역
-    let mapCameraBounds: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    let mapCameraBoundsHankyong: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+    
+    // 한국교통대학교 경계영역
+    let mapCameraBoundsUOT: MapCameraBounds = MapCameraBounds(centerCoordinateBounds: MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)), minimumDistance: 0, maximumDistance: 4000)
+        // span의 latitudeDelta, longitudeDelta의 비율이 적절해야 확대했을 때도 지도 상에서 원하는 위치로 이동 가능(비율이 맞지 않으면 확대한 상태에서 스크롤해도 원하는 위치로 이동하지 않는 문제가 발생할 수 있음)
     
     // 학교의 경계 좌표
     let polygonKonkuk: [CLLocationCoordinate2D] = [
@@ -123,6 +151,46 @@ struct MapViewiOS17: View {
         CLLocationCoordinate2D(latitude: 37.0125265, longitude: 127.2598301)
     ]
     
+    let polygonUOT: [CLLocationCoordinate2D] = [
+        CLLocationCoordinate2D(latitude: 36.9665013, longitude: 127.8746701),
+        CLLocationCoordinate2D(latitude: 36.9697908, longitude: 127.8750296),
+        CLLocationCoordinate2D(latitude: 36.970273, longitude: 127.8755821),
+        CLLocationCoordinate2D(latitude: 36.9710187, longitude: 127.8758047),
+        CLLocationCoordinate2D(latitude: 36.9712394, longitude: 127.8763143),
+        CLLocationCoordinate2D(latitude: 36.9718673, longitude: 127.8762848),
+        CLLocationCoordinate2D(latitude: 36.9723623, longitude: 127.8760488),
+        CLLocationCoordinate2D(latitude: 36.9730073, longitude: 127.8750725),
+        CLLocationCoordinate2D(latitude: 36.9735752, longitude: 127.8749035),
+        CLLocationCoordinate2D(latitude: 36.9745373, longitude: 127.8718216),
+        CLLocationCoordinate2D(latitude: 36.9749209, longitude: 127.8718511),
+        CLLocationCoordinate2D(latitude: 36.9749573, longitude: 127.871717),
+        CLLocationCoordinate2D(latitude: 36.9749423, longitude: 127.8714327),
+        CLLocationCoordinate2D(latitude: 36.9748866, longitude: 127.8712932),
+        CLLocationCoordinate2D(latitude: 36.9748759, longitude: 127.8710518),
+        CLLocationCoordinate2D(latitude: 36.9748266, longitude: 127.8709875),
+        CLLocationCoordinate2D(latitude: 36.9747516, longitude: 127.8709794),
+        CLLocationCoordinate2D(latitude: 36.974503, longitude: 127.871202),
+        CLLocationCoordinate2D(latitude: 36.9744816, longitude: 127.8713871),
+        CLLocationCoordinate2D(latitude: 36.9742309, longitude: 127.871481),
+        CLLocationCoordinate2D(latitude: 36.9738688, longitude: 127.8714676),
+        CLLocationCoordinate2D(latitude: 36.9734873, longitude: 127.8712637),
+        CLLocationCoordinate2D(latitude: 36.9734595, longitude: 127.8712047),
+        CLLocationCoordinate2D(latitude: 36.9732323, longitude: 127.8709392),
+        CLLocationCoordinate2D(latitude: 36.9727823, longitude: 127.870899),
+        CLLocationCoordinate2D(latitude: 36.9726773, longitude: 127.8708185),
+        CLLocationCoordinate2D(latitude: 36.9709823, longitude: 127.8689517),
+        CLLocationCoordinate2D(latitude: 36.9708559, longitude: 127.8688551),
+        CLLocationCoordinate2D(latitude: 36.9696494, longitude: 127.8683455),
+        CLLocationCoordinate2D(latitude: 36.9691351, longitude: 127.8682275),
+        CLLocationCoordinate2D(latitude: 36.9687129, longitude: 127.8682677),
+        CLLocationCoordinate2D(latitude: 36.9678493, longitude: 127.867742),
+        CLLocationCoordinate2D(latitude: 36.9675857, longitude: 127.8676401),
+        CLLocationCoordinate2D(latitude: 36.9674914, longitude: 127.8676428),
+        CLLocationCoordinate2D(latitude: 36.9667563, longitude: 127.8711806),
+        CLLocationCoordinate2D(latitude: 36.9664756, longitude: 127.87246),
+        CLLocationCoordinate2D(latitude: 36.9664906, longitude: 127.8746728)
+    ]
+    
     let personalBoothList: [CLLocationCoordinate2D] = [
         CLLocationCoordinate2D(latitude: 37.54376, longitude: 127.07689),
         CLLocationCoordinate2D(latitude: 37.54367, longitude: 127.07789),
@@ -150,41 +218,41 @@ struct MapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPosition, bounds: mapCameraBounds, scope: mainMap) {
+            Map(initialPosition: mapCameraPositionUOT, bounds: mapCameraBoundsUOT, scope: mainMap) {
                 UserAnnotation() // 사용자의 현재 위치를 맵에 나타냄
                 
                 // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
                 if colorScheme == .dark {
-                    MapPolygon(coordinates: polygonHankyong)
+                    MapPolygon(coordinates: polygonUOT)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
                         MapPolygon(coordinates: boxPolygon)
-                            .foregroundStyle(.black.opacity(0.6))
+                            .foregroundStyle(.black.opacity(0.5))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonHankyong)
+                    MapPolygon(coordinates: polygonUOT)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonHankyong) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
                         MapPolygon(coordinates: boxPolygon)
-                            .foregroundStyle(.gray.opacity(0.2))
+                            .foregroundStyle(.gray.opacity(0.25))
                     }
                 }
                 
                 /*
                  // 개인 부스
                  MapPolygon(coordinates: personalBoothList)
-                     .foregroundStyle(.brown.opacity(0.1))
-                     .stroke(.brown.opacity(0.5), lineWidth: 0.5)
+                 .foregroundStyle(.brown.opacity(0.1))
+                 .stroke(.brown.opacity(0.5), lineWidth: 0.5)
                  Annotation("개인 부스", coordinate: personalBoothCenter) { }
                  
                  // 푸드트럭
                  MapPolygon(coordinates: foodtruckBoothList)
-                     .foregroundStyle(.red.opacity(0.1))
-                     .stroke(.red.opacity(0.5), lineWidth: 0.5)
+                 .foregroundStyle(.red.opacity(0.1))
+                 .stroke(.red.opacity(0.5), lineWidth: 0.5)
                  Annotation("푸드트럭", coordinate: foodtruckCenter) { }
                  */
                 
@@ -214,10 +282,10 @@ struct MapViewiOS17: View {
                 mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
             }
             .mapControls {
-//                MapCompass()
-//                MapPitchToggle()
-//                MapUserLocationButton()
-//                MapScaleView()
+                //                MapCompass()
+                //                MapPitchToggle()
+                //                MapUserLocationButton()
+                //                MapScaleView()
             }
             .controlSize(.mini)
             // .mapStyle(.standard)
@@ -225,17 +293,18 @@ struct MapViewiOS17: View {
             .onMapCameraChange { mapCameraUpdateContext in
                 print("mapCam distance: \(mapCameraUpdateContext.camera.distance)")
                 print("mapCam Center: (\(mapCameraUpdateContext.camera.centerCoordinate.latitude), \(mapCameraUpdateContext.camera.centerCoordinate.longitude))")
-       
+                
                 // 비율이 달라진 경우에만 업데이트
                 if (abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1) {
                     print("last dist: \(lastDistance), new dist: \(mapCameraUpdateContext.camera.distance)")
                     let newDistance = mapCameraUpdateContext.camera.distance
                     
-                    if newDistance > 1000 && lastDistance <= 1000 {
+                    // newDistance값이 작으면 지도를 더 많이 확대해야 clustering이 풀림
+                    if newDistance > 500 && lastDistance <= 500 {
                         isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
                         mapViewModel.updateAnnotationList(makeCluster: isClustering)
                     }
-                    else if newDistance < 1000 && lastDistance >= 1000 {
+                    else if newDistance < 500 && lastDistance >= 500 {
                         // 1000 이상 -> 1000 미만
                         isClustering = false
                         mapViewModel.updateAnnotationList(makeCluster: false)
@@ -263,13 +332,39 @@ struct MapViewiOS17: View {
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        MapUserLocationButton(scope: mainMap)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.ufBackground)
-                            )
-                            .mapControlVisibility(.automatic)
-                            .controlSize(.mini)
+                        // 위치 권한이 있을 떄, 없을 때로 구분
+                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
+//                            Button {
+//                                isLocationAuthNotPermittedAlertPresented = true
+//                            } label: {
+//                                RoundedRectangle(cornerRadius: 10)
+//                                    .fill(Color.ufBackground)
+//                                    .controlSize(.mini)
+//                                    .overlay {
+//                                        Image(systemName: "location")
+//                                            .foregroundStyle(.primary500)
+//                                    }
+//                            }
+                            MapUserLocationButton(scope: mainMap)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(.ufBackground)
+                                )
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                                .onTapGesture {
+                                    isLocationAuthNotPermittedAlertPresented = true
+                                    // 추후에 onTapGesture 말고 정상적인 방법으로 위치권한 체크하도록 코드 수정하기
+                                }
+                        } else {
+                            MapUserLocationButton(scope: mainMap)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .foregroundColor(.ufBackground)
+                                )
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                        }
                         MapCompass(scope: mainMap)
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
@@ -280,6 +375,22 @@ struct MapViewiOS17: View {
                 .padding(.horizontal, 5)
             }
             
+        }
+        .alert("위치 권한 안내", isPresented: $isLocationAuthNotPermittedAlertPresented) {
+            HStack {
+                Button("닫기", role: .cancel) { }
+                
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                    
+                }
+            }
+        } message: {
+            Text("현재 위치를 확인하려면 위치 권한을 허용해야돼요. 앱 설정에서 위치 권한을 수정할 수 있어요.")
         }
         .mapScope(mainMap)
         .onAppear() {
@@ -384,75 +495,75 @@ struct MapViewiOS17: View {
 }
 
 /* struct CustomMapView<AnnotationView: View>: UIViewRepresentable {
-    @Binding var region: MKCoordinateRegion
-    var annotationItems: [MapAnnotationData]
-    var annotationContent: (MapAnnotationData) -> AnnotationView
-
-    class Coordinator: NSObject, MKMapViewDelegate {
-        var parent: CustomMapView
-
-        init(parent: CustomMapView) {
-            self.parent = parent
-        }
-
-        func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-            DispatchQueue.main.async {
-                self.parent.region = mapView.region
-            }
-        }
-
-        func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-            guard let customAnnotation = annotation as? CustomAnnotation else {
-                return nil
-            }
-            let identifier = "customAnnotation"
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-            
-            if annotationView == nil {
-                annotationView = MKAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
-                annotationView?.canShowCallout = true
-            } else {
-                annotationView?.annotation = customAnnotation
-            }
-            
-            if let uiView = customAnnotation.view {
-                annotationView?.addSubview(uiView)
-                annotationView?.frame = uiView.frame
-            }
-            
-            return annotationView
-        }
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self)
-    }
-
-    func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView()
-        mapView.delegate = context.coordinator
-        mapView.setRegion(region, animated: true)
-        mapView.showsUserLocation = true
-        return mapView
-    }
-
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        if uiView.region.center.latitude != region.center.latitude || uiView.region.center.longitude != region.center.longitude || uiView.region.span.latitudeDelta != region.span.latitudeDelta || uiView.region.span.longitudeDelta != region.span.longitudeDelta {
-            uiView.setRegion(region, animated: true)
-        }
-
-        // Remove existing annotations
-        uiView.removeAnnotations(uiView.annotations)
-
-        // Add new annotations
-        let annotations = annotationItems.map { annotationItem -> CustomAnnotation in
-            let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotationItem.latitude, longitude: annotationItem.longitude))
-            annotation.view = UIHostingController(rootView: annotationContent(annotationItem)).view
-            return annotation
-        }
-        uiView.addAnnotations(annotations)
-    }
-} */
+ @Binding var region: MKCoordinateRegion
+ var annotationItems: [MapAnnotationData]
+ var annotationContent: (MapAnnotationData) -> AnnotationView
+ 
+ class Coordinator: NSObject, MKMapViewDelegate {
+ var parent: CustomMapView
+ 
+ init(parent: CustomMapView) {
+ self.parent = parent
+ }
+ 
+ func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+ DispatchQueue.main.async {
+ self.parent.region = mapView.region
+ }
+ }
+ 
+ func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+ guard let customAnnotation = annotation as? CustomAnnotation else {
+ return nil
+ }
+ let identifier = "customAnnotation"
+ var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+ 
+ if annotationView == nil {
+ annotationView = MKAnnotationView(annotation: customAnnotation, reuseIdentifier: identifier)
+ annotationView?.canShowCallout = true
+ } else {
+ annotationView?.annotation = customAnnotation
+ }
+ 
+ if let uiView = customAnnotation.view {
+ annotationView?.addSubview(uiView)
+ annotationView?.frame = uiView.frame
+ }
+ 
+ return annotationView
+ }
+ }
+ 
+ func makeCoordinator() -> Coordinator {
+ Coordinator(parent: self)
+ }
+ 
+ func makeUIView(context: Context) -> MKMapView {
+ let mapView = MKMapView()
+ mapView.delegate = context.coordinator
+ mapView.setRegion(region, animated: true)
+ mapView.showsUserLocation = true
+ return mapView
+ }
+ 
+ func updateUIView(_ uiView: MKMapView, context: Context) {
+ if uiView.region.center.latitude != region.center.latitude || uiView.region.center.longitude != region.center.longitude || uiView.region.span.latitudeDelta != region.span.latitudeDelta || uiView.region.span.longitudeDelta != region.span.longitudeDelta {
+ uiView.setRegion(region, animated: true)
+ }
+ 
+ // Remove existing annotations
+ uiView.removeAnnotations(uiView.annotations)
+ 
+ // Add new annotations
+ let annotations = annotationItems.map { annotationItem -> CustomAnnotation in
+ let annotation = CustomAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotationItem.latitude, longitude: annotationItem.longitude))
+ annotation.view = UIHostingController(rootView: annotationContent(annotationItem)).view
+ return annotation
+ }
+ uiView.addAnnotations(annotations)
+ }
+ } */
 
 @available(iOS 16, *)
 struct MapViewiOS16: View {
@@ -464,10 +575,13 @@ struct MapViewiOS16: View {
     
     // MapViewiOS17의 mapCameraPosition변수와 비슷한 역할(지도의 카메라 위치(중심 좌표, 거리, 회전 각도 등)를 설정함)
     // 건국대학교 중심
-    // @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
-              
+    @State private var regionCenterKonkuk = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
+    
     // 한경대학교 중심
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
+    @State private var regionCenterHankyong = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
+    
+    // 한국교통대학교 중심
+    @State private var regionCenterUOT = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
     
     // distance
     @State private var lastDelta: CGFloat = 0.009
@@ -475,7 +589,7 @@ struct MapViewiOS16: View {
     @State private var isClustering: Bool = false
     
     var body: some View {
-        Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
+        Map(coordinateRegion: $regionCenterUOT, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotation.latitude, longitude: annotation.longitude)) {
                 BoothAnnotation(mapViewModel: mapViewModel, annID: annotation.id, boothType: annotation.annType, number: annotation.boothIDList.count)
                     .onTapGesture {
@@ -483,7 +597,7 @@ struct MapViewiOS16: View {
                     }
             }
         }
-        .onChange(of: region.span.latitudeDelta) { newDelta in
+        .onChange(of: regionCenterUOT.span.latitudeDelta) { newDelta in
             handleRegionDeltaChange(newDelta)
         }
         .onChange(of: searchText) { _ in
@@ -544,9 +658,9 @@ struct MapViewiOS16: View {
         } else if newDelta < 0.003 && lastDelta >= 0.003 {
             updateClusterAnnotation(false)
         }
-
+        
         lastDelta = newDelta
-        region = cameraRegion
+        regionCenterHankyong = cameraRegion
     }
     
     private func handleSearchTextChange() {
@@ -602,7 +716,7 @@ struct MapViewiOS16: View {
 class CustomAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
     var view: UIView?
-
+    
     init(coordinate: CLLocationCoordinate2D) {
         self.coordinate = coordinate
         self.view = nil
@@ -618,11 +732,13 @@ struct BoothAnnotation: View {
     
     var body: some View {
         ZStack {
-            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+//            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 50 : 40)
             
             switch boothType {
             case .drink:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+                // Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -634,7 +750,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -652,7 +769,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -670,7 +788,7 @@ struct BoothAnnotation: View {
                                 .frame(width: 16, height: 16)
                                 .overlay {
                                     Text("\(number)")
-                                        .font(.system(size: 9))
+                                        .font(.system(size: 10))
                                         .foregroundStyle(.white)
                                         .bold()
                                 }
@@ -685,7 +803,7 @@ struct BoothAnnotation: View {
                             }
                             .overlay {
                                 Text("\(number)")
-                                    .font(.system(size: 9))
+                                    .font(.system(size: 10))
                                     .foregroundStyle(.white)
                                     .bold()
                             }
@@ -693,7 +811,8 @@ struct BoothAnnotation: View {
                         Spacer()
                     }
                 }
-                .frame(width: 44, height: 49)
+                // .frame(width: 44, height: 49)
+                .frame(width: 39, height: 44)
             }
         }
     }

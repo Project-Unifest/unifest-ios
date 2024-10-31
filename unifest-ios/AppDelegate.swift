@@ -54,9 +54,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
+    // 디바이스가 APNs로부터 받은 디바이스 토큰을 처리하는 메서드
+    // device token: APNs에서 디바이스를 식별할 때 사용
+    // fcm token: fcm을 통해 디바이스에 푸시 알림을 보낼 때 사용, FCM이 APNs 토큰을 기반으로 생성함
+    // fcm token은 아래의 messaging()메서드에서 처리
     
-    // 백그라운드에서 푸시 알림을 탭했을 때 실행
-    // 앱이 APNs 토큰을 수신할 때 실행되는 메서드
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         print("APNS token: \(deviceToken)")
@@ -74,21 +76,34 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         // userInfo에 접근(aps 메시지와 커스텀 데이터로 구성됨)
         let userInfo = response.notification.request.content.userInfo
+        print("UserInfo: \(userInfo)")
         
         // aps 메시지 부분
         if let aps = userInfo["aps"] as? [String: Any] {
             // 메시지의 제목, 본문 등 알림의 내용을 확인할 수 있음
+            print("aps: \(aps)")
         }
         
         // 커스텀 데이터 부분
         if let boothIdString = userInfo["boothId"] as? String, let boothId = Int(boothIdString) {
-            print("페이로드에서 도착한 boothId: \(boothId)")
-            print("boothId type: \(type(of: boothId))")
+            print("페이로드 boothId: \(boothId)")
+            
+            // 알림을 통해 특정 뷰로 이동하도록 알림 게시
+            NotificationCenter.default.post(name: NSNotification.Name("NavigateToMapPage"), object: nil, userInfo: ["boothId": boothId])
+            // object: nil <- 어떤 객체가 알림을 보냈는지 상관없이 모든 알림을 처리하도록 함(이렇게 해도 상관없을 듯)
+        } else {
+            NotificationCenter.default.post(name: NSNotification.Name("NavigateToWaitingTab"), object: nil)
         }
+        
+        completionHandler()
+        // UNUserNotificationCenter 메서드에서 푸시알림을 처리한 뒤 시스템에 알림 처리가 완료됐음을 알려줌 <- 호출 안하면 시스템이 알림 처리가 계속 진행 중이라고 판단할 수 있음
     }
 }
 
 extension AppDelegate: MessagingDelegate {
+    // 푸시알림을 FCM을 통해서 보낸다면 FCM토큰이 APNs 토큰과 연계됨
+    // FCM은 APNs 토큰을 기반으로 자체적으로 생성한 토큰을 사용해 디바이스를 식별함
+    // 아래의 messaging메서드가 이 기능 수행
     
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {

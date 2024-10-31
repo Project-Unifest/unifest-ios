@@ -13,6 +13,8 @@ struct BoothInfoView: View {
     @State private var isOperatingHoursExpanded: Bool = false
     @Binding var selectedBoothHours: Int
     @Binding var isReloadButtonPresent: Bool
+    @Binding var isBoothThumbnailPresented: Bool
+    @Binding var boothThumbnail: SelectedMenuInfo
     @Environment(\.dismiss) var dismiss
     @Environment(\.colorScheme) var colorScheme
     let boothHours = ["주간부스", "야간부스"]
@@ -30,6 +32,14 @@ struct BoothInfoView: View {
                     .scaledToFill()
                     .frame(width: UIScreen.main.bounds.width, height: 260)
                     .clipped()
+                    .onTapGesture {
+                        boothThumbnail.selectedMenuURL = viewModel.boothModel.selectedBooth?.thumbnail ?? ""
+                        boothThumbnail.selectedMenuName = ""
+                        boothThumbnail.selectedMenuPrice = ""
+                            withAnimation(.spring(duration: 0.1)) {
+                                isBoothThumbnailPresented = true
+                            }
+                    }
                 
                 // * 추후 코드 수정
                 // 화면의 가로 길이를 UIScreen 말고 GeometryReader로 가져오는 게 권장되는데,
@@ -66,12 +76,18 @@ struct BoothInfoView: View {
                             }
                         }
                         .padding()
+                        .contentShape(Rectangle().inset(by: -30)) // 터치 영역 확장
                     }
                     Spacer()
                 }
             }
             .frame(height: 260)
             .frame(maxWidth: .infinity)
+            .contentShape(Rectangle()) // contentShape: 원하는 터치 영역을 정확히 설정 가능
+            .onTapGesture {
+                // 부모 뷰로 터치 이벤트가 전달되지 않도록 차단
+                // 이미지 이외의 부분을 탭해도 MenuImageView가 뜨지 않도록 보장함
+            }
             
             // 주간, 야간 선택 탭바
 //            HStack {
@@ -179,6 +195,7 @@ struct BoothInfoView: View {
                             Text("운영시간")
                                 .font(.pretendard(weight: .p5, size: 13))
                                 .foregroundStyle(.grey900)
+                                .padding(.leading, -2)
                             
                             Image(systemName: "chevron.down")
                                 .resizable()
@@ -234,9 +251,15 @@ struct BoothInfoView: View {
                 HStack {
                     Image(.marker)
                     
-                    Text(viewModel.boothModel.selectedBooth?.location ?? "")
-                        .font(.pretendard(weight: .p5, size: 13))
-                        .foregroundStyle(.grey900)
+                    if let location = viewModel.boothModel.selectedBooth?.location {
+                        Text(location.isEmpty ? "등록된 위치 설명이 없습니다" : location)
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey900)
+                    } else {
+                        Text("등록된 위치 설명이 없습니다")
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey900)
+                    }
                     
                     Spacer()
                 }
@@ -305,7 +328,7 @@ struct BoothInfoView: View {
     @ObservedObject var viewModel = RootViewModel()
     
     return Group {
-        BoothInfoView(viewModel: viewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true))
+        BoothInfoView(viewModel: viewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true), isBoothThumbnailPresented: .constant(false), boothThumbnail: .constant(SelectedMenuInfo()))
             .onAppear {
                 viewModel.boothModel.selectedBoothID = 119
                 viewModel.boothModel.loadBoothDetail(119)

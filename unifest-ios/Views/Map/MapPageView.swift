@@ -252,6 +252,7 @@ struct BoothBox: View {
                         }
                     }
                     .frame(width: 86, height: 86)
+                    .padding(.leading, 14)
                     
                     VStack(alignment: .leading) {
                         // MarqueeText(text: title, font: .systemFont(ofSize: 18), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
@@ -261,11 +262,13 @@ struct BoothBox: View {
                             .baselineOffset(3)
                             .lineLimit(1)
                         
-                        Text(description)
+                        Text(description.isEmpty ? "등록된 정보가 없습니다" : description)
                             .font(.pretendard(weight: .p4, size: 13))
                             .foregroundStyle(.grey600)
                         //.baselineOffset(4)
                             .lineLimit(2)
+                        
+                        Spacer()
                         
                         HStack(spacing: 2) {
                             Image(.marker)
@@ -274,20 +277,23 @@ struct BoothBox: View {
                                 .frame(width: 16, height: 16)
                             
                             // MarqueeText(text: position, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 2, alignment: .leading)
-                            Text(position)
+                            Text(position.isEmpty ? "등록된 위치 설명이 없습니다" : position)
                                 .font(.pretendard(weight: .p6, size: 13))
                                 .foregroundStyle(.grey700)
                                 .lineLimit(1)
                         }
                         .padding(.bottom, 3)
                     }
-                    .frame(width: 160)
                     .padding(.leading, 10)
+                    .padding(.vertical, 15)
+                    
+                    Spacer()
                 }
             }
     }
 }
 
 #Preview {
-    MapPageView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
+    // MapPageView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
+    BoothBox(rank: -1, title: "test", description: "test", position: "", imageURL: "")
 }

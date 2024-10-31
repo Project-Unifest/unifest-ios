@@ -95,13 +95,16 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         switch locationManager.authorizationStatus {
         case .notDetermined:
             print("not determined")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .restricted:
             print("restricted")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .denied:
             print("denied")
-            requestLocationAuthorization()
+            break
+            // requestLocationAuthorization()
         case .authorizedAlways, .authorizedWhenInUse:
             print("allowed")
             break
@@ -114,7 +117,9 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        checkLocationAuthorization()
+        DispatchQueue.main.async {
+                self.checkLocationAuthorization()
+            }
     }
     
     // 이 함수 호출 시 사용자 위치 정보 업데이트 시작
@@ -151,7 +156,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         }
     }
     
-    func updateAnnotationList(makeCluster: Bool = false, searchText: String = "") {
+    func updateAnnotationList(makeCluster: Bool = false, clusterRadius: Double = 0.1, searchText: String = "") {
         var newList: [MapAnnotationData] = []
         var counter: Int = 0
         
@@ -174,7 +179,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         else if makeCluster {
             for boothType in BoothType.allCases {
                 if isTagSelected[boothType] ?? false {
-                    let clusteredList = clusterAnnotations(clusterRadius: 0.1, boothType: boothType)
+                    let clusteredList = clusterAnnotations(clusterRadius: clusterRadius, boothType: boothType)
                     
                     for clustered in clusteredList {
                         let newAnn = MapAnnotationData(id: counter, annType: boothType, boothIDList: clustered.boothIDList, latitude: clustered.center.latitude, longitude: clustered.center.longitude)
@@ -224,6 +229,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             for cluster in clusters {
                 let distance = calculateDistance(itemCoord: cluster.center, mvCoord: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude))
                 
+                // 클러스터링 반경 조절 가능(clusterRadius 값이 클수록 클러스터링 되는 반경이 늘어남)
                 if distance <= clusterRadius {
                     cluster.points.append(CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude))
                     cluster.boothIDList.append(booth.id)

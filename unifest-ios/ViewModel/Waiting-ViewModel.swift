@@ -24,6 +24,7 @@ class WaitingViewModel: ObservableObject {
     @Published var addWaitingResponseMessage = "" // 웨이팅 신청 API의 응답 메세지
     @Published var reservedWaitingCount = 0 // 사용자가 예약한 웨이팅 개수
     @Published var reservedWaitingCountExceededToast: Toast? = nil // 해당 축제에서 지정한 웨이팅 최대 개수를 초과해서 웨이팅을 시도하려고 할 때 Toast를 띄움
+    @Published var alreadyReservedToast: Toast? = nil // 이미 웨이팅을 신청한 부스에 다시 웨이팅하기 버튼을 탭했을 때 Toast를 띄움
     
     private let networkManager: NetworkManager
     init(networkManager: NetworkManager) {
@@ -47,7 +48,7 @@ class WaitingViewModel: ObservableObject {
                 "deviceId": deviceId
             ]
             
-            AF.request(testUrl, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            AF.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: CancelWaitingResponse.self) { response in
                     print("Request URL of cancelWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -91,15 +92,20 @@ class WaitingViewModel: ObservableObject {
                 .contentType("application/json")
             ]
             
-            let parameters: [String: Any] = [
+            var parameters: [String: Any] = [
                 "boothId": boothId,
                 "tel": phoneNumber,
                 "deviceId": deviceId,
                 "partySize": partySize,
-                "pinNumber": pinNumber
+                "pinNumber": pinNumber,
             ]
+            if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                parameters["fcmToken"] = fcmToken
+            }
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            print(parameters)
+            
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: AddWaitingResponse.self) { response in
                     print("Request URL of addWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -148,11 +154,11 @@ class WaitingViewModel: ObservableObject {
             
             let url = APIManager.shared.serverType.rawValue + "/waiting/\(boothId)/count"
             
-            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/79/count"
+            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/waiting/\(boothId)/count"
             
             let headers: HTTPHeaders = [.accept("application/json")]
             
-            AF.request(testUrl, method: .get, headers: headers)
+            AF.request(url, method: .get, headers: headers)
                 .responseDecodable(of: WaitingOrderResponse.self) { response in
                     print("Request URL of fetchWaitingTeamCount: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -198,7 +204,7 @@ class WaitingViewModel: ObservableObject {
                 .accept("application/json")
             ]
             
-            AF.request(testUrl, method: .get, headers: headers)
+            AF.request(url, method: .get, headers: headers)
                 .responseDecodable(of: ReservedWaitingResponse.self) { response in
                     print("Request URL of fetchReservedWaiting: \(response.request?.url?.absoluteString ?? "")")
                     
@@ -213,7 +219,6 @@ class WaitingViewModel: ObservableObject {
                             } else {
                                 self.reservedWaitingCount = 0
                             }
-                            
                         }
                     case .failure(let error):
                         DispatchQueue.main.async {
@@ -254,7 +259,9 @@ class WaitingViewModel: ObservableObject {
                 "pinNumber": pinNumber
             ]
             
-            AF.request(testUrl, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+            print("checkPinNumber: \(parameters)")
+            
+            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .responseDecodable(of: PinCheckResponse.self) { response in
                     print("Requested URL: \(response.request?.url?.absoluteString ?? "")")
                     

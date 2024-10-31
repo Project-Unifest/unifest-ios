@@ -20,6 +20,11 @@ class RootViewModel: ObservableObject {
         self.boothModel = boothModel
         self.festivalModel = festivalModel
         
+        // 앱이 실행될 때 디바이스의 고유 UUID 생성, 이미 존재한다면 UUID값 print
+        let uuidManager = DeviceUUIDManager.shared // DeviceUUIDManager의 init() 실행
+        let uuid = uuidManager.getDeviceToken()
+        print("Device UUID: \(uuid)")
+        
         setupBindings()
     }
     

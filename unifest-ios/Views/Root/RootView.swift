@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
@@ -14,11 +15,14 @@ struct RootView: View {
     @StateObject var tabSelect = TabSelect() // 사용X
     @StateObject var waitingVM: WaitingViewModel
     @StateObject var favoriteFestivalVM: FavoriteFestivalViewModel
+    @StateObject var stampVM: StampViewModel
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
     @State private var isWelcomeViewPresented: Bool = false
+    @State private var isBoothDetailViewPresented: Bool = false
+    @State private var selectedBoothId = 0
     
     init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
         self.viewModel = rootViewModel
@@ -28,6 +32,7 @@ struct RootView: View {
         self.networkManager = networkManager
         _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
         _favoriteFestivalVM = StateObject(wrappedValue: FavoriteFestivalViewModel(networkManager: networkManager))
+        _stampVM = StateObject(wrappedValue: StampViewModel(networkManager: networkManager))
     }
     
     var body: some View {
@@ -79,14 +84,14 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-//                            StampView(viewModel: viewModel)
-//                                .onAppear {
-//                                    HapticManager.shared.hapticImpact(style: .light)
-//                                }
-//                                .tabItem {
-//                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
-//                                }
-//                                .tag(3)
+                            StampView(viewModel: viewModel)
+                                .onAppear {
+                                    HapticManager.shared.hapticImpact(style: .light)
+                                }
+                                .tabItem {
+                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+                                }
+                                .tag(3)
                             
                             MenuView(viewModel: viewModel)
                                 .onAppear {
@@ -147,6 +152,7 @@ struct RootView: View {
         .environmentObject(waitingVM)
         .environmentObject(networkManager)
         .environmentObject(favoriteFestivalVM)
+        .environmentObject(stampVM)
         .onAppear {
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
@@ -167,6 +173,29 @@ struct RootView: View {
             } else {
                 print("This app is latest.")
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
+            // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
+            // 감지된 알림을 통해 boothId를 추출하고, tabSelect.selectedTab을 업데이트해 MapPageView로 이동한 뒤 BoothDetailView를 열어줌
+            if let userInfo = notification.userInfo, let boothId = userInfo["boothId"] as? Int {
+                // 탭 변경
+                tabSelect.selectedTab = 2
+                
+                // BoothDetailView를 열기 위해 viewModel에 boothId를 설정
+                selectedBoothId = boothId
+                viewModel.boothModel.loadBoothDetail(boothId)
+                
+                isBoothDetailViewPresented = true
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToWaitingTab"))) { _ in
+            tabSelect.selectedTab = 1
+        }
+        .sheet(isPresented: $isBoothDetailViewPresented) {
+            BoothDetailView(viewModel: viewModel, currentBoothId: selectedBoothId)
+                .environmentObject(waitingVM)
+                .environmentObject(networkManager)
+                .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $isWelcomeViewPresented) {
             WelcomeView()
@@ -201,4 +230,5 @@ class TabSelect: ObservableObject {
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
+        .environmentObject(StampViewModel(networkManager: NetworkManager()))
 }
