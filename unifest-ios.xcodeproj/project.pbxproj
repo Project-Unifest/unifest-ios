@@ -75,6 +75,7 @@
 		F865C0BA2C3833B300EDB2F6 /* WaitingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */; };
 		F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F872669B2C4A30C300687A0D /* AppInstallAlarmView.swift */; };
 		F87266A02C4A345100687A0D /* FontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F872669F2C4A345100687A0D /* FontExtension.swift */; };
+		F87B04362CF130D6008E9069 /* NetworkUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87B04352CF130D6008E9069 /* NetworkUtils.swift */; };
 		F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */; };
 		F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */; };
 		F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */; };
@@ -165,6 +166,7 @@
 		F865C0B92C3833B300EDB2F6 /* WaitingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingListView.swift; sourceTree = "<group>"; };
 		F872669B2C4A30C300687A0D /* AppInstallAlarmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallAlarmView.swift; sourceTree = "<group>"; };
 		F872669F2C4A345100687A0D /* FontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontExtension.swift; sourceTree = "<group>"; };
+		F87B04352CF130D6008E9069 /* NetworkUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtils.swift; sourceTree = "<group>"; };
 		F87DCA4E2C32C9CF0038F845 /* WaitingRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRequestView.swift; sourceTree = "<group>"; };
 		F87DCA502C32C9D80038F845 /* WaitingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCompleteView.swift; sourceTree = "<group>"; };
 		F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageHeaderView.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 				0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */,
 				0C2A2BFD2BE9A87900EDF359 /* APIManager.swift */,
 				F8D95CF02CDF0598004F355B /* APIClient.swift */,
+				F87B04352CF130D6008E9069 /* NetworkUtils.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -622,6 +625,7 @@
 				0CF092D12BC038C90009B782 /* NavigationHeaderView.swift in Sources */,
 				F80071622C334ED00001596F /* IntroView.swift in Sources */,
 				0CBB058C2BB074ED00EB56BE /* MapView.swift in Sources */,
+				F87B04362CF130D6008E9069 /* NetworkUtils.swift in Sources */,
 				F87266A02C4A345100687A0D /* FontExtension.swift in Sources */,
 				0C2A2C002BE9A8B000EDF359 /* NetworkManager.swift in Sources */,
 				0CB2170D2BF23E3A0003338B /* FestivalData.swift in Sources */,

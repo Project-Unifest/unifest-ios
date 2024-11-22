@@ -24,38 +24,8 @@ class StampViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
-    enum StampAPI {
-        case count(String)
-        case enabledBooths(Int)
-        case add
-        
-        var path: String {
-            switch self {
-            case .count(let token):
-                return "/stamps?token=\(token)"
-            case .enabledBooths(let festivalId):
-                return "/stamps/\(festivalId)"
-            case .add:
-                return "/stamps"
-            }
-        }
-        
-        var url: String {
-            return APIManager.shared.serverType.rawValue + path
-        }
-    }
-    
-    private func buildURL(for endpoint: StampAPI) -> String {
-        return endpoint.url
-    }
-    
-    private func handleNetworkError(_ methodName: String, _ error: Error) {
-        self.networkManager.isServerError = true
-        print("\(methodName) network request failed with error:", error)
-    }
-    
     func fetchStampCount(token: String) async {
-        let url = buildURL(for: .count(token))
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampCount(token: token))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -71,12 +41,12 @@ class StampViewModel: ObservableObject {
                 self.stampCount = data
             }
         } catch {
-            handleNetworkError("FetchStampCount", error)
+            NetworkUtils.handleNetworkError("FetchStampCount", error, networkManager)
         }
     }
     
     func fetchStampEnabledBooths(festivalId: Int) async {
-        let url = buildURL(for: .enabledBooths(festivalId))
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchEnabledBooths(festivalId: festivalId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -93,12 +63,12 @@ class StampViewModel: ObservableObject {
                 self.stampEnabledBoothsCount = data.count
             }
         } catch {
-            handleNetworkError("FetchStampEnabledBooths", error)
+            NetworkUtils.handleNetworkError("FetchStampEnabledBooths", error, networkManager)
         }
     }
     
     func addStamp(boothId: Int, token: String) async {
-        let url = buildURL(for: .add)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.addStamp)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -133,7 +103,7 @@ class StampViewModel: ObservableObject {
                 self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")
             }
         } catch {
-            handleNetworkError("AddStamp", error)
+            NetworkUtils.handleNetworkError("AddStamp", error, networkManager)
         }
     }
 }

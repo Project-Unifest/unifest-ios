@@ -35,45 +35,9 @@ class WaitingViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
-    enum WaitingAPI {
-        case cancel
-        case add
-        case fetchTeamCount(Int)
-        case fetchReservedWaiting(String)
-        case checkPin
-        
-        var path: String {
-            switch self {
-            case .cancel:
-                return "/waiting"
-            case .add:
-                return "/waiting"
-            case .fetchTeamCount(let boothId):
-                return "/waiting/\(boothId)/count"
-            case .fetchReservedWaiting(let deviceId):
-                return "/waiting/me/\(deviceId)"
-            case .checkPin:
-                return "/waiting/pin/check"
-            }
-        }
-        
-        var url: String {
-            return APIManager.shared.serverType.rawValue + path
-        }
-    }
-    
-    private func buildURL(for endpoint: WaitingAPI) -> String {
-        return endpoint.url
-    }
-    
-    private func handleNetworkError(_ methodName: String, _ error: Error) {
-        self.networkManager.isServerError = true
-        print("\(methodName) network request failed with error:", error)
-    }
-    
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
-        let url = buildURL(for: .cancel)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.cancel)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -93,14 +57,14 @@ class WaitingViewModel: ObservableObject {
             print("Cancel waiting request succeeded")
             print(response)
         } catch {
-            handleNetworkError("CancelWaiting", error)
+            NetworkUtils.handleNetworkError("CancelWaiting", error, networkManager)
         }
     }
     
     /// 웨이팅 추가(WaitingRequestView에서 호출)
     func addWaiting(boothId: Int, phoneNumber: String, deviceId: String, partySize: Int, pinNumber: String) async  {
         //await withCheckedContinuation { continuation in
-        let url = buildURL(for: .add)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.add)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -134,14 +98,14 @@ class WaitingViewModel: ObservableObject {
                 self.addWaitingResponseMessage = response.message
             }
         } catch {
-            handleNetworkError("AddWaiting", error)
+            NetworkUtils.handleNetworkError("AddWaiting", error, networkManager)
         }
     }
     
     /// 대기 중인 팀의 수 조회
     /// checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 현재 사용되지 않는 메서드임
     func fetchWaitingTeamCount(boothId: Int) async {
-        let url = buildURL(for: .fetchTeamCount(boothId))
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.fetchTeamCount(boothId: boothId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -158,13 +122,13 @@ class WaitingViewModel: ObservableObject {
                 self.waitingTeamCount = waitingTeamCount
             }
         } catch {
-            handleNetworkError("FetchWaitingTeamCount", error)
+            NetworkUtils.handleNetworkError("FetchWaitingTeamCount", error, networkManager)
         }
     }
     
     /// 내 웨이팅 조회(WaitingView에서 호출)
     func fetchReservedWaiting(deviceId: String) async {
-        let url = buildURL(for: .fetchReservedWaiting(deviceId))
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.fetchReservedWaiting(deviceId: deviceId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -184,13 +148,13 @@ class WaitingViewModel: ObservableObject {
                 self.reservedWaitingCount = 0
             }
         } catch {
-            handleNetworkError("FetchReservedWaiting", error)
+            NetworkUtils.handleNetworkError("FetchReservedWaiting", error, networkManager)
         }
     }
     
     /// 핀 번호 검증(웨이팅 대기팀 수 반환됨)
     func checkPinNumber(boothId: Int, pinNumber: String) async {
-        let url = buildURL(for: .checkPin)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.checkPin)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -221,7 +185,7 @@ class WaitingViewModel: ObservableObject {
                 self.isPinNumberValid = false
             }
         } catch {
-            handleNetworkError("CheckPinNumber", error)
+            NetworkUtils.handleNetworkError("CheckPinNumber", error, networkManager)
         }
     }
 }

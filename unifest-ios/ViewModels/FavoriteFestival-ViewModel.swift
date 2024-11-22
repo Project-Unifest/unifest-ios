@@ -21,33 +21,8 @@ class FavoriteFestivalViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
-    enum FavoriteFestivalAPI {
-        case add
-        case delete
-        
-        var path: String {
-            switch self {
-            case .add, .delete:
-                return "/megaphone/subscribe"
-            }
-        }
-        
-        var url: String {
-            return APIManager.shared.serverType.rawValue + path
-        }
-    }
-    
-    private func buildURL(for endpoint: FavoriteFestivalAPI) -> String {
-        return endpoint.url
-    }
-    
-    private func handleNetworkError(_ methodName: String, _ error: Error) {
-        self.networkManager.isServerError = true
-        print("\(methodName) network request failed with error:", error)
-    }
-    
     func addFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        let url = buildURL(for: .add)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.subscribe)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -68,13 +43,13 @@ class FavoriteFestivalViewModel: ObservableObject {
             print(response)
             self.isAddFavoriteFestivalSucceeded = true
         } catch {
-            handleNetworkError("AddFavoriteFestival", error)
+            NetworkUtils.handleNetworkError("AddFavoriteFestival", error, networkManager)
             self.isAddFavoriteFestivalSucceeded = false
         }
     }
     
     func deleteFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        let url = buildURL(for: .delete)
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.subscribe)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -95,7 +70,7 @@ class FavoriteFestivalViewModel: ObservableObject {
             print(response)
             self.isDeleteFavoriteFestivalSucceeded = true
         } catch {
-            handleNetworkError("DeleteFavoriteFestival", error)
+            NetworkUtils.handleNetworkError("DeleteFavoriteFestival", error, networkManager)
             self.isDeleteFavoriteFestivalSucceeded = false
         }
     }
