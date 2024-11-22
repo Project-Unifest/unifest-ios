@@ -57,4 +57,13 @@ class APIClient {
     ) async throws -> T {
         return try await request(url: url, method: .put, headers: headers, parameters: parameters, responseType: responseType)
     }
+    
+    func delete<T: Decodable>(
+        url: String,
+        headers: HTTPHeaders? = nil,
+        parameters: [String: Any]? = nil,
+        responseType: T.Type
+    ) async throws -> T {
+        return try await request(url: url, method: .delete, headers: headers, parameters: parameters, responseType: responseType)
+    }
 }

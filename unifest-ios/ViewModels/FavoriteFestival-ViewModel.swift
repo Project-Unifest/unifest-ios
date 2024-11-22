@@ -8,106 +8,95 @@
 import Alamofire
 import Foundation
 
+@MainActor
 class FavoriteFestivalViewModel: ObservableObject {
     @Published var isAddFavoriteFestivalSucceeded: Bool = false
     @Published var isDeleteFavoriteFestivalSucceeded: Bool = false
+    
     private let networkManager: NetworkManager
+    private let apiClient: APIClient
+    
     init(networkManager: NetworkManager) {
         self.networkManager = networkManager
+        self.apiClient = APIClient()
+    }
+    
+    enum FavoriteFestivalAPI {
+        case add
+        case delete
+        
+        var path: String {
+            switch self {
+            case .add, .delete:
+                return "/megaphone/subscribe"
+            }
+        }
+        
+        var url: String {
+            return APIManager.shared.serverType.rawValue + path
+        }
+    }
+    
+    private func buildURL(for endpoint: FavoriteFestivalAPI) -> String {
+        return endpoint.url
+    }
+    
+    private func handleNetworkError(_ methodName: String, _ error: Error) {
+        self.networkManager.isServerError = true
+        print("\(methodName) network request failed with error:", error)
     }
     
     func addFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        await withCheckedContinuation { continuation in
-            let url = APIManager.shared.serverType.rawValue + "/megaphone/subscribe"
-            
-            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/megaphone/subscribe"
-            let parameters: [String: Any] = [
-                "festivalId": 2,
-                "fcmToken": fcmToken
-            ]
-            let headers: HTTPHeaders = [
-                .accept("application/json"),
-                .contentType("application/json")
-            ]
-            print("addFavoriteFestival: \(parameters)")
-            
-            AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .responseDecodable(of: AddFavoriteFestivalResponse.self) { response in
-                    switch response.result {
-                    case .success(let res):
-                        DispatchQueue.main.async {
-                            self.isAddFavoriteFestivalSucceeded = true
-                        }
-                        print("addFavoriteFestival 요청 성공")
-                        print(res)
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            self.isAddFavoriteFestivalSucceeded = false
-                            self.networkManager.isServerError = true
-                        }
-                        
-                        print("addFavoriteFestival 서버 요청 실패")
-                        print("에러: \(error.localizedDescription)")
-                        
-                        if let data = response.data {
-                            let responseData = String(data: data, encoding: .utf8)
-                            print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
-                        }
-                        
-                        if let httpResponse = response.response {
-                            print("HTTP 상태 코드: \(httpResponse.statusCode)")
-                        }
-                    }
-                    
-                    continuation.resume()
-                }
+        let url = buildURL(for: .add)
+        let headers: HTTPHeaders = [
+            .accept("application/json"),
+            .contentType("application/json")
+        ]
+        let parameters: [String: Any] = [
+            "festivalId": festivalId,
+            "fcmToken": fcmToken
+        ]
+        
+        do {
+            let response: AddFavoriteFestivalResponse = try await apiClient.post(
+                url: url,
+                headers: headers,
+                parameters: parameters,
+                responseType: AddFavoriteFestivalResponse.self
+            )
+            print("AddFavoriteFestival request succeeded")
+            print(response)
+            self.isAddFavoriteFestivalSucceeded = true
+        } catch {
+            handleNetworkError("AddFavoriteFestival", error)
+            self.isAddFavoriteFestivalSucceeded = false
         }
     }
     
     func deleteFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        await withCheckedContinuation { continuation in
-            let url = APIManager.shared.serverType.rawValue + "/megaphone/subscribe"
-            
-            let testUrl = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090" + "/megaphone/subscribe"
-            let parameters: [String: Any] = [
-                "festivalId": 2,
-                "fcmToken": fcmToken
-            ]
-            let headers: HTTPHeaders = [
-                .accept("application/json"),
-                .contentType("application/json")
-            ]
-            
-            AF.request(url, method: .delete, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .responseDecodable(of: DeleteFavoriteFestivalResponse.self) { response in
-                    switch response.result {
-                    case .success(let res):
-                        DispatchQueue.main.async {
-                            self.isDeleteFavoriteFestivalSucceeded = true
-                        }
-                        print("deleteFavoriteFestival 요청 성공")
-                        print(res)
-                    case .failure(let error):
-                        DispatchQueue.main.async {
-                            self.isDeleteFavoriteFestivalSucceeded = false
-                            self.networkManager.isServerError = true
-                        }
-                        print("deleteFavoriteFestival 서버 요청 실패")
-                        print("에러: \(error.localizedDescription)")
-                        
-                        if let data = response.data {
-                            let responseData = String(data: data, encoding: .utf8)
-                            print("서버 응답 데이터: \(responseData ?? "데이터 없음")")
-                        }
-                        
-                        if let httpResponse = response.response {
-                            print("HTTP 상태 코드: \(httpResponse.statusCode)")
-                        }
-                    }
-                    
-                    continuation.resume()
-                }
+        let url = buildURL(for: .delete)
+        let headers: HTTPHeaders = [
+            .accept("application/json"),
+            .contentType("application/json")
+        ]
+        let parameters: [String: Any] = [
+            "festivalId": festivalId,
+            "fcmToken": fcmToken
+        ]
+        
+        do {
+            let response: DeleteFavoriteFestivalResponse = try await apiClient.delete(
+                url: url,
+                headers: headers,
+                parameters: parameters,
+                responseType: DeleteFavoriteFestivalResponse.self
+            )
+            print("DeleteFavoriteFestival request succeeded")
+            print(response)
+            self.isDeleteFavoriteFestivalSucceeded = true
+        } catch {
+            handleNetworkError("DeleteFavoriteFestival", error)
+            self.isDeleteFavoriteFestivalSucceeded = false
         }
     }
 }
-
