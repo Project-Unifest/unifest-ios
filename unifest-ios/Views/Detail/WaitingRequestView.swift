@@ -155,7 +155,7 @@ struct WaitingRequestView: View {
                                             
                                             isValidPhoneNumber(phoneNumber)
                                             
-                                            print("저장된 전화번호: \(phoneNumber)")
+//                                            print("저장된 전화번호: \(phoneNumber)")
                                         }
                                         .focused($isPhoneNumberTextFieldFocused)
                                 }
