@@ -62,10 +62,13 @@ class WaitingViewModel: ObservableObject {
         }
     }
     
+    private func buildURL(for endpoint: WaitingAPI) -> String {
+        return endpoint.url
+    }
+    
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
-        let url = WaitingAPI.cancel.url
-        print("cancel waiting url: " + url)
+        let url = buildURL(for: .cancel)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -93,7 +96,7 @@ class WaitingViewModel: ObservableObject {
     /// 웨이팅 추가(WaitingRequestView에서 호출)
     func addWaiting(boothId: Int, phoneNumber: String, deviceId: String, partySize: Int, pinNumber: String) async  {
         //await withCheckedContinuation { continuation in
-        let url = WaitingAPI.add.url
+        let url = buildURL(for: .add)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
@@ -135,7 +138,7 @@ class WaitingViewModel: ObservableObject {
     /// 대기 중인 팀의 수 조회
     /// checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 현재 사용되지 않는 메서드임
     func fetchWaitingTeamCount(boothId: Int) async {
-        let url = WaitingAPI.fetchTeamCount(boothId).url
+        let url = buildURL(for: .fetchTeamCount(boothId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -159,7 +162,7 @@ class WaitingViewModel: ObservableObject {
     
     /// 내 웨이팅 조회(WaitingView에서 호출)
     func fetchReservedWaiting(deviceId: String) async {
-        let url = WaitingAPI.fetchReservedWaiting(deviceId).url
+        let url = buildURL(for: .fetchReservedWaiting(deviceId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -186,7 +189,7 @@ class WaitingViewModel: ObservableObject {
     
     /// 핀 번호 검증(웨이팅 대기팀 수 반환됨)
     func checkPinNumber(boothId: Int, pinNumber: String) async {
-        let url = WaitingAPI.checkPin.url
+        let url = buildURL(for: .checkPin)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
