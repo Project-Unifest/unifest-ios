@@ -66,6 +66,11 @@ class WaitingViewModel: ObservableObject {
         return endpoint.url
     }
     
+    private func handleNetworkError(_ methodName: String, _ error: Error) {
+        self.networkManager.isServerError = true
+        print("\(methodName) network request failed with error:", error)
+    }
+    
     /// 사용자의 웨이팅 취소
     func cancelWaiting(waitingId: Int, deviceId: String) async {
         let url = buildURL(for: .cancel)
@@ -88,8 +93,7 @@ class WaitingViewModel: ObservableObject {
             print("Cancel waiting request succeeded")
             print(response)
         } catch {
-            self.networkManager.isServerError = true
-            print("Cancel waiting failed with error:", error)
+            handleNetworkError("CancelWaiting", error)
         }
     }
     
@@ -130,8 +134,7 @@ class WaitingViewModel: ObservableObject {
                 self.addWaitingResponseMessage = response.message
             }
         } catch {
-            self.networkManager.isServerError = true
-            print("Add waiting failed with error:", error)
+            handleNetworkError("AddWaiting", error)
         }
     }
     
@@ -155,8 +158,7 @@ class WaitingViewModel: ObservableObject {
                 self.waitingTeamCount = waitingTeamCount
             }
         } catch {
-            self.networkManager.isServerError = true
-            print("WaitingTeamCount failed with error:", error)
+            handleNetworkError("FetchWaitingTeamCount", error)
         }
     }
     
@@ -182,8 +184,7 @@ class WaitingViewModel: ObservableObject {
                 self.reservedWaitingCount = 0
             }
         } catch {
-            self.networkManager.isServerError = true
-            print("fetchReservedWaiting failed with error:", error)
+            handleNetworkError("FetchReservedWaiting", error)
         }
     }
     
@@ -220,8 +221,7 @@ class WaitingViewModel: ObservableObject {
                 self.isPinNumberValid = false
             }
         } catch {
-            self.networkManager.isServerError = true
-            print("checkPinNumber failed with error:", error)
+            handleNetworkError("CheckPinNumber", error)
         }
     }
 }
