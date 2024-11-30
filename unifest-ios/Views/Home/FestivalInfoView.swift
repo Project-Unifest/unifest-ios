@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-// CalendarTabView에서 O월O일 축제 일정, 다가오는 축제 일정 있는 이 뷰가 HomeView
+// HomeView에서 O월O일 축제 일정, 다가오는 축제 일정 있는 이 뷰가 FestivalInfoView
 
-struct HomeView: View {
+struct FestivalInfoView: View {
     @ObservedObject var viewModel: RootViewModel
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
@@ -470,7 +470,7 @@ struct CelebCircleView: View {
             .onTapGesture {
                 if !loadFailed {
                     if !isTouched {
-                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
+                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
                         
                         withAnimation {
                             isTouched = true

@@ -7,25 +7,20 @@
 
 import SwiftUI
 
-// CalendarTabView 안에 CalendarWeekView, CalendarView HomeView가 있음
-// CalendarWeekView는 달력이 expanded되기 전의 뷰(한 주)
-// CalendarView는 달력이 expanded된 후의 뷰(한 달)
-// HomeView는 그 밑에 O월O일 축제 일정, 다가오는 축제 일정을 보여주는 뷰
+// HomeView 안에 WeeklyCalendarView, MonthlyCalendarView, FestivalInfoView가 있음
+// WeeklyCalendarView는 달력이 expanded되기 전의 뷰(한 주)
+// MonthlyCalendarView는 달력이 expanded된 후의 뷰(한 달)
+// FestivalInfoView는 그 밑에 O월O일 축제 일정, 다가오는 축제 일정을 보여주는 뷰
 
-struct CalendarView: View {
+struct MonthlyCalendarView: View {
     @ObservedObject var viewModel: RootViewModel
-    
     let year: Int
     let month: Int
-    
     @Binding var currentMonth: Int
-    
     @Binding var selectedYear: Int
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
-    
     @Binding var calendar: [[Date]]
-    
     let weekTextList: [String] = ["일", "월", "화", "수", "목", "금", "토"]
     
     var body: some View {
@@ -177,7 +172,7 @@ struct CalendarView: View {
     }
 }
 
-struct CalendarWeekView: View {
+struct WeeklyCalendarView: View {
     @ObservedObject var viewModel: RootViewModel
     let year: Int
     @Binding var month: Int
@@ -232,7 +227,7 @@ struct CalendarWeekView: View {
                                 selectedMonth = Calendar.current.component(.month, from: day)
                                 selectedDay = Calendar.current.component(.day, from: day)
                                 
-                                GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_DATE, params: ["month": selectedMonth, "day": selectedDay])
+                                GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_DATE, params: ["month": selectedMonth, "day": selectedDay])
                                 
                                 if selectedMonth != month {
                                     month = selectedMonth
@@ -317,30 +312,28 @@ extension Int {
     }
 }
 
-struct CalendarTabView: View {
+struct HomeView: View {
     @ObservedObject var viewModel: RootViewModel
+    @State private var calendar: [[Date]] = []
     
+    // 이니셜라이저에서 초기화
     @State private var currentYear: Int
     @State private var currentMonth: Int
-    @State private var isExpanded: Bool = false
-    
-    @State private var firstSundayOfYear: Date
-    @State private var currentFirstSunday: Date
-    @State private var currentWeekIdx: Int = 0
-    
     @State private var selectedYear: Int
     @State private var selectedMonth: Int
     @State private var selectedDay: Int
+    @State private var firstSundayOfYear: Date // 주어진 해의 첫 번째 일요일
+    @State private var currentFirstSunday: Date // 선택한 날짜가 속한 주의 첫 번쨰 일요일
+    @State private var weekPageIndex: Int = 0 // 선택된 주가 연도에서 몇 번째 주인지 나타냄(WeeklyCalendarView가 표시될 때 해당 주의 데이터를 로드)
     
-    @State private var monthPageIndex: Int = 0
-    @State private var weekPageIndex: Int = 0
+    @State private var isExpanded: Bool = false // week <-> month 전환
+    @State private var monthPageIndex: Int = 0 // 선택된 월
     
+    // 캘린더를 위아래로 드래그했을 때 week <-> month 전환
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
     
-    @State private var calendar: [[Date]] = []
-    
-    @State private var isInfoPresented: Bool = false
+    // @State private var isInfoPresented: Bool = false // MonthlyCalendarView에서 축제 개수 표시하는 변수, 사용 안함
     
     init(viewModel: RootViewModel) {
         let date = Date()
@@ -370,14 +363,13 @@ struct CalendarTabView: View {
                                 }
                             }
                         } label: {
-                            Text("\(selectedYear)년 \(monthPageIndex)" + StringLiterals.Calendar.month)
+                            Text("\(selectedYear)년 \(monthPageIndex)월")
                                 .font(.system(size: 24))
                                 .foregroundStyle(.defaultBlack)
                                 .bold()
                         }
                         .padding(.trailing, 10)
                         
-                        // if isInfoPresented {
                             HStack(alignment: .center, spacing: 0) {
                                 simpleDot(.ufBluegreen)
                                     .padding(.trailing, 3)
@@ -397,12 +389,11 @@ struct CalendarTabView: View {
                                     .font(.system(size: 11))
                                     .foregroundStyle(.gray)
                             }
-                        // }
                         
                         Spacer()
                         
                         Button {
-                            GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_CALENDAR_PAGE)
+                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
                             monthPageIndex -= 1
                         } label: {
                             Image(systemName: "chevron.left")
@@ -415,7 +406,7 @@ struct CalendarTabView: View {
                             .frame(width: 30)
                         
                         Button {
-                            GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CHANGE_CALENDAR_PAGE)
+                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
                             monthPageIndex += 1
                         } label: {
                             Image(systemName: "chevron.right")
@@ -436,14 +427,14 @@ struct CalendarTabView: View {
                             let firstSunday = Calendar.current.date(byAdding: .day, value: weekIdx * 7, to: firstSundayOfYear)!
                             let wednesday = Calendar.current.date(byAdding: .day, value: weekIdx * 7 + 3, to: firstSundayOfYear)!
                             
-                            CalendarWeekView(viewModel: viewModel, year: currentYear, month: $currentMonth, currentFirstSunday: firstSunday, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
+                            WeeklyCalendarView(viewModel: viewModel, year: currentYear, month: $currentMonth, currentFirstSunday: firstSunday, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay)
                                 .onAppear {
                                     currentMonth = Calendar.current.component(.month, from: wednesday)
                                 }
                         }
                     } else {
                         ForEach(1...12, id: \.self) { month in
-                            CalendarView(viewModel: viewModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay, calendar: $calendar)
+                            MonthlyCalendarView(viewModel: viewModel, year: currentYear, month: month, currentMonth: $currentMonth, selectedYear: $selectedYear, selectedMonth: $selectedMonth, selectedDay: $selectedDay, calendar: $calendar)
                         }
                     }
                 }
@@ -482,7 +473,7 @@ struct CalendarTabView: View {
                                 Button {
                                     // 월 -> 주
                                     if isExpanded {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_SHRINK_CALENDAR)
+                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_SHRINK_CALENDAR)
                                         weekPageIndex = getWeekIndex()
                                         withAnimation(.spring) {
                                             isExpanded = false
@@ -490,17 +481,11 @@ struct CalendarTabView: View {
                                     }
                                     // 주 -> 월
                                     else {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_EXPAND_CALENDAR)
+                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_EXPAND_CALENDAR)
                                         weekPageIndex = selectedMonth
                                         monthPageIndex = selectedMonth
                                         withAnimation(.spring) {
                                             isExpanded = true
-                                            isInfoPresented = true
-                                        }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                            withAnimation(.easeInOut(duration: 0.5)) {
-                                                isInfoPresented = false
-                                            }
                                         }
                                     }
                                 } label: {
@@ -554,12 +539,6 @@ struct CalendarTabView: View {
                                 monthPageIndex = selectedMonth
                                 withAnimation(.spring) {
                                     isExpanded = true
-                                    isInfoPresented = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        isInfoPresented = false
-                                    }
                                 }
                             }
                         } else {
@@ -578,7 +557,7 @@ struct CalendarTabView: View {
             Spacer()
                 .frame(height: 44)
             
-            HomeView(viewModel: viewModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
+            FestivalInfoView(viewModel: viewModel, selectedMonth: $selectedMonth, selectedDay: $selectedDay, isFest: true)
         }
         .background(.ufBackground)
     }
@@ -682,5 +661,5 @@ struct CalendarTabView: View {
 }
 
 #Preview {
-    CalendarTabView(viewModel: RootViewModel())
+    HomeView(viewModel: RootViewModel())
 }
