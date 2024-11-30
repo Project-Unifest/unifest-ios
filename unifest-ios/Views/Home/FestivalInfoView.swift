@@ -20,8 +20,6 @@ struct FestivalInfoView: View {
     
     @State private var maxLength: Int = 5
     
-    // @State private var todayFestivalList: [TodayFestivalItem] = []
-    
     let isFest: Bool
     
     var currentDate: Date {
