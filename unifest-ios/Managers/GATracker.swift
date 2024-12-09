@@ -14,7 +14,7 @@ import Firebase
 struct GATracking {
     // 가입 단계 (Welcome)
     struct LogEventType {
-        struct HomeView {
+        struct FestivalInfoView {
             static let HOME_EXPAND_CALENDAR = "HOME_EXPAND_CALENDAR" // 캘린더 확장
             static let HOME_SHRINK_CALENDAR = "HOME_SHRINK_CALENDAR" // 캘린더 축소
             static let HOME_CHANGE_DATE = "HOME_CHANGE_DATE" // 달력에서 날짜 넘김

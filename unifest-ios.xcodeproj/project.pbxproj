@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C0688B32BC0471500069401 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0688B22BC0471500069401 /* CalendarView.swift */; };
+		0C0688B32BC0471500069401 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0688B22BC0471500069401 /* HomeView.swift */; };
 		0C1A2C6C2BB2718800AD0692 /* AdminMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1A2C6B2BB2718800AD0692 /* AdminMainView.swift */; };
 		0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C244FCC2BF67E6B0047F23D /* VersionService.swift */; };
 		0C244FD02BF6837C0047F23D /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0C244FCF2BF6837C0047F23D /* ConfettiSwiftUI */; };
@@ -16,7 +16,7 @@
 		0C2A2C002BE9A8B000EDF359 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A2BFF2BE9A8B000EDF359 /* NetworkManager.swift */; };
 		0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2AA3C52BFBBBAF008FB5DF /* MenuImageView.swift */; };
 		0C4DFCB12BBEFC2B00CAB98B /* NetworkErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C4DFCB02BBEFC2B00CAB98B /* NetworkErrorView.swift */; };
-		0C6523932BC131F00085232D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6523922BC131F00085232D /* HomeView.swift */; };
+		0C6523932BC131F00085232D /* FestivalInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6523922BC131F00085232D /* FestivalInfoView.swift */; };
 		0C683AB82BF8F12C0076ECCF /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0C683AB72BF8F12C0076ECCF /* FirebaseAnalytics */; };
 		0C683ABA2BF8F12C0076ECCF /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 0C683AB92BF8F12C0076ECCF /* FirebaseMessaging */; };
 		0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */; };
@@ -50,6 +50,9 @@
 		0CF092D12BC038C90009B782 /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF092D02BC038C90009B782 /* NavigationHeaderView.swift */; };
 		0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */; };
 		0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */; };
+		F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */; };
+		F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */; };
+		F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80053412CFB3BDB00CA108F /* NumExtensions.swift */; };
 		F80071622C334ED00001596F /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071612C334ED00001596F /* IntroView.swift */; };
 		F80071642C3351360001596F /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80071632C3351360001596F /* MenuBarView.swift */; };
 		F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800716A2C3648390001596F /* WaitingInfoView.swift */; };
@@ -99,7 +102,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C0688B22BC0471500069401 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		0C0688B22BC0471500069401 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0C1A2C6B2BB2718800AD0692 /* AdminMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminMainView.swift; sourceTree = "<group>"; };
 		0C244FCC2BF67E6B0047F23D /* VersionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionService.swift; sourceTree = "<group>"; };
 		0C244FD22BF6851E0047F23D /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -108,7 +111,7 @@
 		0C2A2C032BE9AEA600EDF359 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0C2AA3C52BFBBBAF008FB5DF /* MenuImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuImageView.swift; sourceTree = "<group>"; };
 		0C4DFCB02BBEFC2B00CAB98B /* NetworkErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorView.swift; sourceTree = "<group>"; };
-		0C6523922BC131F00085232D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		0C6523922BC131F00085232D /* FestivalInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalInfoView.swift; sourceTree = "<group>"; };
 		0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		0C72FAAB2BFA443200782B61 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		0C7A117D2BF25F25008713B7 /* BoothData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothData.swift; sourceTree = "<group>"; };
@@ -142,6 +145,9 @@
 		0CF092D02BC038C90009B782 /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeBoothListView.swift; sourceTree = "<group>"; };
 		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyCalendarView.swift; sourceTree = "<group>"; };
+		F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
+		F80053412CFB3BDB00CA108F /* NumExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumExtensions.swift; sourceTree = "<group>"; };
 		F80071612C334ED00001596F /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IntroView.swift; path = "unifest-ios/Views/Intro/IntroView.swift"; sourceTree = SOURCE_ROOT; };
 		F80071632C3351360001596F /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		F800716A2C3648390001596F /* WaitingInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingInfoView.swift; sourceTree = "<group>"; };
@@ -364,8 +370,10 @@
 		0CBB05802BB074ED00EB56BE /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				0C0688B22BC0471500069401 /* CalendarView.swift */,
-				0C6523922BC131F00085232D /* HomeView.swift */,
+				0C0688B22BC0471500069401 /* HomeView.swift */,
+				F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */,
+				F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */,
+				0C6523922BC131F00085232D /* FestivalInfoView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -445,6 +453,7 @@
 				0CE965052BAD66AC00539E8C /* Text */,
 				0CE839D42BF2E8CC003E211D /* MapExtensions.swift */,
 				0CC40F412BF9276B002759DF /* View+.swift */,
+				F80053412CFB3BDB00CA108F /* NumExtensions.swift */,
 			);
 			name = Extensions;
 			path = Text/Extensions;
@@ -606,7 +615,7 @@
 				0C7A117E2BF25F25008713B7 /* BoothData.swift in Sources */,
 				F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */,
 				F8ABA93D2C5A7C28003A8CDB /* Waiting-ViewModel.swift in Sources */,
-				0C6523932BC131F00085232D /* HomeView.swift in Sources */,
+				0C6523932BC131F00085232D /* FestivalInfoView.swift in Sources */,
 				0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */,
 				0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */,
 				F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */,
@@ -629,7 +638,7 @@
 				F87266A02C4A345100687A0D /* FontExtension.swift in Sources */,
 				0C2A2C002BE9A8B000EDF359 /* NetworkManager.swift in Sources */,
 				0CB2170D2BF23E3A0003338B /* FestivalData.swift in Sources */,
-				0C0688B32BC0471500069401 /* CalendarView.swift in Sources */,
+				0C0688B32BC0471500069401 /* HomeView.swift in Sources */,
 				F80071642C3351360001596F /* MenuBarView.swift in Sources */,
 				0CE965072BAD66BA00539E8C /* StringLiterals.swift in Sources */,
 				0C1A2C6C2BB2718800AD0692 /* AdminMainView.swift in Sources */,
@@ -649,6 +658,7 @@
 				F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */,
 				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
+				F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */,
@@ -656,6 +666,7 @@
 				0C2AA3C62BFBBBAF008FB5DF /* MenuImageView.swift in Sources */,
 				F88A6D102C7A05570025459F /* Toast.swift in Sources */,
 				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
+				F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */,
 				F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */,
@@ -668,6 +679,7 @@
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
 				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
+				F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* MapExtensions.swift in Sources */,
 				F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */,

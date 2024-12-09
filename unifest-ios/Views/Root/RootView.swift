@@ -44,7 +44,7 @@ struct RootView: View {
                 ZStack {
                     TabView(selection: $tabSelect.selectedTab) {
                         Group {
-                            CalendarTabView(viewModel: viewModel)
+                            HomeView(viewModel: viewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                     GATracking.eventScreenView(GATracking.ScreenNames.homeView)
