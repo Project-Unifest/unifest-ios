@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-// MapPageHeaderView에서 학교이름(지금은 '건국대학교'로 고정) 버튼을 눌렀을 떄 나타나는 뷰
+// MapPageHeaderView에서 학교이름을 탭했을 떄 나타나는 뷰
 // 검색을 하지 않았을 때는 '나의 관심축제' 뷰 <- SchoolBoxView
 // 검색을 했을 때는 '검색 결과' 뷰가 보이게 만듦 <- LongSchoolBoxView
 
 struct SearchSchoolView: View {
     @State private var searchText: String = ""
     let columns = [GridItem(.adaptive(minimum: 114))]
-    
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -23,6 +22,7 @@ struct SearchSchoolView: View {
                 Spacer()
                     .frame(height: 30)
                 
+                // 학교/축제 데이터는 FestivalModel의 이니셜라이저에서 앱이 처음 실행될 때 저장됨
                 Image(.searchBox)
                     .overlay {
                         HStack {

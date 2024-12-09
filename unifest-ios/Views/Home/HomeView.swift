@@ -57,7 +57,7 @@ struct HomeView: View {
                     HStack {
                         // 2024년 O월을 탭하면 원하는 달로 이동할 수 있는 Menu가 나타남
                         Menu {
-                            ForEach(1..<13, id: \.self) { monthIndex in
+                            ForEach(1 ..< 13, id: \.self) { monthIndex in
                                 Button("\(monthIndex)" + StringLiterals.Calendar.month) {
                                     monthPageIndex = monthIndex
                                 }
@@ -257,8 +257,7 @@ struct HomeView: View {
             FestivalInfoView(
                 viewModel: viewModel,
                 selectedMonth: $selectedMonth,
-                selectedDay: $selectedDay,
-                isFest: true
+                selectedDay: $selectedDay
             )
         }
         .background(.ufBackground)

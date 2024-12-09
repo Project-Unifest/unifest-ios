@@ -14,32 +14,21 @@ struct FestivalInfoView: View {
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     @State private var isIntroViewPresented: Bool = false
-    @State private var isLoading1: Bool = true
-    @State private var isLoading2: Bool = true
     @State private var upcomingList: [FestivalItem] = []
-    
     @State private var maxLength: Int = 5
-    
-    let isFest: Bool
-    
     var currentDate: Date {
         return Date()
     }
-    
     var currentYear: Int {
         let calendar = Calendar.current
         let year = calendar.component(.year, from: currentDate)
         return year
     }
-    
-    // 현재 월을 가져오는 computed property
     var currentMonth: Int {
         let calendar = Calendar.current
         let month = calendar.component(.month, from: currentDate)
         return month
     }
-    
-    // 현재 일을 가져오는 computed property
     var currentDay: Int {
         let calendar = Calendar.current
         let day = calendar.component(.day, from: currentDate)
@@ -49,7 +38,7 @@ struct FestivalInfoView: View {
     var body: some View {
         ScrollView {
             HStack {
-                Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalTitle)
+                Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalSchedule)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
                     .foregroundStyle(.grey900)
@@ -65,7 +54,7 @@ struct FestivalInfoView: View {
                             .font(.system(size: 26))
                             .foregroundStyle(.defaultBlack)
                         
-                        Text(StringLiterals.Home.noFestivalTitle)
+                        Text(StringLiterals.Home.noFestivalSchedule)
                             .font(.system(size: 16))
                             .foregroundStyle(.defaultBlack)
                             .fontWeight(.semibold)
@@ -138,7 +127,7 @@ struct FestivalInfoView: View {
                 .padding(.vertical)*/
             
             HStack {
-                Text(StringLiterals.Home.upcomingFestivalTitle)
+                Text(StringLiterals.Home.upcomingFestivalSchedule)
                     .font(.system(size: 15))
                     .fontWeight(.semibold)
                     .foregroundStyle(.defaultBlack)
@@ -150,7 +139,7 @@ struct FestivalInfoView: View {
             VStack(spacing: 8) {
                 if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength).isEmpty {
                     VStack(alignment: .center) {
-                        Text(StringLiterals.Home.noUpcomingFestivalTitle)
+                        Text(StringLiterals.Home.noUpcomingFestivalSchedule)
                             .font(.system(size: 16))
                             .fontWeight(.semibold)
                             .foregroundColor(.defaultBlack)
