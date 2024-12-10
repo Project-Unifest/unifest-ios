@@ -154,36 +154,39 @@ class FestivalModel: ObservableObject {
         }
     }
     
+    // 사용자가 선택한 날짜에 열리는 축제의 개수 반환
     func isFestival(year: Int, month: Int, day: Int) -> Int {
         var count: Int = 0
         
         for festival in festivals {
-            // Convert festival beginDate and endDate strings to Date objects
+            // dateFormatter를 연-월-일로 설정
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             
+            // 축제 첫째날을 beginDate, 마지막날을 endDate에 저장
             guard let beginDate = dateFormatter.date(from: festival.beginDate),
                   let endDate = dateFormatter.date(from: festival.endDate) else {
                 continue // Skip iteration if date conversion fails
             }
             
-            // Create date components for the given month and day
+            // 파라미터로 전달된 선택된 날짜를 components에 저장
             var components = DateComponents()
             components.year = year
             components.month = month
             components.day = day
             
-            // Create date object for the given month and day
+            // components로 date인스턴스 생성, currentDate에 저장
             guard let currentDate = Calendar.current.date(from: components) else {
                 continue // Skip iteration if date creation fails
             }
             
-            // Check if currentDate falls within the range of festival dates
+            // currentDate가 축제 첫째날~마지막날 사이에 있다면 count값 1 증가
             if (currentDate >= beginDate) && (currentDate <= endDate) {
                 count += 1
             }
         }
         
+        // api에서 받아온 모든 대학 축제 배열에서, 사용자가 선택한 날짜에 열리는 축제의 개수 반환
         return count
     }
     
