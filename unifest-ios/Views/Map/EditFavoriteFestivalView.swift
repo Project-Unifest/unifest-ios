@@ -1,5 +1,5 @@
 //
-//  SearchSchoolView.swift
+//  AddFavoriteFestivalView.swift
 //  unifest-ios
 //
 //  Created by Hoeun Lee on 3/24/24.
@@ -11,7 +11,7 @@ import SwiftUI
 // 검색을 하지 않았을 때는 '나의 관심축제' 뷰 <- SchoolBoxView
 // 검색을 했을 때는 '검색 결과' 뷰가 보이게 만듦 <- LongSchoolBoxView
 
-struct SearchSchoolView: View {
+struct EditFavoriteFestivalView: View {
     @State private var searchText: String = ""
     let columns = [GridItem(.adaptive(minimum: 114))]
     @Environment(\.dismiss) var dismiss
@@ -86,7 +86,7 @@ struct SearchSchoolView: View {
 #Preview {
     Text("")
         .sheet(isPresented: .constant(true)) {
-            SearchSchoolView()
+            EditFavoriteFestivalView()
                 .presentationDragIndicator(.visible)
         }
 }

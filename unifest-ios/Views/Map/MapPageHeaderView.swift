@@ -12,43 +12,43 @@ struct MapPageHeaderView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @State private var isInfoTextPresented: Bool = true
     @Binding var searchText: String
-    @State private var isSearchSchoolViewPresented = false
+    @State private var isEditFavoriteFestivalViewPresented = false
     @State private var isVoteViewPresented = false
     
     var body: some View {
         VStack {
             HStack {
-//                Button {
-//                    isSearchSchoolViewPresented = true
-//                } label: {
+                Button {
+                    isEditFavoriteFestivalViewPresented = true
+                } label: {
                     HStack {
                         Text("한국교통대학교")
                             .font(.pretendard(weight: .p6, size: 20))
                             .foregroundStyle(.grey900)
                         
-                        /* Image(.downArrow)
+                        Image(.downArrow)
                          .resizable()
                          .scaledToFit()
-                         .frame(width: 16, height: 16) */
+                         .frame(width: 15, height: 15)
                     }
-//                }
+                }
                 
-                /*
-                 Image(.blackBubble)
-                 .overlay {
-                 VStack(alignment: .center) {
-                 Text("여기를 눌러서 학교를 검색해보세요.")
-                 .font(.system(size: 11))
-                 .foregroundStyle(.white)
-                 .padding(.top, 2)
-                 }
-                 }
-                 .onTapGesture {
-                 withAnimation(.spring(duration: 0.1)) {
-                 isInfoTextPresented = false
-                 }
-                 }
-                 .opacity(isInfoTextPresented ? 1 : 0)*/
+                
+                Image(.blackBubble)
+                    .overlay {
+                        VStack(alignment: .center) {
+                            Text("    여기를 눌러서 학교를 검색해보세요.")
+                                .font(.pretendard(weight: .p5, size: 11))
+                                .foregroundStyle(.white)
+                                .padding(.top, 2)
+                        }
+                    }
+                    .onTapGesture {
+                        withAnimation(.spring(duration: 0.1)) {
+                            isInfoTextPresented = false
+                        }
+                    }
+                    .opacity(isInfoTextPresented ? 1 : 0)
                 
                 Spacer()
                 
@@ -232,11 +232,11 @@ struct MapPageHeaderView: View {
 //        .fullScreenCover(isPresented: $isVoteViewPresented) {
 //            VoteView()
 //        }
-//        .sheet(isPresented: $isSearchSchoolViewPresented) {
-//            SearchSchoolView()
-//                .presentationDragIndicator(.visible)
-//            // .presentationDetents([.height(700)])
-//        }
+        .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
+            EditFavoriteFestivalView()
+                .presentationDragIndicator(.visible)
+            // .presentationDetents([.height(700)])
+        }
     }
 }
 
