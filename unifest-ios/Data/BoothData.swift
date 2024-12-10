@@ -462,7 +462,7 @@ class BoothModel: ObservableObject {
         var randomLikedBooths: [Int] = []
         var likedBoothsCopy = likedBoothList
         
-        for likedID in likedBoothsCopy {
+        for _ in likedBoothsCopy {
             let randomIndex = Int.random(in: 0..<likedBoothsCopy.count)
             let randomBoothID = likedBoothsCopy[randomIndex]
             

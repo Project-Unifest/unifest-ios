@@ -2,512 +2,338 @@
 //  HomeView.swift
 //  unifest-ios
 //
-//  Created by Hoeun Lee on 4/6/24.
+//  Created by Hoeun Lee on 4/5/24.
 //
 
 import SwiftUI
 
-// CalendarTabView에서 O월O일 축제 일정, 다가오는 축제 일정 있는 이 뷰가 HomeView
+// HomeView 안에 WeeklyCalendarView, MonthlyCalendarView, FestivalInfoView가 있음
+// WeeklyCalendarView는 달력이 expanded되기 전의 뷰(한 주)
+// MonthlyCalendarView는 달력이 expanded된 후의 뷰(한 달)
+// FestivalInfoView는 그 밑에 O월O일 축제 일정, 다가오는 축제 일정을 보여주는 뷰
 
 struct HomeView: View {
     @ObservedObject var viewModel: RootViewModel
-    @Binding var selectedMonth: Int
-    @Binding var selectedDay: Int
-    @State private var isIntroViewPresented: Bool = false
-    @State private var isLoading1: Bool = true
-    @State private var isLoading2: Bool = true
-    @State private var upcomingList: [FestivalItem] = []
+    @State private var calendar: [[Date]] = []
     
-    @State private var maxLength: Int = 5
+    // 이니셜라이저에서 초기화
+    @State private var currentYear: Int
+    @State private var currentMonth: Int
+    @State private var selectedYear: Int
+    @State private var selectedMonth: Int
+    @State private var selectedDay: Int
+    @State private var firstSundayOfYear: Date // 주어진 해의 첫 번째 일요일
+    @State private var currentFirstSunday: Date // 선택한 날짜가 속한 주의 첫 번쨰 일요일
+    @State private var weekPageIndex: Int = 0 // 선택된 주가 연도에서 몇 번째 주인지 나타냄(WeeklyCalendarView가 표시될 때 해당 주의 데이터를 로드)
     
-    // @State private var todayFestivalList: [TodayFestivalItem] = []
+    @State private var isExpanded: Bool = false // week <-> month 전환
+    @State private var monthPageIndex: Int = 0 // 선택된 월
     
-    let isFest: Bool
+    // 캘린더를 위아래로 드래그했을 때 week <-> month 전환
+    @State private var startOffsetY: CGFloat = 0.0
+    @State private var lastOffsetY: CGFloat = 0.0
     
-    var currentDate: Date {
-        return Date()
-    }
+    // @State private var isInfoPresented: Bool = false // MonthlyCalendarView에서 축제 개수 표시하는 변수, 사용 안함
     
-    var currentYear: Int {
-        let calendar = Calendar.current
-        let year = calendar.component(.year, from: currentDate)
-        return year
-    }
-    
-    // 현재 월을 가져오는 computed property
-    var currentMonth: Int {
-        let calendar = Calendar.current
-        let month = calendar.component(.month, from: currentDate)
-        return month
-    }
-    
-    // 현재 일을 가져오는 computed property
-    var currentDay: Int {
-        let calendar = Calendar.current
-        let day = calendar.component(.day, from: currentDate)
-        return day
+    init(viewModel: RootViewModel) {
+        let date = Date()
+        _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
+        _currentMonth = State(initialValue: Calendar.current.component(.month, from: date))
+        
+        _selectedYear = State(initialValue: Calendar.current.component(.year, from: date))
+        _selectedMonth = State(initialValue: Calendar.current.component(.month, from: date))
+        _selectedDay = State(initialValue: Calendar.current.component(.day, from: date))
+        
+        _firstSundayOfYear = State(initialValue: Date())
+        _currentFirstSunday = State(initialValue: Date())
+        
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        ScrollView {
-            HStack {
-                Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalTitle)
-                    .font(.system(size: 15))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.grey900)
-                Spacer()
-            }
-            .padding(.horizontal)
-            
-            VStack {
-                if (viewModel.festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0) {
-                    VStack(alignment: .center, spacing: 9) {
-                        Spacer()
-                        Image(systemName: "calendar.badge.exclamationmark")
-                            .font(.system(size: 26))
-                            .foregroundStyle(.defaultBlack)
-                        
-                        Text(StringLiterals.Home.noFestivalTitle)
-                            .font(.system(size: 16))
-                            .foregroundStyle(.defaultBlack)
-                            .fontWeight(.semibold)
-                        
-                        Text(StringLiterals.Home.noFestivalMessage)
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    .frame(height: 360)
-                } else {
-                    if !viewModel.festivalModel.todayFestivals.isEmpty {
-                        VStack(spacing: 16) {
-                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
-                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
-                                
-                                Divider()
-                                    .foregroundStyle(.grey200)
-                                    .padding(.trailing)
+        VStack(spacing: 0) {
+            VStack(spacing: 0) {
+                if isExpanded {
+                    HStack {
+                        // 2024년 O월을 탭하면 원하는 달로 이동할 수 있는 Menu가 나타남
+                        Menu {
+                            ForEach(1 ..< 13, id: \.self) { monthIndex in
+                                Button("\(monthIndex)" + StringLiterals.Calendar.month) {
+                                    monthPageIndex = monthIndex
+                                }
                             }
+                        } label: {
+                            Text("\(String(selectedYear))년 \(monthPageIndex)월")
+                                .font(.system(size: 24))
+                                .foregroundStyle(.defaultBlack)
+                                .bold()
                         }
-                        .padding(.top, 20)
-                        .padding(.leading)
+                        .padding(.trailing, 10)
                         
-                        /* List {
-                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
-                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
-                            }
-                        }
-                        .frame(height: CGFloat(viewModel.festivalModel.todayFestivals.count * 94))
-                        .padding(.top, 20)
-                        .listStyle(.plain)*/
-                        
-                    } else {
-                        VStack {
-                            ProgressView()
-                        }
-                        .frame(height: 100)
-                    }
-                }
-                
-                /*
-                Button {
-                    isIntroViewPresented.toggle()
-                } label: {
-                    Image(.longButtonGray)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .overlay {
-                            Text("관심 축제 추가하기")
-                                .font(.system(size: 13))
-                                .fontWeight(.semibold)
+                        HStack(alignment: .center, spacing: 0) {
+                            simpleDot(.ufBluegreen)
+                                .padding(.trailing, 3)
+                            Text("1개")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.gray)
+                                .padding(.trailing, 6)
+                            simpleDot(.ufOrange)
+                                .padding(.trailing, 3)
+                            Text("2개")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.gray)
+                                .padding(.trailing, 6)
+                            simpleDot(.ufRed)
+                                .padding(.trailing, 3)
+                            Text("3개 이상")
+                                .font(.system(size: 11))
                                 .foregroundStyle(.gray)
                         }
-                }
-                .padding(.horizontal)*/
-            }
-            
-            Text("").boldLine().padding(.vertical)
-            
-            /* Image(.boldLine)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
-                .padding(.vertical)*/
-            
-            HStack {
-                Text(StringLiterals.Home.upcomingFestivalTitle)
-                    .font(.system(size: 15))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.defaultBlack)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 4)
-            
-            VStack(spacing: 8) {
-                if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength).isEmpty {
-                    VStack(alignment: .center) {
-                        Text(StringLiterals.Home.noUpcomingFestivalTitle)
-                            .font(.system(size: 16))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.defaultBlack)
-                            .padding(.bottom, 1)
                         
-                        Text(StringLiterals.Home.noUpcomingFestivalMessage)
-                            .font(.system(size: 12))
-                            .foregroundColor(.gray)
-                            .padding(.bottom, 10)
+                        Spacer()
+                        
+                        Button {
+                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
+                            monthPageIndex -= 1
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20))
+                                .foregroundColor(.gray)
+                        }
+                        .disabled(monthPageIndex == 1)
+                        
+                        Spacer()
+                            .frame(width: 30)
+                        
+                        Button {
+                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
+                            monthPageIndex += 1
+                        } label: {
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 20))
+                                .foregroundColor(.gray)
+                        }
+                        .disabled(monthPageIndex == 12)
                     }
-                    .frame(height: 240)
-                } else {
-                    ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength), id: \.self) { festival in
-                        schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
-                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical)
+                    .background(.ufWhite)
+                    .frame(maxWidth: .infinity)
                 }
                 
-//                if viewModel.festivalModel.festivals.count > self.maxLength {
-//                    Button {
-//                        // 5개씩 더 불러오기
-//                        self.maxLength += 5
-//                    } label: {
-//                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
-//                            .frame(width: 64)
-//                            .overlay {
-//                                Text("더보기")
-//                                    .foregroundStyle(.gray)
-//                                    .font(.system(size: 12))
-//                            }
-//                    }
-//                    .padding(.top, 10)
-//                }
-                
-                Spacer().frame(height: 10)
+                TabView(selection: isExpanded ? $monthPageIndex : $weekPageIndex) {
+                    if !isExpanded {
+                        ForEach(0..<52, id: \.self) { weekIdx in
+                            let firstSunday = Calendar.current.date(byAdding: .day, value: weekIdx * 7, to: firstSundayOfYear)!
+                            let wednesday = Calendar.current.date(byAdding: .day, value: weekIdx * 7 + 3, to: firstSundayOfYear)!
+                            
+                            WeeklyCalendarView(
+                                viewModel: viewModel,
+                                year: currentYear,
+                                month: $currentMonth,
+                                currentFirstSunday: firstSunday,
+                                selectedYear: $selectedYear,
+                                selectedMonth: $selectedMonth,
+                                selectedDay: $selectedDay
+                            )
+                            .onAppear {
+                                currentMonth = Calendar.current.component(.month, from: wednesday)
+                            }
+                        }
+                    } else {
+                        ForEach(1...12, id: \.self) { month in
+                            MonthlyCalendarView(
+                                viewModel: viewModel,
+                                year: currentYear, month: month,
+                                currentMonth: $currentMonth,
+                                selectedYear: $selectedYear,
+                                selectedMonth: $selectedMonth,
+                                selectedDay: $selectedDay,
+                                calendar: $calendar
+                            )
+                        }
+                    }
+                }
+                .background(.ufWhite)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80)
+                .overlay {
+                    // 달력 아래가 rounded rectangle처럼 보이는 이유는,
+                    // chevron.down을 포함한 이 뷰가 rectangle의 아래를 clipshape으로 둥글게 만든 뷰이고, 달력 tabview에 overlay한 뒤 offset으로 위치를 아래로 움직여 달력 탭뷰와 하나처럼 보이게 구현했기 때문
+                    // 달력이 접혔다 펴졌다 할 때 이 rectangle의 y축 offset도 함께 조정해야 달력 탭뷰와 하나처럼 보임
+                    Rectangle()
+                        .fill(Color.ufWhite)
+                        .frame(height: 25)
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 23,
+                                bottomTrailingRadius: 23,
+                                topTrailingRadius: 0
+                            )
+                        )
+                        .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
+                        .mask(
+                            Rectangle()
+                                .fill(Color.black)
+                                .frame(height: 30) // 그림자를 적용할 높이 설정
+                                .offset(y: 5) // 그림자가 적용될 위치를 아래로 이동
+                        )
+                        .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) : 47)
+                        .overlay {
+                            HStack {
+                                Button {
+                                    // 월 -> 주
+                                    if isExpanded {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_SHRINK_CALENDAR)
+                                        weekPageIndex = getWeekIndex()
+                                        withAnimation(.spring) {
+                                            isExpanded = false
+                                        }
+                                    }
+                                    // 주 -> 월
+                                    else {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_EXPAND_CALENDAR)
+                                        weekPageIndex = selectedMonth
+                                        monthPageIndex = selectedMonth
+                                        withAnimation(.spring) {
+                                            isExpanded = true
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "chevron.down")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.gray)
+                                        .rotationEffect(isExpanded ? .degrees(180) : .zero)
+                                }
+                                .padding(20)
+                                .contentShape(Rectangle())
+                            }
+                            .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) - 12 : 40) // chevron 버튼의 위치 결정
+                        }
+                }
             }
-            .padding(.horizontal)
+            .background(.ufBackground)
+            .onAppear {
+                firstSundayOfYear = getFirstSundayOfYear()
+                currentFirstSunday = getFirstSunday(fromDate: Date())
+                weekPageIndex = getWeekIndex()
+                viewModel.festivalModel.getFestivalByDate(year: selectedYear, month: selectedMonth, day: selectedDay) // 축제 정보 요청 api 호출
+            }
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        if (startOffsetY < 0) {
+                            startOffsetY = value.translation.height
+                        }
+                        lastOffsetY = value.translation.height
+                        // print("Y offset: \(self.lastOffsetY)")
+                    }
+                    .onEnded { _ in
+                        if (startOffsetY < lastOffsetY) {
+                            if !isExpanded {
+                                weekPageIndex = selectedMonth
+                                monthPageIndex = selectedMonth
+                                withAnimation(.spring) {
+                                    isExpanded = true
+                                }
+                            }
+                        } else {
+                            if isExpanded {
+                                weekPageIndex = getWeekIndex()
+                                withAnimation(.spring) {
+                                    isExpanded = false
+                                }
+                            }
+                        }
+                        self.startOffsetY = -1
+                        self.lastOffsetY = 0
+                    }
+            )
+            
+            Spacer()
+                .frame(height: 44)
+            
+            FestivalInfoView(
+                viewModel: viewModel,
+                selectedMonth: $selectedMonth,
+                selectedDay: $selectedDay
+            )
         }
         .background(.ufBackground)
-        .sheet(isPresented: $isIntroViewPresented) {
-            IntroView(viewModel: viewModel)
-        }
-    }
-    
-    func getFestDate(beginDate: String, month: Int, day: Int) -> Int {
-        // Create a DateFormatter instance
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        // Convert beginDate string to a Date object
-        guard let startDate = dateFormatter.date(from: beginDate) else {
-            return 0 // Return 0 if unable to parse beginDate
-        }
-        
-        // Create a Date object for the given month and day
-        var dateComponents = DateComponents()
-        dateComponents.year = Calendar.current.component(.year, from: startDate)
-        dateComponents.month = month
-        dateComponents.day = day
-        guard let targetDate = Calendar.current.date(from: dateComponents) else {
-            return 0 // Return 0 if unable to create targetDate
-        }
-        
-        // Calculate the difference in days
-        let calendar = Calendar.current
-        let difference = calendar.dateComponents([.day], from: startDate, to: targetDate)
-        return difference.day ?? 0
     }
     
     @ViewBuilder
-    func schoolFestRow(image: String, dateText: String, name: String, school: String) -> some View {
-        Text("")
-            .roundedButton(background: .defaultWhite, strokeColor: .defaultLightGray, height: 92, cornerRadius: 10)
-        // Image(.schoolFestBox)
-            // .resizable()
-            // .scaledToFit()
-            // .frame(maxWidth: .infinity)
-            .overlay {
-                HStack(spacing: 10) {
-                    /* AsyncImage(url: URL(string: image)) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 52, height: 52)
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: 52, height: 52)
-                    }*/
-                    AsyncImage(url: URL(string: image)) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 60, height: 60)
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 60, height: 60)
-                                .cornerRadius(10)
-                        case .failure(_):
-                            Image(.noImagePlaceholder)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                        @unknown default:
-                            Image(.noImagePlaceholder)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                        }
-                    }
-                    .frame(width: 60, height: 60)
-                    .padding(.trailing, 5)
-                    // .border(.green)
-                    
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(dateText)
-                            .font(.system(size: 12))
-                            .fontWeight(.medium)
-                            .foregroundStyle(.gray)
-                        Text(name)
-                            .font(.system(size: 12))
-                            .bold()
-                            .foregroundStyle(.defaultBlack)
-                        HStack(spacing: 5) {
-                            Image(.grayMarker)
-                            Text(school)
-                                .font(.system(size: 12))
-                                .fontWeight(.medium)
-                                .foregroundStyle(.gray)
-                        }
-                    }
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-            }
+    func simpleDot(_ color: Color) -> some View {
+        Circle()
+            .fill(color)
+            .frame(width: 7, height: 7)
     }
     
-    @ViewBuilder
-    func schoolFestDetailRow(beginDateText: String, endDateText: String, name: String, day: Int, location: String, celebs: [StarItem]?=nil) -> some View {
-        VStack {
-            HStack {
-                Image(.verticalBar)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 72)
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(beginDateText + " ~ " + endDateText)
-                        .bold()
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
-                        .padding(.bottom, 5)
-                    
-                    Text(name + " DAY \(day)")
-                        .font(.system(size: 18))
-                        .foregroundStyle(.defaultBlack)
-                        .fontWeight(.semibold)
-                        .padding(.bottom, 11)
-                    
-                    HStack(spacing: 5) {
-                        Image(.grayMarker)
-                        Text(location)
-                            .font(.system(size: 11))
-                            .fontWeight(.medium)
-                            .foregroundStyle(.gray)
-                    }
-                }
-                
-                if let celebs = celebs {
-                    ZStack(alignment: .leading) {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack {
-                                Spacer()
-                                    .frame(width: 30)
-                                
-                                ForEach(celebs, id: \.self) { star in
-                                    CelebCircleView(celeb: CelebProfile(name: star.name, imageURL: star.imgUrl))
-                                }
-                                
-                                Spacer()
-                                    .frame(width: 20)
-                            }
-                        }
-                        .frame(height: 72)
-                        // .border(.red)
-                        
-//                        Image(.leftRowOverlay)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 72)
-                        
-                        Rectangle()
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [Color.ufBackground, Color.clear]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .frame(width: 30, height: 72)
-                    }
-                    .frame(height: 72)
-                    // .border(.green)
-                }
-            }
-            .frame(height: 72)
+    // 달력 탭뷰가 펼쳐지거나 접혔을 때, 달력 탭뷰 아래의 chevron.down 버튼을 포함한 이 뷰(TabView에 overlay한 뷰)의 y축 offset을 조정하기 위한 메서드
+    func getViewOffsetY(_ numberOfWeeks: Int) -> CGFloat {
+        // 한 달이 4주, 5주, 6주일 때 각각 y축 offset값 조절
+        if numberOfWeeks == 6 { return 172 }
+        else if numberOfWeeks == 5 { return 152 }
+        else { return 132 } // 4주일 때는 화면 확인 안해봄
+    }
+    
+    func getFirstSundayOfYear() -> Date {
+        let date = Date()
+        let year = Calendar.current.component(.year, from: date)
+        let firstDayOfYear = Calendar.current.date(from: DateComponents(year: year, month: 1, day: 1))!
+        let weekday = Calendar.current.component(.weekday, from: firstDayOfYear)
+        let firstSundayOfYear = Calendar.current.date(byAdding: .day, value: 1 - weekday, to: firstDayOfYear)!
+        
+        return firstSundayOfYear
+    }
+    
+    func getFirstSunday(fromDate: Date) -> Date {
+        // get the first sunday of selected day
+        let weekday = Calendar.current.component(.weekday, from: fromDate)
+        return Calendar.current.date(byAdding: .day, value: -weekday, to: fromDate)!
+    }
+    
+    func getWeekIndex() -> Int {
+        let selectedDate = Calendar.current.date(from: DateComponents(year: selectedYear, month: selectedMonth, day: selectedDay))!
+        let firstSunday = getFirstSunday(fromDate: selectedDate)
+        
+        // get difference number of week between firstSunday and firstSundayOfYear
+        let diff = Calendar.current.dateComponents([.weekOfYear], from: firstSundayOfYear, to: firstSunday).weekOfYear! + 1
+        
+        // print("diff: \(diff)")
+        return diff
+    }
+    
+    func getHeightByWeekNum(_ numberOfWeeks: Int) -> CGFloat {
+        // getHeightByWeekNum()으로 MonthlyCalendarView의 높이를 정함(몇 주냐에 따라서)
+        // 한 달이 4주, 5주, 6주일 때 각각 MonthlyCalendarView 높이 조절
+        if numberOfWeeks == 6 { return 325 }
+        else if numberOfWeeks == 5 { return 285 }
+        else { return 245 } // 4주일 때는 화면 확인 안해봄
+    }
+    
+    func getWeekNumOfYear() -> [Int] {
+        var weekNumList: [Int] = [0]
+        // calculator number of week per each month
+        for month in 1...12 {
+            let firstDayOfMonth = Calendar.current.date(from: DateComponents(year: currentYear, month: month, day: 1))!
+            let weekday = Calendar.current.component(.weekday, from: firstDayOfMonth)
+            let firstSundayOfMonth = Calendar.current.date(byAdding: .day, value: 1 - weekday, to: firstDayOfMonth)!
             
-            /* 일단 제거
-            Button {
-                
-            } label: {
-                Image(.narrowLongButtonPink)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        Text("관심 축제로 추가")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.accent)
-                            .fontWeight(.medium)
-                    }
-            }
-            .padding(.trailing)
-            .padding(.top, 6)*/
-        }
-    }
-    
-    func formatDate(_ dateString: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let date = dateFormatter.date(from: dateString) else {
-            return ""
-        }
-        
-        // Format month and day
-        let month = Calendar.current.component(.month, from: date)
-        let day = Calendar.current.component(.day, from: date)
-        
-        // Get the day of the week
-        let weekday = Calendar.current.component(.weekday, from: date)
-        let weekdays = ["", "일", "월", "화", "수", "목", "금", "토"]
-        
-        return "\(month)/\(day)(\(weekdays[weekday]))"
-    }
-}
-
-struct CelebCircleView: View {
-    let celeb: CelebProfile
-    @State private var isTouched: Bool = false
-    @State private var loadFailed: Bool = false
-    
-    var body: some View {
-        ZStack {
-            /* AsyncImage(url: URL(string: celeb.imageURL)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 72, height: 72)
-                    .clipShape(Circle())
-                    .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-            } placeholder: {
-                ZStack {
-                    Circle()
-                        .fill(.lightGray)
-                        .frame(width: 72, height: 72)
-                        .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                }
-                .frame(width: 72, height: 72)
-            }*/
-            AsyncImage(url: URL(string: celeb.imageURL)) { phase in
-                switch phase {
-                case .empty:
-                    ZStack {
-                        Circle()
-                            .fill(.defaultLightGray)
-                            .frame(width: 72, height: 72)
-                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                    }
-                    .frame(width: 72, height: 72)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 72, height: 72)
-                        .clipShape(Circle())
-                        // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                case .failure(_):
-                    ZStack(alignment: .center) {
-                        Circle()
-                            .fill(.defaultLightGray)
-                            .frame(width: 72, height: 72)
-                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                        
-                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-                        //     .frame(width: 50)
-                        Text(celeb.name)
-                            .font(.system(size: 13))
-                            .fontWeight(.medium)
-                            .foregroundStyle(.defaultBlack)
-                            .multilineTextAlignment(.center)
-                            
-                    }
-                    .frame(width: 72)
-                    .onAppear {
-                        loadFailed = true
-                    }
-                }
-            }
-            .onTapGesture {
-                if !loadFailed {
-                    if !isTouched {
-                        GATracking.sendLogEvent(GATracking.LogEventType.HomeView.HOME_CLICK_CELEB_PROFILE, params: ["celebName": celeb.name])
-                        
-                        withAnimation {
-                            isTouched = true
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            withAnimation {
-                                self.isTouched = false
-                            }
-                        }
-                    }
-                }
-            }
+            let lastDayOfMonth = Calendar.current.date(from: DateComponents(year: currentYear, month: month + 1, day: 1))!
+            let lastWeekday = Calendar.current.component(.weekday, from: lastDayOfMonth)
+            let lastSaturdayOfMonth = Calendar.current.date(byAdding: .day, value: 7 - lastWeekday, to: lastDayOfMonth)!
             
-            if isTouched {
-                Circle()
-                    .fill(.black.opacity(0.5))
-                    .overlay {
-                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-                        Text(celeb.name)
-                            .font(.system(size: 13))
-                            .fontWeight(.medium)
-                            .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
-                    }
-            }
+            let weekNum = Calendar.current.dateComponents([.weekOfYear], from: firstSundayOfMonth, to: lastSaturdayOfMonth).weekOfYear! + 1
+            
+            weekNumList.append(weekNum)
         }
-        .frame(width: 72, height: 72)
+        print(weekNumList)
+        return weekNumList
     }
 }
 
 #Preview {
-    RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
-}
-
-struct CelebProfile: Codable, Identifiable {
-    var id = UUID()
-    var name: String
-    var imageURL: String
+    HomeView(viewModel: RootViewModel())
 }

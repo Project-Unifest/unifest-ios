@@ -197,6 +197,7 @@ class FestivalModel: ObservableObject {
         case lossConnection
     }
     
+    // 오늘의 축제 일정 api
     func getFestivalByDate(year: Int, month: Int, day: Int) {
         print(APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", month))-\(String(format: "%02d", day))")
         var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", month))-\(String(format: "%02d", day))")!,timeoutInterval: Double.infinity)

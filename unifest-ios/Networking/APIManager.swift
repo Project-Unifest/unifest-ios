@@ -76,7 +76,7 @@ final class APIManager: ObservableObject {
         var urlComponents: URLComponents
         
         // URL String
-        var urlString = APIManager.shared.serverType.rawValue + endpoint // endpoint.rawValue
+        let urlString = APIManager.shared.serverType.rawValue + endpoint // endpoint.rawValue
         
         print("API Manager: " + urlString)
         
