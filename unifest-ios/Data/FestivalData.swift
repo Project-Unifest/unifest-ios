@@ -16,7 +16,7 @@ struct APIResponse: Codable {
 }
 
 struct FestivalItem: Codable, Hashable, Identifiable {
-    var id: UUID? = UUID()
+    var id: UUID? = UUID() // optional없애면 데이터 로드 안됨 왜그렇지..?
     var festivalId: Int
     var schoolId: Int
     var thumbnail: String
@@ -29,12 +29,6 @@ struct FestivalItem: Codable, Hashable, Identifiable {
     var longitude: Double
     var starList: [StarItem]?
 }
-
-//struct APIResponseFestToday: Codable {
-//    var code: Int?
-//    var message: String?
-//    var data: [TodayFestivalItem]?
-//}
 
 struct APIResponseFestToday: Codable {
     var code: Code?
@@ -97,7 +91,17 @@ class FestivalModel: ObservableObject {
             }
         }
     }
+    
     @Published var todayFestivals: [TodayFestivalItem] = [] {
+        willSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
+    
+    // EditFavoriteFestivalView에서 학교/축제를 검색했을 때 일치하는 검색 결과를 저장
+    @Published var festivalSearchResult: [FestivalItem] = [] {
         willSet {
             DispatchQueue.main.async {
                 self.objectWillChange.send()
@@ -108,8 +112,6 @@ class FestivalModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        // loadData()
-        
         loadStoreListData {
             print("data is all loaded")
         }
@@ -132,6 +134,18 @@ class FestivalModel: ObservableObject {
             } catch {
                 print("Error while decoding JSON: \(error)")
             }
+        }
+    }
+    
+    func searchFestival(by keyword: String) {
+        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+                festivalSearchResult = []
+                return
+            }
+        
+        // 영어일 경우 대소문자 무시하고 검색
+        festivalSearchResult = festivals.filter { festival in
+            festival.festivalName.localizedCaseInsensitiveContains(keyword) || festival.schoolName.localizedCaseInsensitiveContains(keyword)
         }
     }
     
@@ -240,10 +254,6 @@ class FestivalModel: ObservableObject {
 
         task.resume()
     }
-    
-//    func getFestivalByDate(year: Int, month: Int, day: Int) -> [FestivalItem] {
-//        
-//    }
     
     func getFestivalAfter(year: Int, month: Int, day: Int, maxLength: Int) -> [FestivalItem] {
         var festList: [FestivalItem] = []
