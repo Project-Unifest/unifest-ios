@@ -77,10 +77,9 @@ struct EditFavoriteFestivalView: View {
                 .padding(.horizontal, 15)
                 .padding(.bottom, 6)
                 
-                Image(.boldLine)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
+                Rectangle()
+                    .fill(.grey100)
+                    .frame(height: 8)
                 
                 HStack {
                     Text("나의 관심 축제")

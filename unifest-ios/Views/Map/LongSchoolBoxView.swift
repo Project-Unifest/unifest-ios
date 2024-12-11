@@ -15,47 +15,49 @@ struct LongSchoolBoxView: View {
     let endDate: String
     
     var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: thumbnail)) { phase in
-                switch phase {
-                case .empty:
-                    ProgressView()
-                case .success(let image):
-                    image
-                        .resizable()
-                        .frame(width: 52, height: 52)
-                        .scaledToFit()
-                        .clipShape(.circle)
-                        .padding(.trailing, 4)
-                case .failure:
-                    Image(systemName: "photo")
-                        .resizable()
-                        .frame(width: 52, height: 52)
-                        .scaledToFit()
-                        .padding(.trailing, 4)
-                @unknown default:
-                    EmptyView()
+        VStack {
+            HStack {
+                AsyncImage(url: URL(string: thumbnail)) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .frame(width: 52, height: 52)
+                            .scaledToFit()
+                            .clipShape(.circle)
+                            .padding(.trailing, 4)
+                    case .failure:
+                        Image(systemName: "photo")
+                            .resizable()
+                            .frame(width: 52, height: 52)
+                            .scaledToFit()
+                            .padding(.trailing, 4)
+                    @unknown default:
+                        EmptyView()
+                    }
                 }
-            }
-            .frame(width: 52, height: 52)
-            
-            VStack(alignment: .leading) {
-                Text(schoolName)
-                    .font(.system(size: 13))
+                .frame(width: 52, height: 52)
                 
-                Text(festivalName)
-                    .font(.system(size: 12))
-                    .bold()
+                VStack(alignment: .leading) {
+                    Text(schoolName)
+                        .font(.pretendard(weight: .p4, size: 13))
+                        .foregroundStyle(.grey900)
+                    
+                    Text(festivalName)
+                        .font(.pretendard(weight: .p7, size: 12))
+                        .foregroundStyle(.grey900)
+
+                    Text(startDate + "-" + endDate)
+                        .font(.pretendard(weight: .p4, size: 12))
+                        .foregroundStyle(.grey600)
+                }
                 
-                Text(startDate + "-" + endDate)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.defaultDarkGray)
+                Spacer()
             }
-            
-            Spacer()
-            
-            
         }
+        .padding(.vertical, 2)
     }
 }
 
