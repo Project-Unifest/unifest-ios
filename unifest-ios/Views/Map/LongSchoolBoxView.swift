@@ -55,6 +55,19 @@ struct LongSchoolBoxView: View {
                 }
                 
                 Spacer()
+                
+                Button {
+                    
+                } label: {
+                    Capsule()
+                        .strokeBorder(.primary500, lineWidth: 1)
+                        .frame(width: 57, height: 29)
+                        .overlay {
+                            Text("추가")
+                                .font(.pretendard(weight: .p5, size: 12))
+                                .foregroundStyle(.primary500)
+                        }
+                }
             }
         }
         .padding(.vertical, 2)

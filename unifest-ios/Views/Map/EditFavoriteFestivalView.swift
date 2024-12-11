@@ -83,8 +83,8 @@ struct EditFavoriteFestivalView: View {
                 
                 HStack {
                     Text("나의 관심 축제")
-                        .font(.system(size: 15))
-                        .fontWeight(.semibold)
+                        .font(.pretendard(weight: .p6, size: 15))
+                        .foregroundStyle(.grey900)
                     
                     Spacer()
                 }
@@ -93,11 +93,16 @@ struct EditFavoriteFestivalView: View {
                 
                 ScrollView {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
-                        SchoolBoxView(isSelected: .constant(false), schoolImageURL: "https://i.namu.wiki/i/frJ2JwLkp_Ts8Le-AVmISJdC2wkhYUte4N5YZ0j-nB_aT_CagQLTOjNDeXMW_kFBeXIe5-pAXDE4CGNVGJ5FMGuS1HUqUTYGfL3AUVJBzum3Ppq5wIUej0v10WuSuOWDT2KIEQwKqA4qiWm3EzS123Uj1gyShvzqaaScOgNsnPg.svg", schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "2024-06-24", endDate: "2024-06-27")
-                        SchoolBoxView(isSelected: .constant(false), schoolImageURL: "https://i.namu.wiki/i/frJ2JwLkp_Ts8Le-AVmISOJycKA-weZiZnZjURRWrVUG1b_6EwEV_XC-T4m0L4tkaLMTrYTt-rg9NsoFAvLcaensvvbxtHJniiJ1ozZQASIXrFBKslQibGRszyoIcpf3Amebt_bZ5rNEYbYSQfkbq21wvQuDNQ5jTqtP1RO3V1g.svg", schoolName: "홍익대 서울캠", festivalName: "녹색지대", startDate: "2024-05-20", endDate: "2024-05-24")
-                        SchoolBoxView(isSelected: .constant(false), schoolImageURL: "https://i.namu.wiki/i/frJ2JwLkp_Ts8Le-AVmISFfwnU-dlgVpQbZ03CrSG0G0U1cfjhp8ygrXEpeJ_s7b0p6hOl8NgkZyZBV-0dSGl1pKcPaPxpTXHqETtFYKDL_QG8Pu1Qa5-79V0ks6ABzw0eOMDa68Hfpunt1HWPZ17GlqMo8zFONfTmVx7HJGfa4.webp", schoolName: "서울대 관악캠", festivalName: "녹색지대", startDate: "2024-06-01", endDate: "2024-06-04")
-                        /* SchoolBoxView(isSelected: .constant(false), schoolImage: .snutLogo, schoolName: "서울과기대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                         SchoolBoxView(isSelected: .constant(false), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )*/
+                        ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                            SchoolBoxView(
+                                isSelected: .constant(false),
+                                schoolImageURL: festival.thumbnail,
+                                schoolName: festival.schoolName,
+                                festivalName: festival.festivalName,
+                                startDate: festival.beginDate,
+                                endDate: festival.endDate
+                            )
+                        }
                     }
                     .padding(.horizontal)
                 }

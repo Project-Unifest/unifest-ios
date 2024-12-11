@@ -17,28 +17,45 @@ struct SchoolBoxView: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 10)
-            .stroke(.lightGray)
+            .strokeBorder(.grey300)
             .frame(height: 120)
             .overlay {
                 VStack {
-                    AsyncImage(url: URL(string: schoolImageURL)) { image in
-                        image.image?
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 35, height: 35)
-                            .padding(.bottom, 4)
+                    AsyncImage(url: URL(string: schoolImageURL)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .scaledToFit()
+                                .clipShape(.circle)
+                                .padding(.bottom, 4)
+                        case .failure:
+                            Image(systemName: "photo")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                                .scaledToFit()
+                                .clipShape(.circle)
+                                .padding(.bottom, 4)
+                        @unknown default:
+                            EmptyView()
+                        }
                     }
+                    .frame(width: 35, height: 35)
                     
                     Text(schoolName)
-                        .font(.system(size: 13))
+                        .font(.pretendard(weight: .p4, size: 13))
+                        .foregroundStyle(.grey900)
                     
                     Text(festivalName)
-                        .font(.system(size: 12))
-                        .bold()
+                        .font(.pretendard(weight: .p7, size: 12))
+                        .foregroundStyle(.grey900)
                     
                     Text(formattedDate(from: startDate) + "-" + formattedDate(from: endDate))
-                        .font(.system(size: 12))
-                        .foregroundStyle(.gray)
+                        .font(.pretendard(weight: .p4, size: 12))
+                        .foregroundStyle(.grey600)
                 }
             }
     }
