@@ -16,6 +16,7 @@ struct MenuView: View {
     @EnvironmentObject var networkManager: NetworkManager
     @EnvironmentObject var tabSelect: TabSelect
     @State private var isListViewPresented: Bool = false
+    @State private var isEditFavoriteFestivalViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
@@ -52,19 +53,19 @@ struct MenuView: View {
                     Spacer()
                     
                     
-                    /* Button {
-                     
-                     } label: {
-                     HStack(spacing: 0) {
-                     Text("추가하기")
-                     .font(.system(size: 11))
-                     .foregroundColor(.gray)
-                     .underline()
-                     Image(systemName: "chevron.right")
-                     .font(.system(size: 11))
-                     .foregroundColor(.gray)
-                     }
-                     } */
+                    Button {
+                        isEditFavoriteFestivalViewPresented = true
+                    } label: {
+                        HStack(spacing: 0) {
+                            Text("추가하기 >")
+                                .font(.pretendard(weight: .p6, size: 11))
+                                .foregroundColor(.grey600)
+                                .underline()
+//                            Image(systemName: "chevron.right")
+//                                .font(.system(size: 10))
+//                                .foregroundColor(.grey600)
+                        }
+                    }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
@@ -854,6 +855,10 @@ struct MenuView: View {
             LikeBoothListView(viewModel: viewModel)
                 .ignoresSafeArea()
         })
+        .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
+            EditFavoriteFestivalView(viewModel: viewModel)
+                .presentationDragIndicator(.visible)
+        }
         .onAppear {
             // boothModel.likedBoothList = [1, 2, 3, 78, 79, 80, 81, 82]
             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
