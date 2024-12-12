@@ -72,7 +72,7 @@ enum StringLiterals {
         static let title = "메뉴"
         static let LikedSchoolTitle = "나의 관심축제"
         static let LikedBoothTitle = "관심부스"
-        static let more = "더보기"
+        static let more = "더보기 >"
         static let noLikedBoothTitle = "관심부스 없음"
         static let noLikedBoothMessage = "지도에서 관심있는 부스를 추가해주세요"
         static let askTitle = "이용문의 (카카오톡 채널)"

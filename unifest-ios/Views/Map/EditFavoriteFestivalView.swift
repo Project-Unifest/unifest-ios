@@ -30,7 +30,7 @@ struct EditFavoriteFestivalView: View {
                             TextField("학교/축제 이름을 검색해보세요", text: $searchText)
                                 .font(.system(size: 13))
                                 .onChange(of: searchText) { newValue in
-                                    viewModel.festivalModel.searchFestival(by: searchText)
+                                    viewModel.festivalModel.filterFestivals(byKeyword: searchText)
                                     
                                     if newValue.isEmpty {
                                         viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
@@ -131,3 +131,5 @@ struct EditFavoriteFestivalView: View {
         return "\(month).\(day)"
     }
 }
+
+// Preview 오류 발생해서 지움

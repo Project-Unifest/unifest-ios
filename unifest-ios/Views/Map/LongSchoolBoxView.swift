@@ -13,6 +13,7 @@ struct LongSchoolBoxView: View {
     let festivalName: String
     let startDate: String
     let endDate: String
+    @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     
     var body: some View {
         VStack {
@@ -29,11 +30,10 @@ struct LongSchoolBoxView: View {
                             .clipShape(.circle)
                             .padding(.trailing, 4)
                     case .failure:
-                        Image(systemName: "photo")
-                            .resizable()
-                            .frame(width: 52, height: 52)
-                            .scaledToFit()
-                            .padding(.trailing, 4)
+                        Circle()
+                            .fill(.grey500)
+                            .frame(width: 35, height: 35)
+                            .padding(.bottom, 4)
                     @unknown default:
                         EmptyView()
                     }
@@ -76,4 +76,5 @@ struct LongSchoolBoxView: View {
 
 #Preview {
     LongSchoolBoxView(thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
+        .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }

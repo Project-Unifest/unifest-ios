@@ -16,7 +16,7 @@ struct MenuView: View {
     @EnvironmentObject var networkManager: NetworkManager
     @EnvironmentObject var tabSelect: TabSelect
     @State private var isListViewPresented: Bool = false
-    @State private var isEditFavoriteFestivalViewPresented: Bool = false
+    @State private var isIntroViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var isDetailViewPresented: Bool = false
     @State private var randomLikeList: [Int] = []
@@ -54,7 +54,7 @@ struct MenuView: View {
                     
                     
                     Button {
-                        isEditFavoriteFestivalViewPresented = true
+                        isIntroViewPresented = true
                     } label: {
                         HStack(spacing: 0) {
                             Text("추가하기 >")
@@ -125,12 +125,12 @@ struct MenuView: View {
                         } label: {
                             HStack(spacing: 0) {
                                 Text(StringLiterals.Menu.more)
-                                    .font(.system(size: 11))
+                                    .font(.pretendard(weight: .p6, size: 11))
+                                    .foregroundStyle(.grey600)
                                     .underline()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 11))
+//                                Image(systemName: "chevron.right")
+//                                    .font(.system(size: 11))
                             }
-                            .foregroundStyle(.grey600)
                         }
                     }
                 }
@@ -855,8 +855,8 @@ struct MenuView: View {
             LikeBoothListView(viewModel: viewModel)
                 .ignoresSafeArea()
         })
-        .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel)
+        .sheet(isPresented: $isIntroViewPresented) {
+            IntroView(viewModel: viewModel)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {

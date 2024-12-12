@@ -33,11 +33,9 @@ struct SchoolBoxView: View {
                                 .clipShape(.circle)
                                 .padding(.bottom, 4)
                         case .failure:
-                            Image(systemName: "photo")
-                                .resizable()
+                            Circle()
+                                .fill(.grey500)
                                 .frame(width: 35, height: 35)
-                                .scaledToFit()
-                                .clipShape(.circle)
                                 .padding(.bottom, 4)
                         @unknown default:
                             EmptyView()

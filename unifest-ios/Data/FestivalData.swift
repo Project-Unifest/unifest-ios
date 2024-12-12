@@ -114,6 +114,7 @@ class FestivalModel: ObservableObject {
     init() {
         loadStoreListData {
             print("data is all loaded")
+            print(self.festivals)
         }
     }
     
@@ -137,7 +138,7 @@ class FestivalModel: ObservableObject {
         }
     }
     
-    func searchFestival(by keyword: String) {
+    func filterFestivals(byKeyword keyword: String) {
         guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
                 festivalSearchResult = []
                 return
@@ -146,6 +147,16 @@ class FestivalModel: ObservableObject {
         // 영어일 경우 대소문자 무시하고 검색
         festivalSearchResult = festivals.filter { festival in
             festival.festivalName.localizedCaseInsensitiveContains(keyword) || festival.schoolName.localizedCaseInsensitiveContains(keyword)
+        }
+    }
+    
+    func filterFestivals(byRegion region: String) {
+        if region == "전체" {
+            festivalSearchResult = festivals
+        } else {
+            festivalSearchResult = festivals.filter { festival in
+                festival.region.contains(region)
+            }
         }
     }
     
