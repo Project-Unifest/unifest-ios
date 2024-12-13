@@ -9,21 +9,21 @@ import SwiftUI
 
 struct IntroView: View {
     @ObservedObject var viewModel: RootViewModel
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     @State private var likedList: [Int] = []
     @State private var searchText: String = ""
     @State private var count: Int = 0
-    
     // 지역 선택 index
     @State private var regionIndex: Int = 0
     let regions: [String] = ["전체", "서울", "경기∙인천", "강원", "대전∙충청", "광주∙전라", "부산∙대구", "경상"]
-    
     let columns = [GridItem(.adaptive(minimum: 114))]
     
     var body: some View {
         VStack(alignment: .center) {
-            ScrollView {
+            VStack {
                 Spacer()
-                    .frame(height: 78)
+                    .frame(height: 40)
                 
                 Text(StringLiterals.Intro.infoTitle)
                     .font(.pretendard(weight: .p6, size: 18))
@@ -35,21 +35,40 @@ struct IntroView: View {
                     .foregroundStyle(.grey600)
                 
                 Spacer()
-                    .frame(height: 52)
+                    .frame(height: 32)
                 
                 Image(.searchBox)
                     .overlay {
                         HStack {
-                            TextField(StringLiterals.Intro.searchPlaceholder, text: $searchText)
-                                .font(.pretendard(weight: .p5, size: 13))
-                                .foregroundStyle(.grey400)
-                            Image(.searchIcon)
+                            TextField("학교/축제 이름을 검색해보세요", text: $searchText)
+                                .font(.system(size: 13))
+                                .onChange(of: searchText) { newValue in
+                                    viewModel.festivalModel.filterFestivals(byKeyword: searchText)
+                                    
+                                    if newValue.isEmpty {
+                                        regionIndex = 0; // '전체'탭으로 전환
+                                        viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
+                                    }
+                                }
+                            
+                            if searchText.isEmpty {
+                                Image(.searchIcon)
+                            } else {
+                                Button {
+                                    searchText = ""
+                                    UIApplication.shared.endEditing(true)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.grey600)
+                                }
+                            }
                         }
                         .padding(.horizontal, 15)
                     }
+                    .padding(.bottom)
                 
                 Spacer()
-                    .frame(height: 18)
+                    .frame(height: 5)
                 
                 HStack {
                     Text(StringLiterals.Intro.myFestivalTitle)
@@ -87,30 +106,21 @@ struct IntroView: View {
                   }
                   }
                   }*/
-                 /* SchoolBoxView(isSelected: .constant(true), schoolImage: , schoolName: "건국대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                  SchoolBoxView(isSelected: .constant(true), schoolImage: .hongikLogo, schoolName: "홍익대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                  SchoolBoxView(isSelected: .constant(true), schoolImage: .chungangLogo, schoolName: "중앙대 서울캠", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                  SchoolBoxView(isSelected: .constant(true), schoolImage: .snutLogo, schoolName: "서울과기대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )
-                  SchoolBoxView(isSelected: .constant(true), schoolImage: .uosLogo, schoolName: "서울시립대", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08." )*/
-                 }
-                 .padding(.horizontal)
-                 }*/
+                 */
                 
-                HStack {
-                    Spacer()
-                        .frame(width: .infinity, height: 7)
-                }
-                .background(.grey100)
-                .frame(width: .infinity, height: 7)
-                .padding(.top, 20)
+                Rectangle()
+                    .fill(colorScheme == .light ? .grey100 : .grey200)
+                    .frame(height: 7)
+                    .padding(.top, 20)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
-                        ForEach(0 ..< 7) { index in
+                        ForEach(regions.indices, id: \.self) { index in
                             Button {
                                 withAnimation(.spring) {
                                     regionIndex = index
                                 }
+                                viewModel.festivalModel.filterFestivals(byRegion: regions[index])
                             } label: {
                                 Text(regions[index])
                                     .font(index == regionIndex ? .pretendard(weight: .p7, size: 14) : .pretendard(weight: .p4, size: 14))
@@ -119,74 +129,57 @@ struct IntroView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 10)
                 }
-                .padding(.vertical, 10)
                 
-                Divider()
-                    .frame(height: 1.5)
-                    .background(.grey100)
+                Rectangle()
+                    .fill(.grey300)
+                    .frame(height: 1)
                 
-                HStack {
-                    // Text("총 \(viewModel.festivalModel.festivals.count)개")
-                    //     .font(.system(size: 12))
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-                
-                ScrollView {
-                    LazyVGrid(columns: columns) {
-                        //                        ForEach(viewModel.festivalModel.festivals.filter { $0.region! == regions[regionIndex] }, id: \.self) { festival in
-                        //                            SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
-                        //                        }
-                        /* ForEach(viewModel.festivalModel.festivals.filter { $0.region == regions[regionIndex] }) { festival in
-                         // SchoolBoxView(isSelected: .constant(false), schoolImageURL: festival.thumbnail, schoolName: festival.schoolName, festivalName: festival.festivalName, startDate: festival.beginDate, endDate: festival.endDate)
-                         } */
-                        // let festivalList = viewModel.festivalModel.festivals.filter{ $0.region! == regions[regionIndex] }
-                        let festivalList: [FestivalItem] = viewModel.festivalModel.festivals
-                        
-                        /*  if (regionIndex > 0) {
-                         festivalList = festivalList.filter { $0.region == "서울" }
-                         }*/
-                        
-                        /* ForEach(festivalList, id: \.self) { festival in
-                         if (regionIndex == 0 || festival.region == regions[regionIndex]) {
-                         Image(.nonselectedSchoolBoxBackground)
-                         .resizable()
-                         .scaledToFit()
-                         .frame(width: 113, height: 121)
-                         .overlay {
-                         VStack {
-                         AsyncImage(url: URL(string: festival.thumbnail)) { image in
-                         image.image?
-                         .resizable()
-                         .scaledToFit()
-                         .frame(width: 35, height: 35)
-                         .padding(.bottom, 4)
-                         }
-                         
-                         Text(festival.schoolName)
-                         .font(.system(size: 13))
-                         
-                         Text(festival.festivalName)
-                         .font(.system(size: 12))
-                         .bold()
-                         
-                         Text(formattedDate(from: festival.beginDate) + "-" + formattedDate(from: festival.endDate))
-                         .font(.system(size: 12))
-                         .foregroundStyle(.gray)
-                         }
-                         }
-                         }
-                         }*/
+                if viewModel.festivalModel.festivalSearchResult.isEmpty {
+                    VStack {
+                        Spacer()
+                        Text("검색 결과가 없어요")
+                            .font(.pretendard(weight: .p4, size: 14))
+                            .foregroundStyle(.grey600)
+                        Spacer()
                     }
-                    .padding(.horizontal)
+                } else {
+                    ScrollView {
+                        VStack {
+                            HStack {
+                                Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey900)
+                                
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .padding(.top, 5)
+
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                                ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                                    SchoolBoxView(
+                                        isSelected: .constant(false),
+                                        schoolImageURL: festival.thumbnail,
+                                        schoolName: festival.schoolName,
+                                        festivalName: festival.festivalName,
+                                        startDate: festival.beginDate,
+                                        endDate: festival.endDate
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                    }
+                    .padding(.top, -8)
                 }
+                
             }
             
             Button {
-                viewModel.transition(to: .home)
+                dismiss()
             } label: {
                 RoundedRectangle(cornerRadius: 10)
                     .fill(Color.primary500)
@@ -198,9 +191,16 @@ struct IntroView: View {
                     }
             }
             .padding(.horizontal)
+            .padding(.bottom, 7)
         }
         .dynamicTypeSize(.large)
         .background(.ufBackground)
+        .onAppear {
+            // 처음 나타날 때는 모든 축제 다 보여주기
+            viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
+            print("festivalSearchResult: ", viewModel.festivalModel.festivalSearchResult)
+            print("festivals: ",viewModel.festivalModel.festivals)
+        }
     }
     
     @ViewBuilder

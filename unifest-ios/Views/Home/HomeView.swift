@@ -259,6 +259,7 @@ struct HomeView: View {
                 selectedMonth: $selectedMonth,
                 selectedDay: $selectedDay
             )
+            .padding(.top, -17)
         }
         .background(.ufBackground)
     }

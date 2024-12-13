@@ -45,6 +45,7 @@ struct FestivalInfoView: View {
                 Spacer()
             }
             .padding(.horizontal)
+            .padding(.top, 18)
             
             VStack {
                 if (viewModel.festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0) {
@@ -135,6 +136,7 @@ struct FestivalInfoView: View {
             }
             .padding(.horizontal)
             .padding(.bottom, 4)
+            .padding(.top, -5)
             
             VStack(spacing: 8) {
                 if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength).isEmpty {

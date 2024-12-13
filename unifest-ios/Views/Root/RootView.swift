@@ -22,6 +22,7 @@ struct RootView: View {
     @State private var appVersionAlertPresented: Bool = false
     @State private var isWelcomeViewPresented: Bool = false
     @State private var isBoothDetailViewPresented: Bool = false
+    @State private var isIntroViewPresented: Bool = false
     @State private var selectedBoothId = 0
     
     init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
@@ -204,8 +205,14 @@ struct RootView: View {
                 }
                 .onDisappear {
                     UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
+                    withAnimation(.easeInOut) {
+                        isIntroViewPresented = true
+                    }
                 }
                 .presentationDragIndicator(.visible)
+        }
+        .fullScreenCover(isPresented: $isIntroViewPresented) {
+            IntroView(viewModel: viewModel)
         }
         .alert("유니페스 업데이트 안내", isPresented: $appVersionAlertPresented, actions: {
             Button("업데이트") {

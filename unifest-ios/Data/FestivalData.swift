@@ -16,7 +16,7 @@ struct APIResponse: Codable {
 }
 
 struct FestivalItem: Codable, Hashable, Identifiable {
-    var id: UUID? = UUID()
+    var id: UUID? = UUID() // optional없애면 데이터 로드 안됨 왜그렇지..?
     var festivalId: Int
     var schoolId: Int
     var thumbnail: String
@@ -29,12 +29,6 @@ struct FestivalItem: Codable, Hashable, Identifiable {
     var longitude: Double
     var starList: [StarItem]?
 }
-
-//struct APIResponseFestToday: Codable {
-//    var code: Int?
-//    var message: String?
-//    var data: [TodayFestivalItem]?
-//}
 
 struct APIResponseFestToday: Codable {
     var code: Code?
@@ -97,7 +91,17 @@ class FestivalModel: ObservableObject {
             }
         }
     }
+    
     @Published var todayFestivals: [TodayFestivalItem] = [] {
+        willSet {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
+    }
+    
+    // EditFavoriteFestivalView에서 학교/축제를 검색했을 때 일치하는 검색 결과를 저장
+    @Published var festivalSearchResult: [FestivalItem] = [] {
         willSet {
             DispatchQueue.main.async {
                 self.objectWillChange.send()
@@ -108,10 +112,9 @@ class FestivalModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        // loadData()
-        
         loadStoreListData {
             print("data is all loaded")
+            print(self.festivals)
         }
     }
     
@@ -135,6 +138,28 @@ class FestivalModel: ObservableObject {
         }
     }
     
+    func filterFestivals(byKeyword keyword: String) {
+        guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
+                festivalSearchResult = []
+                return
+            }
+        
+        // 영어일 경우 대소문자 무시하고 검색
+        festivalSearchResult = festivals.filter { festival in
+            festival.festivalName.localizedCaseInsensitiveContains(keyword) || festival.schoolName.localizedCaseInsensitiveContains(keyword)
+        }
+    }
+    
+    func filterFestivals(byRegion region: String) {
+        if region == "전체" {
+            festivalSearchResult = festivals
+        } else {
+            festivalSearchResult = festivals.filter { festival in
+                festival.region.contains(region)
+            }
+        }
+    }
+    
     func loadStoreListData(completion: @escaping () -> Void) {
         APIManager.fetchDataGET("/festival/all", api: .fest_all, apiType: .GET) { result in
             switch result {
@@ -154,36 +179,39 @@ class FestivalModel: ObservableObject {
         }
     }
     
+    // 사용자가 선택한 날짜에 열리는 축제의 개수 반환
     func isFestival(year: Int, month: Int, day: Int) -> Int {
         var count: Int = 0
         
         for festival in festivals {
-            // Convert festival beginDate and endDate strings to Date objects
+            // dateFormatter를 연-월-일로 설정
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             
+            // 축제 첫째날을 beginDate, 마지막날을 endDate에 저장
             guard let beginDate = dateFormatter.date(from: festival.beginDate),
                   let endDate = dateFormatter.date(from: festival.endDate) else {
                 continue // Skip iteration if date conversion fails
             }
             
-            // Create date components for the given month and day
+            // 파라미터로 전달된 선택된 날짜를 components에 저장
             var components = DateComponents()
             components.year = year
             components.month = month
             components.day = day
             
-            // Create date object for the given month and day
+            // components로 date인스턴스 생성, currentDate에 저장
             guard let currentDate = Calendar.current.date(from: components) else {
                 continue // Skip iteration if date creation fails
             }
             
-            // Check if currentDate falls within the range of festival dates
+            // currentDate가 축제 첫째날~마지막날 사이에 있다면 count값 1 증가
             if (currentDate >= beginDate) && (currentDate <= endDate) {
                 count += 1
             }
         }
         
+        // api에서 받아온 모든 대학 축제 배열에서, 사용자가 선택한 날짜에 열리는 축제의 개수 반환
         return count
     }
     
@@ -237,10 +265,6 @@ class FestivalModel: ObservableObject {
 
         task.resume()
     }
-    
-//    func getFestivalByDate(year: Int, month: Int, day: Int) -> [FestivalItem] {
-//        
-//    }
     
     func getFestivalAfter(year: Int, month: Int, day: Int, maxLength: Int) -> [FestivalItem] {
         var festList: [FestivalItem] = []

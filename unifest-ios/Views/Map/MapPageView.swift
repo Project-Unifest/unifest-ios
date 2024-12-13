@@ -39,7 +39,6 @@ struct MapPageView: View {
                 }
                 
                 VStack {
-                    // MapPageHeaderView(searchText: $searchText, isTagSelected: $isTagSelected, isSearchSchoolViewPresented: $isSearchSchoolViewPresented, isPopularBoothPresented: $isPopularBoothPresented)
                     MapPageHeaderView(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
                         .background(.ufBackground)
                         .clipShape(

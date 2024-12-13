@@ -22,9 +22,6 @@ struct BoothFooterView: View {
                 let screenWidth = geometry.size.width
                 
                 HStack {
-                    //                Spacer()
-                    //                    .frame(width: 10)
-                    
                     // 사용자가 좋아요 처리한 부스는 서버가 아니라 로컬(UserDefaults)에 저장함
                     // 좋아요를 누르거나 해제하면 UserDefaults에서 해당 부스를 추가하거나 해제하고, 좋아요 수를 +-시키는 api를 호출함
                     VStack {

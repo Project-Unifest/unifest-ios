@@ -39,7 +39,7 @@
 		0CB2170F2BF23F270003338B /* festivalTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 0CB2170E2BF23F270003338B /* festivalTest.json */; };
 		0CBB058B2BB074ED00EB56BE /* MapPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBB05832BB074ED00EB56BE /* MapPageView.swift */; };
 		0CBB058C2BB074ED00EB56BE /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBB05842BB074ED00EB56BE /* MapView.swift */; };
-		0CBB058D2BB074ED00EB56BE /* SearchSchoolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBB05852BB074ED00EB56BE /* SearchSchoolView.swift */; };
+		0CBB058D2BB074ED00EB56BE /* EditFavoriteFestivalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CBB05852BB074ED00EB56BE /* EditFavoriteFestivalView.swift */; };
 		0CC40F422BF9276B002759DF /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC40F412BF9276B002759DF /* View+.swift */; };
 		0CC40F442BF92A6B002759DF /* MarqueeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC40F432BF92A6B002759DF /* MarqueeText.swift */; };
 		0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB46D42BB1DC8D00C34AED /* BoothDetailView.swift */; };
@@ -134,7 +134,7 @@
 		0CB2170E2BF23F270003338B /* festivalTest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = festivalTest.json; sourceTree = "<group>"; };
 		0CBB05832BB074ED00EB56BE /* MapPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPageView.swift; sourceTree = "<group>"; };
 		0CBB05842BB074ED00EB56BE /* MapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
-		0CBB05852BB074ED00EB56BE /* SearchSchoolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchSchoolView.swift; sourceTree = "<group>"; };
+		0CBB05852BB074ED00EB56BE /* EditFavoriteFestivalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoriteFestivalView.swift; sourceTree = "<group>"; };
 		0CC40F412BF9276B002759DF /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		0CC40F432BF92A6B002759DF /* MarqueeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeText.swift; sourceTree = "<group>"; };
 		0CDB46D42BB1DC8D00C34AED /* BoothDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothDetailView.swift; sourceTree = "<group>"; };
@@ -392,7 +392,7 @@
 				0CBB05832BB074ED00EB56BE /* MapPageView.swift */,
 				F87DCA522C32DBB00038F845 /* MapPageHeaderView.swift */,
 				0CBB05842BB074ED00EB56BE /* MapView.swift */,
-				0CBB05852BB074ED00EB56BE /* SearchSchoolView.swift */,
+				0CBB05852BB074ED00EB56BE /* EditFavoriteFestivalView.swift */,
 				F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */,
 				0CDB46D62BB1E7F400C34AED /* OneMapView.swift */,
 				0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */,
@@ -675,7 +675,7 @@
 				0CBB058B2BB074ED00EB56BE /* MapPageView.swift in Sources */,
 				F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */,
 				0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */,
-				0CBB058D2BB074ED00EB56BE /* SearchSchoolView.swift in Sources */,
+				0CBB058D2BB074ED00EB56BE /* EditFavoriteFestivalView.swift in Sources */,
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
 				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
