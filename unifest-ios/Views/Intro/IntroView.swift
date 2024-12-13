@@ -10,6 +10,7 @@ import SwiftUI
 struct IntroView: View {
     @ObservedObject var viewModel: RootViewModel
     @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) var colorScheme
     @State private var likedList: [Int] = []
     @State private var searchText: String = ""
     @State private var count: Int = 0
@@ -22,7 +23,7 @@ struct IntroView: View {
         VStack(alignment: .center) {
             VStack {
                 Spacer()
-                    .frame(height: 78)
+                    .frame(height: 40)
                 
                 Text(StringLiterals.Intro.infoTitle)
                     .font(.pretendard(weight: .p6, size: 18))
@@ -34,7 +35,7 @@ struct IntroView: View {
                     .foregroundStyle(.grey600)
                 
                 Spacer()
-                    .frame(height: 52)
+                    .frame(height: 32)
                 
                 Image(.searchBox)
                     .overlay {
@@ -67,7 +68,7 @@ struct IntroView: View {
                     .padding(.bottom)
                 
                 Spacer()
-                    .frame(height: 18)
+                    .frame(height: 5)
                 
                 HStack {
                     Text(StringLiterals.Intro.myFestivalTitle)
@@ -108,13 +109,13 @@ struct IntroView: View {
                  */
                 
                 Rectangle()
-                    .fill(.grey100)
+                    .fill(colorScheme == .light ? .grey100 : .grey200)
                     .frame(height: 7)
                     .padding(.top, 20)
                 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 20) {
-                        ForEach(0 ..< regions.count) { index in
+                        ForEach(regions.indices, id: \.self) { index in
                             Button {
                                 withAnimation(.spring) {
                                     regionIndex = index
@@ -128,23 +129,12 @@ struct IntroView: View {
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 10)
                 }
-                .padding(.vertical, 10)
                 
-                Divider()
-                    .frame(height: 1.5)
-                    .background(.grey100)
-                
-                HStack {
-                    Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
-                        .font(.pretendard(weight: .p5, size: 12))
-                        .foregroundStyle(.grey900)
-                    
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 5)
-                
+                Rectangle()
+                    .fill(.grey300)
+                    .frame(height: 1)
                 
                 if viewModel.festivalModel.festivalSearchResult.isEmpty {
                     VStack {
@@ -156,20 +146,34 @@ struct IntroView: View {
                     }
                 } else {
                     ScrollView {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
-                            ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                                SchoolBoxView(
-                                    isSelected: .constant(false),
-                                    schoolImageURL: festival.thumbnail,
-                                    schoolName: festival.schoolName,
-                                    festivalName: festival.festivalName,
-                                    startDate: festival.beginDate,
-                                    endDate: festival.endDate
-                                )
+                        VStack {
+                            HStack {
+                                Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(.grey900)
+                                
+                                Spacer()
                             }
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            .padding(.top, 5)
+
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                                ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                                    SchoolBoxView(
+                                        isSelected: .constant(false),
+                                        schoolImageURL: festival.thumbnail,
+                                        schoolName: festival.schoolName,
+                                        festivalName: festival.festivalName,
+                                        startDate: festival.beginDate,
+                                        endDate: festival.endDate
+                                    )
+                                }
+                            }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
+                    .padding(.top, -8)
                 }
                 
             }

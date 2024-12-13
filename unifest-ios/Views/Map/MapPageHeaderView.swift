@@ -48,10 +48,13 @@ struct MapPageHeaderView: View {
                     .onAppear {
                         isInfoTextPresented = true
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            withAnimation(.easeOut(duration: 1.5)) {
+                            withAnimation(.easeOut(duration: 1.2)) {
                                 isInfoTextPresented = false
                             }
                         }
+                    }
+                    .onTapGesture {
+                        isInfoTextPresented = false
                     }
                 
                 Spacer()
