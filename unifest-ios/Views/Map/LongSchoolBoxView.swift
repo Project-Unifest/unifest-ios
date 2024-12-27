@@ -8,37 +8,73 @@
 import SwiftUI
 
 struct LongSchoolBoxView: View {
+    let thumbnail: String
     let schoolName: String
     let festivalName: String
     let startDate: String
     let endDate: String
+    @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     
     var body: some View {
-        HStack {
-            Image(.konkukLogo)
-                .resizable()
+        VStack {
+            HStack {
+                AsyncImage(url: URL(string: thumbnail)) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .frame(width: 52, height: 52)
+                            .scaledToFit()
+                            .clipShape(.circle)
+                            .padding(.trailing, 4)
+                    case .failure:
+                        Circle()
+                            .fill(.grey500)
+                            .frame(width: 35, height: 35)
+                            .padding(.bottom, 4)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
                 .frame(width: 52, height: 52)
-                .scaledToFit()
-                .padding(.trailing, 4)
-            
-            VStack(alignment: .leading) {
-                Text(schoolName)
-                    .font(.system(size: 13))
                 
-                Text(festivalName)
-                    .font(.system(size: 12))
-                    .bold()
+                VStack(alignment: .leading) {
+                    Text(schoolName)
+                        .font(.pretendard(weight: .p4, size: 13))
+                        .foregroundStyle(.grey900)
+                    
+                    Text(festivalName)
+                        .font(.pretendard(weight: .p7, size: 12))
+                        .foregroundStyle(.grey900)
+
+                    Text(startDate + "-" + endDate)
+                        .font(.pretendard(weight: .p4, size: 12))
+                        .foregroundStyle(.grey600)
+                }
                 
-                Text(startDate + "-" + endDate)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.defaultDarkGray)
+                Spacer()
+                
+                Button {
+                    
+                } label: {
+                    Capsule()
+                        .strokeBorder(.primary500, lineWidth: 1)
+                        .frame(width: 57, height: 29)
+                        .overlay {
+                            Text("추가")
+                                .font(.pretendard(weight: .p5, size: 12))
+                                .foregroundStyle(.primary500)
+                        }
+                }
             }
-            
-            Spacer()
         }
+        .padding(.vertical, 2)
     }
 }
 
 #Preview {
-    LongSchoolBoxView(schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
+    LongSchoolBoxView(thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
+        .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }
