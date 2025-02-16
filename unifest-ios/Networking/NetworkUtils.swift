@@ -45,4 +45,9 @@ enum APIEndpoint { // case를 사용하면 추가 로직이 필요할 수 있으
         static func fetchEnabledBooths(festivalId: Int) -> String { return "/stamps/\(festivalId)" }
         static let addStamp = "/stamps"
     }
+    
+    // fcm token 발급
+    enum FCMToken {
+        static let registerFCMToken = "/fcm-token"
+    }
 }

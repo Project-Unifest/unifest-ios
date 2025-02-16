@@ -16,6 +16,7 @@ struct RootView: View {
     @StateObject var waitingVM: WaitingViewModel
     @StateObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @StateObject var stampVM: StampViewModel
+    @StateObject var fcmTokenVM: TokenViewModel
     // @State private var viewState: ViewState = .home
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
@@ -34,6 +35,7 @@ struct RootView: View {
         _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
         _favoriteFestivalVM = StateObject(wrappedValue: FavoriteFestivalViewModel(networkManager: networkManager))
         _stampVM = StateObject(wrappedValue: StampViewModel(networkManager: networkManager))
+        _fcmTokenVM = StateObject(wrappedValue: TokenViewModel(networkManager: networkManager))
     }
     
     var body: some View {
@@ -155,11 +157,15 @@ struct RootView: View {
         .environmentObject(favoriteFestivalVM)
         .environmentObject(stampVM)
         .onAppear {
+            // 앱 첫 실행이면 WelcomeView
             if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
             }
+            
+            // 부스 클러스터링 설정 확인
             UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
+            // 저장한 부스 데이터 가져오기
             viewModel.boothModel.loadLikeBoothListDB()
         }
         .task {
@@ -174,6 +180,9 @@ struct RootView: View {
             } else {
                 print("This app is latest.")
             }
+            
+            // 서버에 fcm token 전달
+            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
             // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
