@@ -11,6 +11,9 @@ import SwiftUI
 
 @MainActor
 class StampViewModel: ObservableObject {
+    let universities = ["건국대학교", "서울시립대학교", "한국교통대학교", ]
+    @Published var selectedUniversity = "건국대학교"
+    @Published var selectedUniversityIndex = 0
     @Published var stampCount: Int = 0
     @Published var stampEnabledBooths: [StampEnabledBoothResult]? = []
     @Published var stampEnabledBoothsCount: Int = 0
