@@ -218,7 +218,7 @@ struct MapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPositionUOT, bounds: mapCameraBoundsUOT, scope: mainMap) {
+            Map(initialPosition: mapCameraPositionKonkuk, bounds: mapCameraBoundsKonkuk, scope: mainMap) {
                 UserAnnotation() // 사용자의 현재 위치를 맵에 나타냄
                 
                 // 라이트/다크모드에 따라 경계와 경계 외부 색깔 변경
@@ -232,11 +232,11 @@ struct MapViewiOS17: View {
                             .foregroundStyle(.black.opacity(0.5))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonUOT)
+                    MapPolygon(coordinates: polygonKonkuk)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.25))
                     }
@@ -589,7 +589,7 @@ struct MapViewiOS16: View {
     @State private var isClustering: Bool = false
     
     var body: some View {
-        Map(coordinateRegion: $regionCenterUOT, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
+        Map(coordinateRegion: $regionCenterKonkuk, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
             MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotation.latitude, longitude: annotation.longitude)) {
                 BoothAnnotation(mapViewModel: mapViewModel, annID: annotation.id, boothType: annotation.annType, number: annotation.boothIDList.count)
                     .onTapGesture {
@@ -597,7 +597,7 @@ struct MapViewiOS16: View {
                     }
             }
         }
-        .onChange(of: regionCenterUOT.span.latitudeDelta) { newDelta in
+        .onChange(of: regionCenterKonkuk.span.latitudeDelta) { newDelta in
             handleRegionDeltaChange(newDelta)
         }
         .onChange(of: searchText) { _ in
@@ -737,8 +737,8 @@ struct BoothAnnotation: View {
             
             switch boothType {
             case .drink:
-                // Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
+                 Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -750,8 +750,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-//                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -769,8 +769,8 @@ struct BoothAnnotation: View {
                     .frame(width: annotationSize, height: annotationSize)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-//                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
-                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
+//                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)

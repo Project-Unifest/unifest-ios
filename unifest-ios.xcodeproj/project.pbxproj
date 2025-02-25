@@ -61,6 +61,7 @@
 		F81A73BB2CC67C05002DA118 /* ThrottleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */; };
 		F81BD3062CB3E88F0083134F /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = F81BD3052CB3E88F0083134F /* CodeScanner */; };
 		F81BD3082CB3ED250083134F /* Stamp-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */; };
+		F81F0A9E2D61DF3C00FD66AA /* FCMTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F0A9D2D61DF3C00FD66AA /* FCMTokenModel.swift */; };
 		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
 		F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55252CB6BD8B00EBCA68 /* VoteView.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
@@ -85,6 +86,7 @@
 		F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */; };
 		F88A6D102C7A05570025459F /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D0F2C7A05570025459F /* Toast.swift */; };
 		F88A6D122C7A05810025459F /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88A6D112C7A05810025459F /* ToastView.swift */; };
+		F88E8E952D61DD7000526699 /* Token-ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88E8E942D61DD7000526699 /* Token-ViewModel.swift */; };
 		F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */; };
 		F8A538BA2C8D056200103E64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F8A538B92C8D056200103E64 /* GoogleService-Info.plist */; };
 		F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */; };
@@ -155,6 +157,7 @@
 		F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongSchoolBoxView.swift; sourceTree = "<group>"; };
 		F81A73BA2CC67C05002DA118 /* ThrottleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrottleManager.swift; sourceTree = "<group>"; };
 		F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Stamp-ViewModel.swift"; sourceTree = "<group>"; };
+		F81F0A9D2D61DF3C00FD66AA /* FCMTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMTokenModel.swift; sourceTree = "<group>"; };
 		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
 		F82C55252CB6BD8B00EBCA68 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -179,6 +182,7 @@
 		F88A6D0C2C77EA640025459F /* WaitingCancelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingCancelView.swift; sourceTree = "<group>"; };
 		F88A6D0F2C7A05570025459F /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		F88A6D112C7A05810025459F /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		F88E8E942D61DD7000526699 /* Token-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Token-ViewModel.swift"; sourceTree = "<group>"; };
 		F896A2922CCBACD50093621F /* BoothNoshowDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothNoshowDialogView.swift; sourceTree = "<group>"; };
 		F8A538B92C8D056200103E64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F8A5D9572C8EDB6700AF6230 /* StampQRScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampQRScanView.swift; sourceTree = "<group>"; };
@@ -287,6 +291,7 @@
 				F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */,
 				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
 				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
+				F88E8E942D61DD7000526699 /* Token-ViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -363,6 +368,7 @@
 				F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */,
 				F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */,
 				F82C55222CB3F06A00EBCA68 /* StampModel.swift */,
+				F81F0A9D2D61DF3C00FD66AA /* FCMTokenModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -618,6 +624,7 @@
 				0C6523932BC131F00085232D /* FestivalInfoView.swift in Sources */,
 				0CAA190E2C31A63C0029312E /* SchoolBoxView.swift in Sources */,
 				0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */,
+				F81F0A9E2D61DF3C00FD66AA /* FCMTokenModel.swift in Sources */,
 				F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */,
 				0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */,
 				0C9641F92BB94F3D00838DA9 /* RootViewModel.swift in Sources */,
@@ -684,6 +691,7 @@
 				0CE839D52BF2E8CC003E211D /* MapExtensions.swift in Sources */,
 				F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */,
 				F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */,
+				F88E8E952D61DD7000526699 /* Token-ViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
