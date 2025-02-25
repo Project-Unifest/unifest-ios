@@ -191,11 +191,11 @@ struct OneMapViewiOS17: View {
     
     var body: some View {
         ZStack {
-            Map(initialPosition: mapCameraPositionUOT, bounds: mapCameraBoundsUOT, scope: oneMap) {
+            Map(initialPosition: mapCameraPositionKonkuk, bounds: mapCameraBoundsKonkuk, scope: oneMap) {
                 UserAnnotation()
                 
                 if colorScheme == .dark {
-                    MapPolygon(coordinates: polygonUOT)
+                    MapPolygon(coordinates: polygonKonkuk)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
                     
@@ -204,11 +204,11 @@ struct OneMapViewiOS17: View {
                             .foregroundStyle(.black.opacity(0.6))
                     }
                 } else {
-                    MapPolygon(coordinates: polygonUOT)
+                    MapPolygon(coordinates: polygonKonkuk)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
                     
-                    if let boxPolygon = makeBoundaries(coordinates: polygonUOT) {
+                    if let boxPolygon = makeBoundaries(coordinates: polygonKonkuk) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.2))
                     }
@@ -420,14 +420,14 @@ struct OneMapViewiOS16: View {
             .padding(.top, 30) */
             
             if let booth = booth {
-                Map(coordinateRegion: $regionCenterUOT, showsUserLocation: true, annotationItems: [booth]) { booth in
+                Map(coordinateRegion: $regionCenterKonkuk, showsUserLocation: true, annotationItems: [booth]) { booth in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: booth.latitude, longitude: booth.longitude)) {
                         OneBoothAnnotation(boothType: stringToBoothType(booth.category))
                     }
                 }
                 .padding(.top, 30)
             } else {
-                Map(coordinateRegion: $regionCenterUOT, showsUserLocation: true)
+                Map(coordinateRegion: $regionCenterKonkuk, showsUserLocation: true)
                     .padding(.top, 30)
             }
             
@@ -573,8 +573,8 @@ struct OneBoothAnnotation: View {
         ZStack {
             switch boothType {
             case .drink:
-//                Image(.drinkBooth1)
-                Image(.activity1)
+                Image(.drinkBooth1)
+//                Image(.activity1)
                     .resizable()
                     .scaledToFit()
 //                    .frame(width: 70, height: 70)
@@ -588,8 +588,8 @@ struct OneBoothAnnotation: View {
                     .frame(width: 55, height: 55)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
-//                Image(.generalBooth1)
-                Image(.outsideSchool1)
+                Image(.generalBooth1)
+//                Image(.outsideSchool1)
                     .resizable()
                     .scaledToFit()
 //                    .frame(width: 70, height: 70)
@@ -610,8 +610,8 @@ struct OneBoothAnnotation: View {
                     .frame(width: 55, height: 55)
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
-//                Image(.eventBooth1)
-                Image(.insideSchool1)
+                Image(.eventBooth1)
+//                Image(.insideSchool1)
                     .resizable()
                     .scaledToFit()
 //                    .frame(width: 70, height: 70)
