@@ -7,10 +7,16 @@
 
 import Foundation
 
-struct StampCountResponse: Codable {
+struct StampRecordResponse: Codable {
     let code: String
     let message: String
-    let data: Int?
+    let data: [StampRecordResult]?
+}
+
+struct StampRecordResult: Codable {
+    let stampRecordId: Int
+    let stampInfoId: Int
+    let deviceId: String
 }
 
 struct StampEnabledBoothResponse: Codable {

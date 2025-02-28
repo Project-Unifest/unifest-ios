@@ -15,6 +15,7 @@ class StampViewModel: ObservableObject {
     @Published var selectedUniversity = "건국대학교"
     @Published var selectedUniversityIndex = 0
     @Published var stampCount: Int = 0
+    @Published var stampRecords: [StampRecordResult]? = []
     @Published var stampEnabledBooths: [StampEnabledBoothResult]? = []
     @Published var stampEnabledBoothsCount: Int = 0
     @Published var qrScanToastMsg: Toast? = nil
@@ -27,24 +28,25 @@ class StampViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
-    func fetchStampCount(token: String) async {
-        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampCount(token: token))
+    func fetchStampRecord(deviceId: String) async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampCount(deviceId: deviceId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
-            let response: StampCountResponse = try await apiClient.get(
+            let response: StampRecordResponse = try await apiClient.get(
                 url: url,
                 headers: headers,
-                responseType: StampCountResponse.self
+                responseType: StampRecordResponse.self
             )
-            print("FetchStampCount request succeeded")
+            print("fetchStampRecord request succeeded")
             print(response)
             
             if response.code == "200", let data = response.data {
-                self.stampCount = data
+                self.stampRecords = data
+                self.stampCount = stampRecords?.count ?? 0
             }
         } catch {
-            NetworkUtils.handleNetworkError("FetchStampCount", error, networkManager)
+            NetworkUtils.handleNetworkError("fetchStampRecord", error, networkManager)
         }
     }
     
@@ -70,14 +72,14 @@ class StampViewModel: ObservableObject {
         }
     }
     
-    func addStamp(boothId: Int, token: String) async {
+    func addStamp(boothId: Int, deviceId: String) async {
         let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.addStamp)
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
         ]
         let parameters: [String: Any] = [
-            "token": token,
+            "deviceId": deviceId,
             "boothId": boothId
         ]
         
@@ -100,7 +102,7 @@ class StampViewModel: ObservableObject {
                 self.qrScanToastMsg = Toast(style: .error, message: "더이상 스탬프를 받을 수 없습니다")
             } else if response.code == "9002" { // 스탬프 미지원 부스
                 self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다")
-            } else if response.code == "4000" { // 존재하지 않는 부스
+            } else if response.code == "9003" { // 존재하지 않는 부스
                 self.qrScanToastMsg = Toast(style: .error, message: "올바르지 않은 QR코드입니다")
             } else { // 기타 오류
                 self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")

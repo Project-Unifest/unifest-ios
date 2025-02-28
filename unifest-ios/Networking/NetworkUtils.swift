@@ -44,7 +44,7 @@ enum APIEndpoint { // case를 사용하면 추가 로직이 필요할 수 있으
     
     // Stamp 관련
     enum Stamp {
-        static func fetchStampCount(token: String) -> String { return "/stamps?token=\(token)" }
+        static func fetchStampCount(deviceId: String) -> String { return "/stamps?deviceId=\(deviceId)" }
         static func fetchEnabledBooths(festivalId: Int) -> String { return "/stamps/\(festivalId)" }
         static let addStamp = "/stamps"
     }

@@ -103,7 +103,7 @@ struct StampQRScanView: View {
                 Task {
                     print("boothId: \(boothId)")
                     isScanning = true
-                     await stampVM.addStamp(boothId: boothId, token: DeviceUUIDManager.shared.getDeviceToken())
+                     await stampVM.addStamp(boothId: boothId, deviceId: DeviceUUIDManager.shared.getDeviceToken())
                     isScanning = false
                     dismiss()
                 }

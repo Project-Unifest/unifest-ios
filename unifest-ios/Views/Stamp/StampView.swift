@@ -105,7 +105,7 @@ struct StampView: View {
                                                         isFetchingStampInfo = true
                                                         await throttleManager.throttle {
                                                             isFetchingStampInfo = true
-                                                            await stampVM.fetchStampCount(token: DeviceUUIDManager.shared.getDeviceToken())
+                                                            await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                                                             await stampVM.fetchStampEnabledBooths(festivalId: 2)
                                                             isFetchingStampInfo = false
                                                         }
@@ -266,7 +266,7 @@ struct StampView: View {
             isFetchingStampInfo = true
             await throttleManager.throttle {
                 isFetchingStampInfo = true
-                await stampVM.fetchStampCount(token: DeviceUUIDManager.shared.getDeviceToken())
+                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                 await stampVM.fetchStampEnabledBooths(festivalId: 2)
                 isFetchingStampInfo = false
             }
