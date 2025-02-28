@@ -10,8 +10,9 @@ import Foundation
 
 @MainActor
 class FavoriteFestivalViewModel: ObservableObject {
-    @Published var isAddFavoriteFestivalSucceeded: Bool = false
-    @Published var isDeleteFavoriteFestivalSucceeded: Bool = false
+    @Published var isAddFavoriteFestivalSucceeded: Bool = false // 사용X
+    @Published var isDeleteFavoriteFestivalSucceeded: Bool = false // 사용X
+    @Published var favoriteFestivalList: [Int]? = nil
     
     private let networkManager: NetworkManager
     private let apiClient: APIClient
@@ -21,15 +22,38 @@ class FavoriteFestivalViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
-    func addFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.subscribe)
+    func getFavoriteFestivalList(deviceId: String) async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.getFavoriteFestivalList) + "?deviceId=\(deviceId)"
+        let headers: HTTPHeaders = [
+            .accept("application/json"),
+            .contentType("application/json")
+        ]
+        let parameters = [
+            "deviceId": deviceId
+        ]
+        
+        do {
+            let response: GetFavoriteFestivalListResponse = try await apiClient.get(
+                url: url,
+                headers: headers,
+                responseType: GetFavoriteFestivalListResponse.self
+            )
+            print("getFavoriteFestivalList request succeeded")
+            print(response)
+        } catch {
+            NetworkUtils.handleNetworkError("getFavoriteFestivalList", error, networkManager)
+            
+        }
+    }
+    
+    func addFavoriteFestival(festivalId: Int, deviceId: String) async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.addFavoriteFestival(festivalId: festivalId))
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
         ]
         let parameters: [String: Any] = [
-            "festivalId": festivalId,
-            "fcmToken": fcmToken
+            "deviceId": deviceId
         ]
         
         do {
@@ -48,15 +72,14 @@ class FavoriteFestivalViewModel: ObservableObject {
         }
     }
     
-    func deleteFavoriteFestival(festivalId: Int, fcmToken: String) async {
-        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.subscribe)
+    func deleteFavoriteFestival(festivalId: Int, deviceId: String) async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.addFavoriteFestival(festivalId: festivalId))
         let headers: HTTPHeaders = [
             .accept("application/json"),
             .contentType("application/json")
         ]
         let parameters: [String: Any] = [
-            "festivalId": festivalId,
-            "fcmToken": fcmToken
+            "deviceId": deviceId
         ]
         
         do {

@@ -36,7 +36,10 @@ enum APIEndpoint { // case를 사용하면 추가 로직이 필요할 수 있으
     
     // FavoriteFestival 관련
     enum FavoriteFestival {
-        static let subscribe = "/megaphone/subscribe"
+        static let subscribe = "/megaphone/subscribe" // 사용X(2025/02/25~)
+        static let getFavoriteFestivalList = "/festival/interest"
+        static func addFavoriteFestival(festivalId: Int) -> String { return "/festival/\(festivalId)/interest"}
+        static func deleteFavoriteFestival(festivalId: Int) -> String { return "/festival/\(festivalId)/interest"}
     }
     
     // Stamp 관련

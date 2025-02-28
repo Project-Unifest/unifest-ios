@@ -61,9 +61,9 @@ struct MenuView: View {
                                 .font(.pretendard(weight: .p6, size: 11))
                                 .foregroundColor(.grey600)
                                 .underline()
-//                            Image(systemName: "chevron.right")
-//                                .font(.system(size: 10))
-//                                .foregroundColor(.grey600)
+                            //                            Image(systemName: "chevron.right")
+                            //                                .font(.system(size: 10))
+                            //                                .foregroundColor(.grey600)
                         }
                     }
                 }
@@ -128,8 +128,8 @@ struct MenuView: View {
                                     .font(.pretendard(weight: .p6, size: 11))
                                     .foregroundStyle(.grey600)
                                     .underline()
-//                                Image(systemName: "chevron.right")
-//                                    .font(.system(size: 11))
+                                //                                Image(systemName: "chevron.right")
+                                //                                    .font(.system(size: 11))
                             }
                         }
                     }
@@ -411,147 +411,146 @@ struct MenuView: View {
                 Divider()
                 
                 // 관심축제 on/off
-                HStack(alignment: .center) {
-                    Image(systemName: "sparkle.magnifyingglass")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.darkGray)
-                        .padding(.trailing, 8)
-                    
-                    VStack(alignment: .leading) {
-                        Text("관심축제 등록")
-                            .font(.pretendard(weight: .p5, size: 15))
-                            .foregroundStyle(.grey900)
-                            .padding(.bottom, -2)
-                        
-                        Text("관심축제로 등록하면 부스 소식을 알림으로\n받을 수 있습니다")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                            .fontWeight(.medium)
-                    }
-                    
-                    Spacer()
-                    
-                    if #available(iOS 17, *) {
-                        Toggle("", isOn: $subscribeFestival)
-                            .frame(width: 60)
-                            .onChange(of: subscribeFestival) {
-                                if subscribeFestival {
-                                    // off -> on
-                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                                    UNUserNotificationCenter.current().requestAuthorization(
-                                        options: authOptions) { granted, error in
-                                            if granted { // 알림 권한이 설정되어있음
-                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                                    Task {
-                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                            // subscribeFestival == true
-                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                        } else { // 관심축제 등록 api 실패
-                                                            subscribeFestival = false
-                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                                        }
-                                                    }
-                                                } else {
-                                                    subscribeFestival = false
-                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                    print("fcmToken이 존재하지 않습니다")
-                                                }
-                                            } else { // 알림 권한이 설정 되어있지 않음
-                                                // 알림 권한을 허용해야 한다는 alert 띄우고
-                                                isNotificationNotPermittedAlertPresented = true
-                                                // subscribeFestival을 false로 바꾸기
-                                                subscribeFestival = false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            }
-                                        }
-                                } else {
-                                    // on -> off
-                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                        Task {
-                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                                // subscribeFestival == false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            } else { // 관심축제 해제 api 실패
-                                                subscribeFestival = true
-                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                            }
-                                        }
-                                    } else {
-                                        subscribeFestival = true
-                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                        print("fcmToken이 존재하지 않습니다")
-                                    }
-                                }
-                            }
-                    } else {
-                        Toggle("", isOn: $subscribeFestival)
-                            .frame(width: 60)
-                            .onChange(of: subscribeFestival) { _ in
-                                if subscribeFestival {
-                                    // off -> on
-                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                                    UNUserNotificationCenter.current().requestAuthorization(
-                                        options: authOptions) { granted, error in
-                                            if granted { // 알림 권한이 설정되어있음
-                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                                    Task {
-                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                            // subscribeFestival == true
-                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                        } else { // 관심축제 등록 api 실패
-                                                            subscribeFestival = false
-                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                            // 이때는 NetworkErrorView 뜨도록 구현함
-                                                        }
-                                                    }
-                                                } else {
-                                                    subscribeFestival = false
-                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                    print("fcmToken이 존재하지 않습니다")
-                                                }
-                                            } else { // 알림 권한이 설정 되어있지 않음
-                                                // 알림 권한을 허용해야 한다는 alert 띄우고
-                                                isNotificationNotPermittedAlertPresented = true
-                                                // subscribeFestival을 false로 바꾸기
-                                                subscribeFestival = false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            }
-                                        }
-                                } else {
-                                    // on -> off
-                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                        Task {
-                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                                // subscribeFestival == false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            } else { // 관심축제 해제 api 실패
-                                                subscribeFestival = true
-                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                            }
-                                        }
-                                    } else {
-                                        subscribeFestival = true
-                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                        print("fcmToken이 존재하지 않습니다")
-                                    }
-                                }
-                            }
-                    }
-                }
-                .frame(height: 60)
-                .padding(.horizontal)
+                /* HStack(alignment: .center) {
+                 Image(systemName: "sparkle.magnifyingglass")
+                 .resizable()
+                 .scaledToFit()
+                 .frame(width: 24, height: 24)
+                 .foregroundColor(.darkGray)
+                 .padding(.trailing, 8)
+                 
+                 VStack(alignment: .leading) {
+                 Text("관심축제 등록")
+                 .font(.pretendard(weight: .p5, size: 15))
+                 .foregroundStyle(.grey900)
+                 .padding(.bottom, -2)
+                 
+                 Text("관심축제로 등록하면 부스 소식을 알림으로\n받을 수 있습니다")
+                 .font(.system(size: 12))
+                 .foregroundStyle(.gray)
+                 .fontWeight(.medium)
+                 }
+                 
+                 Spacer()
+                 
+                 if #available(iOS 17, *) {
+                 Toggle("", isOn: $subscribeFestival)
+                 .frame(width: 60)
+                 .onChange(of: subscribeFestival) {
+                 if subscribeFestival {
+                 // off -> on
+                 let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                 UNUserNotificationCenter.current().requestAuthorization(
+                 options: authOptions) { granted, error in
+                 if granted { // 알림 권한이 설정되어있음
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                 // subscribeFestival == true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 } else { // 관심축제 등록 api 실패
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 } else { // 알림 권한이 설정 되어있지 않음
+                 // 알림 권한을 허용해야 한다는 alert 띄우고
+                 isNotificationNotPermittedAlertPresented = true
+                 // subscribeFestival을 false로 바꾸기
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 }
+                 }
+                 } else {
+                 // on -> off
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                 // subscribeFestival == false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 } else { // 관심축제 해제 api 실패
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 }
+                 }
+                 } else {
+                 Toggle("", isOn: $subscribeFestival)
+                 .frame(width: 60)
+                 .onChange(of: subscribeFestival) { _ in
+                 if subscribeFestival {
+                 // off -> on
+                 let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                 UNUserNotificationCenter.current().requestAuthorization(
+                 options: authOptions) { granted, error in
+                 if granted { // 알림 권한이 설정되어있음
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                 // subscribeFestival == true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 } else { // 관심축제 등록 api 실패
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 // 이때는 NetworkErrorView 뜨도록 구현함
+                 }
+                 }
+                 } else {
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 } else { // 알림 권한이 설정 되어있지 않음
+                 // 알림 권한을 허용해야 한다는 alert 띄우고
+                 isNotificationNotPermittedAlertPresented = true
+                 // subscribeFestival을 false로 바꾸기
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 }
+                 }
+                 } else {
+                 // on -> off
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                 // subscribeFestival == false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 } else { // 관심축제 해제 api 실패
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 }
+                 }
+                 }
+                 }
+                 .frame(height: 60)
+                 .padding(.horizontal)
+                 
+                 Divider() */
                 
-                Divider()
-                
-                
-                /* // 화면 모드
-                 Menu {
+                // 화면 모드
+                /* Menu {
                  Button("라이트") {
                  themeManager.colorScheme = .light
                  }
@@ -887,9 +886,9 @@ struct MenuView: View {
         // 알림 권한 허가 없이 관심 축제로 설정할 경우 alert 띄우기
         .alert("관심축제 설정 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
             HStack {Button("닫기", role: .cancel) {
-                    subscribeFestival = false
-                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                }
+                subscribeFestival = false
+                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+            }
                 
                 Button("설정하기", role: nil) {
                     guard let url = URL(string: UIApplication.openSettingsURLString) else { return }

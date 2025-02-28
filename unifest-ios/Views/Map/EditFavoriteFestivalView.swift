@@ -1,5 +1,5 @@
 //
-//  AddFavoriteFestivalView.swift
+//  EditFavoriteFestivalView.swift
 //  unifest-ios
 //
 //  Created by Hoeun Lee on 3/24/24.
@@ -15,6 +15,7 @@ struct EditFavoriteFestivalView: View {
     @State private var searchText: String = ""
     let columns = [GridItem(.adaptive(minimum: 114))]
     @ObservedObject var viewModel: RootViewModel
+    @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -67,6 +68,7 @@ struct EditFavoriteFestivalView: View {
                 
                 ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
                     LongSchoolBoxView(
+                        festivalId: festival.festivalId,
                         thumbnail: festival.thumbnail,
                         schoolName: festival.schoolName,
                         festivalName: festival.festivalName,
@@ -111,6 +113,9 @@ struct EditFavoriteFestivalView: View {
                 // 처음 나타날 때는 모든 축제 다 보여주기
                 viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
                 print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
+            }
+            .task {
+                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
             }
             .dynamicTypeSize(.large)
         }

@@ -24,6 +24,10 @@ class APIClient {
                         continuation.resume(returning: data)
                     case .failure(let error):
                         continuation.resume(throwing: error)
+                        if let responseData = response.data {
+                            let responseString = String(data: responseData, encoding: .utf8) ?? "APIClient Response Error"
+                            print("\n\n[ERROR RESPONSE BODY] \(responseString)\n\n")
+                        }
                     }
                 }
         }

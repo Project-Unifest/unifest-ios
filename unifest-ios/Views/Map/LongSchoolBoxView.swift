@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LongSchoolBoxView: View {
+    let festivalId: Int
     let thumbnail: String
     let schoolName: String
     let festivalName: String
@@ -48,7 +49,7 @@ struct LongSchoolBoxView: View {
                     Text(festivalName)
                         .font(.pretendard(weight: .p7, size: 12))
                         .foregroundStyle(.grey900)
-
+                    
                     Text(startDate + "-" + endDate)
                         .font(.pretendard(weight: .p4, size: 12))
                         .foregroundStyle(.grey600)
@@ -57,7 +58,9 @@ struct LongSchoolBoxView: View {
                 Spacer()
                 
                 Button {
-                    
+                    Task {
+                        await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                    }
                 } label: {
                     Capsule()
                         .strokeBorder(.primary500, lineWidth: 1)
@@ -75,6 +78,6 @@ struct LongSchoolBoxView: View {
 }
 
 #Preview {
-    LongSchoolBoxView(thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
+    LongSchoolBoxView(festivalId: 1, thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }
