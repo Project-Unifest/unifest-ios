@@ -211,41 +211,84 @@ struct BoothInfoView: View {
                 .padding(.horizontal, 14)
                 
                 if isOperatingHoursExpanded {
-                    VStack {
-                        HStack {
-                            Text("Open Time: ")
-                                .padding(.trailing, -5)
-                            
-                            if let openTime = viewModel.boothModel.selectedBooth?.openTime {
-                                let timeString = formatTime(openTime)
-                                Text(timeString)
-                            } else {
-                                Text("등록된 정보가 없습니다")
+                    if let scheduleList = viewModel.boothModel.selectedBooth?.scheduleList, !scheduleList.isEmpty {
+                        VStack {
+                            ForEach(scheduleList, id: \.date) { schedule in
+                                HStack {
+                                    let openTimeString = formatTime(schedule.openTime)
+                                    let closeTimeString = formatTime(schedule.closeTime)
+                                    Text("\(schedule.date)")
+                                    Text(openTimeString)
+                                    Text(closeTimeString)
+                                    Spacer()
+                                }
                             }
-                            
-                            Spacer()
                         }
-                        .padding(.bottom, 2)
-                        
-                        HStack {
-                            Text("Close Time: ")
-                                .padding(.trailing, -5)
-                            
-                            if let closeTime = viewModel.boothModel.selectedBooth?.closeTime {
-                                let timeString = formatTime(closeTime)
-                                Text(timeString)
-                            } else {
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey700)
+                        .padding(.leading, 40)
+                        .padding(.top, -1)
+                        .padding(.bottom, 5)
+                    } else {
+                        VStack {
+                            HStack {
+                                Text("Open Time: ")
+                                    .padding(.trailing, -5)
                                 Text("등록된 정보가 없습니다")
+                                
+                                Spacer()
                             }
+                            .padding(.bottom, 2)
                             
-                            Spacer()
+                            HStack {
+                                Text("Close Time: ")
+                                    .padding(.trailing, -5)
+                                Text("등록된 정보가 없습니다")
+                                Spacer()
+                            }
                         }
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey700)
+                        .padding(.leading, 40)
+                        .padding(.top, -1)
+                        .padding(.bottom, 5)
                     }
-                    .font(.pretendard(weight: .p5, size: 13))
-                    .foregroundStyle(.grey700)
-                    .padding(.leading, 40)
-                    .padding(.top, -1)
-                    .padding(.bottom, 5)
+                    
+//                    VStack {
+//                        HStack {
+//                            Text("Open Time: ")
+//                                .padding(.trailing, -5)
+//                            
+//                            if let openTime = viewModel.boothModel.selectedBooth?.openTime {
+//                                let timeString = formatTime(openTime)
+//                                Text(timeString)
+//                            } else {
+//                                Text("등록된 정보가 없습니다")
+//                            }
+//                            
+//                            Spacer()
+//                        }
+//                        .padding(.bottom, 2)
+//                        
+//                        HStack {
+//                            Text("Close Time: ")
+//                                .padding(.trailing, -5)
+//                            
+//                            if let closeTime = viewModel.boothModel.selectedBooth?.closeTime {
+//                                let timeString = formatTime(closeTime)
+//                                Text(timeString)
+//                            } else {
+//                                Text("등록된 정보가 없습니다")
+//                            }
+//                            
+//                            Spacer()
+//                        }
+//                    }
+//                    .font(.pretendard(weight: .p5, size: 13))
+//                    .foregroundStyle(.grey700)
+//                    .padding(.leading, 40)
+//                    .padding(.top, -1)
+//                    .padding(.bottom, 5)
                 }
                 
                 HStack {

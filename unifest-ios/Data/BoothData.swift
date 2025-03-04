@@ -74,9 +74,15 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var menus: [MenuItem]?
     var enabled: Bool?
     var waitingEnabled: Bool
-    var openTime: String?
-    var closeTime: String?
+    var scheduleList: [BoothSchedule]
     var stampEnabled: Bool
+}
+
+struct BoothSchedule: Codable, Hashable, Identifiable {
+    var id = UUID()
+    let date: String
+    let openTime: String
+    let closeTime: String
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {
@@ -302,6 +308,7 @@ class BoothModel: ObservableObject {
                             self.selectedBooth = responseData
                             // print(self.selectedBooth)
                             self.fetchLikeNum(self.selectedBoothID)
+                            print("\n\nselected booth info:\n\(self.selectedBooth)\n\n")
                         }
                     } else {
                         print("responseData is nil")
