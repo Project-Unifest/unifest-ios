@@ -16,108 +16,132 @@ struct EditFavoriteFestivalView: View {
     let columns = [GridItem(.adaptive(minimum: 114))]
     @ObservedObject var viewModel: RootViewModel
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                Spacer()
-                    .frame(height: 30)
-                
-                // 학교/축제 데이터는 FestivalModel의 이니셜라이저에서 앱이 처음 실행될 때 저장됨
-                Image(.searchBox)
-                    .overlay {
-                        HStack {
-                            TextField("학교/축제 이름을 검색해보세요", text: $searchText)
-                                .font(.system(size: 13))
-                                .onChange(of: searchText) { newValue in
-                                    viewModel.festivalModel.filterFestivals(byKeyword: searchText)
-                                    
-                                    if newValue.isEmpty {
-                                        viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
+        ZStack {
+            ScrollView {
+                LazyVStack {
+                    Spacer()
+                        .frame(height: 30)
+                    
+                    // 학교/축제 데이터는 FestivalModel의 이니셜라이저에서 앱이 처음 실행될 때 저장됨
+                    Image(.searchBox)
+                        .overlay {
+                            HStack {
+                                TextField("학교/축제 이름을 검색해보세요", text: $searchText)
+                                    .font(.system(size: 13))
+                                    .onChange(of: searchText) { newValue in
+                                        viewModel.festivalModel.filterFestivals(byKeyword: searchText)
+                                        
+                                        if newValue.isEmpty {
+                                            viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
+                                        }
+                                    }
+                                
+                                if searchText.isEmpty {
+                                    Image(.searchIcon)
+                                } else {
+                                    Button {
+                                        searchText = ""
+                                        UIApplication.shared.endEditing(true)
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.grey600)
                                     }
                                 }
-                            
-                            if searchText.isEmpty {
-                                Image(.searchIcon)
-                            } else {
-                                Button {
-                                    searchText = ""
-                                    UIApplication.shared.endEditing(true)
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.grey600)
+                            }
+                            .padding(.horizontal, 15)
+                        }
+                        .padding(.bottom)
+                    
+                    HStack {
+                        Text("검색결과")
+                            .font(.pretendard(weight: .p5, size: 12))
+                            .foregroundStyle(.grey600)
+                        Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
+                            .font(.pretendard(weight: .p5, size: 12))
+                            .foregroundStyle(.grey900)
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    
+                    ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) ?? false // 해당 festival이 관심축제에 추가됐는지 나타냄
+
+                        LongSchoolBoxView(
+                            festivalId: festival.festivalId,
+//                            isFavoriteFestival: isFavoriteFestival,
+                            thumbnail: festival.thumbnail,
+                            schoolName: festival.schoolName,
+                            festivalName: festival.festivalName,
+                            startDate: formatDate(festival.beginDate),
+                            endDate: formatDate(festival.endDate)
+                        )
+                    }
+                    .padding(.horizontal, 15)
+                    .padding(.bottom, 6)
+                    
+                    Rectangle()
+                        .fill(.grey100)
+                        .frame(height: 8)
+                    
+                    HStack {
+                        Text("나의 관심 축제")
+                            .font(.pretendard(weight: .p6, size: 15))
+                            .foregroundStyle(.grey900)
+                        
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 10)
+                    
+                    ScrollView {
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                            ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                                let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
+                                
+                                if isFavoriteFestival {
+                                    SchoolBoxView(
+                                        isSelected: .constant(false),
+                                        schoolImageURL: festival.thumbnail,
+                                        schoolName: festival.schoolName,
+                                        festivalName: festival.festivalName,
+                                        startDate: festival.beginDate,
+                                        endDate: festival.endDate
+                                    )
                                 }
                             }
                         }
-                        .padding(.horizontal, 15)
+                        .padding(.horizontal)
                     }
-                    .padding(.bottom)
-                
-                HStack {
-                    Text("검색결과")
-                        .font(.pretendard(weight: .p5, size: 12))
-                        .foregroundStyle(.grey600)
-                    Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
-                        .font(.pretendard(weight: .p5, size: 12))
-                        .foregroundStyle(.grey900)
-                    Spacer()
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 8)
-                
-                ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                    LongSchoolBoxView(
-                        festivalId: festival.festivalId,
-                        thumbnail: festival.thumbnail,
-                        schoolName: festival.schoolName,
-                        festivalName: festival.festivalName,
-                        startDate: formatDate(festival.beginDate),
-                        endDate: formatDate(festival.endDate)
-                    )
+                .onAppear {
+                    // 처음 나타날 때는 모든 축제 다 보여주기
+                    viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
+                    print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
                 }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 6)
-                
-                Rectangle()
-                    .fill(.grey100)
-                    .frame(height: 8)
-                
-                HStack {
-                    Text("나의 관심 축제")
-                        .font(.pretendard(weight: .p6, size: 15))
-                        .foregroundStyle(.grey900)
-                    
-                    Spacer()
+                .task {
+                    await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                 }
-                .padding(.horizontal)
-                .padding(.vertical, 10)
-                
-                ScrollView {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
-                        ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                            SchoolBoxView(
-                                isSelected: .constant(false),
-                                schoolImageURL: festival.thumbnail,
-                                schoolName: festival.schoolName,
-                                festivalName: festival.festivalName,
-                                startDate: festival.beginDate,
-                                endDate: festival.endDate
-                            )
-                        }
+                .dynamicTypeSize(.large)
+            }
+            
+            if networkManager.isNetworkConnected == false {
+                NetworkErrorView(errorType: .network)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
                     }
-                    .padding(.horizontal)
-                }
             }
-            .onAppear {
-                // 처음 나타날 때는 모든 축제 다 보여주기
-                viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
-                print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
+            
+            if networkManager.isServerError == true {
+                NetworkErrorView(errorType: .server)
+                    .onAppear {
+                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
+                    }
             }
-            .task {
-                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
-            }
-            .dynamicTypeSize(.large)
         }
     }
     

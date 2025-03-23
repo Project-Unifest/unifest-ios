@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LongSchoolBoxView: View {
     let festivalId: Int
+    //    let isFavoriteFestival: Bool
     let thumbnail: String
     let schoolName: String
     let festivalName: String
@@ -57,20 +58,32 @@ struct LongSchoolBoxView: View {
                 
                 Spacer()
                 
-                
                 Button {
-                    
                     Task {
-                        await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                        let deviceId = DeviceUUIDManager.shared.getDeviceToken()
+                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festivalId)
+                        
+                        if isFavoriteFestival {
+                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
+                            await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                        } else {
+                            await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
+                            await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                        }
                     }
                 } label: {
                     Capsule()
                         .strokeBorder(.primary500, lineWidth: 1)
                         .frame(width: 57, height: 29)
+                        .background(
+                            favoriteFestivalVM.favoriteFestivalList.contains(festivalId)
+                            ? Capsule().fill(.primary500)
+                            : Capsule().fill(.ufBackground)
+                        )
                         .overlay {
-                            Text("추가")
+                            Text(favoriteFestivalVM.favoriteFestivalList.contains(festivalId) ? "삭제" : "추가")
                                 .font(.pretendard(weight: .p5, size: 12))
-                                .foregroundStyle(.primary500)
+                                .foregroundStyle(favoriteFestivalVM.favoriteFestivalList.contains(festivalId) ? .white : .primary500)
                         }
                 }
             }
