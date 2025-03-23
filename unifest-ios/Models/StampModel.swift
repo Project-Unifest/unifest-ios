@@ -15,7 +15,7 @@ struct StampRecordResponse: Codable {
 
 struct StampRecordResult: Codable {
     let stampRecordId: Int
-    let stampInfoId: Int
+    let boothId: Int
     let deviceId: String
 }
 
@@ -45,4 +45,15 @@ struct AddStampResponse: Codable {
     let code: String
     let message: String
     let data: Int?
+}
+
+struct StampEnabledFestivalResponse: Codable {
+    let code: String
+    let message: String
+    let data: [StampEnabledFestivalResult]?
+}
+
+struct StampEnabledFestivalResult: Codable {
+    let festivalId: Int
+    let name: String
 }

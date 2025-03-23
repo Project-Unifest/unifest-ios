@@ -55,17 +55,24 @@ struct StampView: View {
                                             isStampDropdownPresented.toggle()
                                         }
                                     } label: {
+                                        // 축제 이름을 computed property로 나타내면 코드 더 깔끔할 듯
                                         HStack {
-                                            Text(stampVM.universities[stampVM.selectedUniversityIndex])
-                                                .font(.pretendard(weight: .p6, size: 18))
-                                                .foregroundStyle(.grey900)
-                                            Spacer()
-                                            Image(systemName: "chevron.down")
-                                                .resizable()
-                                                .frame(width: 10, height: 6)
-                                                .foregroundStyle(.grey600)
-                                                .padding(.leading, -1)
-                                                .rotationEffect(isStampDropdownPresented ? .degrees(180) : .zero)
+                                            if let stampEnabledFestivals = stampVM.stampEnabledFestivals, !stampEnabledFestivals.isEmpty {
+                                                Text(stampEnabledFestivals[stampVM.selectedFestivalIndex].name)
+                                                    .font(.pretendard(weight: .p6, size: 18))
+                                                    .foregroundStyle(.grey900)
+                                                Spacer()
+                                                Image(systemName: "chevron.down")
+                                                    .resizable()
+                                                    .frame(width: 10, height: 6)
+                                                    .foregroundStyle(.grey600)
+                                                    .padding(.leading, -1)
+                                                    .rotationEffect(isStampDropdownPresented ? .degrees(180) : .zero)
+                                            } else {
+                                                Text("스탬프 지원 축제가 없습니다")
+                                                    .font(.pretendard(weight: .p6, size: 18))
+                                                    .foregroundStyle(.grey900)
+                                            }
                                         }
                                     }
                                     .padding(.horizontal)
@@ -233,19 +240,21 @@ struct StampView: View {
                                 .overlay {
                                     ScrollView {
                                         VStack {
-                                            ForEach(stampVM.universities.indices, id: \.self) { index in
-                                                Button {
-                                                    stampVM.selectedUniversityIndex = index
-                                                    isStampDropdownPresented = false
-                                                } label: {
-                                                    HStack {
-                                                        Text(stampVM.universities[index])
-                                                            .font(.pretendard(weight: .p5, size: 16))
-                                                            .foregroundStyle(.grey800)
-                                                        Spacer()
+                                            if let stampEnabledFestivals = stampVM.stampEnabledFestivals {
+                                                ForEach(stampEnabledFestivals.indices, id: \.self) { index in
+                                                    Button {
+                                                        stampVM.selectedFestivalIndex = index
+                                                        isStampDropdownPresented = false
+                                                    } label: {
+                                                        HStack {
+                                                            Text(stampEnabledFestivals[index].name)
+                                                                .font(.pretendard(weight: .p5, size: 16))
+                                                                .foregroundStyle(.grey800)
+                                                            Spacer()
+                                                        }
                                                     }
+                                                    .padding(.bottom, 20)
                                                 }
-                                                .padding(.bottom, 20)
                                             }
                                         }
                                         
@@ -268,6 +277,7 @@ struct StampView: View {
                 isFetchingStampInfo = true
                 await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                 await stampVM.fetchStampEnabledBooths(festivalId: 2)
+                await stampVM.fetchStampEnabledFestivals()
                 isFetchingStampInfo = false
             }
             isFetchingStampInfo = false

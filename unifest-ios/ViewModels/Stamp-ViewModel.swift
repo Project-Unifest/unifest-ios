@@ -13,12 +13,13 @@ import SwiftUI
 class StampViewModel: ObservableObject {
     let universities = ["건국대학교", "서울시립대학교", "한국교통대학교", ]
     @Published var selectedUniversity = "건국대학교"
-    @Published var selectedUniversityIndex = 0
+    @Published var selectedFestivalIndex = 0
     @Published var stampCount: Int = 0
     @Published var stampRecords: [StampRecordResult]? = []
     @Published var stampEnabledBooths: [StampEnabledBoothResult]? = []
     @Published var stampEnabledBoothsCount: Int = 0
     @Published var qrScanToastMsg: Toast? = nil
+    @Published var stampEnabledFestivals: [StampEnabledFestivalResult]? = []
     
     private let networkManager: NetworkManager
     private let apiClient: APIClient
@@ -28,8 +29,9 @@ class StampViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
+    // 사용자의 스탬프 데이터 가져오기
     func fetchStampRecord(deviceId: String) async {
-        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampCount(deviceId: deviceId))
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampRecord(deviceId: deviceId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
@@ -43,13 +45,14 @@ class StampViewModel: ObservableObject {
             
             if response.code == "200", let data = response.data {
                 self.stampRecords = data
-                self.stampCount = stampRecords?.count ?? 0
+                self.stampCount = stampRecords?.count ?? 0 // 배열 길이(스탬프 개수)
             }
         } catch {
             NetworkUtils.handleNetworkError("fetchStampRecord", error, networkManager)
         }
     }
     
+    // 스탬프를 찍을 수 있는 부스 목록 가져오기
     func fetchStampEnabledBooths(festivalId: Int) async {
         let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchEnabledBooths(festivalId: festivalId))
         let headers: HTTPHeaders = [.accept("application/json")]
@@ -72,6 +75,29 @@ class StampViewModel: ObservableObject {
         }
     }
     
+    // 스탬프를 지원하는 축제 목록 가져오기
+    func fetchStampEnabledFestivals() async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchEnabledFestivals)
+        let headers: HTTPHeaders = [.accept("application/json")]
+        
+        do {
+            let response: StampEnabledFestivalResponse = try await apiClient.get(
+                url: url,
+                headers: headers,
+                responseType: StampEnabledFestivalResponse.self
+            )
+            print("fetchStampEnabledFestivals request succeeded")
+            print(response)
+            
+            if response.code == "200", let data = response.data {
+                self.stampEnabledFestivals = data
+            }
+        } catch {
+            NetworkUtils.handleNetworkError("FetchStampEnabledFestivals", error, networkManager)
+        }
+    }
+    
+    // 스탬프 추가하기
     func addStamp(boothId: Int, deviceId: String) async {
         let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.addStamp)
         let headers: HTTPHeaders = [
