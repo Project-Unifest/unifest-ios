@@ -65,10 +65,10 @@ class FavoriteFestivalViewModel: ObservableObject {
             )
             print("AddFavoriteFestival request succeeded")
             print(response)
-            self.isAddFavoriteFestivalSucceeded = true
+//            self.isAddFavoriteFestivalSucceeded = true
         } catch {
             NetworkUtils.handleNetworkError("AddFavoriteFestival", error, networkManager)
-            self.isAddFavoriteFestivalSucceeded = false
+//            self.isAddFavoriteFestivalSucceeded = false
         }
     }
     
@@ -91,10 +91,10 @@ class FavoriteFestivalViewModel: ObservableObject {
             )
             print("DeleteFavoriteFestival request succeeded")
             print(response)
-            self.isDeleteFavoriteFestivalSucceeded = true
+//            self.isDeleteFavoriteFestivalSucceeded = true
         } catch {
             NetworkUtils.handleNetworkError("DeleteFavoriteFestival", error, networkManager)
-            self.isDeleteFavoriteFestivalSucceeded = false
+//            self.isDeleteFavoriteFestivalSucceeded = false
         }
     }
 }

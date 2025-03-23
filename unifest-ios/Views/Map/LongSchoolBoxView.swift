@@ -57,7 +57,9 @@ struct LongSchoolBoxView: View {
                 
                 Spacer()
                 
+                
                 Button {
+                    
                     Task {
                         await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: DeviceUUIDManager.shared.getDeviceToken())
                     }
