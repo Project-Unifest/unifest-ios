@@ -106,6 +106,7 @@ struct EditFavoriteFestivalView: View {
                                 if isFavoriteFestival {
                                     SchoolBoxView(
                                         isSelected: .constant(false),
+                                        festivalId: festival.festivalId,
                                         schoolImageURL: festival.thumbnail,
                                         schoolName: festival.schoolName,
                                         festivalName: festival.festivalName,

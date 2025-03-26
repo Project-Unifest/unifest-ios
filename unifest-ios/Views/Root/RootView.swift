@@ -158,9 +158,9 @@ struct RootView: View {
         .environmentObject(stampVM)
         .onAppear {
             // 앱 첫 실행이면 WelcomeView
-            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
+//            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
-            }
+//            }
             
             // 부스 클러스터링 설정 확인
             UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
@@ -222,6 +222,8 @@ struct RootView: View {
         }
         .fullScreenCover(isPresented: $isIntroViewPresented) {
             IntroView(viewModel: viewModel)
+                .environmentObject(favoriteFestivalVM)
+                .environmentObject(networkManager)
         }
         .alert("유니페스 업데이트 안내", isPresented: $appVersionAlertPresented, actions: {
             Button("업데이트") {

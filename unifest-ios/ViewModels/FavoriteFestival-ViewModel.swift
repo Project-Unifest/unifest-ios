@@ -37,7 +37,6 @@ class FavoriteFestivalViewModel: ObservableObject {
             )
             print("getFavoriteFestivalList request succeeded")
             self.favoriteFestivalList = response.data ?? [] // 빈 배열 또는 [Int]가 반환됨
-            
             print(response)
         } catch {
             NetworkUtils.handleNetworkError("getFavoriteFestivalList", error, networkManager)

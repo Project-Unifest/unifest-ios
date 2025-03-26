@@ -35,6 +35,8 @@ struct HomeView: View {
     
     // @State private var isInfoPresented: Bool = false // MonthlyCalendarView에서 축제 개수 표시하는 변수, 사용 안함
     
+    @State private var isIntroViewPresented = false
+    
     init(viewModel: RootViewModel) {
         let date = Date()
         _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
@@ -52,6 +54,12 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            Button {
+                isIntroViewPresented = true
+            } label: {
+                Text("IntroView")
+            }
+            
             VStack(spacing: 0) {
                 if isExpanded {
                     HStack {
@@ -260,6 +268,9 @@ struct HomeView: View {
                 selectedDay: $selectedDay
             )
             .padding(.top, -17)
+        }
+        .sheet(isPresented: $isIntroViewPresented) {
+            IntroView(viewModel: viewModel)
         }
         .background(.ufBackground)
     }
