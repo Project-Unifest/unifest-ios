@@ -81,9 +81,15 @@ struct LongSchoolBoxView: View {
                             : Capsule().fill(.ufBackground)
                         )
                         .overlay {
-                            Text(favoriteFestivalVM.favoriteFestivalList.contains(festivalId) ? "삭제" : "추가")
-                                .font(.pretendard(weight: .p5, size: 12))
-                                .foregroundStyle(favoriteFestivalVM.favoriteFestivalList.contains(festivalId) ? .white : .primary500)
+                            if favoriteFestivalVM.favoriteFestivalList.contains(festivalId) {
+                                Image(.check)
+                                    .resizable()
+                                    .frame(width: 15, height: 10)
+                            } else {
+                                Text("추가")
+                                    .font(.pretendard(weight: .p5, size: 12))
+                                    .foregroundStyle(favoriteFestivalVM.favoriteFestivalList.contains(festivalId) ? .white : .primary500)
+                            }
                         }
                 }
             }
