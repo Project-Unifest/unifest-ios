@@ -56,4 +56,6 @@ struct StampEnabledFestivalResponse: Codable {
 struct StampEnabledFestivalResult: Codable {
     let festivalId: Int
     let name: String
+    let defaultImgUrl: String
+    let usedImageUrl: String
 }

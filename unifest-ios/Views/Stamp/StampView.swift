@@ -40,6 +40,31 @@ struct StampView: View {
                     ProgressView()
                     Spacer()
                 }
+            } else if stampVM.stampEnabledFestivals == nil || stampVM.stampEnabledFestivals?.isEmpty == true {
+                GeometryReader { geometry in
+                    let screenWidth = geometry.size.width
+                    
+                    HStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.ufBoxBackground)
+                            .frame(width: screenWidth * 0.9)
+                            .overlay {
+                                VStack {
+                                    Image(.stamp)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 100, height: 93)
+                                    
+                                    Text("스탬프를 지원하는 축제가 없습니다")
+                                        .padding(.top, 30)
+                                        .font(.pretendard(weight: .p6, size: 22))
+                                        .foregroundStyle(.grey400)
+                                }
+                                .padding(.vertical, 80)
+                            }
+                    }
+                    .padding()
+                }
             } else {
                 GeometryReader { geometry in
                     let screenWidth = geometry.size.width
@@ -57,8 +82,11 @@ struct StampView: View {
                                     } label: {
                                         // 축제 이름을 computed property로 나타내면 코드 더 깔끔할 듯
                                         HStack {
-                                            if let stampEnabledFestivals = stampVM.stampEnabledFestivals, !stampEnabledFestivals.isEmpty {
-                                                Text(stampEnabledFestivals[stampVM.selectedFestivalIndex].name)
+                                            if let stampEnabledFestivals = stampVM.stampEnabledFestivals,
+                                                !stampEnabledFestivals.isEmpty,
+                                               let stampSelectedFestivalId = UserDefaults.standard.value(forKey: "stampSelectedFestivalId") as? Int,
+                                               let matchedFestival = stampEnabledFestivals.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                                                Text(matchedFestival.name)
                                                     .font(.pretendard(weight: .p6, size: 18))
                                                     .foregroundStyle(.grey900)
                                                 Spacer()
@@ -87,16 +115,16 @@ struct StampView: View {
                                 .overlay {
                                     VStack {
                                         HStack {
-//                                            VStack(alignment: .leading) {
-//                                                Text("한국교통대학교")
-//                                                    .font(.pretendard(weight: .p6, size: 20))
-//                                                    .foregroundStyle(.grey900)
-//                                                    .padding(.bottom, 3)
-//                                                
-//                                                Text("지금까지 모은 스탬프")
-//                                                    .font(.pretendard(weight: .p4, size: 14))
-//                                                    .foregroundStyle(.grey500)
-//                                            }
+                                            //                                            VStack(alignment: .leading) {
+                                            //                                                Text("한국교통대학교")
+                                            //                                                    .font(.pretendard(weight: .p6, size: 20))
+                                            //                                                    .foregroundStyle(.grey900)
+                                            //                                                    .padding(.bottom, 3)
+                                            //
+                                            //                                                Text("지금까지 모은 스탬프")
+                                            //                                                    .font(.pretendard(weight: .p4, size: 14))
+                                            //                                                    .foregroundStyle(.grey500)
+                                            //                                            }
                                             VStack {
                                                 HStack {
                                                     Text("\(stampVM.stampCount)")
@@ -110,9 +138,10 @@ struct StampView: View {
                                                 Button {
                                                     Task {
                                                         isFetchingStampInfo = true
+                                                        let stampSelectedFestivalId = UserDefaults.standard.value(forKey: "stampSelectedFestivalId") as? Int ?? 1
                                                         await throttleManager.throttle {
                                                             isFetchingStampInfo = true
-                                                            await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                                                            await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
                                                             await stampVM.fetchStampEnabledBooths(festivalId: 2)
                                                             isFetchingStampInfo = false
                                                         }
@@ -242,8 +271,10 @@ struct StampView: View {
                                         VStack {
                                             if let stampEnabledFestivals = stampVM.stampEnabledFestivals {
                                                 ForEach(stampEnabledFestivals.indices, id: \.self) { index in
+                                                    let festival = stampEnabledFestivals[index]
+                                                    
                                                     Button {
-                                                        stampVM.selectedFestivalIndex = index
+                                                        UserDefaults.standard.set(festival.festivalId, forKey: "stampSelectedFestivalId")
                                                         isStampDropdownPresented = false
                                                     } label: {
                                                         HStack {
@@ -264,7 +295,7 @@ struct StampView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 10, y: 8)
                                 .padding(.top, 85)
                                 .zIndex(2)
-//                                .transition(.move(edge: .top)) // 위에서 아래로 나타나고 아래에서 위로 사라지게 설정
+                            //                                .transition(.move(edge: .top)) // 위에서 아래로 나타나고 아래에서 위로 사라지게 설정
                         }
                     }
                 }
@@ -273,10 +304,11 @@ struct StampView: View {
         .task {
             // print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
             isFetchingStampInfo = true
+            let stampSelectedFestivalId = UserDefaults.standard.value(forKey: "stampSelectedFestivalId") as? Int ?? 1
             await throttleManager.throttle {
                 isFetchingStampInfo = true
-                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken())
-                await stampVM.fetchStampEnabledBooths(festivalId: 2)
+                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
+                await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
                 await stampVM.fetchStampEnabledFestivals()
                 isFetchingStampInfo = false
             }

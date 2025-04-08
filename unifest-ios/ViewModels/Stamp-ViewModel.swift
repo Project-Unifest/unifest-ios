@@ -13,13 +13,17 @@ import SwiftUI
 class StampViewModel: ObservableObject {
     let universities = ["건국대학교", "서울시립대학교", "한국교통대학교", ]
     @Published var selectedUniversity = "건국대학교"
-    @Published var selectedFestivalIndex = 0
-    @Published var stampCount: Int = 0
-    @Published var stampRecords: [StampRecordResult]? = []
-    @Published var stampEnabledBooths: [StampEnabledBoothResult]? = []
-    @Published var stampEnabledBoothsCount: Int = 0
+    @Published var stampCount: Int = 0 // 사용자가 받은 스탬프 개수
+    @Published var stampRecords: [StampRecordResult]? = [] // 사용자의 스탬프 기록
+    @Published var stampEnabledBooths: [StampEnabledBoothResult]? = [] // 스탬프 기능을 제공하는 부스 리스트
+    @Published var stampEnabledBoothsCount: Int = 0 // 스탬프 기능을 제공하는 부스 개수
     @Published var qrScanToastMsg: Toast? = nil
-    @Published var stampEnabledFestivals: [StampEnabledFestivalResult]? = []
+    @Published var stampEnabledFestivals: [StampEnabledFestivalResult]? = [] // 스탬프 기능을 제공하는 대학 축제 리스트
+    @Published var selectedFestivalId: Int = 0 // 사용X, 사용자가 드롭다운에서 선택한 축제의 festivalId, UserDefaults(stampSelectedFestivalId로 대체)
+    @Published var selectedFestivalIndex = 0 // 사용X, 사용자가 드롭다운에서 선택한 축제의 드롭다운 리스트 인덱스, UserDefaults(stampSelectedFestivalId로 대체)
+    @Published var defaultImgUrl = "" // 스탬프 받기 전 스탬프판 이미지
+    @Published var usedImgUrl = "" // 스탬프 받은 후 스탬프판 이미지
+    
     
     private let networkManager: NetworkManager
     private let apiClient: APIClient
@@ -30,8 +34,8 @@ class StampViewModel: ObservableObject {
     }
     
     // 사용자의 스탬프 데이터 가져오기
-    func fetchStampRecord(deviceId: String) async {
-        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampRecord(deviceId: deviceId))
+    func fetchStampRecord(deviceId: String, festivalId: Int) async {
+        let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.fetchStampRecord(deviceId: deviceId, festivalId: festivalId))
         let headers: HTTPHeaders = [.accept("application/json")]
         
         do {
