@@ -73,37 +73,48 @@ struct MenuView: View {
                 // LazyHGrid
                 if subscribeFestival {
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
-                        Button {
-                            tabSelect.selectedTab = 2
-                        } label: {
-                            circleSchoolView(image: .uotLogo2, name: "한국교통대", festivalName: "Young:one")
-                        }
-                        
-                        /* circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")
-                         circleSchoolView(image: .konkukLogo, name: "건국대")
-                         circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")
-                         circleSchoolView(image: .konkukLogo, name: "건국대")
-                         circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")*/
+//                        Button {
+//                            tabSelect.selectedTab = 2
+//                        } label: {
+//                            circleSchoolView(image: .uotLogo2, name: "한국교통대", festivalName: "Young:one")
+//                        }
                     }
                     .padding(.horizontal)
                 } else {
-                    VStack(alignment: .center) {
-                        Text("관심축제 없음")
-                            .font(.pretendard(weight: .p6, size: 18))
-                            .foregroundStyle(.grey900)
-                            .padding(.bottom, 5)
-                        
-                        Text("관심축제 등록은 메뉴탭의 설정-관심축제 등록에서 가능합니다")
-                            .font(.pretendard(weight: .p5, size: 13))
-                            .foregroundStyle(.grey600)
-                            .padding(.bottom, 10)
+                        if favoriteFestivalVM.favoriteFestivalList.isEmpty {
+                            VStack(alignment: .center) {
+                                Text("관심축제 없음")
+                                    .font(.pretendard(weight: .p6, size: 18))
+                                    .foregroundStyle(.grey900)
+                                    .padding(.bottom, 5)
+                                
+                                Text("관심축제를 등록해주세요")
+                                    .font(.pretendard(weight: .p5, size: 13))
+                                    .foregroundStyle(.grey600)
+                                    .padding(.bottom, 10)
+                            }
+                            .frame(height: 150)
+                            .padding(.horizontal)
+                        } else {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    let favoriteFestivals = viewModel.festivalModel.festivalSearchResult.filter {
+                                        favoriteFestivalVM.favoriteFestivalList.contains($0.festivalId)
+                                    }
+                                    
+                                    ForEach(favoriteFestivals, id: \.festivalId) { festival in
+                                        circleSchoolView(
+                                            image: festival.thumbnail,
+                                            name: festival.schoolName,
+                                            festivalName: festival.festivalName
+                                        )
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .padding(.vertical, 14)
+                            }
+                        }
                     }
-                    .frame(height: 150)
-                    .padding(.horizontal)
-                }
                 
                 Text("")
                     .boldLine()
@@ -995,18 +1006,32 @@ struct MenuView: View {
     }
     
     @ViewBuilder
-    func circleSchoolView(image: ImageResource, name: String, festivalName: String) -> some View {
+    func circleSchoolView(image: String, name: String, festivalName: String) -> some View {
         VStack(spacing: 0) {
             Circle()
                 .fill(.white)
                 .frame(width: 58, height: 58)
                 .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 .overlay {
-                    Image(image)
-                        .resizable()
-                        .clipShape(.circle) // 이미지가 사각형일 경우 추가
-                        .scaledToFit()
-                        .frame(width: 46, height: 46)
+                    AsyncImage(url: URL(string: image)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 46, height: 46)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFit()
+                                .frame(width: 46, height: 46)
+                        case .failure:
+                            Circle()
+                                .fill(.gray)
+                                .frame(width: 46, height: 46)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
                 }
                 .padding(.bottom, 8)
             
@@ -1027,4 +1052,6 @@ struct MenuView: View {
 #Preview {
     MenuView(viewModel: RootViewModel())
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
+        .environmentObject(TabSelect())
 }
