@@ -15,7 +15,9 @@ struct LongSchoolBoxView: View {
     let festivalName: String
     let startDate: String
     let endDate: String
+    @Binding var isUpdatingFavoriteFestival: Bool
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
+    @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
     
     var body: some View {
         VStack {
@@ -60,16 +62,24 @@ struct LongSchoolBoxView: View {
                 
                 Button {
                     Task {
+                        isUpdatingFavoriteFestival = true
                         let deviceId = DeviceUUIDManager.shared.getDeviceToken()
                         let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festivalId)
                         
                         if isFavoriteFestival {
-                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
-                            await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                            await throttleManager.throttle {
+                                await favoriteFestivalVM.deleteFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
+                                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                                favoriteFestivalVM.updateSucceededToast = Toast(style: .success, message: "'\(festivalName)'을/를 관심축제에서 삭제했어요")
+                            }
                         } else {
-                            await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
-                            await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                            await throttleManager.throttle {
+                                await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
+                                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                                favoriteFestivalVM.updateSucceededToast = Toast(style: .success, message: "'\(festivalName)'을/를 관심축제에 추가했어요")
+                            }
                         }
+                        isUpdatingFavoriteFestival = false
                     }
                 } label: {
                     Capsule()
@@ -99,6 +109,6 @@ struct LongSchoolBoxView: View {
 }
 
 #Preview {
-    LongSchoolBoxView(festivalId: 1, thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.")
+    LongSchoolBoxView(festivalId: 1, thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.", isUpdatingFavoriteFestival: .constant(false))
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }

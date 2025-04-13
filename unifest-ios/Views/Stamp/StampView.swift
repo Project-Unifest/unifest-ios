@@ -21,7 +21,7 @@ struct StampView: View {
     @State private var isCameraPermissionAlertPresented = false
     @State private var isCameraAuthorized = false
     @State private var isFetchingStampInfo = false
-    @State private var throttleManager = ThrottleManager(throttleInterval: 1.0)
+    @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
     
     var body: some View {
         VStack {

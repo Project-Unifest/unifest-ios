@@ -19,6 +19,7 @@ struct IntroView: View {
     @State private var isFavoriteListLoading = false
     // 지역 선택 index
     @State private var regionIndex: Int = 0
+    @State private var isUpdatingFavoriteFestival: Bool = false
     let regions: [String] = ["전체", "서울", "경기∙인천", "강원", "대전∙충청", "광주∙전라", "부산∙대구", "경상"]
     let columns = [GridItem(.adaptive(minimum: 114))]
     
@@ -132,7 +133,8 @@ struct IntroView: View {
                                             schoolName: festival.schoolName,
                                             festivalName: festival.festivalName,
                                             startDate: festival.beginDate,
-                                            endDate: festival.endDate
+                                            endDate: festival.endDate,
+                                            isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
                                         )
                                     }
                                 }
@@ -200,7 +202,7 @@ struct IntroView: View {
                                             schoolName: festival.schoolName,
                                             festivalName: festival.festivalName,
                                             startDate: festival.beginDate,
-                                            endDate: festival.endDate
+                                            endDate: festival.endDate, isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
                                         )
                                     }
                                 }
@@ -246,6 +248,21 @@ struct IntroView: View {
                 }
             }
             
+            if isUpdatingFavoriteFestival {
+                ZStack {
+                    Color.black.opacity(0.66)
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(Color.white)
+                        Spacer()
+                    }
+                }
+            }
+            
             if networkManager.isNetworkConnected == false {
                 NetworkErrorView(errorType: .network)
                     .onAppear {
@@ -271,6 +288,8 @@ struct IntroView: View {
             await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
             isFavoriteListLoading = false
         }
+        .toastView(toast: $favoriteFestivalVM.updateSucceededToast)
+        .dynamicTypeSize(.large)
     }
     
     @ViewBuilder

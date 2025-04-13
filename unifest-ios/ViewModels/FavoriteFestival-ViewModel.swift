@@ -13,6 +13,7 @@ class FavoriteFestivalViewModel: ObservableObject {
     @Published var isAddFavoriteFestivalSucceeded: Bool = false // 사용X
     @Published var isDeleteFavoriteFestivalSucceeded: Bool = false // 사용X
     @Published var favoriteFestivalList: [Int] = []
+    @Published var updateSucceededToast: Toast? = nil
     
     private let networkManager: NetworkManager
     private let apiClient: APIClient

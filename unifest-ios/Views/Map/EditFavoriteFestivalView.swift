@@ -18,6 +18,7 @@ struct EditFavoriteFestivalView: View {
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
+    @State private var isUpdatingFavoriteFestival: Bool = false
     
     var body: some View {
         ZStack {
@@ -69,7 +70,7 @@ struct EditFavoriteFestivalView: View {
                     .padding(.bottom, 8)
                     
                     ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) ?? false // 해당 festival이 관심축제에 추가됐는지 나타냄
+                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
 
                         LongSchoolBoxView(
                             festivalId: festival.festivalId,
@@ -78,7 +79,8 @@ struct EditFavoriteFestivalView: View {
                             schoolName: festival.schoolName,
                             festivalName: festival.festivalName,
                             startDate: formatDate(festival.beginDate),
-                            endDate: formatDate(festival.endDate)
+                            endDate: formatDate(festival.endDate),
+                            isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
                         )
                     }
                     .padding(.horizontal, 15)
@@ -111,7 +113,8 @@ struct EditFavoriteFestivalView: View {
                                         schoolName: festival.schoolName,
                                         festivalName: festival.festivalName,
                                         startDate: festival.beginDate,
-                                        endDate: festival.endDate
+                                        endDate: festival.endDate,
+                                        isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
                                     )
                                 }
                             }
@@ -130,6 +133,21 @@ struct EditFavoriteFestivalView: View {
                 .dynamicTypeSize(.large)
             }
             
+            if isUpdatingFavoriteFestival {
+                ZStack {
+                    Color.black.opacity(0.66)
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        Spacer()
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(Color.white)
+                        Spacer()
+                    }
+                }
+            }
+            
             if networkManager.isNetworkConnected == false {
                 NetworkErrorView(errorType: .network)
                     .onAppear {
@@ -144,6 +162,8 @@ struct EditFavoriteFestivalView: View {
                     }
             }
         }
+        .toastView(toast: $favoriteFestivalVM.updateSucceededToast)
+        .dynamicTypeSize(.large)
     }
     
     func formatDate(_ dateString: String) -> String {
