@@ -79,7 +79,7 @@ enum StringLiterals {
         static let operatorModeTitle = "운영자 웹사이트"
         static let instagram = "인스타그램"
         static let appTitle = "UNIFEST"
-        static let copyright = "UNIFEST 2024 © ALL RIGHT RESERVED"
+        static let copyright = "UNIFEST 2025 © ALL RIGHT RESERVED"
         static let TeamTitle = "Team UNIFEST"
         static let locationAuthText = "위치 권한 수정"
         static let cameraAuthText = "카메라 권한 수정"

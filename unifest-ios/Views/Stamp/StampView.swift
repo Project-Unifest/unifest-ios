@@ -43,30 +43,34 @@ struct StampView: View {
                         Spacer()
                     }
                 } else if stampVM.stampEnabledFestivals == nil || stampVM.stampEnabledFestivals?.isEmpty == true {
-                    GeometryReader { geometry in
-                        let screenWidth = geometry.size.width
-                        
-                        HStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.ufBoxBackground)
-                                .frame(width: screenWidth * 0.9)
-                                .overlay {
-                                    VStack {
-                                        Image(.stamp)
-                                            .resizable()
-                                            .scaledToFit()
-                                            .frame(width: 100, height: 93)
-                                        
-                                        Text("스탬프를 지원하는 축제가 없습니다")
-                                            .padding(.top, 30)
-                                            .font(.pretendard(weight: .p6, size: 22))
-                                            .foregroundStyle(.grey400)
+                    VStack {
+                        GeometryReader { geometry in
+                            let screenWidth = geometry.size.width
+                            
+                            HStack {
+                                Spacer()
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color.ufBoxBackground)
+                                    .frame(width: screenWidth * 0.9)
+                                    .overlay {
+                                        VStack {
+                                            Image(.stamp)
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 100, height: 93)
+                                            
+                                            Text("스탬프 지원 축제가 없습니다")
+                                                .padding(.top, 30)
+                                                .font(.pretendard(weight: .p6, size: 22))
+                                                .foregroundStyle(.grey400)
+                                        }
+                                        .padding(.vertical, 80)
                                     }
-                                    .padding(.vertical, 80)
-                                }
+                                Spacer()
+                            }
                         }
-                        .padding()
                     }
+                    .padding(.bottom)
                 } else {
                     GeometryReader { geometry in
                         let screenWidth = geometry.size.width
