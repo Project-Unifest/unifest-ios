@@ -78,6 +78,7 @@ struct BoothInfoView: View {
                         .padding()
                         .contentShape(Rectangle().inset(by: -30)) // 터치 영역 확장
                     }
+                    
                     Spacer()
                 }
             }

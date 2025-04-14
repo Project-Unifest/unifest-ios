@@ -188,9 +188,18 @@ struct IntroView: View {
                                         .foregroundStyle(.grey900)
                                     
                                     Spacer()
+                                    
+//                                    Button {
+//                                        favoriteFestivalVM.isEditingFavoriteFestival.toggle()
+//                                    } label: {
+//                                        Text(favoriteFestivalVM.isEditingFavoriteFestival ? "편집완료" : "편집")
+//                                            .font(.pretendard(weight: .p5, size: 12))
+//                                            .foregroundColor(.grey600)
+//                                            .underline()
+//                                    }
                                 }
                                 .padding(.horizontal)
-                                .padding(.vertical, 5)
+                                .padding(.vertical, 9)
                                 .padding(.top, 5)
 
                                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {

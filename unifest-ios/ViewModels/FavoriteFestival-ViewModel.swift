@@ -14,6 +14,7 @@ class FavoriteFestivalViewModel: ObservableObject {
     @Published var isDeleteFavoriteFestivalSucceeded: Bool = false // 사용X
     @Published var favoriteFestivalList: [Int] = []
     @Published var updateSucceededToast: Toast? = nil
+    @Published var isEditingFavoriteFestival: Bool = false // IntroView에서 '편집' 버튼을 탭하면 SchoolBoxView가 편집 모드로 전환됨
     
     private let networkManager: NetworkManager
     private let apiClient: APIClient
