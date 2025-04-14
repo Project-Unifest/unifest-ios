@@ -75,7 +75,7 @@ struct MapPageHeaderView: View {
             // Image(.searchBox)
                 .overlay {
                     HStack {
-                        if #available(iOS 17, *) {
+//                        if #available(iOS 17, *) {
                             TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
                                 .font(.system(size: 13))
                                 .onChange(of: searchText) {
@@ -86,18 +86,18 @@ struct MapPageHeaderView: View {
                                         viewModel.boothModel.updateMapSelectedBoothList([])
                                     }
                                 }
-                        } else {
-                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
-                                .font(.system(size: 13))
-                                .onChange(of: searchText) { _ in
-                                    if !searchText.isEmpty {
-                                        mapViewModel.isPopularBoothPresented = false
-                                        mapViewModel.isBoothListPresented = false
-                                        mapViewModel.setSelectedAnnotationID(-1)
-                                        viewModel.boothModel.updateMapSelectedBoothList([])
-                                    }
-                                }
-                        }
+//                        } else {
+//                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
+//                                .font(.system(size: 13))
+//                                .onChange(of: searchText) { _ in
+//                                    if !searchText.isEmpty {
+//                                        mapViewModel.isPopularBoothPresented = false
+//                                        mapViewModel.isBoothListPresented = false
+//                                        mapViewModel.setSelectedAnnotationID(-1)
+//                                        viewModel.boothModel.updateMapSelectedBoothList([])
+//                                    }
+//                                }
+//                        }
                         
                         if searchText.isEmpty {
                             Image(.searchIcon)
@@ -240,7 +240,7 @@ struct MapPageHeaderView: View {
 //            VoteView()
 //        }
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel)
+            EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .presentationDragIndicator(.visible)
             // .presentationDetents([.height(700)])
         }

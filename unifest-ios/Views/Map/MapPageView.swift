@@ -31,11 +31,11 @@ struct MapPageView: View {
                 VStack {
                     Spacer()
                     
-                    if #available(iOS 17, *) {
+//                    if #available(iOS 17, *) {
                         MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                    } else {
-                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                    }
+//                    } else {
+//                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+//                    }
                 }
                 
                 VStack {

@@ -96,7 +96,7 @@ struct RootView: View {
                                 }
                                 .tag(3)
                             
-                            MenuView(viewModel: viewModel)
+                            MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                     GATracking.eventScreenView(GATracking.ScreenNames.menuView)

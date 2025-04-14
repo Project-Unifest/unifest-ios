@@ -15,6 +15,7 @@ struct EditFavoriteFestivalView: View {
     @State private var searchText: String = ""
     let columns = [GridItem(.adaptive(minimum: 114))]
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
@@ -57,22 +58,31 @@ struct EditFavoriteFestivalView: View {
                         }
                         .padding(.bottom)
                     
-                    HStack {
-                        Text("검색결과")
-                            .font(.pretendard(weight: .p5, size: 12))
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("검색결과")
+                                .font(.pretendard(weight: .p5, size: 13))
+                                .foregroundStyle(.grey600)
+                            Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
+                                .font(.pretendard(weight: .p5, size: 13))
+                                .foregroundStyle(.grey900)
+                            Spacer()
+                        }
+                        .padding(.bottom, 4)
+                        
+                        Text("학교 로고를 탭하면 해당 축제의 지도로 이동해요")
+                            .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.grey600)
-                        Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
-                            .font(.pretendard(weight: .p5, size: 12))
-                            .foregroundStyle(.grey900)
-                        Spacer()
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 8)
                     
                     ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
+//                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
 
                         LongSchoolBoxView(
+                            viewModel: viewModel,
+                            mapViewModel: mapViewModel,
                             festivalId: festival.festivalId,
 //                            isFavoriteFestival: isFavoriteFestival,
                             thumbnail: festival.thumbnail,

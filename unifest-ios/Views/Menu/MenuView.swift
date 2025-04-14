@@ -12,6 +12,7 @@ struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var themeManager = ThemeManager()
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @EnvironmentObject var tabSelect: TabSelect
@@ -162,7 +163,7 @@ struct MenuView: View {
                     }
                     .frame(height: 150)
                 } else {
-                    if #available(iOS 17, *) {
+//                    if #available(iOS 17, *) {
                         List {
                             ForEach(randomLikeList, id: \.self) { boothID in
                                 if let booth = viewModel.boothModel.getBoothByID(boothID) {
@@ -202,45 +203,45 @@ struct MenuView: View {
                         .onChange(of: viewModel.boothModel.likedBoothList) {
                             randomLikeList = viewModel.boothModel.getRandomLikedBooths()
                         }
-                    } else {
-                        List {
-                            ForEach(randomLikeList, id: \.self) { boothID in
-                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                    // .padding(.vertical, 10)
-                                        .onTapGesture {
-                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                            viewModel.boothModel.loadBoothDetail(boothID)
-                                            tappedBoothId = boothID
-                                            isDetailViewPresented = true
-                                        }
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                                                viewModel.boothModel.deleteLike(boothID)
-                                            } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
-                                            }
-                                        }
-                                } else {
-                                    HStack {
-                                        Spacer()
-                                        ProgressView()
-                                        Spacer()
-                                    }
-                                    .frame(height: 114)
-                                }
-                            }
-                        }
-                        .background(.ufBackground)
-                        .listStyle(.plain)
-                        .scrollDisabled(true)
-                        .frame(height: CGFloat(114 * randomLikeList.count))
-                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
-                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
-                        }
-                    }
+//                    } else {
+//                        List {
+//                            ForEach(randomLikeList, id: \.self) { boothID in
+//                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
+//                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+//                                    // .padding(.vertical, 10)
+//                                        .onTapGesture {
+//                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+//                                            viewModel.boothModel.loadBoothDetail(boothID)
+//                                            tappedBoothId = boothID
+//                                            isDetailViewPresented = true
+//                                        }
+//                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+//                                            Button {
+//                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+//                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
+//                                                viewModel.boothModel.deleteLike(boothID)
+//                                            } label: {
+//                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+//                                            }
+//                                        }
+//                                } else {
+//                                    HStack {
+//                                        Spacer()
+//                                        ProgressView()
+//                                        Spacer()
+//                                    }
+//                                    .frame(height: 114)
+//                                }
+//                            }
+//                        }
+//                        .background(.ufBackground)
+//                        .listStyle(.plain)
+//                        .scrollDisabled(true)
+//                        .frame(height: CGFloat(114 * randomLikeList.count))
+//                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
+//                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+//                        }
+//                    }
                 }
                 
                 Text("").boldLine().padding(.bottom, 0)
@@ -352,21 +353,21 @@ struct MenuView: View {
                 
                 // 클러스터링 여부
                 HStack(alignment: .center) {
-                    if #available(iOS 17, *) {
+//                    if #available(iOS 17, *) {
                         Image(systemName: "circle.dotted.and.circle")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 24, height: 24)
                             .foregroundColor(.darkGray)
                             .padding(.trailing, 8)
-                    } else {
-                        Image(systemName: "circle.dashed.inset.filled")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
-                            .padding(.trailing, 8)
-                    }
+//                    } else {
+//                        Image(systemName: "circle.dashed.inset.filled")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 24, height: 24)
+//                            .foregroundColor(.darkGray)
+//                            .padding(.trailing, 8)
+//                    }
                     
                     VStack(alignment: .leading) {
                         Text("부스 묶어보기")
@@ -382,7 +383,7 @@ struct MenuView: View {
                     
                     Spacer()
                     
-                    if #available(iOS 17, *) {
+//                    if #available(iOS 17, *) {
                         Toggle("", isOn: $clusterToggle)
                             .frame(width: 60)
                             .onChange(of: clusterToggle) {
@@ -398,23 +399,23 @@ struct MenuView: View {
                                     // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
                                 }
                             }
-                    } else {
-                        Toggle("", isOn: $clusterToggle)
-                            .frame(width: 60)
-                            .onChange(of: clusterToggle) { _ in
-                                if clusterToggle {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                } else {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                }
-                            }
-                    }
+//                    } else {
+//                        Toggle("", isOn: $clusterToggle)
+//                            .frame(width: 60)
+//                            .onChange(of: clusterToggle) { _ in
+//                                if clusterToggle {
+//                                    // off -> on
+//                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+//                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+//                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+//                                } else {
+//                                    // on -> off
+//                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+//                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+//                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+//                                }
+//                            }
+//                    }
                 }
                 .frame(height: 60)
                 .padding(.horizontal)
@@ -866,7 +867,7 @@ struct MenuView: View {
                 .ignoresSafeArea()
         })
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel)
+            EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {
@@ -1050,7 +1051,7 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(viewModel: RootViewModel())
+    MenuView(viewModel: RootViewModel(), mapViewModel:  MapViewModel(viewModel: RootViewModel()))
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
         .environmentObject(TabSelect())

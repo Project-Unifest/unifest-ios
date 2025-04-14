@@ -64,6 +64,7 @@
 		F81F0A9E2D61DF3C00FD66AA /* FCMTokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81F0A9D2D61DF3C00FD66AA /* FCMTokenModel.swift */; };
 		F82C55232CB3F06A00EBCA68 /* StampModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55222CB3F06A00EBCA68 /* StampModel.swift */; };
 		F82C55262CB6BD8B00EBCA68 /* VoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82C55252CB6BD8B00EBCA68 /* VoteView.swift */; };
+		F83110D02DAD4C4F00557F81 /* FestivalMapData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83110CF2DAD4C4F00557F81 /* FestivalMapData.swift */; };
 		F84C6F782C4A3A8200D9E414 /* Pretendard-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */; };
 		F84C6F792C4A3A8200D9E414 /* Pretendard-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */; };
 		F84C6F7A2C4A3A8200D9E414 /* Pretendard-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */; };
@@ -160,6 +161,7 @@
 		F81F0A9D2D61DF3C00FD66AA /* FCMTokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMTokenModel.swift; sourceTree = "<group>"; };
 		F82C55222CB3F06A00EBCA68 /* StampModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampModel.swift; sourceTree = "<group>"; };
 		F82C55252CB6BD8B00EBCA68 /* VoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteView.swift; sourceTree = "<group>"; };
+		F83110CF2DAD4C4F00557F81 /* FestivalMapData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalMapData.swift; sourceTree = "<group>"; };
 		F84C6F6F2C4A3A7F00D9E414 /* Pretendard-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-SemiBold.ttf"; sourceTree = "<group>"; };
 		F84C6F702C4A3A8000D9E414 /* Pretendard-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Medium.ttf"; sourceTree = "<group>"; };
 		F84C6F712C4A3A8000D9E414 /* Pretendard-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.ttf"; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 				F815E13F2C330064002C61DB /* LongSchoolBoxView.swift */,
 				0CDB46D62BB1E7F400C34AED /* OneMapView.swift */,
 				0CAA190D2C31A63C0029312E /* SchoolBoxView.swift */,
+				F83110CF2DAD4C4F00557F81 /* FestivalMapData.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */,
 				F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */,
 				F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */,
+				F83110D02DAD4C4F00557F81 /* FestivalMapData.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
@@ -841,7 +845,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -884,7 +888,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

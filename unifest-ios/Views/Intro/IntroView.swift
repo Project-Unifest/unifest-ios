@@ -184,7 +184,7 @@ struct IntroView: View {
                             VStack {
                                 HStack {
                                     Text("총 \(viewModel.festivalModel.festivalSearchResult.count)개")
-                                        .font(.pretendard(weight: .p5, size: 12))
+                                        .font(.pretendard(weight: .p5, size: 13))
                                         .foregroundStyle(.grey900)
                                     
                                     Spacer()
@@ -197,6 +197,10 @@ struct IntroView: View {
 //                                            .foregroundColor(.grey600)
 //                                            .underline()
 //                                    }
+                                    
+                                    Text("관심 축제는 탭 한 번으로 추가/삭제할 수 있어요")
+                                        .font(.pretendard(weight: .p5, size: 13))
+                                        .foregroundStyle(.grey600)
                                 }
                                 .padding(.horizontal)
                                 .padding(.vertical, 9)

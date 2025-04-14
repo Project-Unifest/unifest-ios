@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct LongSchoolBoxView: View {
+    @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     let festivalId: Int
     //    let isFavoriteFestival: Bool
     let thumbnail: String
@@ -18,6 +20,7 @@ struct LongSchoolBoxView: View {
     @Binding var isUpdatingFavoriteFestival: Bool
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
+    
     
     var body: some View {
         VStack {
@@ -43,6 +46,11 @@ struct LongSchoolBoxView: View {
                     }
                 }
                 .frame(width: 52, height: 52)
+                .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+                .onTapGesture {
+                    mapViewModel.mapSelectedFestivalId = festivalId
+//                    mapViewModel.festivalMapDataIndex = festivalMapDataList.first(where: { $0.})
+                }
                 
                 VStack(alignment: .leading) {
                     Text(schoolName)
@@ -109,6 +117,6 @@ struct LongSchoolBoxView: View {
 }
 
 #Preview {
-    LongSchoolBoxView(festivalId: 1, thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.", isUpdatingFavoriteFestival: .constant(false))
+    LongSchoolBoxView(viewModel: RootViewModel(), mapViewModel:  MapViewModel(viewModel: RootViewModel()), festivalId: 1, thumbnail: "", schoolName: "건국대학교", festivalName: "녹색지대", startDate: "05.06.", endDate: "05.08.", isUpdatingFavoriteFestival: .constant(false))
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
 }

@@ -335,17 +335,17 @@ struct BoothInfoView: View {
         }
         .background(colorScheme == .dark ? Color.grey100 : Color.white)
         .fullScreenCover(isPresented: $isMapViewPresented, content: {
-            if #available(iOS 17, *) {
+//            if #available(iOS 17, *) {
                 OneMapViewiOS17(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
                     .onAppear {
                         GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
                     }
-            } else {
-                OneMapViewiOS16(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
-                    .onAppear {
-                        GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
-                    }
-            }
+//            } else {
+//                OneMapViewiOS16(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
+//                    .onAppear {
+//                        GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+//                    }
+//            }
         })
     }
     
