@@ -22,7 +22,7 @@ struct MapPageHeaderView: View {
                     isEditFavoriteFestivalViewPresented = true
                 } label: {
                     HStack {
-                        Text("건국대학교")
+                        Text(festivalMapDataList[mapViewModel.festivalMapDataIndex].schoolName)
                             .font(.pretendard(weight: .p6, size: 18))
                             .foregroundStyle(.grey900)
                         

@@ -20,7 +20,7 @@ struct LongSchoolBoxView: View {
     @Binding var isUpdatingFavoriteFestival: Bool
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
-    
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
@@ -48,8 +48,16 @@ struct LongSchoolBoxView: View {
                 .frame(width: 52, height: 52)
                 .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 .onTapGesture {
+                    print("썸네일 누른 상태에서의 festivalId: \(festivalId)")
                     mapViewModel.mapSelectedFestivalId = festivalId
-//                    mapViewModel.festivalMapDataIndex = festivalMapDataList.first(where: { $0.})
+                    HapticManager.shared.hapticImpact(style: .light)
+                    if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
+                        mapViewModel.festivalMapDataIndex = index
+                    }
+                    
+                    mapViewModel.forceRefreshMapPageView = UUID()
+                    
+                    dismiss()
                 }
                 
                 VStack(alignment: .leading) {

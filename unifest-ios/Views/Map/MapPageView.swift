@@ -185,8 +185,12 @@ struct MapPageView: View {
                 BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
                     .presentationDragIndicator(.visible)
             }
-            .onAppear {
-                viewModel.boothModel.loadTop5Booth()
+            .task(id: mapViewModel.forceRefreshMapPageView) {
+                print("festivalId \(mapViewModel.mapSelectedFestivalId)로 loadStoreListData, loadTop5Booth 실행")
+                viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
+                    print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+                }
+                viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
             }
         }
     }

@@ -186,9 +186,9 @@ class BoothModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        loadStoreListData {
-            print("data is all loaded")
-        }
+//        loadStoreListData {
+//            print("data is all loaded")
+//        }
     }
     
     // 프로젝트 내의 JSON데이터로 테스트용 메서드
@@ -219,9 +219,9 @@ class BoothModel: ObservableObject {
     }
     
     // 실제로 서버에서 부스 데이터를 가져오는 메서드
-    func loadStoreListData(completion: @escaping () -> Void) {
+    func loadStoreListData(festivalId: Int, completion: @escaping () -> Void) {
         // API 호출을 통해 부스 데이터를 가져옴
-        APIManager.fetchDataGET("/api/booths/1/booths", api: .booth_all, apiType: .GET) { result in
+        APIManager.fetchDataGET("/api/booths/\(festivalId)/booths", api: .booth_all, apiType: .GET) { result in
             // fetchDataGet: 해당 링크에서 데이터를 가져옴
             switch result {
             case .success(let data):
@@ -231,6 +231,7 @@ class BoothModel: ObservableObject {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData
+                            print("\n\n\nBoothData의 booths: \(self.booths)\n\n\n")
                         }
                     }
                 }
@@ -239,11 +240,12 @@ class BoothModel: ObservableObject {
                 // self.loadData()
             }
         }
+        print("loadStoreListData with festivalId \(festivalId)")
     }
     
-    func loadTop5Booth() {
-        print(APIManager.shared.serverType.rawValue + "/api/booths?festivalId=1")
-        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=1")!,timeoutInterval: Double.infinity)
+    func loadTop5Booth(festivalId: Int) {
+        print("LoadTop5Booth with festivalId \(festivalId)")
+        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=\(festivalId)")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -267,6 +269,7 @@ class BoothModel: ObservableObject {
                             self.top5booths = responseData
                         }
                         print("top 5 booth loaded: \(self.top5booths.count)")
+                        print("top5booths: \(self.top5booths)")
                     } else {
                         print("top 5 booth is loaded but 0")
                     }

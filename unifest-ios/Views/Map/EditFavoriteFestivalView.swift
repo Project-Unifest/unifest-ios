@@ -59,6 +59,11 @@ struct EditFavoriteFestivalView: View {
                         .padding(.bottom)
                     
                     VStack(alignment: .leading) {
+                        Text("학교 로고를 탭하면 해당 축제의 지도로 이동해요")
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.primary500)
+                        .padding(.bottom, 4)
+                        
                         HStack {
                             Text("검색결과")
                                 .font(.pretendard(weight: .p5, size: 13))
@@ -68,11 +73,6 @@ struct EditFavoriteFestivalView: View {
                                 .foregroundStyle(.grey900)
                             Spacer()
                         }
-                        .padding(.bottom, 4)
-                        
-                        Text("학교 로고를 탭하면 해당 축제의 지도로 이동해요")
-                            .font(.pretendard(weight: .p5, size: 13))
-                            .foregroundStyle(.grey600)
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 8)
@@ -110,26 +110,36 @@ struct EditFavoriteFestivalView: View {
                     .padding(.horizontal)
                     .padding(.vertical, 10)
                     
-                    ScrollView {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
-                            ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-                                let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
-                                
-                                if isFavoriteFestival {
-                                    SchoolBoxView(
-                                        isSelected: .constant(false),
-                                        festivalId: festival.festivalId,
-                                        schoolImageURL: festival.thumbnail,
-                                        schoolName: festival.schoolName,
-                                        festivalName: festival.festivalName,
-                                        startDate: festival.beginDate,
-                                        endDate: festival.endDate,
-                                        isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
-                                    )
+                    if favoriteFestivalVM.favoriteFestivalList.isEmpty {
+                        VStack {
+                            Text("추가한 관심축제가 없어요")
+                                .font(.pretendard(weight: .p4, size: 14))
+                                .foregroundStyle(.grey600)
+                                .padding(.vertical, 60)
+                                .padding(.bottom, 20)
+                        }
+                    } else {
+                        ScrollView {
+                            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                                ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
+                                    let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
+                                    
+                                    if isFavoriteFestival {
+                                        SchoolBoxView(
+                                            isSelected: .constant(false),
+                                            festivalId: festival.festivalId,
+                                            schoolImageURL: festival.thumbnail,
+                                            schoolName: festival.schoolName,
+                                            festivalName: festival.festivalName,
+                                            startDate: festival.beginDate,
+                                            endDate: festival.endDate,
+                                            isUpdatingFavoriteFestival: $isUpdatingFavoriteFestival
+                                        )
+                                    }
                                 }
                             }
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
                 }
                 .onAppear {

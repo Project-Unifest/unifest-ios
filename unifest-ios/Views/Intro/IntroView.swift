@@ -200,7 +200,7 @@ struct IntroView: View {
                                     
                                     Text("관심 축제는 탭 한 번으로 추가/삭제할 수 있어요")
                                         .font(.pretendard(weight: .p5, size: 13))
-                                        .foregroundStyle(.grey600)
+                                        .foregroundStyle(.primary500)
                                 }
                                 .padding(.horizontal)
                                 .padding(.vertical, 9)
