@@ -186,9 +186,9 @@ class BoothModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-//        loadStoreListData {
-//            print("data is all loaded")
-//        }
+        loadStoreListData(festivalId: 1) {
+            print("data is all loaded")
+        }
     }
     
     // 프로젝트 내의 JSON데이터로 테스트용 메서드
@@ -231,7 +231,7 @@ class BoothModel: ObservableObject {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData
-                            print("\n\n\nBoothData의 booths: \(self.booths)\n\n\n")
+                            print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
                         }
                     }
                 }

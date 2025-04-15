@@ -38,7 +38,7 @@ struct MapPageHeaderView: View {
                     .frame(width: 180, height: 30)
                     .overlay {
                         VStack(alignment: .center) {
-                            Text("    여기를 눌러서 학교를 검색해보세요.")
+                            Text("    여기서 축제를 선택할 수 있어요.")
                                 .font(.pretendard(weight: .p5, size: 11))
                                 .foregroundStyle(.white)
                                 .padding(.top, 2)
@@ -47,11 +47,11 @@ struct MapPageHeaderView: View {
                     .opacity(isInfoTextPresented ? 1 : 0)
                     .onAppear {
                         isInfoTextPresented = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            withAnimation(.easeOut(duration: 1.2)) {
-                                isInfoTextPresented = false
-                            }
-                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                            withAnimation(.easeOut(duration: 1.2)) {
+//                                isInfoTextPresented = false
+//                            }
+//                        }
                     }
                     .onTapGesture {
                         isInfoTextPresented = false

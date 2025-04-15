@@ -59,7 +59,7 @@ struct RootView: View {
                                 }
                                 .tag(0)
                             
-                            WaitingView(viewModel: viewModel)
+                            WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                     GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
@@ -87,7 +87,7 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-                            StampView(viewModel: viewModel)
+                            StampView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                 }
@@ -202,7 +202,7 @@ struct RootView: View {
             tabSelect.selectedTab = 1
         }
         .sheet(isPresented: $isBoothDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: selectedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: selectedBoothId)
                 .environmentObject(waitingVM)
                 .environmentObject(networkManager)
                 .presentationDragIndicator(.visible)

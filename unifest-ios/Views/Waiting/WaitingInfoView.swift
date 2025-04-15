@@ -2,6 +2,7 @@ import SwiftUI
 
 struct WaitingInfoView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     let reservedWaitingListItem: ReservedWaitingResult
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
@@ -116,7 +117,7 @@ struct WaitingInfoView: View {
                         .padding() // RoundedRectangle() 안쪽 padding
                     }
                     .sheet(isPresented: $isBoothDetailViewPresented) {
-                        BoothDetailView(viewModel: viewModel, currentBoothId: 156)
+                        BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: 156)
                             .presentationDragIndicator(.visible)
                     }
                     .frame(width: geometry.size.width * 0.9) // 중앙 정렬을 위해 frame을 명시적으로 지정
@@ -128,7 +129,7 @@ struct WaitingInfoView: View {
 }
 
 #Preview {
-    WaitingInfoView(viewModel: RootViewModel(), reservedWaitingListItem: .empty)
+    WaitingInfoView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), reservedWaitingListItem: .empty)
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WaitingView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var isFetchingWaitingList = false
@@ -47,7 +48,7 @@ struct WaitingView: View {
                         Spacer()
                     }
                 } else {
-                    WaitingListView(viewModel: viewModel)
+                    WaitingListView(viewModel: viewModel, mapViewModel: mapViewModel)
                 }
             }
         }
@@ -72,7 +73,7 @@ struct WaitingView: View {
 }
 
 #Preview {
-    WaitingView(viewModel: RootViewModel())
+    WaitingView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

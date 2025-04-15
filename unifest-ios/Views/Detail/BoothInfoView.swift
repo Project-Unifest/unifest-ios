@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BoothInfoView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @State private var isMapViewPresented: Bool = false
     @State private var isOperatingHoursExpanded: Bool = false
     @Binding var selectedBoothHours: Int
@@ -336,7 +337,7 @@ struct BoothInfoView: View {
         .background(colorScheme == .dark ? Color.grey100 : Color.white)
         .fullScreenCover(isPresented: $isMapViewPresented, content: {
 //            if #available(iOS 17, *) {
-                OneMapViewiOS17(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
+            OneMapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, booth: viewModel.boothModel.selectedBooth)
                     .onAppear {
                         GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
                     }
@@ -370,9 +371,10 @@ struct BoothInfoView: View {
 
 #Preview {
     @ObservedObject var viewModel = RootViewModel()
+    @ObservedObject var mapViewModel = MapViewModel(viewModel: RootViewModel())
     
     return Group {
-        BoothInfoView(viewModel: viewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true), isBoothThumbnailPresented: .constant(false), boothThumbnail: .constant(SelectedMenuInfo()))
+        BoothInfoView(viewModel: viewModel, mapViewModel: mapViewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true), isBoothThumbnailPresented: .constant(false), boothThumbnail: .constant(SelectedMenuInfo()))
             .onAppear {
                 viewModel.boothModel.selectedBoothID = 119
                 viewModel.boothModel.loadBoothDetail(119)

@@ -182,15 +182,8 @@ struct MapPageView: View {
             }
             .ignoresSafeArea()
             .sheet(isPresented: $isBoothDetailViewPresented) {
-                BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+                BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                     .presentationDragIndicator(.visible)
-            }
-            .task(id: mapViewModel.forceRefreshMapPageView) {
-                print("festivalId \(mapViewModel.mapSelectedFestivalId)로 loadStoreListData, loadTop5Booth 실행")
-                viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
-                    print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
-                }
-                viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
             }
         }
     }

@@ -11,6 +11,7 @@ import SwiftUI
 
 struct StampView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var stampVM: StampViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var rotationAmount = 0.0
@@ -246,7 +247,7 @@ struct StampView: View {
                             .padding()
                             // .background(.ufBackground)
                             .sheet(isPresented: $isStampBoothViewPresented) {
-                                StampBoothListView(viewModel: viewModel)
+                                StampBoothListView(viewModel: viewModel, mapViewModel: mapViewModel)
                                     .presentationDragIndicator(.visible)
                             }
                             .fullScreenCover(isPresented: $isStampQRScanViewPresented) {
@@ -413,7 +414,7 @@ struct StampGrid: View {
 }
 
 #Preview {
-    StampView(viewModel: RootViewModel())
+    StampView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(StampViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

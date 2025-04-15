@@ -37,10 +37,17 @@ struct LongSchoolBoxView: View {
                             .clipShape(.circle)
                             .padding(.trailing, 4)
                     case .failure:
-                        Circle()
-                            .fill(.grey500)
-                            .frame(width: 35, height: 35)
-                            .padding(.bottom, 4)
+                        ZStack {
+                            Circle()
+                                .fill(.grey300)
+                                .frame(width: 52, height: 52)
+                                .padding(.bottom, 4)
+                            
+                            Image(.noImagePlaceholder)
+                                .resizable()
+                                .frame(width: 36, height: 36)
+                                .offset(x: 2, y: -2)
+                        }
                     @unknown default:
                         EmptyView()
                     }
@@ -72,6 +79,18 @@ struct LongSchoolBoxView: View {
                     Text(startDate + "-" + endDate)
                         .font(.pretendard(weight: .p4, size: 12))
                         .foregroundStyle(.grey600)
+                }
+                .onTapGesture {
+                    print("썸네일 누른 상태에서의 festivalId: \(festivalId)")
+                    mapViewModel.mapSelectedFestivalId = festivalId
+                    HapticManager.shared.hapticImpact(style: .light)
+                    if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
+                        mapViewModel.festivalMapDataIndex = index
+                    }
+                    
+                    mapViewModel.forceRefreshMapPageView = UUID()
+                    
+                    dismiss()
                 }
                 
                 Spacer()

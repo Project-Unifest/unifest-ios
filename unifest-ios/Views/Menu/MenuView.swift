@@ -863,7 +863,7 @@ struct MenuView: View {
         // .environmentObject(themeManager)
         // .environment(\.colorScheme, .getCurrentColorScheme())
         .fullScreenCover(isPresented: $isListViewPresented, content: {
-            LikeBoothListView(viewModel: viewModel)
+            LikeBoothListView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .ignoresSafeArea()
         })
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
@@ -889,7 +889,7 @@ struct MenuView: View {
                 }
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)
@@ -1051,7 +1051,7 @@ struct MenuView: View {
 }
 
 #Preview {
-    MenuView(viewModel: RootViewModel(), mapViewModel:  MapViewModel(viewModel: RootViewModel()))
+    MenuView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
         .environmentObject(TabSelect())

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StampBoothListView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var stampVM: StampViewModel
     @EnvironmentObject var networkManager: NetworkManager
     
@@ -56,6 +57,7 @@ struct StampBoothListView: View {
                             ForEach(stampEnabledBooths, id: \.id) { booth in
                                 StampBoothListItemView(
                                     viewModel: viewModel,
+                                    mapViewModel: mapViewModel,
                                     boothID: booth.id,
                                     image: booth.thumbnail ?? "",
                                     name: booth.name,
@@ -92,7 +94,7 @@ struct StampBoothListView: View {
 }
 
 #Preview {
-    StampBoothListView(viewModel: RootViewModel())
+    StampBoothListView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(StampViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

@@ -21,7 +21,7 @@ struct MapViewiOS17: View {
     @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
     @Binding var searchText: String
 
-    @State private var cameraPosition: MapCameraPosition = festivalMapDataList[0].mapCameraPosition
+    @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var lastDistance: Double = 4000
     @State private var isClustering: Bool = false
 
@@ -143,14 +143,30 @@ struct MapViewiOS17: View {
             Text("현재 위치를 확인하려면 위치 권한을 허용해야돼요. 앱 설정에서 위치 권한을 수정할 수 있어요.")
         }
         .mapScope(mainMap)
-        .onAppear() {
-            lastDistance = 3000
-            cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
-            mapViewModel.requestLocationAuthorization()
-            mapViewModel.locationManager?.startUpdatingLocation()
-            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-            mapViewModel.updateAnnotationList(makeCluster: isClustering)
+        .task(id: mapViewModel.forceRefreshMapPageView) {
+            print("festivalId \(mapViewModel.mapSelectedFestivalId)로 loadStoreListData, loadTop5Booth 실행")
+            viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
+                print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+            }
+            viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
+            
+            await MainActor.run {
+                lastDistance = 3000
+                cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
+                mapViewModel.requestLocationAuthorization()
+                mapViewModel.locationManager?.startUpdatingLocation()
+                isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                mapViewModel.updateAnnotationList(makeCluster: isClustering)
+            }
         }
+//        .onAppear() {
+//            lastDistance = 3000
+//            cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
+//            mapViewModel.requestLocationAuthorization()
+//            mapViewModel.locationManager?.startUpdatingLocation()
+//            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+//            mapViewModel.updateAnnotationList(makeCluster: isClustering)
+//        }
         .onDisappear() {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
