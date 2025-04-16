@@ -105,7 +105,7 @@ struct MenuView: View {
                                     
                                     ForEach(favoriteFestivals, id: \.festivalId) { festival in
                                         circleSchoolView(
-                                            image: festival.thumbnail,
+                                            image: festival.thumbnail ?? "",
                                             name: festival.schoolName,
                                             festivalName: festival.festivalName
                                         )

@@ -147,6 +147,13 @@ struct MapViewiOS17: View {
             print("festivalId \(mapViewModel.mapSelectedFestivalId)로 loadStoreListData, loadTop5Booth 실행")
             viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
                 print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+                
+                Task {
+                    await MainActor.run {
+                        print("MainActor에서 updateAnnotationList 실행됨")
+                        mapViewModel.updateAnnotationList(makeCluster: isClustering)
+                    }
+                }
             }
             viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
             

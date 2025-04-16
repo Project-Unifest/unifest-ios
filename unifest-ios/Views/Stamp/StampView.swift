@@ -91,18 +91,21 @@ struct StampView: View {
                                             HStack {
                                                 if let stampEnabledFestivals = stampVM.stampEnabledFestivals,
                                                    !stampEnabledFestivals.isEmpty {
-                                                    let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 11
+                                                    let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
                                                     if let matchedFestival = stampEnabledFestivals.first(where: { $0.festivalId == stampSelectedFestivalId }) {
                                                         Text(matchedFestival.name)
                                                             .font(.pretendard(weight: .p6, size: 18))
                                                             .foregroundStyle(.grey900)
                                                         Spacer()
-                                                        Image(systemName: "chevron.down")
-                                                            .resizable()
-                                                            .frame(width: 10, height: 6)
-                                                            .foregroundStyle(.grey600)
-                                                            .padding(.leading, -1)
-                                                            .rotationEffect(isStampDropdownPresented ? .degrees(180) : .zero)
+                                                        
+                                                        if let count = stampVM.stampEnabledFestivals?.count, count >= 2 {
+                                                            Image(systemName: "chevron.down")
+                                                                .resizable()
+                                                                .frame(width: 10, height: 6)
+                                                                .foregroundStyle(.grey600)
+                                                                .padding(.leading, -1)
+                                                                .rotationEffect(isStampDropdownPresented ? .degrees(180) : .zero)
+                                                        }
                                                     } else {
                                                         Text("스탬프 지원 축제가 없습니다")
                                                             .font(.pretendard(weight: .p6, size: 18))
@@ -115,6 +118,7 @@ struct StampView: View {
                                                 }
                                             }
                                         }
+                                        .disabled(stampVM.stampEnabledFestivals?.count == nil || stampVM.stampEnabledFestivals?.count ?? 0 <= 1)
                                         .padding(.horizontal)
                                         .padding(.horizontal, 8)
                                     }
@@ -150,7 +154,7 @@ struct StampView: View {
                                                     Button {
                                                         Task {
                                                             isUpdatingStampInfo = true
-                                                            let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 11
+                                                            let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
                                                             await throttleManager.throttle {
                                                                 await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
                                                                 await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
@@ -287,7 +291,7 @@ struct StampView: View {
                                                             Task {
                                                                 isUpdatingStampInfo = true
                                                                 UserDefaults.standard.set(festival.festivalId, forKey: "stampSelectedFestivalId")
-                                                                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 11
+                                                                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
                                                                 await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
                                                                 await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
                                                                 isStampDropdownPresented = false
@@ -321,7 +325,8 @@ struct StampView: View {
             .task {
                 // print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
                 isFetchingStampInfo = true
-                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 11
+                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
+                print("stampSelectedFestivalId: \(stampSelectedFestivalId)")
                 await throttleManager.throttle {
                     await stampVM.fetchStampEnabledFestivals()
                     await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)

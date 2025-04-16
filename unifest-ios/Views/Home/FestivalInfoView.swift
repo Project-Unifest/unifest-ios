@@ -155,7 +155,7 @@ struct FestivalInfoView: View {
                     .frame(height: 240)
                 } else {
                     ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength), id: \.self) { festival in
-                        schoolFestRow(image: festival.thumbnail, dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
+                        schoolFestRow(image: festival.thumbnail ?? "", dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
                     }
                 }
                 

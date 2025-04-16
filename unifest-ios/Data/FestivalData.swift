@@ -19,7 +19,7 @@ struct FestivalItem: Codable, Hashable, Identifiable {
     var id: UUID? = UUID() // optional없애면 데이터 로드 안됨 왜그렇지..?
     var festivalId: Int
     var schoolId: Int
-    var thumbnail: String
+    var thumbnail: String?
     var schoolName: String
     var region: String
     var festivalName: String
@@ -112,6 +112,7 @@ class FestivalModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        print("FestivalData init")
         loadStoreListData {
             print("data is all loaded")
             print(self.festivals)
@@ -169,6 +170,8 @@ class FestivalModel: ObservableObject {
                     if let festivalData = response.data {
                         DispatchQueue.main.async {
                             self.festivals = festivalData
+                            print("전체 축제 데이터 결과")
+                            print(festivalData)
                         }
                     }
                 }

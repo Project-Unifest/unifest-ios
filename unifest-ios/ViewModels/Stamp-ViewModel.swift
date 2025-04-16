@@ -102,7 +102,7 @@ class StampViewModel: ObservableObject {
     }
     
     // 스탬프 추가하기
-    func addStamp(boothId: Int, deviceId: String) async {
+    func addStamp(boothId: Int, deviceId: String, festivalId: Int) async {
         let url = NetworkUtils.buildURL(for: APIEndpoint.Stamp.addStamp)
         let headers: HTTPHeaders = [
             .accept("application/json"),
@@ -110,7 +110,8 @@ class StampViewModel: ObservableObject {
         ]
         let parameters: [String: Any] = [
             "deviceId": deviceId,
-            "boothId": boothId
+            "boothId": boothId,
+            "festivalId": festivalId
         ]
         
         do {
@@ -138,7 +139,9 @@ class StampViewModel: ObservableObject {
                 self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")
             }
         } catch {
-            NetworkUtils.handleNetworkError("AddStamp", error, networkManager)
+            self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없습니다")
+            print("스탬프 관련 오류 발생")
+            // NetworkUtils.handleNetworkError("AddStamp", error, networkManager)
         }
     }
 }

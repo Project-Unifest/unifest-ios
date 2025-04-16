@@ -42,29 +42,29 @@ let festivalMapDataList: [FestivalMapData] = [
         ),
         polygonCoordinates: polygonKonkuk
     ),
-    FestivalMapData(
-        festivalId: 3,
-        schoolName: "한경대학교",
-        mapCameraBounds: MapCameraBounds(
-            centerCoordinateBounds: MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000),
-                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)
-            ),
-            minimumDistance: 0,
-            maximumDistance: 4000
-        ),
-        mapCameraPosition: MapCameraPosition.camera(
-            MapCamera(
-                centerCoordinate: CLLocationCoordinate2D(
-                    latitude: 37.012_315, longitude: 127.263_380
-                ),
-                distance: 2000,
-                heading: 0.0,
-                pitch: 0
-            )
-        ),
-        polygonCoordinates: polygonHankyong
-    ),
+//    FestivalMapData(
+//        festivalId: 3,
+//        schoolName: "한경대학교",
+//        mapCameraBounds: MapCameraBounds(
+//            centerCoordinateBounds: MKCoordinateRegion(
+//                center: CLLocationCoordinate2D(latitude: 37.012_500, longitude: 127.263_000),
+//                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.01)
+//            ),
+//            minimumDistance: 0,
+//            maximumDistance: 4000
+//        ),
+//        mapCameraPosition: MapCameraPosition.camera(
+//            MapCamera(
+//                centerCoordinate: CLLocationCoordinate2D(
+//                    latitude: 37.012_315, longitude: 127.263_380
+//                ),
+//                distance: 2000,
+//                heading: 0.0,
+//                pitch: 0
+//            )
+//        ),
+//        polygonCoordinates: polygonHankyong
+//    ),
     FestivalMapData(
         festivalId: 2,
         schoolName: "한국교통대학교",
@@ -90,7 +90,7 @@ let festivalMapDataList: [FestivalMapData] = [
         polygonCoordinates: polygonUOT
     ),
     FestivalMapData(
-        festivalId: 5,
+        festivalId: 13,
         schoolName: "고려대학교",
         mapCameraBounds: MapCameraBounds(
             centerCoordinateBounds: MKCoordinateRegion(

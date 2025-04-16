@@ -20,6 +20,7 @@ struct EditFavoriteFestivalView: View {
     @EnvironmentObject var networkManager: NetworkManager
     @Environment(\.dismiss) var dismiss
     @State private var isUpdatingFavoriteFestival: Bool = false
+    @State private var isClustering: Bool = true
     
     var body: some View {
         ZStack {
@@ -85,7 +86,7 @@ struct EditFavoriteFestivalView: View {
                             mapViewModel: mapViewModel,
                             festivalId: festival.festivalId,
 //                            isFavoriteFestival: isFavoriteFestival,
-                            thumbnail: festival.thumbnail,
+                            thumbnail: festival.thumbnail ?? "",
                             schoolName: festival.schoolName,
                             festivalName: festival.festivalName,
                             startDate: formatDate(festival.beginDate),
@@ -128,7 +129,7 @@ struct EditFavoriteFestivalView: View {
                                         SchoolBoxView(
                                             isSelected: .constant(false),
                                             festivalId: festival.festivalId,
-                                            schoolImageURL: festival.thumbnail,
+                                            schoolImageURL: festival.thumbnail ?? "",
                                             schoolName: festival.schoolName,
                                             festivalName: festival.festivalName,
                                             startDate: festival.beginDate,
@@ -146,6 +147,15 @@ struct EditFavoriteFestivalView: View {
                     // 처음 나타날 때는 모든 축제 다 보여주기
                     viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
                     print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
+                }
+                .onDisappear {
+                    print("OnDisappear")
+                    viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
+                        print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+                    }
+                    viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
+                    isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                    mapViewModel.updateAnnotationList(makeCluster: isClustering)
                 }
                 .task {
                     await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())

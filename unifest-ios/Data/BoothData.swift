@@ -186,7 +186,8 @@ class BoothModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        loadStoreListData(festivalId: 1) {
+        let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+        loadStoreListData(festivalId: mapFestivalId) {
             print("data is all loaded")
         }
     }
@@ -232,6 +233,7 @@ class BoothModel: ObservableObject {
                         DispatchQueue.main.async {
                             self.booths = boothData
                             print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
+                            completion()
                         }
                     }
                 }

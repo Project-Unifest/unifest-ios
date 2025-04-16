@@ -129,7 +129,7 @@ struct IntroView: View {
                                         SchoolBoxView(
                                             isSelected: .constant(false),
                                             festivalId: festival.festivalId,
-                                            schoolImageURL: festival.thumbnail,
+                                            schoolImageURL: festival.thumbnail ?? "",
                                             schoolName: festival.schoolName,
                                             festivalName: festival.festivalName,
                                             startDate: festival.beginDate,
@@ -211,7 +211,7 @@ struct IntroView: View {
                                         SchoolBoxView(
                                             isSelected: .constant(false),
                                             festivalId: festival.festivalId,
-                                            schoolImageURL: festival.thumbnail,
+                                            schoolImageURL: festival.thumbnail ?? "",
                                             schoolName: festival.schoolName,
                                             festivalName: festival.festivalName,
                                             startDate: festival.beginDate,
@@ -313,7 +313,7 @@ struct IntroView: View {
             .frame(width: 113, height: 121)
             .overlay {
                 VStack {
-                    AsyncImage(url: URL(string: festival.thumbnail)) { image in
+                    AsyncImage(url: URL(string: festival.thumbnail ?? "")) { image in
                         image.image?
                             .resizable()
                             .scaledToFit()

@@ -158,14 +158,14 @@ struct RootView: View {
         .environmentObject(stampVM)
         .onAppear {
             // 앱 첫 실행이면 WelcomeView
-//            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
+            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
                 isWelcomeViewPresented = true
-//            }
+            }
             
             // 부스 클러스터링 설정 확인
             UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
-            // 저장한 부스 데이터 가져오기
+            // 저장한(좋아요한) 부스 데이터 가져오기
             viewModel.boothModel.loadLikeBoothListDB()
         }
         .task {
