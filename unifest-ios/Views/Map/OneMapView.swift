@@ -22,12 +22,14 @@ struct OneMapViewiOS17: View {
     
     @State private var cameraPosition: MapCameraPosition = .automatic
     
+    @State private var festivalMapDataIndex: Int = 1
+    
     var body: some View {
         ZStack {
-            Map(position: $cameraPosition, bounds: festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraBounds, scope: oneMap) {
+            Map(position: $cameraPosition, bounds: festivalMapDataList[festivalMapDataIndex].mapCameraBounds, scope: oneMap) {
                 UserAnnotation()
                 
-                let polygon = festivalMapDataList[mapViewModel.festivalMapDataIndex].polygonCoordinates
+                let polygon = festivalMapDataList[festivalMapDataIndex].polygonCoordinates
                 
                 if colorScheme == .dark {
                     MapPolygon(coordinates: polygon)
@@ -56,9 +58,9 @@ struct OneMapViewiOS17: View {
                 }
             }
             .onAppear {
-                cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
+                cameraPosition = festivalMapDataList[festivalMapDataIndex].mapCameraPosition
             }
-            .onChange(of: mapViewModel.festivalMapDataIndex) { newIndex in
+            .onChange(of: festivalMapDataIndex) { newIndex in
                 cameraPosition = festivalMapDataList[newIndex].mapCameraPosition
             }
             .controlSize(.mini)
@@ -154,6 +156,9 @@ struct OneMapViewiOS17: View {
         }
         .dynamicTypeSize(.large)
         .mapScope(oneMap)
+        .onAppear {
+            festivalMapDataIndex = UserDefaults.standard.object(forKey: "festivalMapDataIndex") as? Int ?? 1
+        }
     }
     
     func stringToBoothType(_ typeString: String) -> BoothType {

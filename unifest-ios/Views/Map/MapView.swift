@@ -25,12 +25,14 @@ struct MapViewiOS17: View {
     @State private var lastDistance: Double = 4000
     @State private var isClustering: Bool = false
 
+    @State private var festivalMapDataIndex: Int = 1
+    
     var body: some View {
         ZStack {
-            Map(position: $cameraPosition, bounds: festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraBounds, scope: mainMap) {
+            Map(position: $cameraPosition, bounds: festivalMapDataList[festivalMapDataIndex].mapCameraBounds, scope: mainMap) {
                 UserAnnotation()
 
-                let polygon = festivalMapDataList[mapViewModel.festivalMapDataIndex].polygonCoordinates
+                let polygon = festivalMapDataList[festivalMapDataIndex].polygonCoordinates
 
                 if colorScheme == .dark {
                     MapPolygon(coordinates: polygon)
@@ -69,7 +71,7 @@ struct MapViewiOS17: View {
                     }
                 }
             }
-            .onChange(of: mapViewModel.festivalMapDataIndex) { newIndex in
+            .onChange(of: festivalMapDataIndex) { newIndex in
                 cameraPosition = festivalMapDataList[newIndex].mapCameraPosition
             }
             .onChange(of: searchText) {
@@ -144,9 +146,11 @@ struct MapViewiOS17: View {
         }
         .mapScope(mainMap)
         .task(id: mapViewModel.forceRefreshMapPageView) {
-            print("festivalId \(mapViewModel.mapSelectedFestivalId)로 loadStoreListData, loadTop5Booth 실행")
-            viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
-                print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+            festivalMapDataIndex = UserDefaults.standard.object(forKey: "festivalMapDataIndex") as? Int ?? 1
+            let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+            print("festivalId \(mapFestivalId)로 loadStoreListData, loadTop5Booth 실행")
+            viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
+                print("\(mapFestivalId) 축제 부스 로드 완료")
                 
                 Task {
                     await MainActor.run {
@@ -155,25 +159,16 @@ struct MapViewiOS17: View {
                     }
                 }
             }
-            viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
-            
-            await MainActor.run {
-                lastDistance = 3000
-                cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
-                mapViewModel.requestLocationAuthorization()
-                mapViewModel.locationManager?.startUpdatingLocation()
-                isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-                mapViewModel.updateAnnotationList(makeCluster: isClustering)
-            }
+            viewModel.boothModel.loadTop5Booth(festivalId: mapFestivalId)
         }
-//        .onAppear() {
-//            lastDistance = 3000
-//            cameraPosition = festivalMapDataList[mapViewModel.festivalMapDataIndex].mapCameraPosition
-//            mapViewModel.requestLocationAuthorization()
-//            mapViewModel.locationManager?.startUpdatingLocation()
-//            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-//            mapViewModel.updateAnnotationList(makeCluster: isClustering)
-//        }
+        .onAppear() {
+            lastDistance = 3000
+            cameraPosition = festivalMapDataList[festivalMapDataIndex].mapCameraPosition
+            mapViewModel.requestLocationAuthorization()
+            mapViewModel.locationManager?.startUpdatingLocation()
+            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+            mapViewModel.updateAnnotationList(makeCluster: isClustering)
+        }
         .onDisappear() {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
@@ -591,7 +586,7 @@ class Cluster: Identifiable {
         }
         
         let newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
-        print("center updated from: \(center) \nto: \(newCenter)")
+//        print("center updated from: \(center) \nto: \(newCenter)")
         center = newCenter
     }
 }

@@ -21,8 +21,9 @@ struct MapPageHeaderView: View {
                 Button {
                     isEditFavoriteFestivalViewPresented = true
                 } label: {
+                    let festivalMapDataIndex = UserDefaults.standard.object(forKey: "festivalMapDataIndex") as? Int ?? 1
                     HStack {
-                        Text(festivalMapDataList[mapViewModel.festivalMapDataIndex].schoolName)
+                        Text(festivalMapDataList[festivalMapDataIndex].schoolName)
                             .font(.pretendard(weight: .p6, size: 18))
                             .foregroundStyle(.grey900)
                         

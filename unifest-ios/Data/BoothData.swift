@@ -227,12 +227,12 @@ class BoothModel: ObservableObject {
             switch result {
             case .success(let data):
                 // 데이터를 가져오는 데 성공하면 self.booths에 데이터를 설정함(가져온 booth 정보를 BoothModel 클래스의 booths 프로퍼티에 저장)
-                print("Data received in View: \(data)")
+//                print("Data received in View: \(data)")
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData
-                            print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
+//                            print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
                             completion()
                         }
                     }
@@ -271,7 +271,7 @@ class BoothModel: ObservableObject {
                             self.top5booths = responseData
                         }
                         print("top 5 booth loaded: \(self.top5booths.count)")
-                        print("top5booths: \(self.top5booths)")
+//                        print("top5booths: \(self.top5booths)")
                     } else {
                         print("top 5 booth is loaded but 0")
                     }

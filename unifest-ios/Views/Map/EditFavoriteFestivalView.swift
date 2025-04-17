@@ -146,14 +146,15 @@ struct EditFavoriteFestivalView: View {
                 .onAppear {
                     // 처음 나타날 때는 모든 축제 다 보여주기
                     viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
-                    print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
+                    // print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
                 }
                 .onDisappear {
                     print("OnDisappear")
-                    viewModel.boothModel.loadStoreListData(festivalId: mapViewModel.mapSelectedFestivalId) {
-                        print("\(mapViewModel.mapSelectedFestivalId) 축제 부스 로드 완료")
+                    let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+                    viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
+                        print("\(mapFestivalId) 축제 부스 로드 완료")
                     }
-                    viewModel.boothModel.loadTop5Booth(festivalId: mapViewModel.mapSelectedFestivalId)
+                    viewModel.boothModel.loadTop5Booth(festivalId: mapFestivalId)
                     isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
                     mapViewModel.updateAnnotationList(makeCluster: isClustering)
                 }

@@ -212,7 +212,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             print("*** newList Updated, count: \(newList.count)")
             self.annotationList = newList
             for ann in newList {
-                print("📌 Annotation \(ann.id): lat = \(ann.latitude), lng = \(ann.longitude)")
+//                print("📌 Annotation \(ann.id): lat = \(ann.latitude), lng = \(ann.longitude)")
             }
         }
     }
