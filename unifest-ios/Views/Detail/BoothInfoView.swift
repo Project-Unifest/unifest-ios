@@ -219,25 +219,29 @@ struct BoothInfoView: View {
                                 let openTimeString = formatTime(schedule.openTime)
                                 let closeTimeString = formatTime(schedule.closeTime)
                                 
-                                VStack(alignment: .leading, spacing: 2) {
+                                VStack(alignment: .leading, spacing: 3) {
                                     HStack {
-                                        Text("날짜: ")
-                                        Text(schedule.date)
+                                        Text(formattedDate(from: schedule.date))
+                                            .font(.pretendard(weight: .p6, size: 13))
+                                            .foregroundStyle(.grey800)
                                         Spacer()
                                     }
                                     
                                     HStack {
                                         Text("Open Time: ")
+                                            .padding(.trailing, -5)
                                         Text(openTimeString)
                                         Spacer()
                                     }
                                     
                                     HStack {
                                         Text("Close Time: ")
+                                            .padding(.trailing, -5)
                                         Text(closeTimeString)
                                         Spacer()
                                     }
                                 }
+                                .padding(.bottom, 5)
                             }
                         }
                         .font(.pretendard(weight: .p5, size: 13))
@@ -379,6 +383,22 @@ struct BoothInfoView: View {
             //            return formattedTime
         } else {
             return ""
+        }
+    }
+    
+    func formattedDate(from dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.locale = Locale(identifier: "ko_KR") // 한국어 기준
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.locale = Locale(identifier: "ko_KR")
+        outputFormatter.dateFormat = "yyyy년 M월 d일" // 원하는 출력 형식
+        
+        if let date = inputFormatter.date(from: dateString) {
+            return outputFormatter.string(from: date)
+        } else {
+            return dateString // 파싱 실패 시 원본 그대로 반환
         }
     }
 }

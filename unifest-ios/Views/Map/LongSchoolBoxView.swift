@@ -81,6 +81,19 @@ struct LongSchoolBoxView: View {
                         .font(.pretendard(weight: .p4, size: 12))
                         .foregroundStyle(.grey600)
                 }
+                .onTapGesture {
+//                    print("썸네일 누른 상태에서의 festivalId: \(festivalId)")
+                    UserDefaults.standard.set(festivalId, forKey: "mapFestivalId")
+                    mapViewModel.mapSelectedFestivalId = festivalId
+                    HapticManager.shared.hapticImpact(style: .light)
+                    if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
+                        UserDefaults.standard.set(index, forKey: "festivalMapDataIndex")
+                    }
+                    
+                    mapViewModel.forceRefreshMapPageView = UUID()
+                    
+                    dismiss()
+                }
                 
                 Spacer()
                 

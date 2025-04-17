@@ -79,7 +79,7 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
 }
 
 struct BoothSchedule: Codable, Hashable, Identifiable {
-    var id = UUID()
+    let id: Int
     let date: String
     let openTime: String
     let closeTime: String
