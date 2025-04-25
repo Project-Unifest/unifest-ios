@@ -21,8 +21,8 @@ struct OneMapViewiOS17: View {
     let booth: BoothDetailItem?
     
     @State private var cameraPosition: MapCameraPosition = .automatic
-    
     @State private var festivalMapDataIndex: Int = 1
+    @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
     
     var body: some View {
         ZStack {
@@ -132,17 +132,24 @@ struct OneMapViewiOS17: View {
                         MapPitchToggle(scope: oneMap)
                             .background(
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.defaultWhite)
+                                    .foregroundColor(.ufBackground)
                             )
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        MapUserLocationButton(scope: oneMap)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(.defaultWhite)
-                            )
-                            .mapControlVisibility(.automatic)
-                            .controlSize(.mini)
+                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
+                            MapUserLocationButton(scope: oneMap)
+                                .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                                .onTapGesture {
+                                    isLocationAuthNotPermittedAlertPresented = true
+                                }
+                        } else {
+                            MapUserLocationButton(scope: oneMap)
+                                .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
+                                .mapControlVisibility(.automatic)
+                                .controlSize(.mini)
+                        }
                         
                         MapCompass(scope: oneMap)
                             .mapControlVisibility(.automatic)
@@ -153,6 +160,19 @@ struct OneMapViewiOS17: View {
                 .frame(width: 60)
                 .padding(.horizontal, 5)
             }
+        }
+        .alert("위치 권한 안내", isPresented: $isLocationAuthNotPermittedAlertPresented) {
+            HStack {
+                Button("닫기", role: .cancel) { }
+                Button("설정하기", role: nil) {
+                    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+        } message: {
+            Text("현재 위치를 확인하려면 위치 권한을 허용해야돼요. 앱 설정에서 위치 권한을 수정할 수 있어요.")
         }
         .dynamicTypeSize(.large)
         .mapScope(oneMap)

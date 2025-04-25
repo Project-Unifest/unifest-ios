@@ -134,11 +134,11 @@ struct BoothFooterView: View {
         .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
         .alert("웨이팅 알림 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
-            Button("다음에 설정할게요", role: nil) {
-                withAnimation {
-                    isWaitingPinViewPresented = true
-                }
-            }
+//            Button("다음에 설정할게요", role: nil) {
+//                withAnimation {
+//                    isWaitingPinViewPresented = true
+//                }
+//            }
             
             // role을 cancel로 설정하면 버튼이 하단에 위치하게 됨
             // 사용자가 더 자주 선택하거나 중요하다고 생각되는 액션을 하단에 배치하는게 컨벤션
