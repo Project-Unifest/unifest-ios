@@ -1026,8 +1026,10 @@ struct MenuView: View {
                                 .scaledToFit()
                                 .frame(width: 46, height: 46)
                         case .failure:
-                            Circle()
-                                .fill(.gray)
+                            Image(.noImagePlaceholder)
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFit()
                                 .frame(width: 46, height: 46)
                         @unknown default:
                             EmptyView()

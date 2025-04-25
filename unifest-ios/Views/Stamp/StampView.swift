@@ -93,7 +93,7 @@ struct StampView: View {
                                                    !stampEnabledFestivals.isEmpty {
                                                     let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
                                                     if let matchedFestival = stampEnabledFestivals.first(where: { $0.festivalId == stampSelectedFestivalId }) {
-                                                        Text(matchedFestival.name)
+                                                        Text(matchedFestival.schoolName)
                                                             .font(.pretendard(weight: .p6, size: 18))
                                                             .foregroundStyle(.grey900)
                                                         Spacer()
@@ -294,12 +294,16 @@ struct StampView: View {
                                                                 let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
                                                                 await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
                                                                 await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
+                                                                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                                                                    stampVM.defaultImgUrl = matchedFestival.defaultImgUrl
+                                                                    stampVM.usedImgUrl = matchedFestival.usedImgUrl
+                                                                }
                                                                 isStampDropdownPresented = false
                                                                 isUpdatingStampInfo = false
                                                             }
                                                         } label: {
                                                             HStack {
-                                                                Text(stampEnabledFestivals[index].name)
+                                                                Text(stampEnabledFestivals[index].schoolName)
                                                                     .font(.pretendard(weight: .p5, size: 16))
                                                                     .foregroundStyle(.grey800)
                                                                 Spacer()
@@ -331,6 +335,10 @@ struct StampView: View {
                     await stampVM.fetchStampEnabledFestivals()
                     await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
                     await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
+                }
+                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                    stampVM.defaultImgUrl = matchedFestival.defaultImgUrl
+                    stampVM.usedImgUrl = matchedFestival.usedImgUrl
                 }
                 isFetchingStampInfo = false
             }
@@ -370,6 +378,8 @@ struct StampGrid: View {
     let totalStampCount: Int
     let currentStampCount: Int
     let screenWidth: CGFloat
+    @EnvironmentObject var stampVM: StampViewModel
+    @EnvironmentObject var networkManager: NetworkManager
     
     var body: some View {
         let gridHeight: Int = totalStampCount > 0 ? (totalStampCount / 4) + 1 : 0
@@ -388,25 +398,33 @@ struct StampGrid: View {
                                 .padding(.vertical, 8)
                         } else {
                             if currentStampCount >= count {
-                                Image(.appLogo)
-                                    .resizable()
-                                    .frame(width: 62, height: 62)
-                                    .clipShape(Circle())
+                                if stampVM.usedImgUrl != "string" {
+                                    usedStampImage(for: stampVM.usedImgUrl)
+                                } else {
+                                    Image(.appLogo)
+                                        .resizable()
+                                        .frame(width: 62, height: 62)
+                                        .clipShape(Circle())
+                                        .padding(.horizontal, screenWidth * 0.0215)
+                                        .padding(.vertical, 8)
+                                }
+                            } else {
+                                if stampVM.defaultImgUrl != "string" {
+                                    defaultStampImage(for: stampVM.defaultImgUrl)
+                                } else {
+                                    ZStack {
+                                        Circle()
+                                            .fill(Color.grey300)
+                                            .frame(width: 62, height: 62)
+
+                                        Image(.noImagePlaceholder)
+                                            .resizable()
+                                            .frame(width: 42, height: 42)
+                                            .offset(x: 2, y: -2)
+                                    }
                                     .padding(.horizontal, screenWidth * 0.0215)
                                     .padding(.vertical, 8)
-                            } else {
-                                ZStack {
-                                    Circle()
-                                        .fill(Color.grey300)
-                                        .frame(width: 62, height: 62)
-                                    
-                                    Image(.noImagePlaceholder)
-                                        .resizable()
-                                        .frame(width: 42, height: 42)
-                                        .offset(x: 2, y: -2)
                                 }
-                                .padding(.horizontal, screenWidth * 0.0215)
-                                .padding(.vertical, 8)
                             }
                         }
                     }
@@ -415,6 +433,86 @@ struct StampGrid: View {
         }
         .frame(width: screenWidth * 0.85)
         .padding(.horizontal, 9)
+    }
+    
+    @ViewBuilder
+    func usedStampImage(for url: String) -> some View {
+        AsyncImage(url: URL(string: url)) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+                    .frame(width: 62, height: 62)
+            case .success(let image):
+                image
+                    .resizable()
+                    .frame(width: 62, height: 62)
+                    .clipShape(Circle())
+                    .padding(.horizontal, screenWidth * 0.0215)
+                    .padding(.vertical, 8)
+            case .failure(_):
+                Image(.appLogo)
+                    .resizable()
+                    .frame(width: 62, height: 62)
+                    .clipShape(Circle())
+                    .padding(.horizontal, screenWidth * 0.0215)
+                    .padding(.vertical, 8)
+            @unknown default:
+                Image(.appLogo)
+                    .resizable()
+                    .frame(width: 62, height: 62)
+                    .clipShape(Circle())
+                    .padding(.horizontal, screenWidth * 0.0215)
+                    .padding(.vertical, 8)
+            }
+        }
+        .frame(width: 62, height: 62)
+        .clipShape(Circle())
+    }
+    
+    @ViewBuilder
+    func defaultStampImage(for url: String) -> some View {
+        AsyncImage(url: URL(string: url)) { phase in
+            switch phase {
+            case .empty:
+                ProgressView()
+                    .frame(width: 62, height: 62)
+            case .success(let image):
+                image
+                    .resizable()
+                    .frame(width: 62, height: 62)
+                    .clipShape(Circle())
+                    .padding(.horizontal, screenWidth * 0.0215)
+                    .padding(.vertical, 8)
+            case .failure(_):
+                ZStack {
+                    Circle()
+                        .fill(Color.grey300)
+                        .frame(width: 62, height: 62)
+
+                    Image(.noImagePlaceholder)
+                        .resizable()
+                        .frame(width: 42, height: 42)
+                        .offset(x: 2, y: -2)
+                }
+                .padding(.horizontal, screenWidth * 0.0215)
+                .padding(.vertical, 8)
+            @unknown default:
+                ZStack {
+                    Circle()
+                        .fill(Color.grey300)
+                        .frame(width: 62, height: 62)
+
+                    Image(.noImagePlaceholder)
+                        .resizable()
+                        .frame(width: 42, height: 42)
+                        .offset(x: 2, y: -2)
+                }
+                .padding(.horizontal, screenWidth * 0.0215)
+                .padding(.vertical, 8)
+            }
+        }
+        .frame(width: 62, height: 62)
+        .clipShape(Circle())
     }
 }
 

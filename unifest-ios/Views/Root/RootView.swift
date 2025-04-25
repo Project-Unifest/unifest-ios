@@ -182,7 +182,7 @@ struct RootView: View {
             }
             
             // 서버에 fcm token 전달
-            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+//            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
             // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
@@ -200,6 +200,13 @@ struct RootView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToWaitingTab"))) { _ in
             tabSelect.selectedTab = 1
+        }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("FCMToken"))) { notification in
+            if let token = notification.userInfo?["token"] as? String {
+                Task {
+                    await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                }
+            }
         }
         .sheet(isPresented: $isBoothDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: selectedBoothId)

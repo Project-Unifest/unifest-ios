@@ -24,7 +24,6 @@ class StampViewModel: ObservableObject {
     @Published var defaultImgUrl = "" // 스탬프 받기 전 스탬프판 이미지
     @Published var usedImgUrl = "" // 스탬프 받은 후 스탬프판 이미지
     
-    
     private let networkManager: NetworkManager
     private let apiClient: APIClient
     
