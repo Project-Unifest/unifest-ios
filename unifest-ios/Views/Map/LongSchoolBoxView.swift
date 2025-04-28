@@ -56,11 +56,10 @@ struct LongSchoolBoxView: View {
                 .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 .onTapGesture {
 //                    print("썸네일 누른 상태에서의 festivalId: \(festivalId)")
-                    UserDefaults.standard.set(festivalId, forKey: "mapFestivalId")
-                    mapViewModel.mapSelectedFestivalId = festivalId
+                    FestivalIdManager.mapFestivalId = festivalId
                     HapticManager.shared.hapticImpact(style: .light)
                     if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
-                        UserDefaults.standard.set(index, forKey: "festivalMapDataIndex")
+                        FestivalIdManager.festivalMapDataIndex = index
                     }
                     
                     mapViewModel.forceRefreshMapPageView = UUID()
@@ -83,11 +82,10 @@ struct LongSchoolBoxView: View {
                 }
                 .onTapGesture {
 //                    print("썸네일 누른 상태에서의 festivalId: \(festivalId)")
-                    UserDefaults.standard.set(festivalId, forKey: "mapFestivalId")
-                    mapViewModel.mapSelectedFestivalId = festivalId
+                    FestivalIdManager.mapFestivalId = festivalId
                     HapticManager.shared.hapticImpact(style: .light)
                     if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
-                        UserDefaults.standard.set(index, forKey: "festivalMapDataIndex")
+                        FestivalIdManager.festivalMapDataIndex = index
                     }
                     
                     mapViewModel.forceRefreshMapPageView = UUID()

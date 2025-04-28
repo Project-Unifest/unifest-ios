@@ -24,7 +24,6 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     @Published var isAuthorized: CLAuthorizationStatus = .notDetermined
     
     // 띄울 학교 지도
-    @Published var mapSelectedFestivalId = 1
     @Published var festivalMapDataIndex = 0
     @Published var forceRefreshMapPageView = UUID()
     
@@ -60,6 +59,8 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             }
         }
     }
+    
+    @Published var locationAuthorizationStatus: CLAuthorizationStatus = .notDetermined
     
     init(viewModel: RootViewModel) {
         // super.init()

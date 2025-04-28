@@ -102,9 +102,9 @@ struct StampQRScanView: View {
             if let boothId = Int(scannedString) {
                 Task {
                     print("boothId: \(boothId)")
-                    let festivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
+                    let stampFestivalId = FestivalIdManager.stampFestivalId
                     isScanning = true
-                    await stampVM.addStamp(boothId: boothId, deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: festivalId)
+                    await stampVM.addStamp(boothId: boothId, deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
                     isScanning = false
                     dismiss()
                 }

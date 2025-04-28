@@ -58,64 +58,54 @@ struct MenuView: View {
                         isEditFavoriteFestivalViewPresented = true
                     } label: {
                         HStack(spacing: 0) {
-                            Text("추가하기 >")
+                            Text("추가하기")
                                 .font(.pretendard(weight: .p6, size: 11))
                                 .foregroundColor(.grey600)
                                 .underline()
-                            //                            Image(systemName: "chevron.right")
-                            //                                .font(.system(size: 10))
-                            //                                .foregroundColor(.grey600)
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10))
+                                .foregroundColor(.grey600)
                         }
                     }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
-                // LazyHGrid
-                if subscribeFestival {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
-//                        Button {
-//                            tabSelect.selectedTab = 2
-//                        } label: {
-//                            circleSchoolView(image: .uotLogo2, name: "한국교통대", festivalName: "Young:one")
-//                        }
+                if favoriteFestivalVM.favoriteFestivalList.isEmpty {
+                    VStack(alignment: .center) {
+                        Text("관심축제 없음")
+                            .font(.pretendard(weight: .p6, size: 18))
+                            .foregroundStyle(.grey900)
+                            .padding(.bottom, 5)
+                        
+                        Text("관심축제를 등록해주세요")
+                            .font(.pretendard(weight: .p5, size: 13))
+                            .foregroundStyle(.grey600)
+                            .padding(.bottom, 10)
                     }
+                    .frame(height: 150)
                     .padding(.horizontal)
                 } else {
-                        if favoriteFestivalVM.favoriteFestivalList.isEmpty {
-                            VStack(alignment: .center) {
-                                Text("관심축제 없음")
-                                    .font(.pretendard(weight: .p6, size: 18))
-                                    .foregroundStyle(.grey900)
-                                    .padding(.bottom, 5)
-                                
-                                Text("관심축제를 등록해주세요")
-                                    .font(.pretendard(weight: .p5, size: 13))
-                                    .foregroundStyle(.grey600)
-                                    .padding(.bottom, 10)
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            let favoriteFestivals = viewModel.festivalModel.festivalSearchResult.filter {
+                                favoriteFestivalVM.favoriteFestivalList.contains($0.festivalId)
                             }
-                            .frame(height: 150)
-                            .padding(.horizontal)
-                        } else {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 16) {
-                                    let favoriteFestivals = viewModel.festivalModel.festivalSearchResult.filter {
-                                        favoriteFestivalVM.favoriteFestivalList.contains($0.festivalId)
-                                    }
-                                    
-                                    ForEach(favoriteFestivals, id: \.festivalId) { festival in
-                                        circleSchoolView(
-                                            image: festival.thumbnail ?? "",
-                                            name: festival.schoolName,
-                                            festivalName: festival.festivalName
-                                        )
-                                    }
-                                }
-                                .padding(.horizontal)
-                                .padding(.vertical, 14)
+                            
+                            ForEach(favoriteFestivals, id: \.festivalId) { festival in
+                                circleSchoolView(
+                                    image: festival.thumbnail ?? "",
+                                    name: festival.schoolName,
+                                    festivalName: festival.festivalName
+                                )
                             }
                         }
+                        .padding(.horizontal)
+                        .padding(.vertical, 14)
                     }
+                }
+                
                 
                 Text("")
                     .boldLine()
@@ -163,85 +153,85 @@ struct MenuView: View {
                     }
                     .frame(height: 150)
                 } else {
-//                    if #available(iOS 17, *) {
-                        List {
-                            ForEach(randomLikeList, id: \.self) { boothID in
-                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                    // .padding(.vertical, 10)
-                                        .listRowBackground(Color.ufBackground)
-                                        .listRowSeparator(.hidden)
-                                        .onTapGesture {
-                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                            viewModel.boothModel.loadBoothDetail(boothID)
-                                            tappedBoothId = boothID
-                                            isDetailViewPresented = true
-                                        }
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                                                viewModel.boothModel.deleteLike(boothID)
-                                            } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
-                                            }
-                                        }
-                                }
-                                else {
-                                    HStack {
-                                        Spacer()
-                                        ProgressView()
-                                        Spacer()
+                    //                    if #available(iOS 17, *) {
+                    List {
+                        ForEach(randomLikeList, id: \.self) { boothID in
+                            if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                // .padding(.vertical, 10)
+                                    .listRowBackground(Color.ufBackground)
+                                    .listRowSeparator(.hidden)
+                                    .onTapGesture {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                        viewModel.boothModel.loadBoothDetail(boothID)
+                                        tappedBoothId = boothID
+                                        isDetailViewPresented = true
                                     }
-                                    .frame(height: 114)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                            viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                            viewModel.boothModel.deleteLike(boothID)
+                                        } label: {
+                                            Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+                                        }
+                                    }
+                            }
+                            else {
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
                                 }
+                                .frame(height: 114)
                             }
                         }
-                        .listStyle(.plain)
-                        .scrollDisabled(true)
-                        .frame(height: CGFloat(114 * randomLikeList.count))
-                        .onChange(of: viewModel.boothModel.likedBoothList) {
-                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
-                        }
-//                    } else {
-//                        List {
-//                            ForEach(randomLikeList, id: \.self) { boothID in
-//                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
-//                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-//                                    // .padding(.vertical, 10)
-//                                        .onTapGesture {
-//                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-//                                            viewModel.boothModel.loadBoothDetail(boothID)
-//                                            tappedBoothId = boothID
-//                                            isDetailViewPresented = true
-//                                        }
-//                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-//                                            Button {
-//                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-//                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
-//                                                viewModel.boothModel.deleteLike(boothID)
-//                                            } label: {
-//                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
-//                                            }
-//                                        }
-//                                } else {
-//                                    HStack {
-//                                        Spacer()
-//                                        ProgressView()
-//                                        Spacer()
-//                                    }
-//                                    .frame(height: 114)
-//                                }
-//                            }
-//                        }
-//                        .background(.ufBackground)
-//                        .listStyle(.plain)
-//                        .scrollDisabled(true)
-//                        .frame(height: CGFloat(114 * randomLikeList.count))
-//                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
-//                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
-//                        }
-//                    }
+                    }
+                    .listStyle(.plain)
+                    .scrollDisabled(true)
+                    .frame(height: CGFloat(114 * randomLikeList.count))
+                    .onChange(of: viewModel.boothModel.likedBoothList) {
+                        randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                    }
+                    //                    } else {
+                    //                        List {
+                    //                            ForEach(randomLikeList, id: \.self) { boothID in
+                    //                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                    //                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                    //                                    // .padding(.vertical, 10)
+                    //                                        .onTapGesture {
+                    //                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                    //                                            viewModel.boothModel.loadBoothDetail(boothID)
+                    //                                            tappedBoothId = boothID
+                    //                                            isDetailViewPresented = true
+                    //                                        }
+                    //                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    //                                            Button {
+                    //                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                    //                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                    //                                                viewModel.boothModel.deleteLike(boothID)
+                    //                                            } label: {
+                    //                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+                    //                                            }
+                    //                                        }
+                    //                                } else {
+                    //                                    HStack {
+                    //                                        Spacer()
+                    //                                        ProgressView()
+                    //                                        Spacer()
+                    //                                    }
+                    //                                    .frame(height: 114)
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                        .background(.ufBackground)
+                    //                        .listStyle(.plain)
+                    //                        .scrollDisabled(true)
+                    //                        .frame(height: CGFloat(114 * randomLikeList.count))
+                    //                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
+                    //                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                    //                        }
+                    //                    }
                 }
                 
                 Text("").boldLine().padding(.bottom, 0)
@@ -353,21 +343,21 @@ struct MenuView: View {
                 
                 // 클러스터링 여부
                 HStack(alignment: .center) {
-//                    if #available(iOS 17, *) {
-                        Image(systemName: "circle.dotted.and.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
-                            .padding(.trailing, 8)
-//                    } else {
-//                        Image(systemName: "circle.dashed.inset.filled")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 24, height: 24)
-//                            .foregroundColor(.darkGray)
-//                            .padding(.trailing, 8)
-//                    }
+                    //                    if #available(iOS 17, *) {
+                    Image(systemName: "circle.dotted.and.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.darkGray)
+                        .padding(.trailing, 8)
+                    //                    } else {
+                    //                        Image(systemName: "circle.dashed.inset.filled")
+                    //                            .resizable()
+                    //                            .scaledToFit()
+                    //                            .frame(width: 24, height: 24)
+                    //                            .foregroundColor(.darkGray)
+                    //                            .padding(.trailing, 8)
+                    //                    }
                     
                     VStack(alignment: .leading) {
                         Text("부스 묶어보기")
@@ -383,39 +373,37 @@ struct MenuView: View {
                     
                     Spacer()
                     
-//                    if #available(iOS 17, *) {
-                        Toggle("", isOn: $clusterToggle)
-                            .frame(width: 60)
-                            .onChange(of: clusterToggle) {
-                                if clusterToggle {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                } else {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                }
+                    //                    if #available(iOS 17, *) {
+                    Toggle("", isOn: $clusterToggle)
+                        .frame(width: 60)
+                        .onChange(of: clusterToggle) {
+                            if clusterToggle {
+                                // off -> on
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                                UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                            } else {
+                                // on -> off
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                                UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
                             }
-//                    } else {
-//                        Toggle("", isOn: $clusterToggle)
-//                            .frame(width: 60)
-//                            .onChange(of: clusterToggle) { _ in
-//                                if clusterToggle {
-//                                    // off -> on
-//                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-//                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-//                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-//                                } else {
-//                                    // on -> off
-//                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-//                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-//                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-//                                }
-//                            }
-//                    }
+                        }
+                    //                    } else {
+                    //                        Toggle("", isOn: $clusterToggle)
+                    //                            .frame(width: 60)
+                    //                            .onChange(of: clusterToggle) { _ in
+                    //                                if clusterToggle {
+                    //                                    // off -> on
+                    //                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                    //                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                    //                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                    //                                } else {
+                    //                                    // on -> off
+                    //                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                    //                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+                    //                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                    //                                }
+                    //                            }
+                    //                    }
                 }
                 .frame(height: 60)
                 .padding(.horizontal)
@@ -876,17 +864,6 @@ struct MenuView: View {
             print("randomLikeList num: \(randomLikeList.count)")
             print(randomLikeList)
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions) { granted, error in
-                    if granted { // 알림 권한이 설정되어있음
-                        subscribeFestival = UserDefaults.standard.bool(forKey: "subscribeFestival")
-                    } else { // 알림 권한이 설정되어있지않음
-                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                        subscribeFestival = false
-                    }
-                }
         }
         .sheet(isPresented: $isDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)

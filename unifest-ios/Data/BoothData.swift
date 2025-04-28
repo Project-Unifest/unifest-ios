@@ -186,7 +186,7 @@ class BoothModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+        let mapFestivalId = FestivalIdManager.mapFestivalId
         loadStoreListData(festivalId: mapFestivalId) {
             print("data is all loaded")
         }

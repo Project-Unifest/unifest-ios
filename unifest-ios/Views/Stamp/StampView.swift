@@ -91,8 +91,8 @@ struct StampView: View {
                                             HStack {
                                                 if let stampEnabledFestivals = stampVM.stampEnabledFestivals,
                                                    !stampEnabledFestivals.isEmpty {
-                                                    let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
-                                                    if let matchedFestival = stampEnabledFestivals.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                                                    let stampFestivalId = FestivalIdManager.stampFestivalId
+                                                    if let matchedFestival = stampEnabledFestivals.first(where: { $0.festivalId == stampFestivalId }) {
                                                         Text(matchedFestival.schoolName)
                                                             .font(.pretendard(weight: .p6, size: 18))
                                                             .foregroundStyle(.grey900)
@@ -154,10 +154,10 @@ struct StampView: View {
                                                     Button {
                                                         Task {
                                                             isUpdatingStampInfo = true
-                                                            let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
+                                                            let stampFestivalId = FestivalIdManager.stampFestivalId
                                                             await throttleManager.throttle {
-                                                                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
-                                                                await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
+                                                                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
+                                                                await stampVM.fetchStampEnabledBooths(festivalId: stampFestivalId)
                                                             }
                                                             isUpdatingStampInfo = false
                                                         }
@@ -290,11 +290,11 @@ struct StampView: View {
                                                         Button {
                                                             Task {
                                                                 isUpdatingStampInfo = true
-                                                                UserDefaults.standard.set(festival.festivalId, forKey: "stampSelectedFestivalId")
-                                                                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
-                                                                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
-                                                                await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
-                                                                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                                                                FestivalIdManager.stampFestivalId = festival.festivalId
+                                                                let stampFestivalId = FestivalIdManager.stampFestivalId
+                                                                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
+                                                                await stampVM.fetchStampEnabledBooths(festivalId: stampFestivalId)
+                                                                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampFestivalId }) {
                                                                     stampVM.defaultImgUrl = matchedFestival.defaultImgUrl
                                                                     stampVM.usedImgUrl = matchedFestival.usedImgUrl
                                                                 }
@@ -329,14 +329,14 @@ struct StampView: View {
             .task {
                 // print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
                 isFetchingStampInfo = true
-                let stampSelectedFestivalId = UserDefaults.standard.object(forKey: "stampSelectedFestivalId") as? Int ?? 2
-                print("stampSelectedFestivalId: \(stampSelectedFestivalId)")
+                let stampFestivalId = FestivalIdManager.stampFestivalId
+                print("stampFestivalId: \(stampFestivalId)")
                 await throttleManager.throttle {
                     await stampVM.fetchStampEnabledFestivals()
-                    await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampSelectedFestivalId)
-                    await stampVM.fetchStampEnabledBooths(festivalId: stampSelectedFestivalId)
+                    await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
+                    await stampVM.fetchStampEnabledBooths(festivalId: stampFestivalId)
                 }
-                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampSelectedFestivalId }) {
+                if let matchedFestival = stampVM.stampEnabledFestivals?.first(where: { $0.festivalId == stampFestivalId }) {
                     stampVM.defaultImgUrl = matchedFestival.defaultImgUrl
                     stampVM.usedImgUrl = matchedFestival.usedImgUrl
                 }
@@ -398,20 +398,21 @@ struct StampGrid: View {
                                 .padding(.vertical, 8)
                         } else {
                             if currentStampCount >= count {
-                                if stampVM.usedImgUrl != "string" {
-                                    usedStampImage(for: stampVM.usedImgUrl)
-                                } else {
+                                if stampVM.usedImgUrl == "" {
+                                    // 스탬프에 기본 유니페스 이미지 적용
                                     Image(.appLogo)
                                         .resizable()
                                         .frame(width: 62, height: 62)
                                         .clipShape(Circle())
                                         .padding(.horizontal, screenWidth * 0.0215)
                                         .padding(.vertical, 8)
+                                } else {
+                                    // 스탬프에 해당 축제 커스텀 이미지 적용
+                                    usedStampImage(for: stampVM.usedImgUrl)
                                 }
                             } else {
-                                if stampVM.defaultImgUrl != "string" {
-                                    defaultStampImage(for: stampVM.defaultImgUrl)
-                                } else {
+                                if stampVM.defaultImgUrl == "" {
+                                    // 스탬프에 기본 유니페스 이미지 적용
                                     ZStack {
                                         Circle()
                                             .fill(Color.grey300)
@@ -424,6 +425,9 @@ struct StampGrid: View {
                                     }
                                     .padding(.horizontal, screenWidth * 0.0215)
                                     .padding(.vertical, 8)
+                                } else {
+                                    // 스탬프에 해당 축제 커스텀 이미지 적용
+                                    defaultStampImage(for: stampVM.defaultImgUrl)
                                 }
                             }
                         }

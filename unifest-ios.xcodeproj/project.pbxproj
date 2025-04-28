@@ -98,6 +98,7 @@
 		F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */; };
 		F8ABA9422C5A7DEF003A8CDB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = F8ABA9412C5A7DEF003A8CDB /* Alamofire */; };
 		F8AE1AD12C5F8A4000EEB1A8 /* WaitingPinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */; };
+		F8AE6EDF2DBF7AC900591E9D /* FestivalIdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AE6EDE2DBF7AB300591E9D /* FestivalIdManager.swift */; };
 		F8D95CF12CDF0598004F355B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D95CF02CDF0598004F355B /* APIClient.swift */; };
 		F8EC28832CC12FDA00F2B218 /* TAKUUID in Frameworks */ = {isa = PBXBuildFile; productRef = F8EC28822CC12FDA00F2B218 /* TAKUUID */; };
 		F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */; };
@@ -194,6 +195,7 @@
 		F8ABA93C2C5A7C28003A8CDB /* Waiting-ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Waiting-ViewModel.swift"; sourceTree = "<group>"; };
 		F8ABA93E2C5A7C96003A8CDB /* WaitingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingModel.swift; sourceTree = "<group>"; };
 		F8AE1AD02C5F8A4000EEB1A8 /* WaitingPinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingPinView.swift; sourceTree = "<group>"; };
+		F8AE6EDE2DBF7AB300591E9D /* FestivalIdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalIdManager.swift; sourceTree = "<group>"; };
 		F8D95CF02CDF0598004F355B /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		F8EC28842CC1301D00F2B218 /* DeviceUUIDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceUUIDManager.swift; sourceTree = "<group>"; };
 		F8F206C32C7CA7580013DBE7 /* FavoriteFestivalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteFestivalModel.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 		0C2A2BFC2BE9A86500EDF359 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				F8AE6EDE2DBF7AB300591E9D /* FestivalIdManager.swift */,
 				0C7A9CA52BF3E91100F639BA /* GATracker.swift */,
 				0C244FCC2BF67E6B0047F23D /* VersionService.swift */,
 				0C72FAA92BFA3C4C00782B61 /* ThemeManager.swift */,
@@ -637,6 +640,7 @@
 				F88A6D0D2C77EA640025459F /* WaitingCancelView.swift in Sources */,
 				0CDB46D72BB1E7F400C34AED /* OneMapView.swift in Sources */,
 				0C9641EF2BB94C8A00838DA9 /* RootView.swift in Sources */,
+				F8AE6EDF2DBF7AC900591E9D /* FestivalIdManager.swift in Sources */,
 				F8EC28852CC1301D00F2B218 /* DeviceUUIDManager.swift in Sources */,
 				0CDB46D52BB1DC8D00C34AED /* BoothDetailView.swift in Sources */,
 				F8A5D9582C8EDB6700AF6230 /* StampQRScanView.swift in Sources */,

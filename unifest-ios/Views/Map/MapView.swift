@@ -107,12 +107,15 @@ struct MapViewiOS17: View {
                             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        if CLLocationManager().authorizationStatus == .restricted || CLLocationManager().authorizationStatus == .denied || CLLocationManager().authorizationStatus == .notDetermined {
+                        if mapViewModel.locationAuthorizationStatus == .restricted ||
+                           mapViewModel.locationAuthorizationStatus == .denied ||
+                           mapViewModel.locationAuthorizationStatus == .notDetermined {
                             MapUserLocationButton(scope: mainMap)
                                 .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
                                 .mapControlVisibility(.automatic)
                                 .controlSize(.mini)
                                 .onTapGesture {
+                                    print("Tapped")
                                     isLocationAuthNotPermittedAlertPresented = true
                                 }
                         } else {
@@ -146,8 +149,8 @@ struct MapViewiOS17: View {
         }
         .mapScope(mainMap)
         .task(id: mapViewModel.forceRefreshMapPageView) {
-            festivalMapDataIndex = UserDefaults.standard.object(forKey: "festivalMapDataIndex") as? Int ?? 1
-            let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+            festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
+            let mapFestivalId = FestivalIdManager.mapFestivalId
             print("festivalId \(mapFestivalId)로 loadStoreListData, loadTop5Booth 실행")
             viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
                 print("\(mapFestivalId) 축제 부스 로드 완료")

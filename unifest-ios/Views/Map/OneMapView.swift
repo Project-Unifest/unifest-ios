@@ -21,7 +21,7 @@ struct OneMapViewiOS17: View {
     let booth: BoothDetailItem?
     
     @State private var cameraPosition: MapCameraPosition = .automatic
-    @State private var festivalMapDataIndex: Int = 1
+    @State private var festivalMapDataIndex: Int = 3
     @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
     
     var body: some View {
@@ -177,7 +177,7 @@ struct OneMapViewiOS17: View {
         .dynamicTypeSize(.large)
         .mapScope(oneMap)
         .onAppear {
-            festivalMapDataIndex = UserDefaults.standard.object(forKey: "festivalMapDataIndex") as? Int ?? 1
+            festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
         }
     }
     

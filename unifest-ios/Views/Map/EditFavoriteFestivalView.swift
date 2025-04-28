@@ -150,7 +150,7 @@ struct EditFavoriteFestivalView: View {
                 }
                 .onDisappear {
                     print("OnDisappear")
-                    let mapFestivalId = UserDefaults.standard.object(forKey: "mapFestivalId") as? Int ?? 1
+                    let mapFestivalId = FestivalIdManager.mapFestivalId
                     viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
                         print("\(mapFestivalId) 축제 부스 로드 완료")
                     }
