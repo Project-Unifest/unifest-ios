@@ -8,6 +8,12 @@
 import Alamofire
 import Foundation
 
+enum APIClientError: Error {
+    case networkError(AFError) // 네트워크 자체 문제
+    case serverError(code: Int, message: String) // 서버가 보낸 에러(code, message)
+    case unknownError
+}
+
 class APIClient {
     func request<T: Decodable>(
         url: String,
@@ -22,11 +28,14 @@ class APIClient {
                     switch response.result {
                     case .success(let data):
                         continuation.resume(returning: data)
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                        if let responseData = response.data {
-                            let responseString = String(data: responseData, encoding: .utf8) ?? "APIClient Response Error"
-                            print("[ERROR RESPONSE BODY] \(responseString)\n")
+                    case .failure(let afError):
+                        if let data = response.data,
+                           let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                           let code = json["code"] as? Int,
+                           let message = json["message"] as? String {
+                            continuation.resume(throwing: APIClientError.serverError(code: code, message: message))
+                        } else {
+                            continuation.resume(throwing: APIClientError.networkError(afError))
                         }
                     }
                 }

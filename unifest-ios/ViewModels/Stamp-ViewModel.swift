@@ -122,21 +122,30 @@ class StampViewModel: ObservableObject {
             if response.code == "200", let data = response.data {
                 self.stampCount = data
                 self.qrScanToastMsg = Toast(style: .success, message: "스탬프가 추가되었습니다")
-            } else if response.code == "9000" {
-                self.qrScanToastMsg = Toast(style: .error, message: "이미 스탬프를 받은 부스입니다")
-            } else if response.code == "9001" {
-                self.qrScanToastMsg = Toast(style: .error, message: "더이상 스탬프를 받을 수 없습니다")
-            } else if response.code == "9002" { // 스탬프 미지원 부스
-                self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다")
-            } else if response.code == "9003" { // 존재하지 않는 부스
-                self.qrScanToastMsg = Toast(style: .error, message: "올바르지 않은 QR코드입니다")
-            } else { // 기타 오류
-                self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")
+            } else {
+                self.qrScanToastMsg = Toast(style: .success, message: "개발자에게 문의해주세요")
+            }
+        } catch let error as APIClientError {
+            switch error {
+            case .serverError(let code, _):
+                switch code {
+                case 9000: self.qrScanToastMsg = Toast(style: .error, message: "이미 스탬프를 받은 부스입니다")
+                case 9001: self.qrScanToastMsg = Toast(style: .error, message: "더이상 스탬프를 추가할 수 없습니다")
+                case 9002: self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다")
+                case 9003: self.qrScanToastMsg = Toast(style: .error, message: "존재하지 않는 부스입니다")
+                case 9004: self.qrScanToastMsg = Toast(style: .error, message: "존재하지 않는 축제입니다")
+                case 9005: self.qrScanToastMsg = Toast(style: .error, message: "이미 스탬프 정보가 추가되어 있습니다")
+                default: self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")
+                }
+            case .networkError(_): self.qrScanToastMsg = Toast(style: .error, message: "네트워크 연결 실패")
+            case .unknownError: self.qrScanToastMsg = Toast(style: .error, message: "개발자에게 문의해주세요")
             }
         } catch {
-            self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다.")
-            print("스탬프 관련 오류 발생")
-            // NetworkUtils.handleNetworkError("AddStamp", error, networkManager)
+            // 여기 추가
+            self.qrScanToastMsg = Toast(style: .error, message: "개발자에게 문의해주세요")
         }
+        
+        //            self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다.")
+        //            print("스탬프 관련 오류 발생")
     }
 }
