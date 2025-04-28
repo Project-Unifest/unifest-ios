@@ -293,8 +293,6 @@ struct IntroView: View {
         .onAppear {
             // 처음 나타날 때는 모든 축제 다 보여주기
             viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
-//            print("festivalSearchResult: ", viewModel.festivalModel.festivalSearchResult)
-//            print("festivals: ",viewModel.festivalModel.festivals)
         }
         .task {
             isFavoriteListLoading = true

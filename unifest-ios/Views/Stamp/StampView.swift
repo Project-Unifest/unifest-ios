@@ -327,7 +327,6 @@ struct StampView: View {
                 }
             }
             .task {
-                // print("Device UUID: \(DeviceUUIDManager.shared.getDeviceToken())")
                 isFetchingStampInfo = true
                 let stampFestivalId = FestivalIdManager.stampFestivalId
                 print("stampFestivalId: \(stampFestivalId)")

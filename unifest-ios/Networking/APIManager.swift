@@ -147,19 +147,16 @@ final class APIManager: ObservableObject {
                 // MARK: 반환 결과가 특수한 API들 예외 처리
                 if api == .booth_all {
                     let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 
                 if api == .fest_all {
                     let apiResponse = try decoder.decode(APIResponse.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 
                 if api == .fest_today {
                     let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 

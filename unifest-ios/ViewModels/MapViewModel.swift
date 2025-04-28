@@ -212,9 +212,6 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
         DispatchQueue.main.async {
             print("*** newList Updated, count: \(newList.count)")
             self.annotationList = newList
-            for ann in newList {
-//                print("📌 Annotation \(ann.id): lat = \(ann.latitude), lng = \(ann.longitude)")
-            }
         }
     }
     

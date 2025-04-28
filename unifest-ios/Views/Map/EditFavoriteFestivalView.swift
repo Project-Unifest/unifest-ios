@@ -149,7 +149,6 @@ struct EditFavoriteFestivalView: View {
                     // print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
                 }
                 .onDisappear {
-                    print("OnDisappear")
                     let mapFestivalId = FestivalIdManager.mapFestivalId
                     viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
                         print("\(mapFestivalId) 축제 부스 로드 완료")

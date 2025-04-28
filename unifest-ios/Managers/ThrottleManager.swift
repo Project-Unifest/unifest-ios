@@ -20,10 +20,8 @@ class ThrottleManager {
     func throttle(_ action: () async -> Void) async {
         let now = Date()
         if let lastTime = lastRequestTime, now.timeIntervalSince(lastTime) < throttleInterval {
-            // print("\n\n호출 무시\n\n")
             return // throttleInterval초 이내에 호출 시 요청을 무시함
         }
-        // print("\n\n호출 정상 처리\n\n")
         lastRequestTime = now
         await action()
     }

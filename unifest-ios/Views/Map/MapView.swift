@@ -151,13 +151,9 @@ struct MapViewiOS17: View {
         .task(id: mapViewModel.forceRefreshMapPageView) {
             festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
             let mapFestivalId = FestivalIdManager.mapFestivalId
-            print("festivalId \(mapFestivalId)로 loadStoreListData, loadTop5Booth 실행")
             viewModel.boothModel.loadStoreListData(festivalId: mapFestivalId) {
-                print("\(mapFestivalId) 축제 부스 로드 완료")
-                
                 Task {
                     await MainActor.run {
-                        print("MainActor에서 updateAnnotationList 실행됨")
                         mapViewModel.updateAnnotationList(makeCluster: isClustering)
                     }
                 }
