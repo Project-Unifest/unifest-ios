@@ -13,7 +13,6 @@ struct FestivalInfoView: View {
     @ObservedObject var viewModel: RootViewModel
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
-    @State private var isIntroViewPresented: Bool = false
     @State private var upcomingList: [FestivalItem] = []
     @State private var maxLength: Int = 5
     var currentDate: Date {
@@ -100,23 +99,6 @@ struct FestivalInfoView: View {
                         .frame(height: 100)
                     }
                 }
-                
-                /*
-                Button {
-                    isIntroViewPresented.toggle()
-                } label: {
-                    Image(.longButtonGray)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .overlay {
-                            Text("관심 축제 추가하기")
-                                .font(.system(size: 13))
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.gray)
-                        }
-                }
-                .padding(.horizontal)*/
             }
             
             Text("").boldLine().padding(.vertical)
@@ -180,9 +162,6 @@ struct FestivalInfoView: View {
             .padding(.horizontal)
         }
         .background(.ufBackground)
-        .sheet(isPresented: $isIntroViewPresented) {
-            IntroView(viewModel: viewModel)
-        }
     }
     
     func getFestDate(beginDate: String, month: Int, day: Int) -> Int {
@@ -349,24 +328,6 @@ struct FestivalInfoView: View {
                 }
             }
             .frame(height: 72)
-            
-            /* 일단 제거
-            Button {
-                
-            } label: {
-                Image(.narrowLongButtonPink)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
-                    .overlay {
-                        Text("관심 축제로 추가")
-                            .font(.system(size: 13))
-                            .foregroundStyle(.accent)
-                            .fontWeight(.medium)
-                    }
-            }
-            .padding(.trailing)
-            .padding(.top, 6)*/
         }
     }
     

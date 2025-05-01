@@ -95,6 +95,7 @@ struct MenuView: View {
                             
                             ForEach(favoriteFestivals, id: \.festivalId) { festival in
                                 circleSchoolView(
+                                    festivalId: festival.festivalId,
                                     image: festival.thumbnail ?? "",
                                     name: festival.schoolName,
                                     festivalName: festival.festivalName
@@ -984,7 +985,7 @@ struct MenuView: View {
     }
     
     @ViewBuilder
-    func circleSchoolView(image: String, name: String, festivalName: String) -> some View {
+    func circleSchoolView(festivalId: Int, image: String, name: String, festivalName: String) -> some View {
         VStack(spacing: 0) {
             Circle()
                 .fill(.white)
@@ -1025,6 +1026,16 @@ struct MenuView: View {
                 .font(.system(size: 11))
                 .fontWeight(.semibold)
                 .foregroundStyle(.darkGray)
+        }
+        .onTapGesture {
+            FestivalIdManager.mapFestivalId = festivalId
+            HapticManager.shared.hapticImpact(style: .light)
+            if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
+                FestivalIdManager.festivalMapDataIndex = index
+            }
+            
+            mapViewModel.forceRefreshMapPageView = UUID()
+            tabSelect.selectedTab = 2
         }
     }
 }
