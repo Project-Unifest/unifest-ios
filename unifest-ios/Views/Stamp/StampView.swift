@@ -346,6 +346,7 @@ struct StampView: View {
                 ZStack {
                     Color.black.opacity(0.66).ignoresSafeArea()
                     ProgressView()
+                        .tint(Color.white)
                 }
             }
         }

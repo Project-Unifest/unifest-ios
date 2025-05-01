@@ -32,13 +32,13 @@ class TokenViewModel: ObservableObject {
         if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
             tempParameters["fcmToken"] = fcmToken
         }
-        let paramters = tempParameters
+        let parameters = tempParameters
         
         do {
             let response: RegisterFCMTokenResponse = try await apiClient.put(
                 url: url,
                 headers: headers,
-                parameters: paramters,
+                parameters: parameters,
                 responseType: RegisterFCMTokenResponse.self
             )
             print("RegisterFCMTokenResponse request succeeded")

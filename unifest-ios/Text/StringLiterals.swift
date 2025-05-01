@@ -99,7 +99,7 @@ enum StringLiterals {
     
     enum URL {
         static let messageChannelLink = "http://pf.kakao.com/_KxaaDG/chat"
-        static let operatorModeLink = "https://www.unifest.app/"
+        static let operatorModeLink = "https://unifest-web-245.pages.dev/"
         static let instagramLink = "https://www.instagram.com/unifest_2024"
         static let privacyPolicyLink = "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4"
     }
