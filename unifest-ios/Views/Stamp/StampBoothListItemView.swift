@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StampBoothListItemView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     let boothID: Int
     let image: String
     let name: String
@@ -87,11 +88,11 @@ struct StampBoothListItemView: View {
             isBoothDetailViewPresented = true
         }
         .sheet(isPresented: $isBoothDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: boothID)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: boothID)
         }
     }
 }
 
 #Preview {
-    StampBoothListItemView(viewModel: RootViewModel(), boothID: 159, image: "", name: "Example Booth", description: "Example Description", location: "Example Location")
+    StampBoothListItemView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), boothID: 159, image: "", name: "Example Booth", description: "Example Description", location: "Example Location")
 }

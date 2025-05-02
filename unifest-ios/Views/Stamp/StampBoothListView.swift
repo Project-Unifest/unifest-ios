@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StampBoothListView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var stampVM: StampViewModel
     @EnvironmentObject var networkManager: NetworkManager
     
@@ -17,10 +18,10 @@ struct StampBoothListView: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("한국교통대학교")
-                            .font(.pretendard(weight: .p4, size: 14))
-                            .foregroundStyle(.grey500)
-                            .padding(.bottom, -1)
+//                        Text("한국교통대학교")
+//                            .font(.pretendard(weight: .p4, size: 14))
+//                            .foregroundStyle(.grey500)
+//                            .padding(.bottom, -1)
                         
                         Text("스탬프 가능 부스")
                             .font(.pretendard(weight: .p6, size: 20))
@@ -56,6 +57,7 @@ struct StampBoothListView: View {
                             ForEach(stampEnabledBooths, id: \.id) { booth in
                                 StampBoothListItemView(
                                     viewModel: viewModel,
+                                    mapViewModel: mapViewModel,
                                     boothID: booth.id,
                                     image: booth.thumbnail ?? "",
                                     name: booth.name,
@@ -92,7 +94,7 @@ struct StampBoothListView: View {
 }
 
 #Preview {
-    StampBoothListView(viewModel: RootViewModel())
+    StampBoothListView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(StampViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

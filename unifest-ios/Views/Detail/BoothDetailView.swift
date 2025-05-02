@@ -27,6 +27,7 @@ struct SelectedMenuInfo {
 
 struct BoothDetailView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var networkManager: NetworkManager
@@ -50,6 +51,7 @@ struct BoothDetailView: View {
                     ScrollView {
                         BoothInfoView(
                             viewModel: viewModel,
+                            mapViewModel: mapViewModel,
                             selectedBoothHours: $selectedBoothHours,
                             isReloadButtonPresent: $isReloadButtonPresent,
                             isBoothThumbnailPresented: $isMenuImagePresented,
@@ -150,11 +152,12 @@ struct BoothDetailView: View {
 
 #Preview {
     @ObservedObject var viewModel = RootViewModel()
+    @ObservedObject var mapViewModel = MapViewModel(viewModel: RootViewModel())
     
     return Group {
         Text("")
             .sheet(isPresented: .constant(true)) {
-                BoothDetailView(viewModel: viewModel, currentBoothId: 0)
+                BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: 0)
                     .onAppear {
                         viewModel.boothModel.selectedBoothID = 156
                         viewModel.boothModel.loadBoothDetail(156)

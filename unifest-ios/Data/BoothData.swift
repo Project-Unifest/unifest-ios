@@ -74,9 +74,15 @@ struct BoothDetailItem: Codable, Hashable, Identifiable {
     var menus: [MenuItem]?
     var enabled: Bool?
     var waitingEnabled: Bool
-    var openTime: String?
-    var closeTime: String?
+    var scheduleList: [BoothSchedule]
     var stampEnabled: Bool
+}
+
+struct BoothSchedule: Codable, Hashable, Identifiable {
+    let id: Int
+    let date: String
+    let openTime: String
+    let closeTime: String
 }
 
 struct MenuItem: Codable, Hashable, Identifiable {
@@ -180,7 +186,8 @@ class BoothModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        loadStoreListData {
+        let mapFestivalId = FestivalIdManager.mapFestivalId
+        loadStoreListData(festivalId: mapFestivalId) {
             print("data is all loaded")
         }
     }
@@ -213,18 +220,20 @@ class BoothModel: ObservableObject {
     }
     
     // 실제로 서버에서 부스 데이터를 가져오는 메서드
-    func loadStoreListData(completion: @escaping () -> Void) {
+    func loadStoreListData(festivalId: Int, completion: @escaping () -> Void) {
         // API 호출을 통해 부스 데이터를 가져옴
-        APIManager.fetchDataGET("/api/booths/2/booths", api: .booth_all, apiType: .GET) { result in
+        APIManager.fetchDataGET("/api/booths/\(festivalId)/booths", api: .booth_all, apiType: .GET) { result in
             // fetchDataGet: 해당 링크에서 데이터를 가져옴
             switch result {
             case .success(let data):
                 // 데이터를 가져오는 데 성공하면 self.booths에 데이터를 설정함(가져온 booth 정보를 BoothModel 클래스의 booths 프로퍼티에 저장)
-                print("Data received in View: \(data)")
+//                print("Data received in View: \(data)")
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData
+//                            print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
+                            completion()
                         }
                     }
                 }
@@ -233,11 +242,12 @@ class BoothModel: ObservableObject {
                 // self.loadData()
             }
         }
+        print("loadStoreListData with festivalId \(festivalId)")
     }
     
-    func loadTop5Booth() {
-        print(APIManager.shared.serverType.rawValue + "/api/booths?festivalId=2")
-        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=2")!,timeoutInterval: Double.infinity)
+    func loadTop5Booth(festivalId: Int) {
+        print("LoadTop5Booth with festivalId \(festivalId)")
+        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=\(festivalId)")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -261,6 +271,7 @@ class BoothModel: ObservableObject {
                             self.top5booths = responseData
                         }
                         print("top 5 booth loaded: \(self.top5booths.count)")
+//                        print("top5booths: \(self.top5booths)")
                     } else {
                         print("top 5 booth is loaded but 0")
                     }
@@ -302,6 +313,7 @@ class BoothModel: ObservableObject {
                             self.selectedBooth = responseData
                             // print(self.selectedBooth)
                             self.fetchLikeNum(self.selectedBoothID)
+                            print("\n\nselected booth info:\n\(self.selectedBooth)\n\n")
                         }
                     } else {
                         print("responseData is nil")

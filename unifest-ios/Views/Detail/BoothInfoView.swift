@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BoothInfoView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @State private var isMapViewPresented: Bool = false
     @State private var isOperatingHoursExpanded: Bool = false
     @Binding var selectedBoothHours: Int
@@ -36,9 +37,9 @@ struct BoothInfoView: View {
                         boothThumbnail.selectedMenuURL = viewModel.boothModel.selectedBooth?.thumbnail ?? ""
                         boothThumbnail.selectedMenuName = ""
                         boothThumbnail.selectedMenuPrice = ""
-                            withAnimation(.spring(duration: 0.1)) {
-                                isBoothThumbnailPresented = true
-                            }
+                        withAnimation(.spring(duration: 0.1)) {
+                            isBoothThumbnailPresented = true
+                        }
                     }
                 
                 // * 추후 코드 수정
@@ -78,6 +79,7 @@ struct BoothInfoView: View {
                         .padding()
                         .contentShape(Rectangle().inset(by: -30)) // 터치 영역 확장
                     }
+                    
                     Spacer()
                 }
             }
@@ -90,36 +92,36 @@ struct BoothInfoView: View {
             }
             
             // 주간, 야간 선택 탭바
-//            HStack {
-//                ForEach(boothHours.indices, id: \.self) { index in
-//                    HStack {
-//                        Spacer()
-//                        Text(boothHours[index])
-//                            .padding(.bottom, 12)
-//                            .font(self.selectedBoothHours == index ? .pretendard(weight: .p7, size: 13) : .pretendard(weight: .p5, size: 13))
-//                            .foregroundStyle(self.selectedBoothHours == index ? .grey900 : .grey600)
-//                            .onTapGesture {
-//                                withAnimation {
-//                                    self.selectedBoothHours = index
-//                                }
-//                            }
-//                        Spacer()
-//                    }
-//                    .overlay {
-//                        VStack {
-//                            Spacer()
-//                            if self.selectedBoothHours == index {
-//                                Color.grey900
-//                                    .frame(height: 1)
-//                            } else {
-//                                Color.grey200
-//                                    .frame(height: 1)
-//                            }
-//                        }
-//                    }
-//                }
-//                .padding(.top, 5)
-//            }
+            //            HStack {
+            //                ForEach(boothHours.indices, id: \.self) { index in
+            //                    HStack {
+            //                        Spacer()
+            //                        Text(boothHours[index])
+            //                            .padding(.bottom, 12)
+            //                            .font(self.selectedBoothHours == index ? .pretendard(weight: .p7, size: 13) : .pretendard(weight: .p5, size: 13))
+            //                            .foregroundStyle(self.selectedBoothHours == index ? .grey900 : .grey600)
+            //                            .onTapGesture {
+            //                                withAnimation {
+            //                                    self.selectedBoothHours = index
+            //                                }
+            //                            }
+            //                        Spacer()
+            //                    }
+            //                    .overlay {
+            //                        VStack {
+            //                            Spacer()
+            //                            if self.selectedBoothHours == index {
+            //                                Color.grey900
+            //                                    .frame(height: 1)
+            //                            } else {
+            //                                Color.grey200
+            //                                    .frame(height: 1)
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //                .padding(.top, 5)
+            //            }
             
             // 부스 이름(쿠쿠네 분식)부터 '위치 확인하기' 버튼까지
             if viewModel.boothModel.selectedBooth == nil {
@@ -211,41 +213,102 @@ struct BoothInfoView: View {
                 .padding(.horizontal, 14)
                 
                 if isOperatingHoursExpanded {
-                    VStack {
-                        HStack {
-                            Text("Open Time: ")
-                                .padding(.trailing, -5)
-                            
-                            if let openTime = viewModel.boothModel.selectedBooth?.openTime {
-                                let timeString = formatTime(openTime)
-                                Text(timeString)
-                            } else {
-                                Text("등록된 정보가 없습니다")
+                    if let scheduleList = viewModel.boothModel.selectedBooth?.scheduleList, !scheduleList.isEmpty {
+                        VStack {
+                            ForEach(scheduleList, id: \.date) { schedule in
+                                let openTimeString = formatTime(schedule.openTime)
+                                let closeTimeString = formatTime(schedule.closeTime)
+                                
+                                VStack(alignment: .leading, spacing: 3) {
+                                    HStack {
+                                        Text(formattedDate(from: schedule.date))
+                                            .font(.pretendard(weight: .p6, size: 13))
+                                            .foregroundStyle(.grey800)
+                                        Spacer()
+                                    }
+                                    
+                                    HStack {
+                                        Text("Open Time: ")
+                                            .padding(.trailing, -5)
+                                        Text(openTimeString)
+                                        Spacer()
+                                    }
+                                    
+                                    HStack {
+                                        Text("Close Time: ")
+                                            .padding(.trailing, -5)
+                                        Text(closeTimeString)
+                                        Spacer()
+                                    }
+                                }
+                                .padding(.bottom, 5)
                             }
-                            
-                            Spacer()
                         }
-                        .padding(.bottom, 2)
-                        
-                        HStack {
-                            Text("Close Time: ")
-                                .padding(.trailing, -5)
-                            
-                            if let closeTime = viewModel.boothModel.selectedBooth?.closeTime {
-                                let timeString = formatTime(closeTime)
-                                Text(timeString)
-                            } else {
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey700)
+                        .padding(.leading, 40)
+                        .padding(.top, -1)
+                        .padding(.bottom, 5)
+                    } else {
+                        VStack {
+                            HStack {
+                                Text("Open Time: ")
+                                    .padding(.trailing, -5)
                                 Text("등록된 정보가 없습니다")
+                                
+                                Spacer()
                             }
+                            .padding(.bottom, 2)
                             
-                            Spacer()
+                            HStack {
+                                Text("Close Time: ")
+                                    .padding(.trailing, -5)
+                                Text("등록된 정보가 없습니다")
+                                Spacer()
+                            }
                         }
+                        .font(.pretendard(weight: .p5, size: 13))
+                        .foregroundStyle(.grey700)
+                        .padding(.leading, 40)
+                        .padding(.top, -1)
+                        .padding(.bottom, 5)
                     }
-                    .font(.pretendard(weight: .p5, size: 13))
-                    .foregroundStyle(.grey700)
-                    .padding(.leading, 40)
-                    .padding(.top, -1)
-                    .padding(.bottom, 5)
+                    
+                    //                    VStack {
+                    //                        HStack {
+                    //                            Text("Open Time: ")
+                    //                                .padding(.trailing, -5)
+                    //
+                    //                            if let openTime = viewModel.boothModel.selectedBooth?.openTime {
+                    //                                let timeString = formatTime(openTime)
+                    //                                Text(timeString)
+                    //                            } else {
+                    //                                Text("등록된 정보가 없습니다")
+                    //                            }
+                    //
+                    //                            Spacer()
+                    //                        }
+                    //                        .padding(.bottom, 2)
+                    //
+                    //                        HStack {
+                    //                            Text("Close Time: ")
+                    //                                .padding(.trailing, -5)
+                    //
+                    //                            if let closeTime = viewModel.boothModel.selectedBooth?.closeTime {
+                    //                                let timeString = formatTime(closeTime)
+                    //                                Text(timeString)
+                    //                            } else {
+                    //                                Text("등록된 정보가 없습니다")
+                    //                            }
+                    //
+                    //                            Spacer()
+                    //                        }
+                    //                    }
+                    //                    .font(.pretendard(weight: .p5, size: 13))
+                    //                    .foregroundStyle(.grey700)
+                    //                    .padding(.leading, 40)
+                    //                    .padding(.top, -1)
+                    //                    .padding(.bottom, 5)
                 }
                 
                 HStack {
@@ -291,17 +354,17 @@ struct BoothInfoView: View {
         }
         .background(colorScheme == .dark ? Color.grey100 : Color.white)
         .fullScreenCover(isPresented: $isMapViewPresented, content: {
-            if #available(iOS 17, *) {
-                OneMapViewiOS17(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
-                    .onAppear {
-                        GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
-                    }
-            } else {
-                OneMapViewiOS16(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
-                    .onAppear {
-                        GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
-                    }
-            }
+            //            if #available(iOS 17, *) {
+            OneMapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, booth: viewModel.boothModel.selectedBooth)
+                .onAppear {
+                    GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+                }
+            //            } else {
+            //                OneMapViewiOS16(viewModel: viewModel, booth: viewModel.boothModel.selectedBooth)
+            //                    .onAppear {
+            //                        GATracking.eventScreenView(GATracking.ScreenNames.oneMapView)
+            //                    }
+            //            }
         })
     }
     
@@ -314,21 +377,38 @@ struct BoothInfoView: View {
             let hour = calendar.component(.hour, from: date)
             let minute = calendar.component(.minute, from: date)
             return String(format: "%02d시 %02d분", hour, minute) // 00을 포함한 형식으로 출력
-//            // OO:OO 형식으로 format하는 코드
-//            dateFormatter.dateFormat = "HH:mm"
-//            let formattedTime = dateFormatter.string(from: date)
-//            return formattedTime
+            //            // OO:OO 형식으로 format하는 코드
+            //            dateFormatter.dateFormat = "HH:mm"
+            //            let formattedTime = dateFormatter.string(from: date)
+            //            return formattedTime
         } else {
             return ""
+        }
+    }
+    
+    func formattedDate(from dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.locale = Locale(identifier: "ko_KR") // 한국어 기준
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.locale = Locale(identifier: "ko_KR")
+        outputFormatter.dateFormat = "yyyy년 M월 d일" // 원하는 출력 형식
+        
+        if let date = inputFormatter.date(from: dateString) {
+            return outputFormatter.string(from: date)
+        } else {
+            return dateString // 파싱 실패 시 원본 그대로 반환
         }
     }
 }
 
 #Preview {
     @ObservedObject var viewModel = RootViewModel()
+    @ObservedObject var mapViewModel = MapViewModel(viewModel: RootViewModel())
     
     return Group {
-        BoothInfoView(viewModel: viewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true), isBoothThumbnailPresented: .constant(false), boothThumbnail: .constant(SelectedMenuInfo()))
+        BoothInfoView(viewModel: viewModel, mapViewModel: mapViewModel, selectedBoothHours: .constant(0), isReloadButtonPresent: .constant(true), isBoothThumbnailPresented: .constant(false), boothThumbnail: .constant(SelectedMenuInfo()))
             .onAppear {
                 viewModel.boothModel.selectedBoothID = 119
                 viewModel.boothModel.loadBoothDetail(119)

@@ -80,6 +80,8 @@ class WaitingViewModel: ObservableObject {
             tempParameters["fcmToken"] = fcmToken
         }
         let parameters = tempParameters
+        print("웨이팅 요청 파라미터:")
+        print(parameters)
         
         do {
             let response: AddWaitingResponse = try await apiClient.post(

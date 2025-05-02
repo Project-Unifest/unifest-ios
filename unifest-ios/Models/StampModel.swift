@@ -7,10 +7,16 @@
 
 import Foundation
 
-struct StampCountResponse: Codable {
+struct StampRecordResponse: Codable {
     let code: String
     let message: String
-    let data: Int?
+    let data: [StampRecordResult]?
+}
+
+struct StampRecordResult: Codable {
+    let stampRecordId: Int
+    let boothId: Int
+    let deviceId: String
 }
 
 struct StampEnabledBoothResponse: Codable {
@@ -39,4 +45,17 @@ struct AddStampResponse: Codable {
     let code: String
     let message: String
     let data: Int?
+}
+
+struct StampEnabledFestivalResponse: Codable {
+    let code: String
+    let message: String
+    let data: [StampEnabledFestivalResult]?
+}
+
+struct StampEnabledFestivalResult: Codable {
+    let festivalId: Int
+    let schoolName: String
+    let defaultImgUrl: String
+    let usedImgUrl: String
 }

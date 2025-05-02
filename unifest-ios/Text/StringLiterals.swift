@@ -16,8 +16,8 @@ enum StringLiterals {
     
     enum Intro {
         static let infoTitle = "관심있는 학교 축제를 추가해보세요"
-        static let infoSubtitle = "관심 학교는 언제든지 수정 가능해요"
-        static let searchPlaceholder = "학교를 검색해보세요"
+        static let infoSubtitle = "관심 축제는 언제든지 수정 가능해요"
+        static let searchPlaceholder = "학교/축제를 검색해보세요"
         static let myFestivalTitle = "나의 관심 축제"
         static let discardAll = "모두 선택 해제"
         static let number = "총 %@개"
@@ -79,7 +79,7 @@ enum StringLiterals {
         static let operatorModeTitle = "운영자 웹사이트"
         static let instagram = "인스타그램"
         static let appTitle = "UNIFEST"
-        static let copyright = "UNIFEST 2024 © ALL RIGHT RESERVED"
+        static let copyright = "UNIFEST 2025 © ALL RIGHT RESERVED"
         static let TeamTitle = "Team UNIFEST"
         static let locationAuthText = "위치 권한 수정"
         static let cameraAuthText = "카메라 권한 수정"
@@ -99,7 +99,7 @@ enum StringLiterals {
     
     enum URL {
         static let messageChannelLink = "http://pf.kakao.com/_KxaaDG/chat"
-        static let operatorModeLink = "https://www.unifest.app/"
+        static let operatorModeLink = "https://unifest-web-245.pages.dev/"
         static let instagramLink = "https://www.instagram.com/unifest_2024"
         static let privacyPolicyLink = "https://abiding-hexagon-faa.notion.site/App-c351cc083bc1489e80e974df5136d5b4?pvs=4"
     }

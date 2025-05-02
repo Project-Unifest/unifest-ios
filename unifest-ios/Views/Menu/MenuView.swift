@@ -12,6 +12,7 @@ struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var themeManager = ThemeManager()
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @EnvironmentObject var tabSelect: TabSelect
@@ -57,53 +58,55 @@ struct MenuView: View {
                         isEditFavoriteFestivalViewPresented = true
                     } label: {
                         HStack(spacing: 0) {
-                            Text("추가하기 >")
+                            Text("추가하기")
                                 .font(.pretendard(weight: .p6, size: 11))
                                 .foregroundColor(.grey600)
                                 .underline()
-//                            Image(systemName: "chevron.right")
-//                                .font(.system(size: 10))
-//                                .foregroundColor(.grey600)
+                            
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10))
+                                .foregroundColor(.grey600)
                         }
                     }
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 10)
                 
-                // LazyHGrid
-                if subscribeFestival {
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5), spacing: 25) {
-                        Button {
-                            tabSelect.selectedTab = 2
-                        } label: {
-                            circleSchoolView(image: .uotLogo2, name: "한국교통대", festivalName: "Young:one")
-                        }
-                        
-                        /* circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")
-                         circleSchoolView(image: .konkukLogo, name: "건국대")
-                         circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")
-                         circleSchoolView(image: .konkukLogo, name: "건국대")
-                         circleSchoolView(image: .chungangLogo, name: "중앙대")
-                         circleSchoolView(image: .uosLogo, name: "한국외대")*/
-                    }
-                    .padding(.horizontal)
-                } else {
+                if favoriteFestivalVM.favoriteFestivalList.isEmpty {
                     VStack(alignment: .center) {
                         Text("관심축제 없음")
                             .font(.pretendard(weight: .p6, size: 18))
                             .foregroundStyle(.grey900)
                             .padding(.bottom, 5)
                         
-                        Text("관심축제 등록은 메뉴탭의 설정-관심축제 등록에서 가능합니다")
+                        Text("관심축제를 등록해주세요")
                             .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.grey600)
                             .padding(.bottom, 10)
                     }
                     .frame(height: 150)
                     .padding(.horizontal)
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 16) {
+                            let favoriteFestivals = viewModel.festivalModel.festivalSearchResult.filter {
+                                favoriteFestivalVM.favoriteFestivalList.contains($0.festivalId)
+                            }
+                            
+                            ForEach(favoriteFestivals, id: \.festivalId) { festival in
+                                circleSchoolView(
+                                    festivalId: festival.festivalId,
+                                    image: festival.thumbnail ?? "",
+                                    name: festival.schoolName,
+                                    festivalName: festival.festivalName
+                                )
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 14)
+                    }
                 }
+                
                 
                 Text("")
                     .boldLine()
@@ -128,8 +131,8 @@ struct MenuView: View {
                                     .font(.pretendard(weight: .p6, size: 11))
                                     .foregroundStyle(.grey600)
                                     .underline()
-//                                Image(systemName: "chevron.right")
-//                                    .font(.system(size: 11))
+                                //                                Image(systemName: "chevron.right")
+                                //                                    .font(.system(size: 11))
                             }
                         }
                     }
@@ -151,85 +154,85 @@ struct MenuView: View {
                     }
                     .frame(height: 150)
                 } else {
-                    if #available(iOS 17, *) {
-                        List {
-                            ForEach(randomLikeList, id: \.self) { boothID in
-                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                    // .padding(.vertical, 10)
-                                        .listRowBackground(Color.ufBackground)
-                                        .listRowSeparator(.hidden)
-                                        .onTapGesture {
-                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                            viewModel.boothModel.loadBoothDetail(boothID)
-                                            tappedBoothId = boothID
-                                            isDetailViewPresented = true
-                                        }
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                                                viewModel.boothModel.deleteLike(boothID)
-                                            } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
-                                            }
-                                        }
-                                }
-                                else {
-                                    HStack {
-                                        Spacer()
-                                        ProgressView()
-                                        Spacer()
+                    //                    if #available(iOS 17, *) {
+                    List {
+                        ForEach(randomLikeList, id: \.self) { boothID in
+                            if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                                LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                                // .padding(.vertical, 10)
+                                    .listRowBackground(Color.ufBackground)
+                                    .listRowSeparator(.hidden)
+                                    .onTapGesture {
+                                        GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                                        viewModel.boothModel.loadBoothDetail(boothID)
+                                        tappedBoothId = boothID
+                                        isDetailViewPresented = true
                                     }
-                                    .frame(height: 114)
-                                }
-                            }
-                        }
-                        .listStyle(.plain)
-                        .scrollDisabled(true)
-                        .frame(height: CGFloat(114 * randomLikeList.count))
-                        .onChange(of: viewModel.boothModel.likedBoothList) {
-                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
-                        }
-                    } else {
-                        List {
-                            ForEach(randomLikeList, id: \.self) { boothID in
-                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
-                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
-                                    // .padding(.vertical, 10)
-                                        .onTapGesture {
-                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
-                                            viewModel.boothModel.loadBoothDetail(boothID)
-                                            tappedBoothId = boothID
-                                            isDetailViewPresented = true
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button {
+                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                                            viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                                            viewModel.boothModel.deleteLike(boothID)
+                                        } label: {
+                                            Label("삭제", systemImage: "trash.circle").tint(.ufRed)
                                         }
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button {
-                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
-                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
-                                                viewModel.boothModel.deleteLike(boothID)
-                                            } label: {
-                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
-                                            }
-                                        }
-                                } else {
-                                    HStack {
-                                        Spacer()
-                                        ProgressView()
-                                        Spacer()
                                     }
-                                    .frame(height: 114)
-                                }
                             }
-                        }
-                        .background(.ufBackground)
-                        .listStyle(.plain)
-                        .scrollDisabled(true)
-                        .frame(height: CGFloat(114 * randomLikeList.count))
-                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
-                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                            else {
+                                HStack {
+                                    Spacer()
+                                    ProgressView()
+                                    Spacer()
+                                }
+                                .frame(height: 114)
+                            }
                         }
                     }
+                    .listStyle(.plain)
+                    .scrollDisabled(true)
+                    .frame(height: CGFloat(114 * randomLikeList.count))
+                    .onChange(of: viewModel.boothModel.likedBoothList) {
+                        randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                    }
+                    //                    } else {
+                    //                        List {
+                    //                            ForEach(randomLikeList, id: \.self) { boothID in
+                    //                                if let booth = viewModel.boothModel.getBoothByID(boothID) {
+                    //                                    LikedBoothBoxView(viewModel: viewModel, boothID: boothID, image: booth.thumbnail, name: booth.name, description: booth.description, location: booth.location)
+                    //                                    // .padding(.vertical, 10)
+                    //                                        .onTapGesture {
+                    //                                            GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_CLICK_BOOTH_ROW, params: ["boothID": boothID])
+                    //                                            viewModel.boothModel.loadBoothDetail(boothID)
+                    //                                            tappedBoothId = boothID
+                    //                                            isDetailViewPresented = true
+                    //                                        }
+                    //                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    //                                            Button {
+                    //                                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_BOOTH_LIKE_CANCEL, params: ["boothID": boothID])
+                    //                                                viewModel.boothModel.deleteLikeBoothListDB(boothID)
+                    //                                                viewModel.boothModel.deleteLike(boothID)
+                    //                                            } label: {
+                    //                                                Label("삭제", systemImage: "trash.circle").tint(.ufRed)
+                    //                                            }
+                    //                                        }
+                    //                                } else {
+                    //                                    HStack {
+                    //                                        Spacer()
+                    //                                        ProgressView()
+                    //                                        Spacer()
+                    //                                    }
+                    //                                    .frame(height: 114)
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                        .background(.ufBackground)
+                    //                        .listStyle(.plain)
+                    //                        .scrollDisabled(true)
+                    //                        .frame(height: CGFloat(114 * randomLikeList.count))
+                    //                        .onChange(of: viewModel.boothModel.likedBoothList) { _ in
+                    //                            randomLikeList = viewModel.boothModel.getRandomLikedBooths()
+                    //                        }
+                    //                    }
                 }
                 
                 Text("").boldLine().padding(.bottom, 0)
@@ -341,21 +344,21 @@ struct MenuView: View {
                 
                 // 클러스터링 여부
                 HStack(alignment: .center) {
-                    if #available(iOS 17, *) {
-                        Image(systemName: "circle.dotted.and.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
-                            .padding(.trailing, 8)
-                    } else {
-                        Image(systemName: "circle.dashed.inset.filled")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 24, height: 24)
-                            .foregroundColor(.darkGray)
-                            .padding(.trailing, 8)
-                    }
+                    //                    if #available(iOS 17, *) {
+                    Image(systemName: "circle.dotted.and.circle")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.darkGray)
+                        .padding(.trailing, 8)
+                    //                    } else {
+                    //                        Image(systemName: "circle.dashed.inset.filled")
+                    //                            .resizable()
+                    //                            .scaledToFit()
+                    //                            .frame(width: 24, height: 24)
+                    //                            .foregroundColor(.darkGray)
+                    //                            .padding(.trailing, 8)
+                    //                    }
                     
                     VStack(alignment: .leading) {
                         Text("부스 묶어보기")
@@ -371,39 +374,37 @@ struct MenuView: View {
                     
                     Spacer()
                     
-                    if #available(iOS 17, *) {
-                        Toggle("", isOn: $clusterToggle)
-                            .frame(width: 60)
-                            .onChange(of: clusterToggle) {
-                                if clusterToggle {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                } else {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                }
+                    //                    if #available(iOS 17, *) {
+                    Toggle("", isOn: $clusterToggle)
+                        .frame(width: 60)
+                        .onChange(of: clusterToggle) {
+                            if clusterToggle {
+                                // off -> on
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                                UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                            } else {
+                                // on -> off
+                                GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                                UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
                             }
-                    } else {
-                        Toggle("", isOn: $clusterToggle)
-                            .frame(width: 60)
-                            .onChange(of: clusterToggle) { _ in
-                                if clusterToggle {
-                                    // off -> on
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
-                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                } else {
-                                    // on -> off
-                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
-                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
-                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
-                                }
-                            }
-                    }
+                        }
+                    //                    } else {
+                    //                        Toggle("", isOn: $clusterToggle)
+                    //                            .frame(width: 60)
+                    //                            .onChange(of: clusterToggle) { _ in
+                    //                                if clusterToggle {
+                    //                                    // off -> on
+                    //                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_ON_CLUSTERING)
+                    //                                    UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
+                    //                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                    //                                } else {
+                    //                                    // on -> off
+                    //                                    GATracking.sendLogEvent(GATracking.LogEventType.MenuView.MENU_TURN_OFF_CLUSTERING)
+                    //                                    UserDefaults.standard.setValue(false, forKey: "IS_CLUSTER_ON_MAP")
+                    //                                    // print(UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP"))
+                    //                                }
+                    //                            }
+                    //                    }
                 }
                 .frame(height: 60)
                 .padding(.horizontal)
@@ -411,147 +412,146 @@ struct MenuView: View {
                 Divider()
                 
                 // 관심축제 on/off
-                HStack(alignment: .center) {
-                    Image(systemName: "sparkle.magnifyingglass")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.darkGray)
-                        .padding(.trailing, 8)
-                    
-                    VStack(alignment: .leading) {
-                        Text("관심축제 등록")
-                            .font(.pretendard(weight: .p5, size: 15))
-                            .foregroundStyle(.grey900)
-                            .padding(.bottom, -2)
-                        
-                        Text("관심축제로 등록하면 부스 소식을 알림으로\n받을 수 있습니다")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                            .fontWeight(.medium)
-                    }
-                    
-                    Spacer()
-                    
-                    if #available(iOS 17, *) {
-                        Toggle("", isOn: $subscribeFestival)
-                            .frame(width: 60)
-                            .onChange(of: subscribeFestival) {
-                                if subscribeFestival {
-                                    // off -> on
-                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                                    UNUserNotificationCenter.current().requestAuthorization(
-                                        options: authOptions) { granted, error in
-                                            if granted { // 알림 권한이 설정되어있음
-                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                                    Task {
-                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                            // subscribeFestival == true
-                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                        } else { // 관심축제 등록 api 실패
-                                                            subscribeFestival = false
-                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                                        }
-                                                    }
-                                                } else {
-                                                    subscribeFestival = false
-                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                    print("fcmToken이 존재하지 않습니다")
-                                                }
-                                            } else { // 알림 권한이 설정 되어있지 않음
-                                                // 알림 권한을 허용해야 한다는 alert 띄우고
-                                                isNotificationNotPermittedAlertPresented = true
-                                                // subscribeFestival을 false로 바꾸기
-                                                subscribeFestival = false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            }
-                                        }
-                                } else {
-                                    // on -> off
-                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                        Task {
-                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                                // subscribeFestival == false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            } else { // 관심축제 해제 api 실패
-                                                subscribeFestival = true
-                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                            }
-                                        }
-                                    } else {
-                                        subscribeFestival = true
-                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                        print("fcmToken이 존재하지 않습니다")
-                                    }
-                                }
-                            }
-                    } else {
-                        Toggle("", isOn: $subscribeFestival)
-                            .frame(width: 60)
-                            .onChange(of: subscribeFestival) { _ in
-                                if subscribeFestival {
-                                    // off -> on
-                                    let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-                                    UNUserNotificationCenter.current().requestAuthorization(
-                                        options: authOptions) { granted, error in
-                                            if granted { // 알림 권한이 설정되어있음
-                                                if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                                    Task {
-                                                        await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                                        if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
-                                                            // subscribeFestival == true
-                                                            UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                                        } else { // 관심축제 등록 api 실패
-                                                            subscribeFestival = false
-                                                            UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                            // 이때는 NetworkErrorView 뜨도록 구현함
-                                                        }
-                                                    }
-                                                } else {
-                                                    subscribeFestival = false
-                                                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                                    print("fcmToken이 존재하지 않습니다")
-                                                }
-                                            } else { // 알림 권한이 설정 되어있지 않음
-                                                // 알림 권한을 허용해야 한다는 alert 띄우고
-                                                isNotificationNotPermittedAlertPresented = true
-                                                // subscribeFestival을 false로 바꾸기
-                                                subscribeFestival = false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            }
-                                        }
-                                } else {
-                                    // on -> off
-                                    if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
-                                        Task {
-                                            await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
-                                            if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
-                                                // subscribeFestival == false
-                                                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                                            } else { // 관심축제 해제 api 실패
-                                                subscribeFestival = true
-                                                UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
-                                            }
-                                        }
-                                    } else {
-                                        subscribeFestival = true
-                                        UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
-                                        print("fcmToken이 존재하지 않습니다")
-                                    }
-                                }
-                            }
-                    }
-                }
-                .frame(height: 60)
-                .padding(.horizontal)
+                /* HStack(alignment: .center) {
+                 Image(systemName: "sparkle.magnifyingglass")
+                 .resizable()
+                 .scaledToFit()
+                 .frame(width: 24, height: 24)
+                 .foregroundColor(.darkGray)
+                 .padding(.trailing, 8)
+                 
+                 VStack(alignment: .leading) {
+                 Text("관심축제 등록")
+                 .font(.pretendard(weight: .p5, size: 15))
+                 .foregroundStyle(.grey900)
+                 .padding(.bottom, -2)
+                 
+                 Text("관심축제로 등록하면 부스 소식을 알림으로\n받을 수 있습니다")
+                 .font(.system(size: 12))
+                 .foregroundStyle(.gray)
+                 .fontWeight(.medium)
+                 }
+                 
+                 Spacer()
+                 
+                 if #available(iOS 17, *) {
+                 Toggle("", isOn: $subscribeFestival)
+                 .frame(width: 60)
+                 .onChange(of: subscribeFestival) {
+                 if subscribeFestival {
+                 // off -> on
+                 let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                 UNUserNotificationCenter.current().requestAuthorization(
+                 options: authOptions) { granted, error in
+                 if granted { // 알림 권한이 설정되어있음
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                 // subscribeFestival == true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 } else { // 관심축제 등록 api 실패
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival") // 이때는 addFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 } else { // 알림 권한이 설정 되어있지 않음
+                 // 알림 권한을 허용해야 한다는 alert 띄우고
+                 isNotificationNotPermittedAlertPresented = true
+                 // subscribeFestival을 false로 바꾸기
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 }
+                 }
+                 } else {
+                 // on -> off
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                 // subscribeFestival == false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 } else { // 관심축제 해제 api 실패
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 }
+                 }
+                 } else {
+                 Toggle("", isOn: $subscribeFestival)
+                 .frame(width: 60)
+                 .onChange(of: subscribeFestival) { _ in
+                 if subscribeFestival {
+                 // off -> on
+                 let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+                 UNUserNotificationCenter.current().requestAuthorization(
+                 options: authOptions) { granted, error in
+                 if granted { // 알림 권한이 설정되어있음
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.addFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isAddFavoriteFestivalSucceeded { // 관심축제 등록 api 성공
+                 // subscribeFestival == true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 } else { // 관심축제 등록 api 실패
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 // 이때는 NetworkErrorView 뜨도록 구현함
+                 }
+                 }
+                 } else {
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 } else { // 알림 권한이 설정 되어있지 않음
+                 // 알림 권한을 허용해야 한다는 alert 띄우고
+                 isNotificationNotPermittedAlertPresented = true
+                 // subscribeFestival을 false로 바꾸기
+                 subscribeFestival = false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 }
+                 }
+                 } else {
+                 // on -> off
+                 if let fcmToken = UserDefaults.standard.string(forKey: "fcmToken") {
+                 Task {
+                 await favoriteFestivalVM.deleteFavoriteFestival(festivalId: 2, fcmToken: fcmToken)
+                 if favoriteFestivalVM.isDeleteFavoriteFestivalSucceeded { // 관심축제 해제 api 성공
+                 // subscribeFestival == false
+                 UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+                 } else { // 관심축제 해제 api 실패
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival") // 이때는 deleteFavoriteFestival() 메서드에서 NetworkErrorView 띄움
+                 }
+                 }
+                 } else {
+                 subscribeFestival = true
+                 UserDefaults.standard.setValue(true, forKey: "subscribeFestival")
+                 print("fcmToken이 존재하지 않습니다")
+                 }
+                 }
+                 }
+                 }
+                 }
+                 .frame(height: 60)
+                 .padding(.horizontal)
+                 
+                 Divider() */
                 
-                Divider()
-                
-                
-                /* // 화면 모드
-                 Menu {
+                // 화면 모드
+                /* Menu {
                  Button("라이트") {
                  themeManager.colorScheme = .light
                  }
@@ -852,11 +852,11 @@ struct MenuView: View {
         // .environmentObject(themeManager)
         // .environment(\.colorScheme, .getCurrentColorScheme())
         .fullScreenCover(isPresented: $isListViewPresented, content: {
-            LikeBoothListView(viewModel: viewModel)
+            LikeBoothListView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .ignoresSafeArea()
         })
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel)
+            EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .presentationDragIndicator(.visible)
         }
         .onAppear {
@@ -865,20 +865,9 @@ struct MenuView: View {
             print("randomLikeList num: \(randomLikeList.count)")
             print(randomLikeList)
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-            
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions) { granted, error in
-                    if granted { // 알림 권한이 설정되어있음
-                        subscribeFestival = UserDefaults.standard.bool(forKey: "subscribeFestival")
-                    } else { // 알림 권한이 설정되어있지않음
-                        UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                        subscribeFestival = false
-                    }
-                }
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)
@@ -887,9 +876,9 @@ struct MenuView: View {
         // 알림 권한 허가 없이 관심 축제로 설정할 경우 alert 띄우기
         .alert("관심축제 설정 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
             HStack {Button("닫기", role: .cancel) {
-                    subscribeFestival = false
-                    UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
-                }
+                subscribeFestival = false
+                UserDefaults.standard.setValue(false, forKey: "subscribeFestival")
+            }
                 
                 Button("설정하기", role: nil) {
                     guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
@@ -996,18 +985,34 @@ struct MenuView: View {
     }
     
     @ViewBuilder
-    func circleSchoolView(image: ImageResource, name: String, festivalName: String) -> some View {
+    func circleSchoolView(festivalId: Int, image: String, name: String, festivalName: String) -> some View {
         VStack(spacing: 0) {
             Circle()
                 .fill(.white)
                 .frame(width: 58, height: 58)
                 .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 .overlay {
-                    Image(image)
-                        .resizable()
-                        .clipShape(.circle) // 이미지가 사각형일 경우 추가
-                        .scaledToFit()
-                        .frame(width: 46, height: 46)
+                    AsyncImage(url: URL(string: image)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 46, height: 46)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFit()
+                                .frame(width: 46, height: 46)
+                        case .failure:
+                            Image(.noImagePlaceholder)
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFit()
+                                .frame(width: 46, height: 46)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
                 }
                 .padding(.bottom, 8)
             
@@ -1022,10 +1027,22 @@ struct MenuView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(.darkGray)
         }
+        .onTapGesture {
+            FestivalIdManager.mapFestivalId = festivalId
+            HapticManager.shared.hapticImpact(style: .light)
+            if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
+                FestivalIdManager.festivalMapDataIndex = index
+            }
+            
+            mapViewModel.forceRefreshMapPageView = UUID()
+            tabSelect.selectedTab = 2
+        }
     }
 }
 
 #Preview {
-    MenuView(viewModel: RootViewModel())
+    MenuView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(FavoriteFestivalViewModel(networkManager: NetworkManager()))
+        .environmentObject(NetworkManager())
+        .environmentObject(TabSelect())
 }

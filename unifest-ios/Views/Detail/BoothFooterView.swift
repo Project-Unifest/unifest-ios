@@ -134,9 +134,10 @@ struct BoothFooterView: View {
         .background(colorScheme == .dark ? Color.grey200 : Color.white)
         .shadow(color: .black.opacity(0.12), radius: 18.5, x: 0, y: -4)
         .alert("웨이팅 알림 안내", isPresented: $isNotificationNotPermittedAlertPresented) {
-            Button("다음에 설정할게요", role: nil) {
+            Button("닫기", role: nil) {
                 withAnimation {
-                    isWaitingPinViewPresented = true
+                    isNotificationNotPermittedAlertPresented = false
+//                    isWaitingPinViewPresented = true
                 }
             }
             

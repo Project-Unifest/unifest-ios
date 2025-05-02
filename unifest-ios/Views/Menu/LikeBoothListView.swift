@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LikeBoothListView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @Environment(\.dismiss) var dismiss
     @State private var isDetailViewPresented: Bool = false
     @State private var tappedBoothId = 0 // 좋아요 한 부스 리스트에서 특정 부스를 탭했을 때, 해당 부스의 부스ID를 BoothDetailView로 넘김
@@ -142,7 +143,7 @@ struct LikeBoothListView: View {
         .dynamicTypeSize(.large)
         .background(.ufBackground)
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                 .presentationDragIndicator(.visible)
         }
     }

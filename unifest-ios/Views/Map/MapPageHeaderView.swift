@@ -21,8 +21,9 @@ struct MapPageHeaderView: View {
                 Button {
                     isEditFavoriteFestivalViewPresented = true
                 } label: {
+                    let festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
                     HStack {
-                        Text("건국대학교")
+                        Text(festivalMapDataList[festivalMapDataIndex].schoolName)
                             .font(.pretendard(weight: .p6, size: 18))
                             .foregroundStyle(.grey900)
                         
@@ -38,7 +39,7 @@ struct MapPageHeaderView: View {
                     .frame(width: 180, height: 30)
                     .overlay {
                         VStack(alignment: .center) {
-                            Text("    여기를 눌러서 학교를 검색해보세요.")
+                            Text("    여기서 축제를 선택할 수 있어요.")
                                 .font(.pretendard(weight: .p5, size: 11))
                                 .foregroundStyle(.white)
                                 .padding(.top, 2)
@@ -47,11 +48,11 @@ struct MapPageHeaderView: View {
                     .opacity(isInfoTextPresented ? 1 : 0)
                     .onAppear {
                         isInfoTextPresented = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            withAnimation(.easeOut(duration: 1.2)) {
-                                isInfoTextPresented = false
-                            }
-                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                            withAnimation(.easeOut(duration: 1.2)) {
+//                                isInfoTextPresented = false
+//                            }
+//                        }
                     }
                     .onTapGesture {
                         isInfoTextPresented = false
@@ -75,7 +76,7 @@ struct MapPageHeaderView: View {
             // Image(.searchBox)
                 .overlay {
                     HStack {
-                        if #available(iOS 17, *) {
+//                        if #available(iOS 17, *) {
                             TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
                                 .font(.system(size: 13))
                                 .onChange(of: searchText) {
@@ -86,18 +87,18 @@ struct MapPageHeaderView: View {
                                         viewModel.boothModel.updateMapSelectedBoothList([])
                                     }
                                 }
-                        } else {
-                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
-                                .font(.system(size: 13))
-                                .onChange(of: searchText) { _ in
-                                    if !searchText.isEmpty {
-                                        mapViewModel.isPopularBoothPresented = false
-                                        mapViewModel.isBoothListPresented = false
-                                        mapViewModel.setSelectedAnnotationID(-1)
-                                        viewModel.boothModel.updateMapSelectedBoothList([])
-                                    }
-                                }
-                        }
+//                        } else {
+//                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
+//                                .font(.system(size: 13))
+//                                .onChange(of: searchText) { _ in
+//                                    if !searchText.isEmpty {
+//                                        mapViewModel.isPopularBoothPresented = false
+//                                        mapViewModel.isBoothListPresented = false
+//                                        mapViewModel.setSelectedAnnotationID(-1)
+//                                        viewModel.boothModel.updateMapSelectedBoothList([])
+//                                    }
+//                                }
+//                        }
                         
                         if searchText.isEmpty {
                             Image(.searchIcon)
@@ -240,7 +241,7 @@ struct MapPageHeaderView: View {
 //            VoteView()
 //        }
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel)
+            EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .presentationDragIndicator(.visible)
             // .presentationDetents([.height(700)])
         }

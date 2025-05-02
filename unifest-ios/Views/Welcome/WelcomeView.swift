@@ -56,7 +56,7 @@ struct WelcomeView: View {
             
             Spacer()
             
-            Text("UNIFEST 2024 ⓒ ALL RIGHT RESERVED")
+            Text("UNIFEST 2025 ⓒ ALL RIGHT RESERVED")
                 .font(.system(size: 11))
                 .foregroundStyle(.gray)
                 .padding(.bottom, 4)

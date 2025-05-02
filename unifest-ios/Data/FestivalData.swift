@@ -19,7 +19,7 @@ struct FestivalItem: Codable, Hashable, Identifiable {
     var id: UUID? = UUID() // optional없애면 데이터 로드 안됨 왜그렇지..?
     var festivalId: Int
     var schoolId: Int
-    var thumbnail: String
+    var thumbnail: String?
     var schoolName: String
     var region: String
     var festivalName: String
@@ -112,6 +112,7 @@ class FestivalModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        print("FestivalData init")
         loadStoreListData {
             print("data is all loaded")
             print(self.festivals)
@@ -169,6 +170,8 @@ class FestivalModel: ObservableObject {
                     if let festivalData = response.data {
                         DispatchQueue.main.async {
                             self.festivals = festivalData
+                            print("전체 축제 데이터 결과")
+                            print(festivalData)
                         }
                     }
                 }
@@ -227,8 +230,8 @@ class FestivalModel: ObservableObject {
     
     // 오늘의 축제 일정 api
     func getFestivalByDate(year: Int, month: Int, day: Int) {
-        print(APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", month))-\(String(format: "%02d", day))")
-        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/festival/today?date=2024-\(String(format: "%02d", month))-\(String(format: "%02d", day))")!,timeoutInterval: Double.infinity)
+        print(APIManager.shared.serverType.rawValue + "/festival/today?date=\(year)-\(String(format: "%02d", month))-\(String(format: "%02d", day))")
+        var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/festival/today?date=\(year)-\(String(format: "%02d", month))-\(String(format: "%02d", day))")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in

@@ -59,7 +59,7 @@ struct RootView: View {
                                 }
                                 .tag(0)
                             
-                            WaitingView(viewModel: viewModel)
+                            WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                     GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
@@ -87,7 +87,7 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-                            StampView(viewModel: viewModel)
+                            StampView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                 }
@@ -96,7 +96,7 @@ struct RootView: View {
                                 }
                                 .tag(3)
                             
-                            MenuView(viewModel: viewModel)
+                            MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                     GATracking.eventScreenView(GATracking.ScreenNames.menuView)
@@ -165,7 +165,7 @@ struct RootView: View {
             // 부스 클러스터링 설정 확인
             UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
-            // 저장한 부스 데이터 가져오기
+            // 저장한(좋아요한) 부스 데이터 가져오기
             viewModel.boothModel.loadLikeBoothListDB()
         }
         .task {
@@ -182,7 +182,7 @@ struct RootView: View {
             }
             
             // 서버에 fcm token 전달
-            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+//            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
             // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
@@ -201,8 +201,15 @@ struct RootView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToWaitingTab"))) { _ in
             tabSelect.selectedTab = 1
         }
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("FCMToken"))) { notification in
+            if let token = notification.userInfo?["token"] as? String {
+                Task {
+                    await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                }
+            }
+        }
         .sheet(isPresented: $isBoothDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, currentBoothId: selectedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: selectedBoothId)
                 .environmentObject(waitingVM)
                 .environmentObject(networkManager)
                 .presentationDragIndicator(.visible)
@@ -214,14 +221,16 @@ struct RootView: View {
                 }
                 .onDisappear {
                     UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
-                    withAnimation(.easeInOut) {
-                        isIntroViewPresented = true
-                    }
+//                    withAnimation(.easeInOut) {
+//                        isIntroViewPresented = true
+//                    }
                 }
                 .presentationDragIndicator(.visible)
         }
         .fullScreenCover(isPresented: $isIntroViewPresented) {
             IntroView(viewModel: viewModel)
+                .environmentObject(favoriteFestivalVM)
+                .environmentObject(networkManager)
         }
         .alert("유니페스 업데이트 안내", isPresented: $appVersionAlertPresented, actions: {
             Button("업데이트") {

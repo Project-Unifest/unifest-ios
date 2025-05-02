@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WaitingListView: View {
     @ObservedObject var viewModel: RootViewModel
+    @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var tabSelect: TabSelect
     @EnvironmentObject var networkManager: NetworkManager
@@ -31,6 +32,7 @@ struct WaitingListView: View {
                     ForEach(reservedWaitingList.indices, id: \.self) { i in
                         WaitingInfoView(
                             viewModel: viewModel,
+                            mapViewModel: mapViewModel,
                             reservedWaitingListItem: reservedWaitingList[i]
                         )
                         // .padding(.horizontal, 20) // WaitingInfoView에 적용한 shadow가 ForEach문에서 잘리는 문제 해결
@@ -70,7 +72,7 @@ struct WaitingListView: View {
 }
 
 #Preview {
-    WaitingListView(viewModel: RootViewModel())
+    WaitingListView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
 }

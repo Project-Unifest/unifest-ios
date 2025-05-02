@@ -41,21 +41,21 @@ extension View {
     
     @ViewBuilder
     func roundedButton(background: Color, strokeColor: Color, height: CGFloat, cornerRadius: CGFloat) -> some View {
-        if #available(iOS 17, *) {
+//        if #available(iOS 17, *) {
             RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(background)
                 .stroke(strokeColor)
                 .frame(height: height)
-        } else {
-            ZStack {
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(background)
-                    .frame(height: height)
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(strokeColor)
-                    .frame(height: height)
-            }
-        }
+//        } else {
+//            ZStack {
+//                RoundedRectangle(cornerRadius: cornerRadius)
+//                    .fill(background)
+//                    .frame(height: height)
+//                RoundedRectangle(cornerRadius: cornerRadius)
+//                    .stroke(strokeColor)
+//                    .frame(height: height)
+//            }
+//        }
     }
     
     @ViewBuilder

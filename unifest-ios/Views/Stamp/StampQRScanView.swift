@@ -64,6 +64,12 @@ struct StampQRScanView: View {
                     .tint(Color.white)
             }
         }
+        .onDisappear {
+            Task {
+                let stampFestivalId = FestivalIdManager.stampFestivalId
+                await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
+            }
+        }
     }
     
     func handleScan(result: Result<ScanResult, ScanError>) {
@@ -102,8 +108,10 @@ struct StampQRScanView: View {
             if let boothId = Int(scannedString) {
                 Task {
                     print("boothId: \(boothId)")
+                    let stampFestivalId = FestivalIdManager.stampFestivalId
                     isScanning = true
-                     await stampVM.addStamp(boothId: boothId, token: DeviceUUIDManager.shared.getDeviceToken())
+                    await stampVM.addStamp(boothId: boothId, deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
+                    await stampVM.fetchStampRecord(deviceId: DeviceUUIDManager.shared.getDeviceToken(), festivalId: stampFestivalId)
                     isScanning = false
                     dismiss()
                 }

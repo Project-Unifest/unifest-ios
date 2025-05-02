@@ -31,11 +31,11 @@ struct MapPageView: View {
                 VStack {
                     Spacer()
                     
-                    if #available(iOS 17, *) {
+//                    if #available(iOS 17, *) {
                         MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                    } else {
-                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-                    }
+//                    } else {
+//                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
+//                    }
                 }
                 
                 VStack {
@@ -182,11 +182,8 @@ struct MapPageView: View {
             }
             .ignoresSafeArea()
             .sheet(isPresented: $isBoothDetailViewPresented) {
-                BoothDetailView(viewModel: viewModel, currentBoothId: tappedBoothId)
+                BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                     .presentationDragIndicator(.visible)
-            }
-            .onAppear {
-                viewModel.boothModel.loadTop5Booth()
             }
         }
     }

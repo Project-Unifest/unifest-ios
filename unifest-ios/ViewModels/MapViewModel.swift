@@ -23,6 +23,10 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
     @ObservedObject var viewModel: RootViewModel
     @Published var isAuthorized: CLAuthorizationStatus = .notDetermined
     
+    // 띄울 학교 지도
+    @Published var festivalMapDataIndex = 0
+    @Published var forceRefreshMapPageView = UUID()
+    
     // 사용자의 최신 위치 데이터
     @Published var userLatitude: Double = 0
     @Published var userLongitude: Double = 0
@@ -55,6 +59,8 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             }
         }
     }
+    
+    @Published var locationAuthorizationStatus: CLAuthorizationStatus = .notDetermined
     
     init(viewModel: RootViewModel) {
         // super.init()

@@ -11,13 +11,13 @@ import SwiftUI
 
 final class APIManager: ObservableObject {
     
-    static let shared = APIManager(serverType: .dev)
+    static let shared = APIManager(serverType: .prod)
     private var cancellables = Set<AnyCancellable>()
     
     // API 서버 종류별 address
     enum ServerType: String {
         case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
-        case prod = "https://unifest.store"
+        case prod = "https://unifest.shop"
     }
     
     // API Error 종류
@@ -147,19 +147,16 @@ final class APIManager: ObservableObject {
                 // MARK: 반환 결과가 특수한 API들 예외 처리
                 if api == .booth_all {
                     let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 
                 if api == .fest_all {
                     let apiResponse = try decoder.decode(APIResponse.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 
                 if api == .fest_today {
                     let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
-                    // print("API Manager Received Data \(apiResponse)")
                     completion(.success(apiResponse))
                 }
                 
