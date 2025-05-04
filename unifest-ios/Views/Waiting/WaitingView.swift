@@ -12,6 +12,7 @@ struct WaitingView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
+    @Environment(\.scenePhase) private var scenePhase
     @State private var isFetchingWaitingList = false
     @State private var throttleManager = ThrottleManager(throttleInterval: 1.5)
     
@@ -56,16 +57,28 @@ struct WaitingView: View {
         .task {
             isFetchingWaitingList = true
             await throttleManager.throttle {
-                    await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
             }
             isFetchingWaitingList = false
         }
         .refreshable {
             isFetchingWaitingList = true
             await throttleManager.throttle {
-                    await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
             }
             isFetchingWaitingList = false
+        }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                print("activated")
+                Task {
+                    isFetchingWaitingList = true
+                    await throttleManager.throttle {
+                        await waitingVM.fetchReservedWaiting(deviceId: DeviceUUIDManager.shared.getDeviceToken())
+                    }
+                    isFetchingWaitingList = false
+                }
+            }
         }
         .toastView(toast: $waitingVM.waitingCancelToast)
         .dynamicTypeSize(.large)
