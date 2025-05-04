@@ -255,6 +255,7 @@ class FestivalModel: ObservableObject {
                             self.todayFestivals = responseData
                         }
                         print("today fest loaded: \(self.todayFestivals.count)")
+                        print(self.todayFestivals)
                     } else {
                         print("today fest is loaded but 0")
                     }

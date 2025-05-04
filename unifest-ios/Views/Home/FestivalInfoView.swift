@@ -379,15 +379,31 @@ struct CelebCircleView: View {
             AsyncImage(url: URL(string: celeb.imageURL)) { phase in
                 switch phase {
                 case .empty:
-                    ZStack {
+//                    ZStack {
+//                        Circle()
+//                            .fill(.defaultLightGray)
+//                            .frame(width: 72, height: 72)
+//                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+//                        ProgressView()
+//                            .frame(maxWidth: .infinity)
+//                    }
+//                    .frame(width: 72, height: 72)
+                    
+                    ZStack(alignment: .center) {
                         Circle()
                             .fill(.defaultLightGray)
                             .frame(width: 72, height: 72)
                             // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
+                        
+//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+//                             .frame(width: 50)
+                        Text(celeb.name)
+                            .font(.system(size: 13))
+                            .fontWeight(.medium)
+                            .foregroundStyle(.defaultBlack)
+                            .multilineTextAlignment(.center)
                     }
-                    .frame(width: 72, height: 72)
+                    .frame(width: 72)
                 case .success(let image):
                     image
                         .resizable()
@@ -402,14 +418,13 @@ struct CelebCircleView: View {
                             .frame(width: 72, height: 72)
                             // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                         
-                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-                        //     .frame(width: 50)
+//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+//                             .frame(width: 50)
                         Text(celeb.name)
                             .font(.system(size: 13))
                             .fontWeight(.medium)
                             .foregroundStyle(.defaultBlack)
                             .multilineTextAlignment(.center)
-                            
                     }
                     .frame(width: 72)
                     .onAppear {
@@ -426,7 +441,7 @@ struct CelebCircleView: View {
                             isTouched = true
                         }
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                             withAnimation {
                                 self.isTouched = false
                             }
@@ -439,7 +454,7 @@ struct CelebCircleView: View {
                 Circle()
                     .fill(.black.opacity(0.5))
                     .overlay {
-                        // MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
                         Text(celeb.name)
                             .font(.system(size: 13))
                             .fontWeight(.medium)
