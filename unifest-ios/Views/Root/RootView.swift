@@ -171,7 +171,9 @@ struct RootView: View {
         .task {
             let versionServce = VersionService.shared
             guard let latestVersion = try? await versionServce.loadAppStoreVersion() else { return }
+            print("latest: \(latestVersion)")
             guard let currentVersion = versionServce.currentVersion() else { return }
+            print("current: \(currentVersion)")
             let cmpResult = currentVersion.compare(latestVersion, options: .numeric)
             versionServce.isOldVersion = cmpResult == .orderedAscending
             if versionServce.isOldVersion {

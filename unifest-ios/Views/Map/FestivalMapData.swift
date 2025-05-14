@@ -95,18 +95,18 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraBounds: MapCameraBounds(
             centerCoordinateBounds: MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 37.5886222, longitude: 127.0287418),
-                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                span: MKCoordinateSpan(latitudeDelta: 0.012, longitudeDelta: 0.012)
             ),
             minimumDistance: 0,
-            maximumDistance: 5000
+            maximumDistance: 6000
         ),
         mapCameraPosition: MapCameraPosition.camera(
             MapCamera(
                 centerCoordinate: CLLocationCoordinate2D(
                     //                latitude: 36.969_868, longitude: 127.871_726
-                    latitude: 37.5886227, longitude: 127.0287420
+                    latitude: 37.5892827, longitude: 127.0299920
                 ),
-                distance: 3500, // 클수록 축소
+                distance: 4200, // 클수록 축소
                 heading: 0.0,
                 pitch: 0
             )

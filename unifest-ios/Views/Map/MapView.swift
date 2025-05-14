@@ -89,10 +89,10 @@ struct MapViewiOS17: View {
             .onMapCameraChange { mapCameraUpdateContext in
                 if abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1 {
                     let newDistance = mapCameraUpdateContext.camera.distance
-                    if newDistance > 500 && lastDistance <= 500 {
+                    if newDistance > 1000 && lastDistance <= 1000 {
                         isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
                         mapViewModel.updateAnnotationList(makeCluster: isClustering)
-                    } else if newDistance < 500 && lastDistance >= 500 {
+                    } else if newDistance < 1000 && lastDistance >= 1000 {
                         isClustering = false
                         mapViewModel.updateAnnotationList(makeCluster: false)
                     }
@@ -141,6 +141,7 @@ struct MapViewiOS17: View {
         .onChange(of: scenePhase) { newPhase in
             if newPhase == .active {
                 locationState = CLLocationManager().authorizationStatus
+                
             }
         }
         .alert("위치 권한 안내", isPresented: $isLocationAuthNotPermittedAlertPresented) {
