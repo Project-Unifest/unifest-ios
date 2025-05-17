@@ -87,16 +87,18 @@ struct MapViewiOS17: View {
             .controlSize(.mini)
             .safeAreaPadding()
             .onMapCameraChange { mapCameraUpdateContext in
-                if abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1 {
-                    let newDistance = mapCameraUpdateContext.camera.distance
-                    if newDistance > 1000 && lastDistance <= 1000 {
-                        isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-                        mapViewModel.updateAnnotationList(makeCluster: isClustering)
-                    } else if newDistance < 1000 && lastDistance >= 1000 {
-                        isClustering = false
-                        mapViewModel.updateAnnotationList(makeCluster: false)
+                if searchText.isEmpty { // 검색어가 있으면 지도 재렌더링 막음(이 조건 체크 안하면 검색어로 찾은 부스를 확대했을 때 지도 재렌더링 되면서 다른 annotation 다 나타남)
+                    if abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1 {
+                        let newDistance = mapCameraUpdateContext.camera.distance
+                        if newDistance > 500 && lastDistance <= 500 {
+                            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                            mapViewModel.updateAnnotationList(makeCluster: isClustering)
+                        } else if newDistance < 500 && lastDistance >= 500 {
+                            isClustering = false
+                            mapViewModel.updateAnnotationList(makeCluster: false)
+                        }
+                        lastDistance = newDistance
                     }
-                    lastDistance = newDistance
                 }
             }
             
