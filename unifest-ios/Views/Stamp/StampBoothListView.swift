@@ -54,7 +54,8 @@ struct StampBoothListView: View {
                 } else {
                     List {
                         if let stampEnabledBooths = stampVM.stampEnabledBooths {
-                            ForEach(stampEnabledBooths, id: \.id) { booth in
+                            let enabled = stampEnabledBooths.filter({ $0.enabled == true })
+                            ForEach(enabled, id: \.id) { booth in
                                 StampBoothListItemView(
                                     viewModel: viewModel,
                                     mapViewModel: mapViewModel,
