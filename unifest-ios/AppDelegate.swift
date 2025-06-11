@@ -68,13 +68,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // Foreground(앱 켜진 상태)일 때 알림을 수신하는 메서드
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         // foreground에서 알림이 표시되도록 함
-        completionHandler([.list, .banner])
+        completionHandler([.sound, .list, .banner])
     }
     
     // 알림을 탭했을 때 실행되는 메서드(백그라운드, 디바이스 종료 상태에서도 실행됨)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
         // userInfo에 접근(aps 메시지와 커스텀 데이터로 구성됨)
+        print("content: \(response.notification.request.content)")
         let userInfo = response.notification.request.content.userInfo
         print("UserInfo: \(userInfo)")
         

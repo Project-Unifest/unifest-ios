@@ -4,41 +4,44 @@
 //
 //  Created by Hoeun Lee on 3/13/24.
 //
-import SwiftUI
 import CoreLocation
 import MapKit
+import SwiftUI
 
 // MapPageView에서 보이는 지도 뷰
 
-//@available(iOS 17, *)
+// @available(iOS 17, *)
 struct MapViewiOS17: View {
     @Namespace private var mainMap
     @Environment(\.colorScheme) var colorScheme
-
+    @Environment(\.scenePhase) var scenePhase
+    
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
-
+    @EnvironmentObject var tabSelect: TabSelect
+    
+    @State private var locationState = CLLocationManager().authorizationStatus // 사용자의 위치권한
     @State private var isLocationAuthNotPermittedAlertPresented: Bool = false
     @Binding var searchText: String
-
+    
     @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var lastDistance: Double = 4000
     @State private var isClustering: Bool = false
-
+    
     @State private var festivalMapDataIndex: Int = 1
     
     var body: some View {
         ZStack {
             Map(position: $cameraPosition, bounds: festivalMapDataList[festivalMapDataIndex].mapCameraBounds, scope: mainMap) {
                 UserAnnotation()
-
+                
                 let polygon = festivalMapDataList[festivalMapDataIndex].polygonCoordinates
-
+                
                 if colorScheme == .dark {
                     MapPolygon(coordinates: polygon)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.white.opacity(0.8), lineWidth: 1.0)
-
+                    
                     if let boxPolygon = makeBoundaries(coordinates: polygon) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.black.opacity(0.5))
@@ -47,13 +50,13 @@ struct MapViewiOS17: View {
                     MapPolygon(coordinates: polygon)
                         .foregroundStyle(.background.opacity(0.0))
                         .stroke(.black.opacity(0.8), lineWidth: 1.0)
-
+                    
                     if let boxPolygon = makeBoundaries(coordinates: polygon) {
                         MapPolygon(coordinates: boxPolygon)
                             .foregroundStyle(.gray.opacity(0.25))
                     }
                 }
-
+                
                 ForEach(mapViewModel.annotationList, id: \.self) { annData in
                     Annotation("", coordinate: CLLocationCoordinate2D(latitude: annData.latitude, longitude: annData.longitude)) {
                         BoothAnnotation(mapViewModel: mapViewModel, annID: annData.id, boothType: annData.annType, number: annData.boothIDList.count)
@@ -80,24 +83,25 @@ struct MapViewiOS17: View {
             .onChange(of: mapViewModel.isTagSelected) {
                 mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
             }
-            .mapControls {
-            }
+            .mapControls {}
             .controlSize(.mini)
             .safeAreaPadding()
             .onMapCameraChange { mapCameraUpdateContext in
-                if abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1 {
-                    let newDistance = mapCameraUpdateContext.camera.distance
-                    if newDistance > 500 && lastDistance <= 500 {
-                        isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
-                        mapViewModel.updateAnnotationList(makeCluster: isClustering)
-                    } else if newDistance < 500 && lastDistance >= 500 {
-                        isClustering = false
-                        mapViewModel.updateAnnotationList(makeCluster: false)
+                if searchText.isEmpty { // 검색어가 있으면 지도 재렌더링 막음(이 조건 체크 안하면 검색어로 찾은 부스를 확대했을 때 지도 재렌더링 되면서 다른 annotation 다 나타남)
+                    if abs(lastDistance - mapCameraUpdateContext.camera.distance) > 0.1 {
+                        let newDistance = mapCameraUpdateContext.camera.distance
+                        if newDistance > 500 && lastDistance <= 500 {
+                            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+                            mapViewModel.updateAnnotationList(makeCluster: isClustering)
+                        } else if newDistance < 500 && lastDistance >= 500 {
+                            isClustering = false
+                            mapViewModel.updateAnnotationList(makeCluster: false)
+                        }
+                        lastDistance = newDistance
                     }
-                    lastDistance = newDistance
                 }
             }
-
+            
             HStack(alignment: .center) {
                 Spacer()
                 VStack(alignment: .trailing) {
@@ -107,22 +111,24 @@ struct MapViewiOS17: View {
                             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
-                        if mapViewModel.locationAuthorizationStatus == .restricted ||
-                           mapViewModel.locationAuthorizationStatus == .denied ||
-                           mapViewModel.locationAuthorizationStatus == .notDetermined {
+                        if locationState == .authorizedAlways || locationState == .authorizedWhenInUse {
                             MapUserLocationButton(scope: mainMap)
                                 .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
                                 .mapControlVisibility(.automatic)
                                 .controlSize(.mini)
-                                .onTapGesture {
-                                    print("Tapped")
-                                    isLocationAuthNotPermittedAlertPresented = true
-                                }
                         } else {
-                            MapUserLocationButton(scope: mainMap)
-                                .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
-                                .mapControlVisibility(.automatic)
-                                .controlSize(.mini)
+                            Button(action: {
+                                isLocationAuthNotPermittedAlertPresented = true
+                            }) {
+                                Image(systemName: "location")
+                                    .foregroundColor(.primary500)
+                                    .padding(13)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .foregroundColor(.ufBackground)
+                                    )
+                            }
+                            .controlSize(.mini)
                         }
                         MapCompass(scope: mainMap)
                             .mapControlVisibility(.automatic)
@@ -134,9 +140,15 @@ struct MapViewiOS17: View {
                 .padding(.horizontal, 5)
             }
         }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .active {
+                locationState = CLLocationManager().authorizationStatus
+                
+            }
+        }
         .alert("위치 권한 안내", isPresented: $isLocationAuthNotPermittedAlertPresented) {
             HStack {
-                Button("닫기", role: .cancel) { }
+                Button("닫기", role: .cancel) {}
                 Button("설정하기", role: nil) {
                     guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                     if UIApplication.shared.canOpenURL(url) {
@@ -160,19 +172,20 @@ struct MapViewiOS17: View {
             }
             viewModel.boothModel.loadTop5Booth(festivalId: mapFestivalId)
         }
-        .onAppear() {
+        .onAppear {
             lastDistance = 3000
             cameraPosition = festivalMapDataList[festivalMapDataIndex].mapCameraPosition
             mapViewModel.requestLocationAuthorization()
             mapViewModel.locationManager?.startUpdatingLocation()
             isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
             mapViewModel.updateAnnotationList(makeCluster: isClustering)
+            locationState = CLLocationManager().authorizationStatus
         }
-        .onDisappear() {
+        .onDisappear {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
     }
-
+    
     func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
         let sortedLatitudes = coordinates.sorted(by: { $0.latitude > $1.latitude })
         let padding: Double = 10
@@ -194,10 +207,17 @@ struct MapViewiOS17: View {
             return nil
         }
     }
-
+    
+    func checkLocationAuthorization() {
+        let status = CLLocationManager().authorizationStatus
+        if status == .restricted || status == .denied || status == .notDetermined {
+            isLocationAuthNotPermittedAlertPresented = true
+        }
+    }
+    
     func clusterAnnotations(clusterRadius: Double, boothType: BoothType) -> [Cluster] {
         var clusters: [Cluster] = []
-        let filteredBooths = viewModel.boothModel.booths.filter({ $0.category == boothType.rawValue })
+        let filteredBooths = viewModel.boothModel.booths.filter { $0.category == boothType.rawValue }
         for booth in filteredBooths {
             var isClustered = false
             for cluster in clusters {
@@ -218,7 +238,7 @@ struct MapViewiOS17: View {
         }
         return clusters
     }
-
+    
     func stringToBoothType(_ typeString: String) -> BoothType {
         switch typeString {
         case BoothType.drink.rawValue: return .drink
@@ -303,29 +323,29 @@ struct MapViewiOS17: View {
  }
  } */
 
-//@available(iOS 16, *)
-//struct MapViewiOS16: View {
+// @available(iOS 16, *)
+// struct MapViewiOS16: View {
 //    @Namespace private var mainMap
 //    @ObservedObject var viewModel: RootViewModel
 //    @ObservedObject var mapViewModel: MapViewModel
-//    
+//
 //    @Binding var searchText: String
-//    
+//
 //    // MapViewiOS17의 mapCameraPosition변수와 비슷한 역할(지도의 카메라 위치(중심 좌표, 거리, 회전 각도 등)를 설정함)
 //    // 건국대학교 중심
 //    @State private var regionCenterKonkuk = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.542_634, longitude: 127.076_769), span: MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009))
-//    
+//
 //    // 한경대학교 중심
 //    @State private var regionCenterHankyong = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.012_315, longitude: 127.263_380), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
-//    
+//
 //    // 한국교통대학교 중심
 //    @State private var regionCenterUOT = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.969_868, longitude: 127.871_726), span: MKCoordinateSpan(latitudeDelta: 0.006, longitudeDelta: 0.006))
-//    
+//
 //    // distance
 //    @State private var lastDelta: CGFloat = 0.009
-//    
+//
 //    @State private var isClustering: Bool = false
-//    
+//
 //    var body: some View {
 //        Map(coordinateRegion: $regionCenterKonkuk, showsUserLocation: true, annotationItems: mapViewModel.annotationList) { annotation in
 //            MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: annotation.latitude, longitude: annotation.longitude)) {
@@ -351,16 +371,16 @@ struct MapViewiOS17: View {
 //            mapViewModel.locationManager?.stopUpdatingLocation()
 //        }
 //    }
-//    
+//
 //    private func initializeMap() {
 //        lastDelta = 0.009
 //        mapViewModel.requestLocationAuthorization()
 //        mapViewModel.locationManager?.startUpdatingLocation()
-//        
+//
 //        isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
 //        mapViewModel.updateAnnotationList(makeCluster: isClustering)
 //    }
-//    
+//
 //    private func handleAnnotationTap(_ annotation: MapAnnotationData) {
 //        DispatchQueue.main.async {
 //            GATracking.sendLogEvent(GATracking.LogEventType.MapView.MAP_CLICK_BOOTH_ANNOTATION, params: ["boothID": annotation.boothIDList[0]])
@@ -372,7 +392,7 @@ struct MapViewiOS17: View {
 //            }
 //        }
 //    }
-//    
+//
 //    private func handleRegionDeltaChange(_ newDelta: CGFloat) {
 //        DispatchQueue.main.async {
 //            if newDelta > 0.003 && lastDelta <= 0.003 {
@@ -384,11 +404,11 @@ struct MapViewiOS17: View {
 //                // mapViewModel.updateAnnotationList(makeCluster: false)
 //                updateClusterAnnotation(false)
 //            }
-//            
+//
 //            lastDelta = newDelta
 //        }
 //    }
-//    
+//
 //    private func handleRegionChange(_ cameraRegion: MKCoordinateRegion) {
 //        let newDelta = cameraRegion.span.latitudeDelta
 //        if newDelta > 0.003 && lastDelta <= 0.003 {
@@ -396,19 +416,19 @@ struct MapViewiOS17: View {
 //        } else if newDelta < 0.003 && lastDelta >= 0.003 {
 //            updateClusterAnnotation(false)
 //        }
-//        
+//
 //        lastDelta = newDelta
 //        regionCenterHankyong = cameraRegion
 //    }
-//    
+//
 //    private func handleSearchTextChange() {
 //        mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
 //    }
-//    
+//
 //    private func handleTagSelectionChange() {
 //        mapViewModel.updateAnnotationList(makeCluster: isClustering, searchText: searchText)
 //    }
-//    
+//
 //    func updateClusterAnnotation(_ on: Bool) {
 //        if on {
 //            isClustering = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
@@ -418,38 +438,38 @@ struct MapViewiOS17: View {
 //            mapViewModel.updateAnnotationList(makeCluster: false)
 //        }
 //    }
-//    
+//
 //    func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
 //        // 위도 기준 정렬
 //        let sortedLatitudes = coordinates.sorted(by: { $0.latitude > $1.latitude })
 //        let padding: Double = 10
-//        
+//
 //        // 위도가 가장 큰 값
 //        let maxItem: CLLocationCoordinate2D = sortedLatitudes[0]
 //        let maxLatitude = maxItem.latitude
 //        let maxLongitude = maxItem.longitude
-//        
+//
 //        // maxLatitude가 첫 번째 값이 되도록 리스트를 조정
 //        var rearrangedCoordinate = coordinates
 //        if let maxIndex = rearrangedCoordinate.firstIndex(where: { $0.latitude == maxLatitude && $0.longitude == maxLongitude }) {
 //            rearrangedCoordinate.rotateLeft(amount: maxIndex)
-//            
+//
 //            // 박스를 감싸는 5개의 점 추가
 //            let topCenterPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude)
 //            let topLeftPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude - padding)
 //            let bottomLeftPoint = CLLocationCoordinate2D(latitude: maxLatitude - padding, longitude: maxLongitude - padding)
 //            let bottomRightPoint = CLLocationCoordinate2D(latitude: maxLatitude - padding, longitude: maxLongitude + padding)
 //            let topRightPoint = CLLocationCoordinate2D(latitude: maxLatitude + padding, longitude: maxLongitude + padding)
-//            
+//
 //            let boxCoordinates: [CLLocationCoordinate2D] = [maxItem, topCenterPoint, topRightPoint, bottomRightPoint, bottomLeftPoint, topLeftPoint, topCenterPoint]
-//            
+//
 //            return boxCoordinates + rearrangedCoordinate
 //        } else {
 //            print("unknown error")
 //            return nil
 //        }
 //    }
-//}
+// }
 
 class CustomAnnotation: NSObject, MKAnnotation {
     var coordinate: CLLocationCoordinate2D
@@ -470,13 +490,13 @@ struct BoothAnnotation: View {
     
     var body: some View {
         ZStack {
-//            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
+            //            let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 60 : 50)
             let annotationSize: CGFloat = (mapViewModel.selectedAnnotationID == self.annID ? 50 : 40)
             
             switch boothType {
             case .drink:
-                 Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
-//                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
+                Image(mapViewModel.selectedAnnotationID == self.annID ? .drinkBooth1 : .drinkBooth2)
+                //                Image(mapViewModel.selectedAnnotationID == self.annID ? .activity1 : .activity2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -489,7 +509,7 @@ struct BoothAnnotation: View {
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .booth:
                 Image(mapViewModel.selectedAnnotationID == self.annID ? .generalBooth1 : .generalBooth2)
-//                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
+                //                Image(mapViewModel.selectedAnnotationID == self.annID ? .outsideSchool1 : .outsideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -508,7 +528,7 @@ struct BoothAnnotation: View {
                     .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 1)
             case .event:
                 Image(mapViewModel.selectedAnnotationID == self.annID ? .eventBooth1 : .eventBooth2)
-//                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
+                //                Image(mapViewModel.selectedAnnotationID == self.annID ? .insideSchool1 : .insideSchool2)
                     .resizable()
                     .scaledToFit()
                     .frame(width: annotationSize, height: annotationSize)
@@ -519,33 +539,33 @@ struct BoothAnnotation: View {
                 HStack {
                     Spacer()
                     VStack {
-//                        if #available(iOS 17, *) {
-                            Circle()
-                                .stroke(Color.white, lineWidth: 1)
-                                .fill(.black)
-                                .frame(width: 16, height: 16)
-                                .overlay {
-                                    Text("\(number)")
-                                        .font(.system(size: 10))
-                                        .foregroundStyle(.white)
-                                        .bold()
-                                }
-//                        } else {
-//                            ZStack {
-//                                Circle()
-//                                    .fill(Color.black)
-//                                    .frame(width: 16, height: 16)
-//                                Circle()
-//                                    .stroke(Color.white, lineWidth: 1)
-//                                    .frame(width: 16, height: 16)
-//                            }
-//                            .overlay {
-//                                Text("\(number)")
-//                                    .font(.system(size: 10))
-//                                    .foregroundStyle(.white)
-//                                    .bold()
-//                            }
-//                        }
+                        //                        if #available(iOS 17, *) {
+                        Circle()
+                            .stroke(Color.white, lineWidth: 1)
+                            .fill(.black)
+                            .frame(width: 16, height: 16)
+                            .overlay {
+                                Text("\(number)")
+                                    .font(.system(size: 10))
+                                    .foregroundStyle(.white)
+                                    .bold()
+                            }
+                        //                        } else {
+                        //                            ZStack {
+                        //                                Circle()
+                        //                                    .fill(Color.black)
+                        //                                    .frame(width: 16, height: 16)
+                        //                                Circle()
+                        //                                    .stroke(Color.white, lineWidth: 1)
+                        //                                    .frame(width: 16, height: 16)
+                        //                            }
+                        //                            .overlay {
+                        //                                Text("\(number)")
+                        //                                    .font(.system(size: 10))
+                        //                                    .foregroundStyle(.white)
+                        //                                    .bold()
+                        //                            }
+                        //                        }
                         Spacer()
                     }
                 }
@@ -572,7 +592,7 @@ class Cluster: Identifiable {
     }
     
     func getBoothIDList() -> [Int] {
-        return self.boothIDList
+        return boothIDList
     }
     
     func updateCenter() {
@@ -585,7 +605,7 @@ class Cluster: Identifiable {
         }
         
         let newCenter = CLLocationCoordinate2D(latitude: latMean / Double(points.count), longitude: longMean / Double(points.count))
-//        print("center updated from: \(center) \nto: \(newCenter)")
+        //        print("center updated from: \(center) \nto: \(newCenter)")
         center = newCenter
     }
 }
@@ -608,10 +628,10 @@ enum BoothType: String, CaseIterable {
 
 #Preview {
     Group {
-//        if #available(iOS 17, *) {
-            MapViewiOS17(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
-//        } else {
-//            MapViewiOS16(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
-//        }
+        //        if #available(iOS 17, *) {
+//        MapViewiOS17(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
+        //        } else {
+        //            MapViewiOS16(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()), searchText: .constant("Search Text"))
+        //        }
     }
 }

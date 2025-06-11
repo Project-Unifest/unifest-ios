@@ -14,9 +14,9 @@ final class FestivalIdManager {
     private static let festivalMapDataIndexKey = "festivalMapDataIndex"
     
     // 기본값
-    static let defaultMapFestivalId: Int = 14 // festivalId 14: 상명대
+    static let defaultMapFestivalId: Int = 13 // festivalId 14: 상명대
     static let defaultStampFestivalId: Int = 13 // festivalId 13: 고려대
-    static let defaultFestivalMapDataIndex = 3 // Map/FestivalMapData(로컬데이터)의 3번째 element: 상명대
+    static let defaultFestivalMapDataIndex = 2 // Map/FestivalMapData(로컬데이터)의 3번째 element: 상명대
     
     // 현재 선택된 축제 ID (지도)
     static var mapFestivalId: Int {

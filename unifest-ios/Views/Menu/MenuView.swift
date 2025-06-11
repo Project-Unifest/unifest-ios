@@ -89,7 +89,7 @@ struct MenuView: View {
                 } else {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            let favoriteFestivals = viewModel.festivalModel.festivalSearchResult.filter {
+                            let favoriteFestivals = viewModel.festivalModel.festivals.filter {
                                 favoriteFestivalVM.favoriteFestivalList.contains($0.festivalId)
                             }
                             
@@ -865,6 +865,9 @@ struct MenuView: View {
             print("randomLikeList num: \(randomLikeList.count)")
             print(randomLikeList)
             clusterToggle = UserDefaults.standard.bool(forKey: "IS_CLUSTER_ON_MAP")
+        }
+        .task {
+            await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .sheet(isPresented: $isDetailViewPresented) {
             BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)

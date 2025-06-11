@@ -7,10 +7,10 @@ struct WaitingInfoView: View {
     @EnvironmentObject var waitingVM: WaitingViewModel
     @EnvironmentObject var networkManager: NetworkManager
     @State private var isBoothDetailViewPresented = false
-
+    
     var body: some View {
         GeometryReader { geometry in
-            VStack {  // GeometryReader의 자식 뷰들을 VStack으로 감싸 중앙에 배치되도록 함
+            VStack { // GeometryReader의 자식 뷰들을 VStack으로 감싸 중앙에 배치되도록 함
                 RoundedRectangle(cornerRadius: 10)
                     .fill(reservedWaitingListItem.status == "NOSHOW" ? Color.primary50 : Color.ufWhite)
                     .shadow(color: Color.black.opacity(0.12), radius: 7, y: 3)
@@ -43,6 +43,11 @@ struct WaitingInfoView: View {
                                         Text("부재 처리")
                                             .font(.pretendard(weight: .p7, size: 30))
                                             .foregroundStyle(.primary700)
+                                            .baselineOffset(4)
+                                    } else if reservedWaitingListItem.status == "COMPLETED" {
+                                        Text("입장 완료")
+                                            .font(.pretendard(weight: .p7, size: 30))
+                                            .foregroundStyle(.primary500)
                                             .baselineOffset(4)
                                     } else {
                                         if let waitingOrder = reservedWaitingListItem.waitingOrder {

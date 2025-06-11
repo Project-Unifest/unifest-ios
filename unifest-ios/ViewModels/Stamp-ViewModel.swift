@@ -44,10 +44,10 @@ class StampViewModel: ObservableObject {
             
             if response.code == "200", let data = response.data {
                 self.stampRecords = data
-                self.stampCount = stampRecords?.count ?? 0 // 배열 길이(스탬프 개수)
+                self.stampCount = self.stampRecords?.count ?? 0 // 배열 길이(스탬프 개수)
             }
         } catch {
-            NetworkUtils.handleNetworkError("fetchStampRecord", error, networkManager)
+            NetworkUtils.handleNetworkError("fetchStampRecord", error, self.networkManager)
         }
     }
     
@@ -68,9 +68,12 @@ class StampViewModel: ObservableObject {
             if response.code == "200", let data = response.data {
                 self.stampEnabledBooths = data
                 self.stampEnabledBoothsCount = data.count
+//                print("스탬프 불가능 부스")
+//                let disabled = self.stampEnabledBooths?.filter({ $0.enabled == false }) ?? []
+//                print(disabled)
             }
         } catch {
-            NetworkUtils.handleNetworkError("FetchStampEnabledBooths", error, networkManager)
+            NetworkUtils.handleNetworkError("FetchStampEnabledBooths", error, self.networkManager)
         }
     }
     
@@ -92,7 +95,7 @@ class StampViewModel: ObservableObject {
                 self.stampEnabledFestivals = data
             }
         } catch {
-            NetworkUtils.handleNetworkError("FetchStampEnabledFestivals", error, networkManager)
+            NetworkUtils.handleNetworkError("FetchStampEnabledFestivals", error, self.networkManager)
         }
     }
     
@@ -137,7 +140,7 @@ class StampViewModel: ObservableObject {
                 case 9005: self.qrScanToastMsg = Toast(style: .error, message: "이미 스탬프 정보가 추가되어 있습니다")
                 default: self.qrScanToastMsg = Toast(style: .warning, message: "개발자에게 문의해주세요")
                 }
-            case .networkError(_): self.qrScanToastMsg = Toast(style: .error, message: "네트워크 연결 실패")
+            case .networkError: self.qrScanToastMsg = Toast(style: .error, message: "네트워크 연결 실패")
             case .unknownError: self.qrScanToastMsg = Toast(style: .error, message: "개발자에게 문의해주세요")
             }
         } catch {
