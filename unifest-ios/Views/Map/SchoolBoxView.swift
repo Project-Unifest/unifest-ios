@@ -84,47 +84,6 @@ struct SchoolBoxView: View {
                             .foregroundStyle(.grey600)
                     }
                 }
-//                .overlay {
-//                    VStack {
-//                        HStack {
-//                            Spacer()
-//                            
-//                            if favoriteFestivalVM.isEditingFavoriteFestival {
-//                                Button {
-//                                    Task {
-//                                        isUpdatingFavoriteFestival = true
-//                                        let deviceId = DeviceUUIDManager.shared.getDeviceToken()
-//                                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festivalId)
-//                                        
-//                                        if isFavoriteFestival {
-//                                            await throttleManager.throttle {
-//                                                await favoriteFestivalVM.deleteFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
-//                                                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
-//                                                favoriteFestivalVM.updateSucceededToast = Toast(style: .success, message: "'\(festivalName)'을/를 관심축제에서 삭제했어요")
-//                                            }
-//                                        } else {
-//                                            await throttleManager.throttle {
-//                                                await favoriteFestivalVM.addFavoriteFestival(festivalId: festivalId, deviceId: deviceId)
-//                                                await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
-//                                                favoriteFestivalVM.updateSucceededToast = Toast(style: .success, message: "'\(festivalName)'을/를 관심축제에 추가했어요")
-//                                            }
-//                                        }
-//                                        isUpdatingFavoriteFestival = false
-//                                    }
-//                                } label: {
-//                                    Image(systemName: "xmark.circle.fill")
-//                                        .resizable()
-//                                        .frame(width: 12, height: 12)
-//                                        .foregroundColor(.primary500)
-//                                }
-//                                .padding(.top, 12)
-//                                .padding(.trailing, 12)
-//                            }
-//                        }
-//                        
-//                        Spacer()
-//                    }
-//                }
         }
     }
     

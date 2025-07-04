@@ -16,9 +16,6 @@ struct unifest_iosApp: App {
     var body: some Scene {
         WindowGroup {
             RootView(rootViewModel: RootViewModel(), networkManager: NetworkManager())
-            // WaitingView(viewModel: RootViewModel(), tabViewSelection: .constant(2))
-            // WaitingRequestView()
-            // MapViewTestView(vm: MapViewModel(viewModel: RootViewModel()))
         }
     }
 }

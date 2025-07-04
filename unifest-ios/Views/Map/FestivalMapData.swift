@@ -79,7 +79,6 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraPosition: MapCameraPosition.camera(
             MapCamera(
                 centerCoordinate: CLLocationCoordinate2D(
-                    //                latitude: 36.969_868, longitude: 127.871_726
                     latitude: 36.970_368, longitude: 127.871_726
                 ),
                 distance: 2500, // 클수록 축소
@@ -103,7 +102,6 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraPosition: MapCameraPosition.camera(
             MapCamera(
                 centerCoordinate: CLLocationCoordinate2D(
-                    //                latitude: 36.969_868, longitude: 127.871_726
                     latitude: 37.5892827, longitude: 127.0299920
                 ),
                 distance: 4200, // 클수록 축소
@@ -127,7 +125,6 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraPosition: MapCameraPosition.camera(
             MapCamera(
                 centerCoordinate: CLLocationCoordinate2D(
-                    //                latitude: 36.969_868, longitude: 127.871_726
                     latitude: 37.60280, longitude: 126.95527
                 ),
                 distance: 1600, // 클수록 축소

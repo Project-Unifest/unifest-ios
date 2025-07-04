@@ -68,9 +68,6 @@ class StampViewModel: ObservableObject {
             if response.code == "200", let data = response.data {
                 self.stampEnabledBooths = data
                 self.stampEnabledBoothsCount = data.count
-//                print("스탬프 불가능 부스")
-//                let disabled = self.stampEnabledBooths?.filter({ $0.enabled == false }) ?? []
-//                print(disabled)
             }
         } catch {
             NetworkUtils.handleNetworkError("FetchStampEnabledBooths", error, self.networkManager)
@@ -144,11 +141,7 @@ class StampViewModel: ObservableObject {
             case .unknownError: self.qrScanToastMsg = Toast(style: .error, message: "개발자에게 문의해주세요")
             }
         } catch {
-            // 여기 추가
             self.qrScanToastMsg = Toast(style: .error, message: "개발자에게 문의해주세요")
         }
-        
-        //            self.qrScanToastMsg = Toast(style: .error, message: "스탬프를 받을 수 없는 부스입니다.")
-        //            print("스탬프 관련 오류 발생")
     }
 }

@@ -10,8 +10,6 @@ import Foundation
 
 @MainActor
 class FavoriteFestivalViewModel: ObservableObject {
-    @Published var isAddFavoriteFestivalSucceeded: Bool = false // 사용X
-    @Published var isDeleteFavoriteFestivalSucceeded: Bool = false // 사용X
     @Published var favoriteFestivalList: [Int] = []
     @Published var updateSucceededToast: Toast? = nil
     @Published var isEditingFavoriteFestival: Bool = false // IntroView에서 '편집' 버튼을 탭하면 SchoolBoxView가 편집 모드로 전환됨
@@ -64,10 +62,8 @@ class FavoriteFestivalViewModel: ObservableObject {
             )
             print("AddFavoriteFestival request succeeded")
             print(response)
-            //            self.isAddFavoriteFestivalSucceeded = true
         } catch {
             NetworkUtils.handleNetworkError("AddFavoriteFestival", error, networkManager)
-            //            self.isAddFavoriteFestivalSucceeded = false
         }
     }
     
@@ -90,10 +86,8 @@ class FavoriteFestivalViewModel: ObservableObject {
             )
             print("DeleteFavoriteFestival request succeeded")
             print(response)
-            //            self.isDeleteFavoriteFestivalSucceeded = true
         } catch {
             NetworkUtils.handleNetworkError("DeleteFavoriteFestival", error, networkManager)
-            //            self.isDeleteFavoriteFestivalSucceeded = false
         }
     }
 }

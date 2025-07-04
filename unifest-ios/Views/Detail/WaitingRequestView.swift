@@ -48,14 +48,13 @@ struct WaitingRequestView: View {
                                     .resizable()
                                     .frame(width: 11, height: 15)
                                     .padding(.trailing, -1)
-                                // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
-                                    if let name = viewModel.boothModel.selectedBooth?.name {
-                                        if !name.isEmpty {
-                                            Text(name)
-                                                .font(.pretendard(weight: .p6, size: 15))
-                                                .foregroundStyle(.grey900)
-                                        }
+                                if let name = viewModel.boothModel.selectedBooth?.name {
+                                    if !name.isEmpty {
+                                        Text(name)
+                                            .font(.pretendard(weight: .p6, size: 15))
+                                            .foregroundStyle(.grey900)
                                     }
+                                }
                                 
                                 Spacer()
                                 
@@ -195,7 +194,6 @@ struct WaitingRequestView: View {
                                             pinNumber: pin
                                         )
                                         
-                                        // addWaiting의 AF요청에 withCheckedContinuation을 적용했으므로 addWaiting 요청이 끝난 다음 아래 if문이 실행됨
                                         if waitingVM.addWaitingResponseCode == "201" {
                                             pin = ""
                                             partySize = 2
@@ -231,7 +229,7 @@ struct WaitingRequestView: View {
                             .padding(.top, 3)
                             .disabled(isPhoneNumberValid == false || isPolicyAgreed == false)
                         }
-                }
+                    }
                 
                 if isAddingWaiting {
                     Color.black.opacity(0.2).ignoresSafeArea()
@@ -242,38 +240,34 @@ struct WaitingRequestView: View {
         .onAppear {
             isPhoneNumberTextFieldFocused = true
         }
-        .task {
-            // checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 fetchWaitingTeamCount 호출할 필요가 없음
-            // await waitingVM.fetchWaitingTeamCount(boothId: boothId)
-        }
         .toastView(toast: $phoneNumberFormatError)
         .toastView(toast: $requestWaitingError)
     }
     
     func formatPhoneNumber(_ number: String) -> String {
-            let length = number.count
-            
-            if length > 11 {
-                return String(number.prefix(11))
-                // .prefix(11): 문자열의 최대 길이를 11자로 제한
-            }
-            
-            var formatted = ""
-            
-            if length > 3 {
-                formatted += number.prefix(3) + "-"
-                if length > 7 {
-                    formatted += number[number.index(number.startIndex, offsetBy: 3) ..< number.index(number.startIndex, offsetBy: 7)] + "-"
-                    formatted += number.suffix(length - 7)
-                } else {
-                    formatted += number.suffix(length - 3)
-                }
-            } else {
-                formatted = number
-            }
-            
-            return formatted
+        let length = number.count
+        
+        if length > 11 {
+            return String(number.prefix(11))
+            // .prefix(11): 문자열의 최대 길이를 11자로 제한
         }
+        
+        var formatted = ""
+        
+        if length > 3 {
+            formatted += number.prefix(3) + "-"
+            if length > 7 {
+                formatted += number[number.index(number.startIndex, offsetBy: 3) ..< number.index(number.startIndex, offsetBy: 7)] + "-"
+                formatted += number.suffix(length - 7)
+            } else {
+                formatted += number.suffix(length - 3)
+            }
+        } else {
+            formatted = number
+        }
+        
+        return formatted
+    }
     
     func isValidPhoneNumber(_ number: String) {
         let regexPattern = "^[0-9]{11}$"
@@ -297,6 +291,5 @@ struct WaitingRequestView: View {
     WaitingRequestView(viewModel: RootViewModel(), boothId: 79, pin: .constant(""), isWaitingRequestViewPresented: .constant(false), isWaitingCompleteViewPresented: .constant(false))
         .environmentObject(WaitingViewModel(networkManager: NetworkManager()))
         .environmentObject(NetworkManager())
-        // Preview에도 @EnvironmentObject를 제공해야 Preview crash가 발생하지 않음
 }
 

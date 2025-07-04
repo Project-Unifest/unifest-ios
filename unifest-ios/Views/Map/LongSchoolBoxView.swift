@@ -11,7 +11,6 @@ struct LongSchoolBoxView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
     let festivalId: Int
-    //    let isFavoriteFestival: Bool
     let thumbnail: String
     let schoolName: String
     let festivalName: String
@@ -25,59 +24,50 @@ struct LongSchoolBoxView: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImage(url: URL(string: thumbnail)) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .frame(width: 52, height: 52)
-                            .scaledToFit()
-                            .clipShape(.circle)
-                            .padding(.trailing, 4)
-                    case .failure:
-                        ZStack {
-                            Circle()
-                                .fill(.grey300)
-                                .frame(width: 52, height: 52)
-                                .padding(.bottom, 4)
-                            
-                            Image(.noImagePlaceholder)
+                Group {
+                    AsyncImage(url: URL(string: thumbnail)) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                        case .success(let image):
+                            image
                                 .resizable()
-                                .frame(width: 36, height: 36)
-                                .offset(x: 2, y: -2)
+                                .frame(width: 52, height: 52)
+                                .scaledToFit()
+                                .clipShape(.circle)
+                                .padding(.trailing, 4)
+                        case .failure:
+                            ZStack {
+                                Circle()
+                                    .fill(.grey300)
+                                    .frame(width: 52, height: 52)
+                                    .padding(.bottom, 4)
+                                
+                                Image(.noImagePlaceholder)
+                                    .resizable()
+                                    .frame(width: 36, height: 36)
+                                    .offset(x: 2, y: -2)
+                            }
+                        @unknown default:
+                            EmptyView()
                         }
-                    @unknown default:
-                        EmptyView()
                     }
-                }
-                .frame(width: 52, height: 52)
-                .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                .onTapGesture {
-                    FestivalIdManager.mapFestivalId = festivalId
-                    HapticManager.shared.hapticImpact(style: .light)
-                    if let index = festivalMapDataList.firstIndex(where: { $0.festivalId == festivalId }) {
-                        FestivalIdManager.festivalMapDataIndex = index
+                    .frame(width: 52, height: 52)
+                    .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
+                    
+                    VStack(alignment: .leading) {
+                        Text(schoolName)
+                            .font(.pretendard(weight: .p4, size: 13))
+                            .foregroundStyle(.grey900)
+                        
+                        Text(festivalName)
+                            .font(.pretendard(weight: .p7, size: 12))
+                            .foregroundStyle(.grey900)
+                        
+                        Text(startDate + "-" + endDate)
+                            .font(.pretendard(weight: .p4, size: 12))
+                            .foregroundStyle(.grey600)
                     }
-                    
-                    mapViewModel.forceRefreshMapPageView = UUID()
-                    
-                    dismiss()
-                }
-                
-                VStack(alignment: .leading) {
-                    Text(schoolName)
-                        .font(.pretendard(weight: .p4, size: 13))
-                        .foregroundStyle(.grey900)
-                    
-                    Text(festivalName)
-                        .font(.pretendard(weight: .p7, size: 12))
-                        .foregroundStyle(.grey900)
-                    
-                    Text(startDate + "-" + endDate)
-                        .font(.pretendard(weight: .p4, size: 12))
-                        .foregroundStyle(.grey600)
                 }
                 .onTapGesture {
                     FestivalIdManager.mapFestivalId = festivalId

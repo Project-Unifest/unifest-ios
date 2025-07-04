@@ -21,11 +21,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         // ADHOC 배포 시
         // https://stackoverflow.com/questions/43754848/how-to-debug-firebase-on-ios-adhoc-build/47594030#47594030
-        #if DEBUG
+#if DEBUG
         var newArguments = ProcessInfo.processInfo.arguments
         newArguments.append("-FIRDebugEnabled")
         ProcessInfo.processInfo.setValue(newArguments, forKey: "arguments")
-        #endif
+#endif
         
         // 파이어베이스 설정
         FirebaseApp.configure()
@@ -87,11 +87,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         // 커스텀 데이터 부분
         if let boothIdString = userInfo["boothId"] as? String, let boothId = Int(boothIdString) {
-            print("페이로드 boothId: \(boothId)")
-            
             // 알림을 통해 특정 뷰로 이동하도록 알림 게시
             NotificationCenter.default.post(name: NSNotification.Name("NavigateToMapPage"), object: nil, userInfo: ["boothId": boothId])
-            // object: nil <- 어떤 객체가 알림을 보냈는지 상관없이 모든 알림을 처리하도록 함(이렇게 해도 상관없을 듯)
         } else {
             NotificationCenter.default.post(name: NSNotification.Name("NavigateToWaitingTab"), object: nil)
         }
@@ -102,10 +99,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 }
 
 extension AppDelegate: MessagingDelegate {
-    // 푸시알림을 FCM을 통해서 보낸다면 FCM토큰이 APNs 토큰과 연계됨
-    // FCM은 APNs 토큰을 기반으로 자체적으로 생성한 토큰을 사용해 디바이스를 식별함
-    // 아래의 messaging메서드가 이 기능 수행
-    
     // 파이어베이스 MessagingDelegate 설정
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase registration token: \(String(describing: fcmToken))")

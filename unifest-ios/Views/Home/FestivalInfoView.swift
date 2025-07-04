@@ -83,14 +83,14 @@ struct FestivalInfoView: View {
                         .padding(.leading)
                         
                         /* List {
-                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
-                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
-                            }
-                        }
-                        .frame(height: CGFloat(viewModel.festivalModel.todayFestivals.count * 94))
-                        .padding(.top, 20)
-                        .listStyle(.plain)*/
+                         ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
+                         let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
+                         schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                         }
+                         }
+                         .frame(height: CGFloat(viewModel.festivalModel.todayFestivals.count * 94))
+                         .padding(.top, 20)
+                         .listStyle(.plain)*/
                         
                     } else {
                         VStack {
@@ -104,10 +104,10 @@ struct FestivalInfoView: View {
             Text("").boldLine().padding(.vertical)
             
             /* Image(.boldLine)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
-                .padding(.vertical)*/
+             .resizable()
+             .scaledToFit()
+             .frame(maxWidth: .infinity)
+             .padding(.vertical)*/
             
             HStack {
                 Text(StringLiterals.Home.upcomingFestivalSchedule)
@@ -141,21 +141,21 @@ struct FestivalInfoView: View {
                     }
                 }
                 
-//                if viewModel.festivalModel.festivals.count > self.maxLength {
-//                    Button {
-//                        // 5개씩 더 불러오기
-//                        self.maxLength += 5
-//                    } label: {
-//                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
-//                            .frame(width: 64)
-//                            .overlay {
-//                                Text("더보기")
-//                                    .foregroundStyle(.gray)
-//                                    .font(.system(size: 12))
-//                            }
-//                    }
-//                    .padding(.top, 10)
-//                }
+                //                if viewModel.festivalModel.festivals.count > self.maxLength {
+                //                    Button {
+                //                        // 5개씩 더 불러오기
+                //                        self.maxLength += 5
+                //                    } label: {
+                //                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
+                //                            .frame(width: 64)
+                //                            .overlay {
+                //                                Text("더보기")
+                //                                    .foregroundStyle(.gray)
+                //                                    .font(.system(size: 12))
+                //                            }
+                //                    }
+                //                    .padding(.top, 10)
+                //                }
                 
                 Spacer().frame(height: 10)
             }
@@ -194,20 +194,20 @@ struct FestivalInfoView: View {
         Text("")
             .roundedButton(background: .defaultWhite, strokeColor: .defaultLightGray, height: 92, cornerRadius: 10)
         // Image(.schoolFestBox)
-            // .resizable()
-            // .scaledToFit()
-            // .frame(maxWidth: .infinity)
+        // .resizable()
+        // .scaledToFit()
+        // .frame(maxWidth: .infinity)
             .overlay {
                 HStack(spacing: 10) {
                     /* AsyncImage(url: URL(string: image)) { image in
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 52, height: 52)
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: 52, height: 52)
-                    }*/
+                     image
+                     .resizable()
+                     .scaledToFit()
+                     .frame(width: 52, height: 52)
+                     } placeholder: {
+                     ProgressView()
+                     .frame(width: 52, height: 52)
+                     }*/
                     AsyncImage(url: URL(string: image)) { phase in
                         switch phase {
                         case .empty:
@@ -308,10 +308,10 @@ struct FestivalInfoView: View {
                         .frame(height: 72)
                         // .border(.red)
                         
-//                        Image(.leftRowOverlay)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 72)
+                        //                        Image(.leftRowOverlay)
+                        //                            .resizable()
+                        //                            .scaledToFit()
+                        //                            .frame(height: 72)
                         
                         Rectangle()
                             .fill(
@@ -358,45 +358,15 @@ struct CelebCircleView: View {
     
     var body: some View {
         ZStack {
-            /* AsyncImage(url: URL(string: celeb.imageURL)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 72, height: 72)
-                    .clipShape(Circle())
-                    .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-            } placeholder: {
-                ZStack {
-                    Circle()
-                        .fill(.lightGray)
-                        .frame(width: 72, height: 72)
-                        .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                }
-                .frame(width: 72, height: 72)
-            }*/
             AsyncImage(url: URL(string: celeb.imageURL)) { phase in
                 switch phase {
                 case .empty:
-//                    ZStack {
-//                        Circle()
-//                            .fill(.defaultLightGray)
-//                            .frame(width: 72, height: 72)
-//                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-//                        ProgressView()
-//                            .frame(maxWidth: .infinity)
-//                    }
-//                    .frame(width: 72, height: 72)
-                    
                     ZStack(alignment: .center) {
                         Circle()
                             .fill(.defaultLightGray)
                             .frame(width: 72, height: 72)
-                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
-                        
-//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-//                             .frame(width: 50)
+                        //                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        //                             .frame(width: 50)
                         Text(celeb.name)
                             .font(.system(size: 13))
                             .fontWeight(.medium)
@@ -410,16 +380,14 @@ struct CelebCircleView: View {
                         .scaledToFill()
                         .frame(width: 72, height: 72)
                         .clipShape(Circle())
-                        // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                 case .failure(_):
                     ZStack(alignment: .center) {
                         Circle()
                             .fill(.defaultLightGray)
                             .frame(width: 72, height: 72)
-                            // .shadow(color: .black.opacity(0.1), radius: 6.67, x: 0, y: 1)
                         
-//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
-//                             .frame(width: 50)
+                        //                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        //                             .frame(width: 50)
                         Text(celeb.name)
                             .font(.system(size: 13))
                             .fontWeight(.medium)
@@ -454,7 +422,7 @@ struct CelebCircleView: View {
                 Circle()
                     .fill(.black.opacity(0.5))
                     .overlay {
-//                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
+                        //                         MarqueeText(text: celeb.name, font: .systemFont(ofSize: 13), leftFade: 10, rightFade: 10, startDelay: 0, alignment: .center)
                         Text(celeb.name)
                             .font(.system(size: 13))
                             .fontWeight(.medium)

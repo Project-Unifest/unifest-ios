@@ -90,20 +90,6 @@ struct StampQRScanView: View {
                 return
             }
             
-            // 3. string: "boothId: __" 형식으로 전달되는 경우
-            //            if scannedString.hasPrefix("boothId") {
-            //                let boothIdString = scannedString.replacingOccurrences(of: "boothId:", with: "").trimmingCharacters(in: .whitespaces)
-            //
-            //                if let boothId = Int(boothIdString) {
-            //                    Task {
-            //                        print("boothId: \(boothId)")
-            //                        await stampVM.addStamp(boothId: boothId, token: DeviceUUIDManager.shared.getDeviceToken())
-            //                    }
-            //                } else {
-            //                    print("QR코드의 boothId 형식이 잘못되었습니다")
-            //                }
-            //            }
-            
             // 3. string: "__" 형식으로 전달되는 경우
             if let boothId = Int(scannedString) {
                 Task {

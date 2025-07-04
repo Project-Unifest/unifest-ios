@@ -15,24 +15,6 @@ struct MenuImageView: View {
     let menu: SelectedMenuInfo
     
     var body: some View {
-        /* AsyncImage(url: URL(string: imageURL)) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 10.0))
-        } placeholder: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(.defaultLightGray)
-                    .frame(width: 86, height: 86)
-                
-                Image(.noImagePlaceholder)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 50, height: 50)
-            }
-        }*/
-        
         ZStack {
             Color.black.opacity(0.8)
             
@@ -48,10 +30,6 @@ struct MenuImageView: View {
                             .resizable()
                             .scaledToFit() // 부모 뷰 내에서 비율을 유지하며 이미지를 최대한 크게 표시
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
-                            // .frame(maxWidth: 353, maxHeight: 430)
-//                            .onTapGesture {
-//                                // touch 방지
-//                            }
                     case .failure:
                         VStack {
                             Image(.noImagePlaceholder)

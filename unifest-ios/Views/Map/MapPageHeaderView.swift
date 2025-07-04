@@ -28,9 +28,9 @@ struct MapPageHeaderView: View {
                             .foregroundStyle(.grey900)
                         
                         Image(.downArrow)
-                         .resizable()
-                         .scaledToFit()
-                         .frame(width: 12, height: 12)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 12, height: 12)
                     }
                 }
                 
@@ -48,57 +48,30 @@ struct MapPageHeaderView: View {
                     .opacity(isInfoTextPresented ? 1 : 0)
                     .onAppear {
                         isInfoTextPresented = true
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                            withAnimation(.easeOut(duration: 1.2)) {
-//                                isInfoTextPresented = false
-//                            }
-//                        }
                     }
                     .onTapGesture {
                         isInfoTextPresented = false
                     }
                 
                 Spacer()
-                
-//                Button {
-//                    isVoteViewPresented = true
-//                } label: {
-//                    Image(.vote)
-//                        .resizable()
-//                        .frame(width: 24, height: 24)
-//                }
             }
             .padding(.horizontal, 18)
             
             Text("")
                 .roundedButton(background: .ufBackground, strokeColor: .grey400, height: 46, cornerRadius: 67)
                 .padding(.horizontal)
-            // Image(.searchBox)
                 .overlay {
                     HStack {
-//                        if #available(iOS 17, *) {
-                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
-                                .font(.system(size: 13))
-                                .onChange(of: searchText) {
-                                    if !searchText.isEmpty {
-                                        mapViewModel.isPopularBoothPresented = false
-                                        mapViewModel.isBoothListPresented = false
-                                        mapViewModel.setSelectedAnnotationID(-1)
-                                        viewModel.boothModel.updateMapSelectedBoothList([])
-                                    }
+                        TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
+                            .font(.system(size: 13))
+                            .onChange(of: searchText) {
+                                if !searchText.isEmpty {
+                                    mapViewModel.isPopularBoothPresented = false
+                                    mapViewModel.isBoothListPresented = false
+                                    mapViewModel.setSelectedAnnotationID(-1)
+                                    viewModel.boothModel.updateMapSelectedBoothList([])
                                 }
-//                        } else {
-//                            TextField(StringLiterals.Map.searchPlaceholder, text: $searchText)
-//                                .font(.system(size: 13))
-//                                .onChange(of: searchText) { _ in
-//                                    if !searchText.isEmpty {
-//                                        mapViewModel.isPopularBoothPresented = false
-//                                        mapViewModel.isBoothListPresented = false
-//                                        mapViewModel.setSelectedAnnotationID(-1)
-//                                        viewModel.boothModel.updateMapSelectedBoothList([])
-//                                    }
-//                                }
-//                        }
+                            }
                         
                         if searchText.isEmpty {
                             Image(.searchIcon)
@@ -235,15 +208,11 @@ struct MapPageHeaderView: View {
                 .padding(.horizontal)
             }
         }
-        .padding(.top, 60) 
+        .padding(.top, 60)
         .padding(.bottom)
-//        .fullScreenCover(isPresented: $isVoteViewPresented) {
-//            VoteView()
-//        }
         .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
             EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
                 .presentationDragIndicator(.visible)
-            // .presentationDetents([.height(700)])
         }
     }
 }

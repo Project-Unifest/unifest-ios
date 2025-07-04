@@ -77,7 +77,7 @@ struct StampView: View {
                         let screenWidth = geometry.size.width
                         
                         ZStack(alignment: .top) {
-                            VStack { // ScrollView로 바꾸려면 RoundedRectangle의 height를 설정해야 함
+                            VStack {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.ufBoxBackground)
                                     .frame(width: screenWidth * 0.9, height: 56)
@@ -87,7 +87,6 @@ struct StampView: View {
                                                 isStampDropdownPresented.toggle()
                                             }
                                         } label: {
-                                            // 축제 이름을 computed property로 나타내면 코드 더 깔끔할 듯
                                             HStack {
                                                 if let stampEnabledFestivals = stampVM.stampEnabledFestivals,
                                                    !stampEnabledFestivals.isEmpty {
@@ -131,16 +130,6 @@ struct StampView: View {
                                     .overlay {
                                         VStack {
                                             HStack {
-                                                //                                            VStack(alignment: .leading) {
-                                                //                                                Text("한국교통대학교")
-                                                //                                                    .font(.pretendard(weight: .p6, size: 20))
-                                                //                                                    .foregroundStyle(.grey900)
-                                                //                                                    .padding(.bottom, 3)
-                                                //
-                                                //                                                Text("지금까지 모은 스탬프")
-                                                //                                                    .font(.pretendard(weight: .p4, size: 14))
-                                                //                                                    .foregroundStyle(.grey500)
-                                                //                                            }
                                                 VStack {
                                                     HStack {
                                                         Text("\(stampVM.stampCount)")
@@ -203,19 +192,7 @@ struct StampView: View {
                                                     currentStampCount: stampVM.stampCount,
                                                     screenWidth: screenWidth
                                                 )
-                                                
-                                                //                                        StampGrid(
-                                                //                                            totalStampCount: 13,
-                                                //                                            currentStampCount: 5,
-                                                //                                            screenWidth: screenWidth
-                                                //                                        )
                                             }
-                                            //                                    .refreshable {
-                                            //                                        isFetchingStampInfo = true
-                                            //                                        await stampVM.stampCount(token: DeviceUUIDManager.shared.getDeviceToken())
-                                            //                                        await stampVM.getStampEnabledBooths(festivalId: 2)
-                                            //                                        isFetchingStampInfo = false
-                                            //                                    }
                                             
                                             Spacer()
                                             
@@ -417,7 +394,7 @@ struct StampGrid: View {
                                         Circle()
                                             .fill(Color.grey300)
                                             .frame(width: 62, height: 62)
-
+                                        
                                         Image(.noImagePlaceholder)
                                             .resizable()
                                             .frame(width: 42, height: 42)
@@ -492,7 +469,7 @@ struct StampGrid: View {
                     Circle()
                         .fill(Color.grey300)
                         .frame(width: 62, height: 62)
-
+                    
                     Image(.noImagePlaceholder)
                         .resizable()
                         .frame(width: 42, height: 42)
@@ -505,7 +482,7 @@ struct StampGrid: View {
                     Circle()
                         .fill(Color.grey300)
                         .frame(width: 62, height: 62)
-
+                    
                     Image(.noImagePlaceholder)
                         .resizable()
                         .frame(width: 42, height: 42)

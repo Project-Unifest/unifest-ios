@@ -121,9 +121,6 @@ struct BoothFooterView: View {
                             }
                     }
                     .disabled(viewModel.boothModel.selectedBooth?.waitingEnabled == false || viewModel.boothModel.selectedBooth?.waitingEnabled == nil)
-                    
-                    //                Spacer()
-                    //                    .frame(width: 20)
                 }
                 .padding(.horizontal)
                 .padding(.top, 7)

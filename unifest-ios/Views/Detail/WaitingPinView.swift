@@ -42,14 +42,13 @@ struct WaitingPinView: View {
                                     .frame(width: 11, height: 15)
                                     .padding(.trailing, -1)
                                 
-                                // Preview에는 selectedBooth가 체크 안돼서 텍스트 안보임
-                                    if let name = viewModel.boothModel.selectedBooth?.name {
-                                        if !name.isEmpty {
-                                            Text(name)
-                                                .font(.pretendard(weight: .p6, size: 15))
-                                                .foregroundStyle(.grey900)
-                                        }
+                                if let name = viewModel.boothModel.selectedBooth?.name {
+                                    if !name.isEmpty {
+                                        Text(name)
+                                            .font(.pretendard(weight: .p6, size: 15))
+                                            .foregroundStyle(.grey900)
                                     }
+                                }
                                 
                                 Spacer()
                                 
@@ -145,7 +144,7 @@ struct WaitingPinView: View {
                             .disabled(isPinFormatValid == false)
                             .padding(.bottom, 14)
                         }
-                }
+                    }
                 
                 if isCheckingPin {
                     Color.black.opacity(0.2).ignoresSafeArea()

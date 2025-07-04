@@ -93,10 +93,6 @@ struct MonthlyCalendarView: View {
         .background(.ufWhite)
         .onAppear {
             calendar = getCalendar(calMonth: month)
-            // MonthlyCalendarView가 나타날 때마다(처음 렌더링될 때, 월이 바뀔 때)
-            // getCalendar(calMonth:)가 실행되고 calendar에 값을 할당함
-            // calendar는 @Binding의므로 이 값이 변하면 HomeView에서 calendar를 사용하는 부분도 함께 리렌더링됨
-            // 즉 월이 바뀔 때마다 MonthlyCalendarView의 높이와 chevron의 y축 좌표가 적절히 조절됨
         }
     }
     
