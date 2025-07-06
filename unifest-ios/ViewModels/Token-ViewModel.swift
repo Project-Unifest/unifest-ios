@@ -20,6 +20,7 @@ class TokenViewModel: ObservableObject {
         self.apiClient = APIClient()
     }
     
+    // 앱 실행과 동시에 FCM Token 등록
     func registerFCMToken(deviceId: String) async {
         let url = NetworkUtils.buildURL(for: APIEndpoint.FCMToken.registerFCMToken)
         let headers: HTTPHeaders = [

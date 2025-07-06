@@ -12,7 +12,7 @@ struct RootView: View {
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
     @ObservedObject var networkManager: NetworkManager
-    @StateObject var tabSelect = TabSelect() // 사용X
+    @StateObject var tabSelect = TabSelect()
     @StateObject var waitingVM: WaitingViewModel
     @StateObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @StateObject var stampVM: StampViewModel
@@ -29,8 +29,6 @@ struct RootView: View {
     init(rootViewModel: RootViewModel, networkManager: NetworkManager) {
         self.viewModel = rootViewModel
         self.mapViewModel = MapViewModel(viewModel: rootViewModel)
-        // self.networkManager = NetworkManager()
-        // UITabBar.appearance().backgroundColor = UIColor(Color.grey100)
         self.networkManager = networkManager
         _waitingVM = StateObject(wrappedValue: WaitingViewModel(networkManager: networkManager))
         _favoriteFestivalVM = StateObject(wrappedValue: FavoriteFestivalViewModel(networkManager: networkManager))
@@ -53,8 +51,6 @@ struct RootView: View {
                                     GATracking.eventScreenView(GATracking.ScreenNames.homeView)
                                 }
                                 .tabItem {
-                                    // Image(viewState == .home ? .homeIcon : .homeGray)
-                                    // Text(StringLiterals.Root.home)
                                     Label(StringLiterals.Root.home, systemImage: "house.circle")
                                 }
                                 .tag(0)
@@ -65,8 +61,6 @@ struct RootView: View {
                                     GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
                                 }
                                 .tabItem {
-                                    // Image(viewState == .waiting ? .waitingIcon : .waitingGray)
-                                    // Text(StringLiterals.Root.waiting)
                                     Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
                                 }
                                 .tag(1)
@@ -111,17 +105,6 @@ struct RootView: View {
                         .toolbarBackground(Color.ufBackground, for: .tabBar)
                         .toolbarBackground(.visible, for: .tabBar)
                     }
-                    
-                    // TabView와 TabBar를 구분하는 구분선 명시적으로 선언
-//                    VStack {
-//                        Spacer()
-//                        
-//                        Divider()
-//                            .frame(height: 1)
-//                            .background(Color.grey100)
-//                        
-//                        Spacer().frame(height: 49) // 탭바 높이만큼 여백을 추가하여 탭바와의 겹침 방지
-//                    }
                 }
             }
             
@@ -182,12 +165,9 @@ struct RootView: View {
             } else {
                 print("This app is latest.")
             }
-            
-            // 서버에 fcm token 전달
-//            await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("NavigateToMapPage"))) { notification in
-            // onReceive를 통해 AppDelegate에서 전송된 NotificationCenter의 알림 감지
+            // AppDelegate에서 전송된 NotificationCenter의 알림 onReceive로 감지
             // 감지된 알림을 통해 boothId를 추출하고, tabSelect.selectedTab을 업데이트해 MapPageView로 이동한 뒤 BoothDetailView를 열어줌
             if let userInfo = notification.userInfo, let boothId = userInfo["boothId"] as? Int {
                 // 탭 변경
@@ -223,9 +203,9 @@ struct RootView: View {
                 }
                 .onDisappear {
                     UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
-                    withAnimation(.easeInOut) {
-                        isIntroViewPresented = true
-                    }
+//                    withAnimation(.easeInOut) {
+//                        isIntroViewPresented = true
+//                    }
                 }
                 .presentationDragIndicator(.visible)
         }

@@ -24,8 +24,6 @@ struct ToastView: View {
             }
             .overlay {
                 HStack(alignment: .center, spacing: 12) {
-//                    Image(systemName: style.iconFileName)
-//                        .foregroundColor(style.themeColor)
                     
                     Spacer()
                     
@@ -35,23 +33,13 @@ struct ToastView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .lineLimit(3)
                     
-                    // Spacer(minLength: 10)
-                    
                     Spacer()
-                    
-//                    Button {
-//                        onCancelTapped()
-//                    } label: {
-//                        Image(systemName: "xmark")
-//                            .foregroundColor(style.themeColor)
-//                    }
                 }
                 .padding()
             }
             .dynamicTypeSize(.large)
             .padding()
             .padding(.bottom, bottomPadding)
-            // .shadow(color: Color.grey300, radius: 7)
     }
 }
 

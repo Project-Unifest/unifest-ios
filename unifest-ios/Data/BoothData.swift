@@ -126,10 +126,7 @@ struct APIResponseIntData: Codable {
     }
 }
 
-class BoothModel: ObservableObject {
-    // static let shared = BoothModel()
-    
-    // @Published가 objectWillChange.send()를 수행해주므로 willSet { } 구문이 꼭 필요하지는 않은 듯?
+class BoothModel: ObservableObject {    
     @Published var booths: [BoothItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -227,19 +224,16 @@ class BoothModel: ObservableObject {
             switch result {
             case .success(let data):
                 // 데이터를 가져오는 데 성공하면 self.booths에 데이터를 설정함(가져온 booth 정보를 BoothModel 클래스의 booths 프로퍼티에 저장)
-//                print("Data received in View: \(data)")
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData
-//                            print("\n\n\nfestivalId \(festivalId)에 요청한 해당 축제의 BoothData의 booths: \(self.booths)\n\n\n")
                             completion()
                         }
                     }
                 }
             case .failure(let error):
                 print("Error in View: \(error)")
-                // self.loadData()
             }
         }
         print("loadStoreListData with festivalId \(festivalId)")
@@ -249,7 +243,7 @@ class BoothModel: ObservableObject {
         print("LoadTop5Booth with festivalId \(festivalId)")
         var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/api/booths?festivalId=\(festivalId)")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 if let error = error {
@@ -259,7 +253,7 @@ class BoothModel: ObservableObject {
                 }
                 return
             }
-
+            
             do {
                 let decoder = JSONDecoder()
                 let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
@@ -271,7 +265,6 @@ class BoothModel: ObservableObject {
                             self.top5booths = responseData
                         }
                         print("top 5 booth loaded: \(self.top5booths.count)")
-//                        print("top5booths: \(self.top5booths)")
                     } else {
                         print("top 5 booth is loaded but 0")
                     }
@@ -282,7 +275,7 @@ class BoothModel: ObservableObject {
                 print("Error decoding JSON: \(error)")
             }
         }
-
+        
         task.resume()
     }
     
@@ -311,9 +304,7 @@ class BoothModel: ObservableObject {
                     if let responseData = apiResponse.data {
                         DispatchQueue.main.async {
                             self.selectedBooth = responseData
-                            // print(self.selectedBooth)
                             self.fetchLikeNum(self.selectedBoothID)
-                            print("\n\nselected booth info:\n\(self.selectedBooth)\n\n")
                         }
                     } else {
                         print("responseData is nil")
@@ -332,7 +323,6 @@ class BoothModel: ObservableObject {
         UserDefaults.standard.set(stringData, forKey: "LIKE_BOOTH_LIST")
     }
     
-    // 사용자가 부스를 관심있음 했는지 아닌지 확인하는 메서드(BoothFooterView에서 체크 가능)
     func isBoothContain(_ boothID: Int) -> Bool {
         if !likedBoothList.contains(boothID) {
             return false
@@ -384,41 +374,41 @@ class BoothModel: ObservableObject {
     }
     
     /* func updateMapSelectedBoothList(_ boothIDList: [Int]) {
-        print("updateMapSelectedBoothList")
-        var boothList: [BoothItem] = []
-        
-        for boothID in boothIDList {
-            if let booth = self.getBoothByID(boothID) {
-                /* if boothIDList.contains(boothID) {
-                    
-                    boothIDList.append(boothID)
-                }*/
-                boothList.append(booth)
-            }
-        }
-        
-        print("updateMapSelectBoothList, count : \(boothList.count)")
-        DispatchQueue.main.async {
-            self.mapSelectedBoothList = boothList
-        }
-    }*/
+     print("updateMapSelectedBoothList")
+     var boothList: [BoothItem] = []
+     
+     for boothID in boothIDList {
+     if let booth = self.getBoothByID(boothID) {
+     /* if boothIDList.contains(boothID) {
+      
+      boothIDList.append(boothID)
+      }*/
+     boothList.append(booth)
+     }
+     }
+     
+     print("updateMapSelectBoothList, count : \(boothList.count)")
+     DispatchQueue.main.async {
+     self.mapSelectedBoothList = boothList
+     }
+     }*/
     func updateMapSelectedBoothList(_ boothIDList: [Int]) {
         print("updateMapSelectedBoothList")
         var boothList: [BoothItem] = []
         var processedIDs: Set<Int> = Set()
-
+        
         for boothID in boothIDList {
             // Check if the booth ID has already been processed
             if processedIDs.contains(boothID) {
                 continue // Skip if the ID has already been processed
             }
-
+            
             if let booth = self.getBoothByID(boothID) {
                 boothList.append(booth)
                 processedIDs.insert(boothID) // Mark the ID as processed
             }
         }
-
+        
         print("updateMapSelectBoothList, count : \(boothList.count)")
         DispatchQueue.main.async {
             self.mapSelectedBoothList = boothList
@@ -449,27 +439,27 @@ class BoothModel: ObservableObject {
         }
         
         /* // likedBoothList 배열의 길이가 3 이하인 경우, likedBoothList 그대로 반환
-        guard likedBoothList.count > count else {
-            return likedBoothList
-        }
-        
-        // likedBoothList 배열의 길이가 3 이상인 경우, 최대 3개의 정수를 랜덤하게 뽑아 반환
-        var randomLikedBooths: [Int] = []
-        var likedBoothsCopy = likedBoothList // likedBoothList를 복사하여 사용
-        
-        // likedBoothsCopy 배열에서 최대 3개의 정수를 랜덤하게 선택하여 randomLikedBooths에 추가
-        while randomLikedBooths.count < count {
-            let randomIndex = Int.random(in: 0..<likedBoothsCopy.count)
-            let randomBoothID = likedBoothsCopy[randomIndex]
-            if isBoothContain(randomBoothID) {
-                randomLikedBooths.append(randomBoothID)
-            }
-            likedBoothsCopy.remove(at: randomIndex) // 선택한 정수를 복사한 배열에서 제거
-        }
-        
-        // print("randomly selected: ")
-        // print(randomLikedBooths)
-        return randomLikedBooths*/
+         guard likedBoothList.count > count else {
+         return likedBoothList
+         }
+         
+         // likedBoothList 배열의 길이가 3 이상인 경우, 최대 3개의 정수를 랜덤하게 뽑아 반환
+         var randomLikedBooths: [Int] = []
+         var likedBoothsCopy = likedBoothList // likedBoothList를 복사하여 사용
+         
+         // likedBoothsCopy 배열에서 최대 3개의 정수를 랜덤하게 선택하여 randomLikedBooths에 추가
+         while randomLikedBooths.count < count {
+         let randomIndex = Int.random(in: 0..<likedBoothsCopy.count)
+         let randomBoothID = likedBoothsCopy[randomIndex]
+         if isBoothContain(randomBoothID) {
+         randomLikedBooths.append(randomBoothID)
+         }
+         likedBoothsCopy.remove(at: randomIndex) // 선택한 정수를 복사한 배열에서 제거
+         }
+         
+         // print("randomly selected: ")
+         // print(randomLikedBooths)
+         return randomLikedBooths*/
         
         var randomLikedBooths: [Int] = []
         var likedBoothsCopy = likedBoothList

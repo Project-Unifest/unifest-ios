@@ -18,7 +18,6 @@ struct NetworkErrorView: View {
             Text("")
                 .roundedButton(background: .ufNetworkErrorBackground, strokeColor: .clear, height: 196, cornerRadius: 5)
                 .frame(width: 300)
-            // Image(.dialogBackground)
                 .overlay {
                     VStack(alignment: .center) {
                         Image(systemName: errorType == .server ? "exclamationmark.triangle.fill" : "wifi.exclamationmark")

@@ -10,16 +10,16 @@ import Foundation
 
 @MainActor
 class WaitingViewModel: ObservableObject {
-    // Waiting그룹 관련 변수
-    @Published var reservedWaitingList: [ReservedWaitingResult]? = nil // [.empty]
+    // Waiting폴더 관련 변수
+    @Published var reservedWaitingList: [ReservedWaitingResult]? = nil
     @Published var cancelWaiting = false // WaitingCancelView를 띄움
     @Published var waitingIdToCancel = -1 // 취소할 웨이팅의 WaitingId 저장
     @Published var waitingStatus = "" // WaitingCancelView에 어떤 문구를 띄울 지 결정
     @Published var waitingCancelToast: Toast? = nil
     
-    // Detail그룹 관련 변수
+    // Detail폴더 관련 변수
     @Published var waitingTeamCount: Int = -1 // WaitingRequestView와 WaitingCompleteView에서 웨이팅 팀 수를 보여주는 변수
-    @Published var requestedWaitingInfo: AddWaitingResult? = nil // .empty
+    @Published var requestedWaitingInfo: AddWaitingResult? = nil
     @Published var isPinNumberValid: Bool? = nil
     @Published var addWaitingResponseCode = "" // 웨이팅 신청 API의 응답코드
     @Published var addWaitingResponseMessage = "" // 웨이팅 신청 API의 응답 메세지
@@ -55,7 +55,6 @@ class WaitingViewModel: ObservableObject {
                 responseType: CancelWaitingResponse.self
             )
             print("Cancel waiting request succeeded")
-            print(response)
         } catch {
             NetworkUtils.handleNetworkError("CancelWaiting", error, networkManager)
         }
@@ -63,7 +62,6 @@ class WaitingViewModel: ObservableObject {
     
     /// 웨이팅 추가(WaitingRequestView에서 호출)
     func addWaiting(boothId: Int, phoneNumber: String, deviceId: String, partySize: Int, pinNumber: String) async  {
-        //await withCheckedContinuation { continuation in
         let url = NetworkUtils.buildURL(for: APIEndpoint.Waiting.add)
         let headers: HTTPHeaders = [
             .accept("application/json"),
@@ -104,6 +102,7 @@ class WaitingViewModel: ObservableObject {
         }
     }
     
+    /// **현재는 사용되지 않는 메서드**
     /// 대기 중인 팀의 수 조회
     /// checkPinNumber의 api 반환값에 waitingTeamCount가 있으므로 현재 사용되지 않는 메서드임
     func fetchWaitingTeamCount(boothId: Int) async {
@@ -120,7 +119,6 @@ class WaitingViewModel: ObservableObject {
             print(response)
             
             if let waitingTeamCount = response.data {
-                print("waitingTeamCount: \(waitingTeamCount)")
                 self.waitingTeamCount = waitingTeamCount
             }
         } catch {

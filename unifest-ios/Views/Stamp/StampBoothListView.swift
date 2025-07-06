@@ -18,11 +18,6 @@ struct StampBoothListView: View {
             VStack {
                 HStack {
                     VStack(alignment: .leading) {
-//                        Text("한국교통대학교")
-//                            .font(.pretendard(weight: .p4, size: 14))
-//                            .foregroundStyle(.grey500)
-//                            .padding(.bottom, -1)
-                        
                         Text("스탬프 가능 부스")
                             .font(.pretendard(weight: .p6, size: 20))
                             .foregroundStyle(.grey900)
@@ -82,13 +77,6 @@ struct StampBoothListView: View {
                         GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
                     }
             }
-            
-//            if networkManager.isServerError == true {
-//                NetworkErrorView(errorType: .server)
-//                    .onAppear {
-//                        GATracking.eventScreenView(GATracking.ScreenNames.networkErrorView)
-//                    }
-//            }
         }
         .dynamicTypeSize(.large)
     }

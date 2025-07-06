@@ -9,8 +9,8 @@ import SwiftUI
 
 // MapPageView는 TabBar에서 '지도'를 선택했을 때 나타나는 뷰
 // MapPageView는 MapPageHeaderView와 MapView로 이루어져있음
-// MapPageHeaderView는 이 프리뷰에서 위에 보이는 검색창과 주점, 먹거리.. 가 있는 뷰
-// MapView는 그 밑에 있는 지도가 있는 뷰임
+// MapPageHeaderView는 위에 보이는 검색창과 주점, 먹거리.. 가 있는 뷰
+// MapView는 그 밑에 있는 지도뷰
 // ZStack에 MapView(MapViewiOS17, mapViewiOS16)를 띄우고,
 // 그 위에 VStack으로 MapPageHeaderView와 밑에 보이는 '인기부스' 버튼을 묶어서 띄움
 
@@ -31,11 +31,7 @@ struct MapPageView: View {
                 VStack {
                     Spacer()
                     
-//                    if #available(iOS 17, *) {
-                        MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-//                    } else {
-//                        MapViewiOS16(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
-//                    }
+                    MapViewiOS17(viewModel: viewModel, mapViewModel: mapViewModel, searchText: $searchText)
                 }
                 
                 VStack {
@@ -69,7 +65,6 @@ struct MapPageView: View {
                                     Image(systemName: "xmark")
                                         .foregroundColor(.primary500)
                                 }
-                            // Image(.popCloseButton)
                         }
                     }
                     
@@ -261,7 +256,6 @@ struct BoothBox: View {
                         Text(description.isEmpty ? "등록된 정보가 없습니다" : description)
                             .font(.pretendard(weight: .p4, size: 13))
                             .foregroundStyle(.grey600)
-                        //.baselineOffset(4)
                             .lineLimit(2)
                         
                         Spacer()

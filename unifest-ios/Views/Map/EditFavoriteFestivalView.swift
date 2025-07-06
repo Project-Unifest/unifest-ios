@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-// MapPageHeaderView에서 학교이름을 탭했을 떄 나타나는 뷰
-// 검색을 하지 않았을 때는 '나의 관심축제' 뷰 <- SchoolBoxView
-// 검색을 했을 때는 '검색 결과' 뷰가 보이게 만듦 <- LongSchoolBoxView
+// 검색을 하지 않았을 때는 '나의 관심축제(SchoolBoxView)'뷰
+// 검색을 했을 때는 '검색 결과(LongSchoolBoxView)'뷰가 보이게 만듦
 
 struct EditFavoriteFestivalView: View {
     @State private var searchText: String = ""
@@ -63,7 +62,7 @@ struct EditFavoriteFestivalView: View {
                         Text("학교 로고를 탭하면 해당 축제의 지도로 이동해요")
                             .font(.pretendard(weight: .p5, size: 13))
                             .foregroundStyle(.primary500)
-                        .padding(.bottom, 4)
+                            .padding(.bottom, 4)
                         
                         HStack {
                             Text("검색결과")
@@ -79,13 +78,10 @@ struct EditFavoriteFestivalView: View {
                     .padding(.bottom, 8)
                     
                     ForEach(viewModel.festivalModel.festivalSearchResult, id: \.festivalId) { festival in
-//                        let isFavoriteFestival = favoriteFestivalVM.favoriteFestivalList.contains(festival.festivalId) // 해당 festival이 관심축제에 추가됐는지 나타냄
-
                         LongSchoolBoxView(
                             viewModel: viewModel,
                             mapViewModel: mapViewModel,
                             festivalId: festival.festivalId,
-//                            isFavoriteFestival: isFavoriteFestival,
                             thumbnail: festival.thumbnail ?? "",
                             schoolName: festival.schoolName,
                             festivalName: festival.festivalName,
@@ -146,7 +142,6 @@ struct EditFavoriteFestivalView: View {
                 .onAppear {
                     // 처음 나타날 때는 모든 축제 다 보여주기
                     viewModel.festivalModel.festivalSearchResult = viewModel.festivalModel.festivals
-                    // print("festivalSearchResult: \(viewModel.festivalModel.festivalSearchResult)")
                 }
                 .onDisappear {
                     let mapFestivalId = FestivalIdManager.mapFestivalId
@@ -211,5 +206,3 @@ struct EditFavoriteFestivalView: View {
         return "\(month).\(day)"
     }
 }
-
-// Preview 오류 발생해서 지움

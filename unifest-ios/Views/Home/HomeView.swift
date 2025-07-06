@@ -33,8 +33,6 @@ struct HomeView: View {
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
     
-    // @State private var isInfoPresented: Bool = false // MonthlyCalendarView에서 축제 개수 표시하는 변수, 사용 안함
-    
     init(viewModel: RootViewModel) {
         let date = Date()
         _currentYear = State(initialValue: Calendar.current.component(.year, from: date))
@@ -158,9 +156,6 @@ struct HomeView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80)
                 .overlay {
-                    // 달력 아래가 rounded rectangle처럼 보이는 이유는,
-                    // chevron.down을 포함한 이 뷰가 rectangle의 아래를 clipshape으로 둥글게 만든 뷰이고, 달력 tabview에 overlay한 뒤 offset으로 위치를 아래로 움직여 달력 탭뷰와 하나처럼 보이게 구현했기 때문
-                    // 달력이 접혔다 펴졌다 할 때 이 rectangle의 y축 offset도 함께 조정해야 달력 탭뷰와 하나처럼 보임
                     Rectangle()
                         .fill(Color.ufWhite)
                         .frame(height: 25)
@@ -227,7 +222,6 @@ struct HomeView: View {
                             startOffsetY = value.translation.height
                         }
                         lastOffsetY = value.translation.height
-                        // print("Y offset: \(self.lastOffsetY)")
                     }
                     .onEnded { _ in
                         if (startOffsetY < lastOffsetY) {
@@ -330,7 +324,6 @@ struct HomeView: View {
             
             weekNumList.append(weekNum)
         }
-        print(weekNumList)
         return weekNumList
     }
 }

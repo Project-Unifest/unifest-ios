@@ -16,7 +16,7 @@ struct APIResponse: Codable {
 }
 
 struct FestivalItem: Codable, Hashable, Identifiable {
-    var id: UUID? = UUID() // optional없애면 데이터 로드 안됨 왜그렇지..?
+    var id: UUID? = UUID()
     var festivalId: Int
     var schoolId: Int
     var thumbnail: String?
@@ -82,8 +82,6 @@ struct StarItem: Codable, Hashable {
 }
 
 class FestivalModel: ObservableObject {
-    // static let shared = FestivalModel()
-    
     @Published var festivals: [FestivalItem] = [] {
         willSet {
             DispatchQueue.main.async {
@@ -141,11 +139,10 @@ class FestivalModel: ObservableObject {
     
     func filterFestivals(byKeyword keyword: String) {
         guard !keyword.trimmingCharacters(in: .whitespaces).isEmpty else {
-                festivalSearchResult = []
-                return
-            }
+            festivalSearchResult = []
+            return
+        }
         
-        // 영어일 경우 대소문자 무시하고 검색
         festivalSearchResult = festivals.filter { festival in
             festival.festivalName.localizedCaseInsensitiveContains(keyword) || festival.schoolName.localizedCaseInsensitiveContains(keyword)
         }
@@ -233,7 +230,7 @@ class FestivalModel: ObservableObject {
         print(APIManager.shared.serverType.rawValue + "/festival/today?date=\(year)-\(String(format: "%02d", month))-\(String(format: "%02d", day))")
         var request = URLRequest(url: URL(string: APIManager.shared.serverType.rawValue + "/festival/today?date=\(year)-\(String(format: "%02d", month))-\(String(format: "%02d", day))")!,timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 if let error = error {
@@ -243,7 +240,7 @@ class FestivalModel: ObservableObject {
                 }
                 return
             }
-
+            
             do {
                 let decoder = JSONDecoder()
                 let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
@@ -266,7 +263,7 @@ class FestivalModel: ObservableObject {
                 print("Error decoding JSON: \(error)")
             }
         }
-
+        
         task.resume()
     }
     
@@ -278,15 +275,15 @@ class FestivalModel: ObservableObject {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-
+        
         // Filter festivals with endDate equal to or later than today's date
         for festival in festivals {
             // Convert festival endDate string to a Date object
-        
+            
             guard let endDate = dateFormatter.date(from: festival.endDate) else {
                 continue // Skip iteration if date conversion fails
             }
-
+            
             // Check if endDate is equal to or later than today's date
             if endDate >= currentDate {
                 festList.append(festival)
@@ -296,7 +293,7 @@ class FestivalModel: ObservableObject {
                 }
             }
         }
-
+        
         // Sort festList based on beginDate
         festList.sort {
             guard let date1 = dateFormatter.date(from: $0.beginDate),
@@ -305,7 +302,7 @@ class FestivalModel: ObservableObject {
             }
             return date1 < date2
         }
-
+        
         return festList
     }
 }
@@ -318,8 +315,8 @@ struct FestivalDataTestView: View {
             Text("\(festivalModel.festivals.count)")
             
             /* ForEach(festivalModel.festivals) { festival in
-                Text(festival.festivalName + " " + festival.schoolName)
-            }*/
+             Text(festival.festivalName + " " + festival.schoolName)
+             }*/
             ForEach(festivalModel.festivals, id: \.self) { festival in
                 Text(festival.schoolName + " " + festival.festivalName)
             }

@@ -9,7 +9,6 @@ import SwiftUI
 import ConfettiSwiftUI
 
 struct WelcomeView: View {
-    // Environment
     @Environment(\.dismiss) var dismiss
     
     // ConfettiCannon Library
@@ -96,7 +95,7 @@ struct WelcomeRow: View {
                     Text(subtitle)
                         .font(.system(size: 12))
                         .multilineTextAlignment(.leading)
-                        
+                    
                 })
                 
                 Spacer()

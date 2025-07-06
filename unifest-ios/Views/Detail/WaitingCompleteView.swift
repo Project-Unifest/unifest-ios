@@ -32,14 +32,14 @@ struct WaitingCompleteView: View {
                                 
                                 Spacer()
                                 
-                                    Image(.marker)
-                                        .resizable()
-                                        .frame(width: 11, height: 15)
-                                        .padding(.trailing, -1)
-                                    
+                                Image(.marker)
+                                    .resizable()
+                                    .frame(width: 11, height: 15)
+                                    .padding(.trailing, -1)
+                                
                                 Text(waitingInfo.boothName)
-                                        .font(.pretendard(weight: .p6, size: 15))
-                                        .foregroundStyle(.grey900)
+                                    .font(.pretendard(weight: .p6, size: 15))
+                                    .foregroundStyle(.grey900)
                                 
                                 Spacer()
                                 
@@ -106,36 +106,6 @@ struct WaitingCompleteView: View {
                                 Spacer()
                             }
                             .padding()
-                            
-//                            HStack {
-//                                Button {
-//                                    
-//                                } label: {
-//                                    RoundedRectangle(cornerRadius: 5)
-//                                        .strokeBorder(Color.grey400, lineWidth: 1)
-//                                        .frame(width: 133, height: 45)
-//                                        .overlay {
-//                                            Text("웨이팅 취소")
-//                                                .font(.pretendard(weight: .p6, size: 13))
-//                                                .foregroundStyle(.grey500)
-//                                        }
-//                                }
-//                                
-//                                Button {
-//                                    // isWaitingCompleteViewPresented = false
-//                                    dismiss() // dismiss()하면 BoothDetailView도 같이 내려감 의도한 거긴 한데 왜 되지..?
-//                                    tabSelect.selectedTab = 2
-//                                } label: {
-//                                    RoundedRectangle(cornerRadius: 5)
-//                                        .fill(Color.primary500)
-//                                        .frame(width: 133, height: 45)
-//                                        .overlay {
-//                                            Text("순서 확인하기")
-//                                                .font(.pretendard(weight: .p6, size: 13))
-//                                                .foregroundStyle(.white)
-//                                        }
-//                                }
-//                            }
                             
                             Button {
                                 isWaitingCompleteViewPresented = false
