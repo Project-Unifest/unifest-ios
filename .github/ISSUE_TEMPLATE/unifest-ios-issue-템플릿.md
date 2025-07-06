@@ -1,24 +1,5 @@
----
-name: UNIFEST iOS Issue 템플릿
-about: UNIFEST iOS Issue 템플릿입니다
-title: "[Prefix] 이슈 제목"
-labels: ''
-assignees: ''
-
----
-
----
-name:    PlayKUround- Issue Template
-about: "PlayKUround-iOS 이슈 템플릿입니다.🎇"
-title: '[Prefix] 이슈 타이틀'
-labels: ''
-assignees: ''
-
----
-
 <!-- 
-
-[Prefix]
+**Prefix**
 
 [Design]: 뷰 짜기
 [Feat]: 새로운 기능 구현
@@ -28,7 +9,6 @@ assignees: ''
 [Chore]: 그 이외
 [Docs]: README나 WIKI 등의 문서 개정
 [Setting]: 세팅
-
 -->
 
 ## 🛠 Issue
