@@ -36,13 +36,7 @@ Prefix
 
 <br/>
 
-```swift
-abc
-```
-<br/>
-
 ### 🌟Simulation
-// UI를 구현했다면 시연영상은 필수 !
 
 <br/>
 
