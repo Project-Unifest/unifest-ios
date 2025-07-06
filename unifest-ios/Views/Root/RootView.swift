@@ -203,9 +203,9 @@ struct RootView: View {
                 }
                 .onDisappear {
                     UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
-                    withAnimation(.easeInOut) {
-                        isIntroViewPresented = true
-                    }
+//                    withAnimation(.easeInOut) {
+//                        isIntroViewPresented = true
+//                    }
                 }
                 .presentationDragIndicator(.visible)
         }
