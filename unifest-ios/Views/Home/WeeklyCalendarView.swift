@@ -77,12 +77,8 @@ struct WeeklyCalendarView: View {
                             day: Calendar.current.component(.day, from: day)
                         )
                         
-                        if festivalNum >= 3 {
-                            simpleDot(.ufRed)
-                        } else if festivalNum == 2 {
-                            simpleDot(.ufOrange)
-                        } else if festivalNum == 1 {
-                            simpleDot(.ufBluegreen)
+                        if festivalNum > 0 {
+                            simpleDot(.primary500)
                         } else {
                             simpleDot(.clear)
                         }
@@ -95,7 +91,11 @@ struct WeeklyCalendarView: View {
         }
         .background(.ufWhite)
     }
-    
+}
+
+// MARK: - Methods
+
+private extension WeeklyCalendarView {
     func getFirstSunday(fromDate: Date) -> Date {
         // get the first sunday of selected day
         let weekday = Calendar.current.component(.weekday, from: fromDate)
