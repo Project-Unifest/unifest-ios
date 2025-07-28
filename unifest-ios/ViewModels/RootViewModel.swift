@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class RootViewModel: ObservableObject {
+final class RootViewModel: ObservableObject {
     @Published var viewState: ViewState = .home
     @Published var isLoading: Bool = false
     @ObservedObject var boothModel: BoothModel
@@ -29,7 +29,7 @@ class RootViewModel: ObservableObject {
     }
     
     enum ViewState {
-        case intro
+//        case intro // 가천대 특화 UI에서 제외되는 화면
         case home
         case map
         case waiting
@@ -53,16 +53,6 @@ class RootViewModel: ObservableObject {
     func transition(to: ViewState) {
         withAnimation(.spring(duration: 0.2, bounce: 0.3)) {
             viewState = to
-        }
-    }
-    
-    // 사용 안됨
-    func checkFirstLaunch() {
-        let isFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
-        if isFirstLaunch {
-            self.transition(to: .intro)
-        } else {
-            self.transition(to: .home)
         }
     }
 }

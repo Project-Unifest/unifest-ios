@@ -9,19 +9,20 @@ import SwiftUI
 import UserNotifications
 
 struct RootView: View {
+    
     @ObservedObject var viewModel: RootViewModel
     @ObservedObject var mapViewModel: MapViewModel
     @ObservedObject var networkManager: NetworkManager
+    
     @StateObject var tabSelect = TabSelect()
     @StateObject var waitingVM: WaitingViewModel
     @StateObject var favoriteFestivalVM: FavoriteFestivalViewModel
     @StateObject var stampVM: StampViewModel
     @StateObject var fcmTokenVM: TokenViewModel
-    // @State private var viewState: ViewState = .home
+    
     @State private var tabViewSelection: Int = 0
     @State private var isNetworkErrorViewPresented: Bool = false
     @State private var appVersionAlertPresented: Bool = false
-    @State private var isWelcomeViewPresented: Bool = false
     @State private var isBoothDetailViewPresented: Bool = false
     @State private var isIntroViewPresented: Bool = false
     @State private var selectedBoothId = 0
@@ -38,73 +39,64 @@ struct RootView: View {
     
     var body: some View {
         ZStack {
-            switch viewModel.viewState {
-            case .intro:
-                IntroView(viewModel: viewModel)
-            case .home, .map, .waiting, .menu:
-                ZStack {
-                    TabView(selection: $tabSelect.selectedTab) {
-                        Group {
-                            HomeView(viewModel: viewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                    GATracking.eventScreenView(GATracking.ScreenNames.homeView)
-                                }
-                                .tabItem {
-                                    Label(StringLiterals.Root.home, systemImage: "house.circle")
-                                }
-                                .tag(0)
-                            
-                            WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                    GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
-                                }
-                                .tabItem {
-                                    Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
-                                }
-                                .tag(1)
-                            
-                            MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                    mapViewModel.startUpdatingLocation()
-                                    GATracking.eventScreenView(GATracking.ScreenNames.mapView)
-                                }
-                                .onDisappear {
-                                    mapViewModel.stopUpdatingLocation()
-                                }
-                                .tabItem {
-                                    // Image(viewState == .map ? .mapIcon : .mapGray)
-                                    // Text(StringLiterals.Root.map)
-                                    Label(StringLiterals.Root.map, systemImage: "map.circle")
-                                }
-                                .tag(2)
-                            
-                            StampView(viewModel: viewModel, mapViewModel: mapViewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                }
-                                .tabItem {
-                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
-                                }
-                                .tag(3)
-                            
-                            MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
-                                .onAppear {
-                                    HapticManager.shared.hapticImpact(style: .light)
-                                    GATracking.eventScreenView(GATracking.ScreenNames.menuView)
-                                }
-                                .tabItem {
-                                    // Image(viewState == .menu ? .menuIcon : .menuGray)
-                                    // Text(StringLiterals.Root.menu)
-                                    Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
-                                }
-                                .tag(4)
-                        }
-                        .toolbarBackground(Color.ufBackground, for: .tabBar)
-                        .toolbarBackground(.visible, for: .tabBar)
+            ZStack {
+                TabView(selection: $tabSelect.selectedTab) {
+                    Group {
+                        HomeView(viewModel: viewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                                GATracking.eventScreenView(GATracking.ScreenNames.homeView)
+                            }
+                            .tabItem {
+                                Label(StringLiterals.Root.home, systemImage: "house.circle")
+                            }
+                            .tag(0)
+                        
+                        WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                                GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
+                            }
+                            .tabItem {
+                                Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
+                            }
+                            .tag(1)
+                        
+                        MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                                mapViewModel.startUpdatingLocation()
+                                GATracking.eventScreenView(GATracking.ScreenNames.mapView)
+                            }
+                            .onDisappear {
+                                mapViewModel.stopUpdatingLocation()
+                            }
+                            .tabItem {
+                                Label(StringLiterals.Root.map, systemImage: "map.circle")
+                            }
+                            .tag(2)
+                        
+                        StampView(viewModel: viewModel, mapViewModel: mapViewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                            }
+                            .tabItem {
+                                Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+                            }
+                            .tag(3)
+                        
+                        MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
+                            .onAppear {
+                                HapticManager.shared.hapticImpact(style: .light)
+                                GATracking.eventScreenView(GATracking.ScreenNames.menuView)
+                            }
+                            .tabItem {
+                                Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
+                            }
+                            .tag(4)
                     }
+                    .toolbarBackground(Color.ufBackground, for: .tabBar)
+                    .toolbarBackground(.visible, for: .tabBar)
                 }
             }
             
@@ -140,11 +132,6 @@ struct RootView: View {
         .environmentObject(favoriteFestivalVM)
         .environmentObject(stampVM)
         .onAppear {
-            // 앱 첫 실행이면 WelcomeView
-            if !UserDefaults.standard.bool(forKey: "IS_FIRST_LAUNCH") {
-                isWelcomeViewPresented = true
-            }
-            
             // 부스 클러스터링 설정 확인
             UserDefaults.standard.setValue(true, forKey: "IS_CLUSTER_ON_MAP")
             
@@ -184,7 +171,7 @@ struct RootView: View {
             tabSelect.selectedTab = 1
         }
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("FCMToken"))) { notification in
-            if let token = notification.userInfo?["token"] as? String {
+            if let _ = notification.userInfo?["token"] as? String {
                 Task {
                     await fcmTokenVM.registerFCMToken(deviceId: DeviceUUIDManager.shared.getDeviceToken())
                 }
@@ -194,19 +181,6 @@ struct RootView: View {
             BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: selectedBoothId)
                 .environmentObject(waitingVM)
                 .environmentObject(networkManager)
-                .presentationDragIndicator(.visible)
-        }
-        .sheet(isPresented: $isWelcomeViewPresented) {
-            WelcomeView()
-                .onAppear {
-                    GATracking.eventScreenView(GATracking.ScreenNames.welcomeView)
-                }
-                .onDisappear {
-                    UserDefaults.standard.set(true, forKey: "IS_FIRST_LAUNCH")
-//                    withAnimation(.easeInOut) {
-//                        isIntroViewPresented = true
-//                    }
-                }
                 .presentationDragIndicator(.visible)
         }
         .fullScreenCover(isPresented: $isIntroViewPresented) {

@@ -30,7 +30,6 @@
 		0C9641F52BB94E7D00838DA9 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9641F42BB94E7D00838DA9 /* MenuView.swift */; };
 		0C9641F92BB94F3D00838DA9 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */; };
 		0C9D0A5C2BA19DFE00156763 /* unifest_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */; };
-		0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5D2BA19DFE00156763 /* ContentView.swift */; };
 		0C9D0A602BA19DFF00156763 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */; };
 		0C9D0A632BA19DFF00156763 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */; };
 		0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */; };
@@ -128,7 +127,6 @@
 		0C9641F82BB94F3D00838DA9 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		0C9D0A582BA19DFE00156763 /* unifest-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "unifest-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = unifest_iosApp.swift; sourceTree = "<group>"; };
-		0C9D0A5D2BA19DFE00156763 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0C9D0A5F2BA19DFF00156763 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C9D0A622BA19DFF00156763 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0C9D0A6C2BA1A45F00156763 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
@@ -324,7 +322,6 @@
 				0CA4E1122BF3EC69000B1B1B /* unifest-ios.entitlements */,
 				0C2A2C032BE9AEA600EDF359 /* Info.plist */,
 				0C9D0A5B2BA19DFE00156763 /* unifest_iosApp.swift */,
-				0C9D0A5D2BA19DFE00156763 /* ContentView.swift */,
 				0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */,
 				0CE965082BAD678F00539E8C /* Extensions */,
 				0C9D0A6A2BA1A43300156763 /* Data */,
@@ -632,7 +629,6 @@
 				0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */,
 				F81F0A9E2D61DF3C00FD66AA /* FCMTokenModel.swift in Sources */,
 				F87DCA4F2C32C9CF0038F845 /* WaitingRequestView.swift in Sources */,
-				0C9D0A5E2BA19DFE00156763 /* ContentView.swift in Sources */,
 				0C9641F92BB94F3D00838DA9 /* RootViewModel.swift in Sources */,
 				F87DCA512C32C9D80038F845 /* WaitingCompleteView.swift in Sources */,
 				0C9641F22BB94DE700838DA9 /* WaitingView.swift in Sources */,
@@ -832,10 +828,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 9AGJDM8592;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LDY38WB7N3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
@@ -858,6 +856,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = UnifessDevProvisioningProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -875,10 +874,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "unifest-ios/unifest-ios.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"unifest-ios/Preview Content\"";
-				DEVELOPMENT_TEAM = 9AGJDM8592;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = LDY38WB7N3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "unifest-ios/Info.plist";
@@ -901,6 +902,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = UnifessDistributionProvisioningProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
