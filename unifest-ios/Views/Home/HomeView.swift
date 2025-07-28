@@ -53,7 +53,7 @@ struct HomeView: View {
             calendarView
             
             Spacer()
-                .frame(height: 44)
+                .frame(height: 37)
             
             FestivalInfoView(
                 viewModel: viewModel,
@@ -62,7 +62,6 @@ struct HomeView: View {
             )
             .padding(.top, -17)
         }
-        .background(.ufBackground)
     }
 }
 
@@ -108,31 +107,20 @@ private extension HomeView {
                 }
             }
         }
-        .background(.ufWhite)
         .tabViewStyle(.page(indexDisplayMode: .never))
         .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 120)
-        .overlay {
-            Rectangle()
-                .fill(Color.ufWhite)
-                .frame(height: 25)
-                .clipShape(
-                    .rect(
-                        topLeadingRadius: 0,
-                        bottomLeadingRadius: 23,
-                        bottomTrailingRadius: 23,
-                        topTrailingRadius: 0
-                    )
-                )
-                .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                .mask(
-                    Rectangle()
-                        .fill(Color.black)
-                        .frame(height: 30) // 그림자를 적용할 높이 설정
-                        .offset(y: 5) // 그림자가 적용될 위치를 아래로 이동
-                )
-                .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) : 47)
+        .background(.ufWhite)
+        .clipShape(UnevenRoundedRectangle(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
+        .shadow(
+            color: Color.black.opacity(0.08),
+            radius: 8,
+            x: 0,
+            y: 4
+        )
+        .mask{
+            UnevenRoundedRectangle(bottomLeadingRadius: 16, bottomTrailingRadius: 16)
+                .padding(.bottom, -20)
         }
-        .background(.ufBackground)
         .onAppear {
             firstSundayOfYear = getFirstSundayOfYear()
             currentFirstSunday = getFirstSunday(fromDate: Date())
