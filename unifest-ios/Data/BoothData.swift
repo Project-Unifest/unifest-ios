@@ -26,6 +26,7 @@ struct BoothItem: Codable, Hashable, Identifiable {
     var latitude: Double
     var longitude: Double
     var enabled: Bool
+    var waitingEnabled: Bool
 }
 
 struct APIResponseBoothDetail: Codable {
