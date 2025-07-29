@@ -7,7 +7,7 @@
 
 import Combine
 
-class BoothListViewModel: ObservableObject {
+final class BoothListViewModel: ObservableObject {
     private var boothModel: BoothModel
     private let festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
     private var cancellables = Set<AnyCancellable>()
