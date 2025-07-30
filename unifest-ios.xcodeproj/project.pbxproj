@@ -49,6 +49,7 @@
 		0CF092D12BC038C90009B782 /* NavigationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF092D02BC038C90009B782 /* NavigationHeaderView.swift */; };
 		0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */; };
 		0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */; };
+		A8897EED2E390944009737AA /* NoticeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EEC2E390944009737AA /* NoticeImageView.swift */; };
 		F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */; };
 		F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */; };
 		F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80053412CFB3BDB00CA108F /* NumExtensions.swift */; };
@@ -147,6 +148,7 @@
 		0CF092D02BC038C90009B782 /* NavigationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationHeaderView.swift; sourceTree = "<group>"; };
 		0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeBoothListView.swift; sourceTree = "<group>"; };
 		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A8897EEC2E390944009737AA /* NoticeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeImageView.swift; sourceTree = "<group>"; };
 		F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyCalendarView.swift; sourceTree = "<group>"; };
 		F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
 		F80053412CFB3BDB00CA108F /* NumExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumExtensions.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */,
 				F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */,
 				0C6523922BC131F00085232D /* FestivalInfoView.swift */,
+				A8897EEC2E390944009737AA /* NoticeImageView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				0CBB058D2BB074ED00EB56BE /* EditFavoriteFestivalView.swift in Sources */,
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
 				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
+				A8897EED2E390944009737AA /* NoticeImageView.swift in Sources */,
 				0C7A9CA62BF3E91100F639BA /* GATracker.swift in Sources */,
 				F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
@@ -855,8 +859,7 @@
 				MARKETING_VERSION = 2.1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = UnifessDevProvisioningProfile;
+				PROVISIONING_PROFILE_SPECIFIER = UnifessDevProvisioningProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -901,8 +904,7 @@
 				MARKETING_VERSION = 2.1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = UnifessDistributionProvisioningProfile;
+				PROVISIONING_PROFILE_SPECIFIER = UnifessDistributionProvisioningProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

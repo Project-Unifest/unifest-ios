@@ -8,13 +8,25 @@
 import SwiftUI
 
 // HomeView에서 O월O일 축제 일정, 다가오는 축제 일정 있는 이 뷰가 FestivalInfoView
-
 struct FestivalInfoView: View {
+    
     @ObservedObject var viewModel: RootViewModel
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
+    @Binding var showNoticeImage: Bool
+    @Binding var selectedNoticeImage: String?
+    
     @State private var upcomingList: [FestivalItem] = []
     @State private var maxLength: Int = 5
+    
+    let images: [String] = ["https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png", "image2", "image3", "image4", "image5"] // temp
+    let tipTexts: [String] = [
+            "웨이팅 기능으로 부스 원격 줄서기를 할 수 있어요.",
+            "즐겨찾기 기능으로 관심있는 부스를 저장할 수 있어요.",
+            "알림 설정으로 중요한 정보를 놓치지 마세요.",
+            "지도 기능으로 부스 위치를 쉽게 찾을 수 있어요."
+        ]
+    
     var currentDate: Date {
         return Date()
     }
@@ -36,133 +48,143 @@ struct FestivalInfoView: View {
     
     var body: some View {
         ScrollView {
-            HStack {
-                Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalSchedule)
-                    .font(.system(size: 15))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.grey900)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.top, 18)
+            infoHeaderView
             
-            VStack {
-                if (viewModel.festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0) {
-                    VStack(alignment: .center, spacing: 9) {
-                        Spacer()
-                        Image(systemName: "calendar.badge.exclamationmark")
-                            .font(.system(size: 26))
-                            .foregroundStyle(.defaultBlack)
-                        
-                        Text(StringLiterals.Home.noFestivalSchedule)
-                            .font(.system(size: 16))
-                            .foregroundStyle(.defaultBlack)
-                            .fontWeight(.semibold)
-                        
-                        Text(StringLiterals.Home.noFestivalMessage)
-                            .font(.system(size: 12))
-                            .foregroundStyle(.gray)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    .frame(height: 360)
-                } else {
-                    if !viewModel.festivalModel.todayFestivals.isEmpty {
-                        VStack(spacing: 16) {
-                            ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
-                                let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                                schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
-                                
-                                Divider()
-                                    .foregroundStyle(.grey200)
-                                    .padding(.trailing)
-                            }
+            if viewModel.festivalModel.isFestival(year: currentYear, month: selectedMonth, day: selectedDay) == 0 {
+                emptyView
+            } else {
+                if !viewModel.festivalModel.todayFestivals.isEmpty {
+                    VStack(spacing: 0) {
+                        ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
+                            let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
+                            schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
                         }
-                        .padding(.top, 20)
+                        .padding(.bottom, 24)
                         .padding(.leading)
                         
-                        /* List {
-                         ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
-                         let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                         schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
-                         }
-                         }
-                         .frame(height: CGFloat(viewModel.festivalModel.todayFestivals.count * 94))
-                         .padding(.top, 20)
-                         .listStyle(.plain)*/
+                        tipView
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 35)
                         
-                    } else {
-                        VStack {
-                            ProgressView()
-                        }
-                        .frame(height: 100)
+                        festivalNoticeView
                     }
-                }
-            }
-            
-            Text("").boldLine().padding(.vertical)
-            
-            /* Image(.boldLine)
-             .resizable()
-             .scaledToFit()
-             .frame(maxWidth: .infinity)
-             .padding(.vertical)*/
-            
-            HStack {
-                Text(StringLiterals.Home.upcomingFestivalSchedule)
-                    .font(.system(size: 15))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.defaultBlack)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 4)
-            .padding(.top, -5)
-            
-            VStack(spacing: 8) {
-                if viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength).isEmpty {
-                    VStack(alignment: .center) {
-                        Text(StringLiterals.Home.noUpcomingFestivalSchedule)
-                            .font(.system(size: 16))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.defaultBlack)
-                            .padding(.bottom, 1)
-                        
-                        Text(StringLiterals.Home.noUpcomingFestivalMessage)
-                            .font(.system(size: 12))
-                            .foregroundColor(.gray)
-                            .padding(.bottom, 10)
-                    }
-                    .frame(height: 240)
                 } else {
-                    ForEach(viewModel.festivalModel.getFestivalAfter(year: currentYear, month: currentMonth, day: currentDay, maxLength: maxLength), id: \.self) { festival in
-                        schoolFestRow(image: festival.thumbnail ?? "", dateText: formatDate(festival.beginDate) + " ~ " + formatDate(festival.endDate), name: festival.festivalName, school: festival.schoolName)
+                    VStack {
+                        ProgressView()
                     }
+                    .frame(height: 100)
                 }
-                
-                //                if viewModel.festivalModel.festivals.count > self.maxLength {
-                //                    Button {
-                //                        // 5개씩 더 불러오기
-                //                        self.maxLength += 5
-                //                    } label: {
-                //                        Text("").roundedButton(background: .clear, strokeColor: .gray, height: 28, cornerRadius: 10)
-                //                            .frame(width: 64)
-                //                            .overlay {
-                //                                Text("더보기")
-                //                                    .foregroundStyle(.gray)
-                //                                    .font(.system(size: 12))
-                //                            }
-                //                    }
-                //                    .padding(.top, 10)
-                //                }
-                
-                Spacer().frame(height: 10)
             }
-            .padding(.horizontal)
         }
         .background(.ufBackground)
     }
+}
+
+// MARK: - Components
+
+private extension FestivalInfoView {
+    
+    var infoHeaderView: some View {
+        HStack {
+            Text("\(selectedMonth)월 \(selectedDay)일 " + StringLiterals.Home.festivalSchedule)
+                .font(.pretendard(weight: .p6, size: 15))
+                .foregroundStyle(.grey900)
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 18)
+    }
+    
+    var emptyView: some View {
+        VStack(alignment: .center, spacing: 9) {
+            Spacer()
+            Image(systemName: "calendar.badge.exclamationmark")
+                .font(.system(size: 26))
+                .foregroundStyle(.defaultBlack)
+            
+            Text(StringLiterals.Home.noFestivalSchedule)
+                .font(.system(size: 16))
+                .foregroundStyle(.defaultBlack)
+                .fontWeight(.semibold)
+            
+            Text(StringLiterals.Home.noFestivalMessage)
+                .font(.system(size: 12))
+                .foregroundStyle(.gray)
+            
+            Spacer()
+        }
+        .padding(.horizontal)
+        .frame(height: 360)
+    }
+    
+    var tipView: some View {
+        HStack(spacing: 12) {
+            Text("Tip!")
+                .font(.pretendard(weight: .p6, size: 15))
+                .foregroundColor(.primary500)
+            
+            TabView {
+                ForEach(Array(tipTexts.enumerated()), id: \.offset) { index, tipText in
+                    Text(tipText)
+                        .font(.pretendard(weight: .p5, size: 14))
+                        .foregroundStyle(.grey800)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .multilineTextAlignment(.leading)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            
+            Spacer()
+        }
+        .padding(.leading, 16)
+        .padding(.vertical, 13)
+        .background(
+            RoundedRectangle(cornerRadius: 7)
+                .fill(.grey100)
+        )
+    }
+    
+    var festivalNoticeView: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            VStack(alignment: .leading, spacing: 7) {
+                Text("가천대 축제 소식")
+                    .font(.pretendard(weight: .p6, size: 18))
+                    .foregroundStyle(.grey900)
+                
+                Text("가천대 축제 소식 및 정보를 카드뉴스로 확인해보세요")
+                    .font(.pretendard(weight: .p5, size: 14))
+                    .foregroundStyle(.grey700)
+            }
+            .padding(.horizontal, 20)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHGrid(rows: [GridItem(.flexible(minimum: 204))], spacing: 8) {
+                    ForEach(images, id: \.self) { imageName in
+                        AsyncImage(url: URL(string: imageName)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.3))
+                        }
+                        .frame(width: 204, height: 204)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .onTapGesture {
+                            selectedNoticeImage = imageName
+                            showNoticeImage = true
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+        }
+    }
+}
+
+// MARK: - Method
+
+private extension FestivalInfoView {
     
     func getFestDate(beginDate: String, month: Int, day: Int) -> Int {
         // Create a DateFormatter instance

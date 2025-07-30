@@ -29,6 +29,9 @@ struct HomeView: View {
     @State private var isExpanded: Bool = false // week <-> month 전환
     @State private var monthPageIndex: Int = 0 // 선택된 월
     
+    @State private var showNoticeImage: Bool = false
+    @State private var selectedNoticeImage: String?
+    
     // 캘린더를 위아래로 드래그했을 때 week <-> month 전환
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
@@ -58,9 +61,14 @@ struct HomeView: View {
             FestivalInfoView(
                 viewModel: viewModel,
                 selectedMonth: $selectedMonth,
-                selectedDay: $selectedDay
+                selectedDay: $selectedDay,
+                showNoticeImage: $showNoticeImage,
+                selectedNoticeImage: $selectedNoticeImage
             )
             .padding(.top, -17)
+        }
+        .fullScreenCover(isPresented: $showNoticeImage) {
+            NoticeImageView(imageName: selectedNoticeImage ?? "")
         }
     }
 }
@@ -332,6 +340,8 @@ private extension HomeView {
         return weekNumList
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     HomeView(viewModel: RootViewModel())
