@@ -73,6 +73,7 @@ struct MapViewiOS17: View {
                     }
                 }
             }
+            .mapStyle(.standard(pointsOfInterest: .excludingAll))
             .onChange(of: festivalMapDataIndex) { newIndex in
                 cameraPosition = festivalMapDataList[newIndex].mapCameraPosition
             }

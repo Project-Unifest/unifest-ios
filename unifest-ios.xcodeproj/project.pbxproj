@@ -52,6 +52,8 @@
 		A8897EED2E390944009737AA /* NoticeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EEC2E390944009737AA /* NoticeImageView.swift */; };
 		A8897EF12E39F739009737AA /* FestivalInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */; };
 		A8897EF32E39F8B9009737AA /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EF22E39F8B9009737AA /* HomeData.swift */; };
+		E481CE4D2E37BFDA0035A4C0 /* BoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481CE4B2E37BFDA0035A4C0 /* BoothListView.swift */; };
+		E481CE4F2E37E3EF0035A4C0 /* BoothListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E481CE4E2E37E3EF0035A4C0 /* BoothListViewModel.swift */; };
 		F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */; };
 		F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */; };
 		F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80053412CFB3BDB00CA108F /* NumExtensions.swift */; };
@@ -153,6 +155,8 @@
 		A8897EEC2E390944009737AA /* NoticeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeImageView.swift; sourceTree = "<group>"; };
 		A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalInfoViewModel.swift; sourceTree = "<group>"; };
 		A8897EF22E39F8B9009737AA /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
+		E481CE4B2E37BFDA0035A4C0 /* BoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothListView.swift; sourceTree = "<group>"; };
+		E481CE4E2E37E3EF0035A4C0 /* BoothListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoothListViewModel.swift; sourceTree = "<group>"; };
 		F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyCalendarView.swift; sourceTree = "<group>"; };
 		F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
 		F80053412CFB3BDB00CA108F /* NumExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumExtensions.swift; sourceTree = "<group>"; };
@@ -302,6 +306,7 @@
 				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
 				F88E8E942D61DD7000526699 /* Token-ViewModel.swift */,
 				A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */,
+				E481CE4E2E37E3EF0035A4C0 /* BoothListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -421,6 +426,7 @@
 		0CBB05872BB074ED00EB56BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E481CE4C2E37BFDA0035A4C0 /* BoothList */,
 				F88A6D0E2C7A05430025459F /* Toast */,
 				0C4DFCAF2BBEFC1D00CAB98B /* Dialog */,
 				0C244FD12BF685150047F23D /* Welcome */,
@@ -475,6 +481,14 @@
 			);
 			name = Extensions;
 			path = Text/Extensions;
+			sourceTree = "<group>";
+		};
+		E481CE4C2E37BFDA0035A4C0 /* BoothList */ = {
+			isa = PBXGroup;
+			children = (
+				E481CE4B2E37BFDA0035A4C0 /* BoothListView.swift */,
+			);
+			path = BoothList;
 			sourceTree = "<group>";
 		};
 		F82C55242CB6BD4D00EBCA68 /* Vote */ = {
@@ -678,6 +692,7 @@
 				F8F206C42C7CA7580013DBE7 /* FavoriteFestivalModel.swift in Sources */,
 				0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */,
 				F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */,
+				E481CE4F2E37E3EF0035A4C0 /* BoothListViewModel.swift in Sources */,
 				F84C6F8F2C4D152200D9E414 /* BoothMenuView.swift in Sources */,
 				0C244FCD2BF67E6B0047F23D /* VersionService.swift in Sources */,
 				F8ABA93F2C5A7C96003A8CDB /* WaitingModel.swift in Sources */,
@@ -697,6 +712,7 @@
 				F87DCA532C32DBB00038F845 /* MapPageHeaderView.swift in Sources */,
 				0C72FAAA2BFA3C4C00782B61 /* ThemeManager.swift in Sources */,
 				0CBB058D2BB074ED00EB56BE /* EditFavoriteFestivalView.swift in Sources */,
+				E481CE4D2E37BFDA0035A4C0 /* BoothListView.swift in Sources */,
 				0C9D0A6D2BA1A45F00156763 /* MapViewModel.swift in Sources */,
 				F896A2932CCBACD50093621F /* BoothNoshowDialogView.swift in Sources */,
 				A8897EED2E390944009737AA /* NoticeImageView.swift in Sources */,
@@ -913,7 +929,8 @@
 				MARKETING_VERSION = 2.1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.hoeunlee228.unifest-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = UnifessDistributionProvisioningProfile;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = UnifessDevProvisioningProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
