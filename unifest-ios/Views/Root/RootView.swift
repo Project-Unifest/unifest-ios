@@ -81,12 +81,14 @@ struct RootView: View {
                                 }
                                 .tag(2)
                             
-                            StampView(viewModel: viewModel, mapViewModel: mapViewModel)
+                            BoothListView(viewModel,
+                                          mapViewModel,
+                                          BoothListViewModel(viewModel.boothModel))
                                 .onAppear {
                                     HapticManager.shared.hapticImpact(style: .light)
                                 }
                                 .tabItem {
-                                    Label(StringLiterals.Root.stamp, systemImage: "star.circle")
+                                    Label(StringLiterals.Root.booth, systemImage: "star.circle")
                                 }
                                 .tag(3)
                             

@@ -11,6 +11,7 @@ enum StringLiterals {
         static let map = "지도"
         static let waiting = "웨이팅"
         static let stamp = "스탬프"
+        static let booth = "부스"
         static let menu = "메뉴"
     }
     
