@@ -29,6 +29,9 @@ struct HomeView: View {
     @State private var isExpanded: Bool = false // week <-> month 전환
     @State private var monthPageIndex: Int = 0 // 선택된 월
     
+    @State private var showNoticeImage: Bool = false
+    @State private var selectedNoticeImage: String?
+    
     // 캘린더를 위아래로 드래그했을 때 week <-> month 전환
     @State private var startOffsetY: CGFloat = 0.0
     @State private var lastOffsetY: CGFloat = 0.0
@@ -50,212 +53,218 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                if isExpanded {
-                    HStack {
-                        // 2024년 O월을 탭하면 원하는 달로 이동할 수 있는 Menu가 나타남
-                        Menu {
-                            ForEach(1 ..< 13, id: \.self) { monthIndex in
-                                Button("\(monthIndex)" + StringLiterals.Calendar.month) {
-                                    monthPageIndex = monthIndex
-                                }
-                            }
-                        } label: {
-                            Text("\(String(selectedYear))년 \(monthPageIndex)월")
-                                .font(.system(size: 24))
-                                .foregroundStyle(.defaultBlack)
-                                .bold()
-                        }
-                        .padding(.trailing, 10)
-                        
-                        HStack(alignment: .center, spacing: 0) {
-                            simpleDot(.ufBluegreen)
-                                .padding(.trailing, 3)
-                            Text("1개")
-                                .font(.system(size: 11))
-                                .foregroundStyle(.gray)
-                                .padding(.trailing, 6)
-                            simpleDot(.ufOrange)
-                                .padding(.trailing, 3)
-                            Text("2개")
-                                .font(.system(size: 11))
-                                .foregroundStyle(.gray)
-                                .padding(.trailing, 6)
-                            simpleDot(.ufRed)
-                                .padding(.trailing, 3)
-                            Text("3개 이상")
-                                .font(.system(size: 11))
-                                .foregroundStyle(.gray)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
-                            monthPageIndex -= 1
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20))
-                                .foregroundColor(.gray)
-                        }
-                        .disabled(monthPageIndex == 1)
-                        
-                        Spacer()
-                            .frame(width: 30)
-                        
-                        Button {
-                            GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
-                            monthPageIndex += 1
-                        } label: {
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 20))
-                                .foregroundColor(.gray)
-                        }
-                        .disabled(monthPageIndex == 12)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical)
-                    .background(.ufWhite)
-                    .frame(maxWidth: .infinity)
-                }
-                
-                TabView(selection: isExpanded ? $monthPageIndex : $weekPageIndex) {
-                    if !isExpanded {
-                        ForEach(0..<52, id: \.self) { weekIdx in
-                            let firstSunday = Calendar.current.date(byAdding: .day, value: weekIdx * 7, to: firstSundayOfYear)!
-                            let wednesday = Calendar.current.date(byAdding: .day, value: weekIdx * 7 + 3, to: firstSundayOfYear)!
-                            
-                            WeeklyCalendarView(
-                                viewModel: viewModel,
-                                year: currentYear,
-                                month: $currentMonth,
-                                currentFirstSunday: firstSunday,
-                                selectedYear: $selectedYear,
-                                selectedMonth: $selectedMonth,
-                                selectedDay: $selectedDay
-                            )
-                            .onAppear {
-                                currentMonth = Calendar.current.component(.month, from: wednesday)
-                            }
-                        }
-                    } else {
-                        ForEach(1...12, id: \.self) { month in
-                            MonthlyCalendarView(
-                                viewModel: viewModel,
-                                year: currentYear, month: month,
-                                currentMonth: $currentMonth,
-                                selectedYear: $selectedYear,
-                                selectedMonth: $selectedMonth,
-                                selectedDay: $selectedDay,
-                                calendar: $calendar
-                            )
-                        }
-                    }
-                }
-                .background(.ufWhite)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 80)
-                .overlay {
-                    Rectangle()
-                        .fill(Color.ufWhite)
-                        .frame(height: 25)
-                        .clipShape(
-                            .rect(
-                                topLeadingRadius: 0,
-                                bottomLeadingRadius: 23,
-                                bottomTrailingRadius: 23,
-                                topTrailingRadius: 0
-                            )
-                        )
-                        .shadow(color: Color.black.opacity(0.1), radius: 10, y: 8)
-                        .mask(
-                            Rectangle()
-                                .fill(Color.black)
-                                .frame(height: 30) // 그림자를 적용할 높이 설정
-                                .offset(y: 5) // 그림자가 적용될 위치를 아래로 이동
-                        )
-                        .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) : 47)
-                        .overlay {
-                            HStack {
-                                Button {
-                                    // 월 -> 주
-                                    if isExpanded {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_SHRINK_CALENDAR)
-                                        weekPageIndex = getWeekIndex()
-                                        withAnimation(.spring) {
-                                            isExpanded = false
-                                        }
-                                    }
-                                    // 주 -> 월
-                                    else {
-                                        GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_EXPAND_CALENDAR)
-                                        weekPageIndex = selectedMonth
-                                        monthPageIndex = selectedMonth
-                                        withAnimation(.spring) {
-                                            isExpanded = true
-                                        }
-                                    }
-                                } label: {
-                                    Image(systemName: "chevron.down")
-                                        .font(.system(size: 20))
-                                        .foregroundColor(.gray)
-                                        .rotationEffect(isExpanded ? .degrees(180) : .zero)
-                                }
-                                .padding(20)
-                                .contentShape(Rectangle())
-                            }
-                            .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) - 12 : 40) // chevron 버튼의 위치 결정
-                        }
-                }
-            }
-            .background(.ufBackground)
-            .onAppear {
-                firstSundayOfYear = getFirstSundayOfYear()
-                currentFirstSunday = getFirstSunday(fromDate: Date())
-                weekPageIndex = getWeekIndex()
-                viewModel.festivalModel.getFestivalByDate(year: selectedYear, month: selectedMonth, day: selectedDay) // 축제 정보 요청 api 호출
-            }
-            .gesture(
-                DragGesture()
-                    .onChanged { value in
-                        if (startOffsetY < 0) {
-                            startOffsetY = value.translation.height
-                        }
-                        lastOffsetY = value.translation.height
-                    }
-                    .onEnded { _ in
-                        if (startOffsetY < lastOffsetY) {
-                            if !isExpanded {
-                                weekPageIndex = selectedMonth
-                                monthPageIndex = selectedMonth
-                                withAnimation(.spring) {
-                                    isExpanded = true
-                                }
-                            }
-                        } else {
-                            if isExpanded {
-                                weekPageIndex = getWeekIndex()
-                                withAnimation(.spring) {
-                                    isExpanded = false
-                                }
-                            }
-                        }
-                        self.startOffsetY = -1
-                        self.lastOffsetY = 0
-                    }
-            )
+            calendarView
             
             Spacer()
-                .frame(height: 44)
+                .frame(height: 37)
             
             FestivalInfoView(
                 viewModel: viewModel,
                 selectedMonth: $selectedMonth,
-                selectedDay: $selectedDay
+                selectedDay: $selectedDay,
+                showNoticeImage: $showNoticeImage,
+                selectedNoticeImage: $selectedNoticeImage
             )
             .padding(.top, -17)
         }
-        .background(.ufBackground)
+        .fullScreenCover(isPresented: $showNoticeImage) {
+            NoticeImageView(imageName: selectedNoticeImage ?? "")
+        }
+    }
+}
+
+// MARK: - Components
+
+private extension HomeView {
+    var calendarView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+                .frame(height: 30)
+            
+            TabView(selection: isExpanded ? $monthPageIndex : $weekPageIndex) {
+                if !isExpanded {
+                    ForEach(0..<52, id: \.self) { weekIdx in
+                        let firstSunday = Calendar.current.date(byAdding: .day, value: weekIdx * 7, to: firstSundayOfYear)!
+                        let wednesday = Calendar.current.date(byAdding: .day, value: weekIdx * 7 + 3, to: firstSundayOfYear)!
+                        
+                        WeeklyCalendarView(
+                            viewModel: viewModel,
+                            year: currentYear,
+                            month: $currentMonth,
+                            currentFirstSunday: firstSunday,
+                            selectedYear: $selectedYear,
+                            selectedMonth: $selectedMonth,
+                            selectedDay: $selectedDay
+                        )
+                        .onAppear {
+                            currentMonth = Calendar.current.component(.month, from: wednesday)
+                        }
+                    }
+                } else {
+                    ForEach(1...12, id: \.self) { month in
+                        MonthlyCalendarView(
+                            viewModel: viewModel,
+                            year: currentYear, month: month,
+                            currentMonth: $currentMonth,
+                            selectedYear: $selectedYear,
+                            selectedMonth: $selectedMonth,
+                            selectedDay: $selectedDay,
+                            calendar: $calendar
+                        )
+                    }
+                }
+            }
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .frame(height: isExpanded ? getHeightByWeekNum(self.calendar.count) : 120)
+        .background(.ufWhite)
+        .clipShape(UnevenRoundedRectangle(bottomLeadingRadius: 16, bottomTrailingRadius: 16))
+        .shadow(
+            color: Color.black.opacity(0.08),
+            radius: 8,
+            x: 0,
+            y: 4
+        )
+        .mask{
+            UnevenRoundedRectangle(bottomLeadingRadius: 16, bottomTrailingRadius: 16)
+                .padding(.bottom, -20)
+        }
+        .onAppear {
+            firstSundayOfYear = getFirstSundayOfYear()
+            currentFirstSunday = getFirstSunday(fromDate: Date())
+            weekPageIndex = getWeekIndex()
+            viewModel.festivalModel.getFestivalByDate(year: selectedYear, month: selectedMonth, day: selectedDay) // 축제 정보 요청 api 호출
+        }
+    }
+    
+    var monthlyCalnderHeader: some View {
+        HStack {
+            // 2024년 O월을 탭하면 원하는 달로 이동할 수 있는 Menu가 나타남
+            Menu {
+                ForEach(1 ..< 13, id: \.self) { monthIndex in
+                    Button("\(monthIndex)" + StringLiterals.Calendar.month) {
+                        monthPageIndex = monthIndex
+                    }
+                }
+            } label: {
+                Text("\(String(selectedYear))년 \(monthPageIndex)월")
+                    .font(.system(size: 24))
+                    .foregroundStyle(.defaultBlack)
+                    .bold()
+            }
+            .padding(.trailing, 10)
+            
+            HStack(alignment: .center, spacing: 0) {
+                simpleDot(.ufBluegreen)
+                    .padding(.trailing, 3)
+                Text("1개")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.gray)
+                    .padding(.trailing, 6)
+                simpleDot(.ufOrange)
+                    .padding(.trailing, 3)
+                Text("2개")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.gray)
+                    .padding(.trailing, 6)
+                simpleDot(.ufRed)
+                    .padding(.trailing, 3)
+                Text("3개 이상")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.gray)
+            }
+            
+            Spacer()
+            
+            Button {
+                GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
+                monthPageIndex -= 1
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray)
+            }
+            .disabled(monthPageIndex == 1)
+            
+            Spacer()
+                .frame(width: 30)
+            
+            Button {
+                GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_CHANGE_CALENDAR_PAGE)
+                monthPageIndex += 1
+            } label: {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray)
+            }
+            .disabled(monthPageIndex == 12)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical)
+        .background(.ufWhite)
+        .frame(maxWidth: .infinity)
+    }
+    
+    var calenderChangeButton: some View {
+        HStack {
+            Button {
+                // 월 -> 주
+                if isExpanded {
+                    GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_SHRINK_CALENDAR)
+                    weekPageIndex = getWeekIndex()
+                    withAnimation(.spring) {
+                        isExpanded = false
+                    }
+                }
+                // 주 -> 월
+                else {
+                    GATracking.sendLogEvent(GATracking.LogEventType.FestivalInfoView.HOME_EXPAND_CALENDAR)
+                    weekPageIndex = selectedMonth
+                    monthPageIndex = selectedMonth
+                    withAnimation(.spring) {
+                        isExpanded = true
+                    }
+                }
+            } label: {
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 20))
+                    .foregroundColor(.gray)
+                    .rotationEffect(isExpanded ? .degrees(180) : .zero)
+            }
+            .padding(20)
+            .contentShape(Rectangle())
+        }
+        .offset(y: isExpanded ? getViewOffsetY(self.calendar.count) - 12 : 40) // chevron 버튼의 위치 결정
+    }
+    
+    var calenderDragGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if (startOffsetY < 0) {
+                    startOffsetY = value.translation.height
+                }
+                lastOffsetY = value.translation.height
+            }
+            .onEnded { _ in
+                if (startOffsetY < lastOffsetY) {
+                    if !isExpanded {
+                        weekPageIndex = selectedMonth
+                        monthPageIndex = selectedMonth
+                        withAnimation(.spring) {
+                            isExpanded = true
+                        }
+                    }
+                } else {
+                    if isExpanded {
+                        weekPageIndex = getWeekIndex()
+                        withAnimation(.spring) {
+                            isExpanded = false
+                        }
+                    }
+                }
+                self.startOffsetY = -1
+                self.lastOffsetY = 0
+            }
     }
     
     @ViewBuilder
@@ -264,6 +273,11 @@ struct HomeView: View {
             .fill(color)
             .frame(width: 7, height: 7)
     }
+}
+
+// MARK: - Methods
+
+private extension HomeView {
     
     // 달력 탭뷰가 펼쳐지거나 접혔을 때, 달력 탭뷰 아래의 chevron.down 버튼을 포함한 이 뷰(TabView에 overlay한 뷰)의 y축 offset을 조정하기 위한 메서드
     func getViewOffsetY(_ numberOfWeeks: Int) -> CGFloat {
@@ -296,7 +310,6 @@ struct HomeView: View {
         // get difference number of week between firstSunday and firstSundayOfYear
         let diff = Calendar.current.dateComponents([.weekOfYear], from: firstSundayOfYear, to: firstSunday).weekOfYear! + 1
         
-        // print("diff: \(diff)")
         return diff
     }
     
@@ -327,6 +340,8 @@ struct HomeView: View {
         return weekNumList
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     HomeView(viewModel: RootViewModel())

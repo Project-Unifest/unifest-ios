@@ -8,6 +8,7 @@
 import SwiftUI
 import ConfettiSwiftUI
 
+// 가천대 특화 기획에서는 빠지는 뷰입니다.
 struct WelcomeView: View {
     @Environment(\.dismiss) var dismiss
     
