@@ -50,6 +50,8 @@
 		0CF092D32BC03EC50009B782 /* LikeBoothListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */; };
 		0CFA922E2BA2BAB7007F2665 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */; };
 		A8897EED2E390944009737AA /* NoticeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EEC2E390944009737AA /* NoticeImageView.swift */; };
+		A8897EF12E39F739009737AA /* FestivalInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */; };
+		A8897EF32E39F8B9009737AA /* HomeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8897EF22E39F8B9009737AA /* HomeData.swift */; };
 		F800533E2CFB3B4C00CA108F /* MonthlyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */; };
 		F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */; };
 		F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80053412CFB3BDB00CA108F /* NumExtensions.swift */; };
@@ -149,6 +151,8 @@
 		0CF092D22BC03EC50009B782 /* LikeBoothListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeBoothListView.swift; sourceTree = "<group>"; };
 		0CFA922D2BA2BAB7007F2665 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8897EEC2E390944009737AA /* NoticeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeImageView.swift; sourceTree = "<group>"; };
+		A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalInfoViewModel.swift; sourceTree = "<group>"; };
+		A8897EF22E39F8B9009737AA /* HomeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeData.swift; sourceTree = "<group>"; };
 		F800533D2CFB3B4C00CA108F /* MonthlyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyCalendarView.swift; sourceTree = "<group>"; };
 		F800533F2CFB3BA200CA108F /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
 		F80053412CFB3BDB00CA108F /* NumExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumExtensions.swift; sourceTree = "<group>"; };
@@ -297,6 +301,7 @@
 				F8059A1B2C7C94730061431E /* FavoriteFestival-ViewModel.swift */,
 				F81BD3072CB3ED250083134F /* Stamp-ViewModel.swift */,
 				F88E8E942D61DD7000526699 /* Token-ViewModel.swift */,
+				A8897EF02E39F739009737AA /* FestivalInfoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -362,6 +367,7 @@
 				0CB2170E2BF23F270003338B /* festivalTest.json */,
 				0C7A117D2BF25F25008713B7 /* BoothData.swift */,
 				0C7A117F2BF25FDF008713B7 /* boothTest.json */,
+				A8897EF22E39F8B9009737AA /* HomeData.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -682,6 +688,7 @@
 				F80053422CFB3BDB00CA108F /* NumExtensions.swift in Sources */,
 				F8A91F462C81E0B000DA4231 /* StampView.swift in Sources */,
 				F83110D02DAD4C4F00557F81 /* FestivalMapData.swift in Sources */,
+				A8897EF12E39F739009737AA /* FestivalInfoViewModel.swift in Sources */,
 				0C8C41832BB25B5C002B0634 /* AdminLoginView.swift in Sources */,
 				F8A91F482C81F31B00DA4231 /* StampBoothListView.swift in Sources */,
 				F84C6F912C4D1B7D00D9E414 /* BoothFooterView.swift in Sources */,
@@ -697,6 +704,7 @@
 				F80053402CFB3BA200CA108F /* WeeklyCalendarView.swift in Sources */,
 				F872669C2C4A30C300687A0D /* AppInstallAlarmView.swift in Sources */,
 				0CE839D52BF2E8CC003E211D /* MapExtensions.swift in Sources */,
+				A8897EF32E39F8B9009737AA /* HomeData.swift in Sources */,
 				F8059A1C2C7C94730061431E /* FavoriteFestival-ViewModel.swift in Sources */,
 				F800716B2C3648390001596F /* WaitingInfoView.swift in Sources */,
 				F88E8E952D61DD7000526699 /* Token-ViewModel.swift in Sources */,

@@ -58,6 +58,8 @@ final class APIManager: ObservableObject {
         case booth_top5 = "/api/booths" // 상위 5개 조회
         case booth_specific = "/api/booths/%@" // 특정 부스 조회
         case booth_all = "/api/booths/%@/booths" // 부스 전체 조회
+        
+        case home_info = "/home/info"
     }
     
     // static 인스턴스 생성자 (서버 타입 명시 필요)

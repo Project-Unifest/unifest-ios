@@ -11,6 +11,8 @@ import SwiftUI
 struct FestivalInfoView: View {
     
     @ObservedObject var viewModel: RootViewModel
+    @StateObject private var festivalInfoViewModel = FestivalInfoViewModel()
+    
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     @Binding var showNoticeImage: Bool
@@ -18,14 +20,6 @@ struct FestivalInfoView: View {
     
     @State private var upcomingList: [FestivalItem] = []
     @State private var maxLength: Int = 5
-    
-    let images: [String] = ["https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png", "image2", "image3", "image4", "image5"] // temp
-    let tipTexts: [String] = [
-            "웨이팅 기능으로 부스 원격 줄서기를 할 수 있어요.",
-            "즐겨찾기 기능으로 관심있는 부스를 저장할 수 있어요.",
-            "알림 설정으로 중요한 정보를 놓치지 마세요.",
-            "지도 기능으로 부스 위치를 쉽게 찾을 수 있어요."
-        ]
     
     var currentDate: Date {
         return Date()
@@ -124,7 +118,7 @@ private extension FestivalInfoView {
                 .foregroundColor(.primary500)
             
             TabView {
-                ForEach(Array(tipTexts.enumerated()), id: \.offset) { index, tipText in
+                ForEach(festivalInfoViewModel.homeTipList.map { $0.tipContent }, id: \.self) { tipText in
                     Text(tipText)
                         .font(.pretendard(weight: .p5, size: 14))
                         .foregroundStyle(.grey800)
@@ -159,8 +153,8 @@ private extension FestivalInfoView {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: [GridItem(.flexible(minimum: 204))], spacing: 8) {
-                    ForEach(images, id: \.self) { imageName in
-                        AsyncImage(url: URL(string: imageName)) { image in
+                    ForEach(festivalInfoViewModel.homeCardList, id: \.self) { homeCard in
+                        AsyncImage(url: URL(string: homeCard.thumbnailImgUrl)) { image in
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
@@ -171,7 +165,7 @@ private extension FestivalInfoView {
                         .frame(width: 204, height: 204)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .onTapGesture {
-                            selectedNoticeImage = imageName
+                            selectedNoticeImage = homeCard.detailImgUrl
                             showNoticeImage = true
                         }
                     }
