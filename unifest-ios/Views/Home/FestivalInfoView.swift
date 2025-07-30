@@ -51,7 +51,7 @@ struct FestivalInfoView: View {
                     VStack(spacing: 0) {
                         ForEach(viewModel.festivalModel.todayFestivals, id: \.self) { festival in
                             let dateOfFest = getFestDate(beginDate: festival.beginDate, month: selectedMonth, day: selectedDay) + 1
-                            schoolFestDetailRow(beginDateText: formatDate(festival.beginDate), endDateText: formatDate(festival.endDate), name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
+                            schoolFestDetailRow(name: festival.festivalName, day: dateOfFest, location: festival.schoolName, celebs: festival.starList)
                         }
                         .padding(.bottom, 24)
                         .padding(.leading)
@@ -276,7 +276,10 @@ private extension FestivalInfoView {
     }
     
     @ViewBuilder
-    func schoolFestDetailRow(beginDateText: String, endDateText: String, name: String, day: Int, location: String, celebs: [StarItem]?=nil) -> some View {
+    func schoolFestDetailRow(name: String, day: Int, location: String, celebs: [StarItem]? = nil) -> some View {
+        
+        let weekday = getWeekdayFromComponents(year: 2025, month: selectedMonth, day: selectedDay) ?? ""
+        
         VStack {
             HStack {
                 Image(.verticalBar)
@@ -285,7 +288,7 @@ private extension FestivalInfoView {
                     .frame(height: 72)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(beginDateText + " ~ " + endDateText)
+                    Text(String(format: "%02d", selectedMonth) + "/" + String(format: "%02d", selectedDay) + "(\(weekday.prefix(1)))")
                         .bold()
                         .font(.system(size: 12))
                         .foregroundStyle(.gray)
@@ -364,6 +367,24 @@ private extension FestivalInfoView {
         let weekdays = ["", "일", "월", "화", "수", "목", "금", "토"]
         
         return "\(month)/\(day)(\(weekdays[weekday]))"
+    }
+    
+    func getWeekdayFromComponents(year: Int, month: Int, day: Int) -> String? {
+        var dateComponents = DateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        
+        let calendar = Calendar.current
+        guard let date = calendar.date(from: dateComponents) else {
+            return nil
+        }
+        
+        let weekdayFormatter = DateFormatter()
+        weekdayFormatter.dateFormat = "EEEE"
+        weekdayFormatter.locale = Locale(identifier: "ko_KR")
+        
+        return weekdayFormatter.string(from: date)
     }
 }
 
