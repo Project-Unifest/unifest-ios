@@ -162,6 +162,11 @@ final class APIManager: ObservableObject {
                     completion(.success(apiResponse))
                 }
                 
+                if api == .home_info {
+                    let apiResponse = try decoder.decode(HomeModelResponse.self, from: data)
+                    completion(.success(apiResponse))
+                }
+                
                 
             } catch {
                 // JSON 디코딩 오류 처리
