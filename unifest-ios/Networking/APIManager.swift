@@ -16,7 +16,7 @@ final class APIManager: ObservableObject {
     
     // API 서버 종류별 address
     enum ServerType: String {
-        case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
+        case dev = "http://203.252.131.18:8080"
         case prod = "https://unifest.shop"
     }
     
