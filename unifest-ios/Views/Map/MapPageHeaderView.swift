@@ -12,49 +12,18 @@ struct MapPageHeaderView: View {
     @ObservedObject var mapViewModel: MapViewModel
     @State private var isInfoTextPresented: Bool = true
     @Binding var searchText: String
-    @State private var isEditFavoriteFestivalViewPresented = false
     @State private var isVoteViewPresented = false
     
     var body: some View {
         VStack {
             HStack {
-                Button {
-                    isEditFavoriteFestivalViewPresented = true
-                } label: {
-                    let festivalMapDataIndex = FestivalIdManager.festivalMapDataIndex
-                    HStack {
-                        Text(festivalMapDataList[festivalMapDataIndex].schoolName)
-                            .font(.pretendard(weight: .p6, size: 18))
-                            .foregroundStyle(.grey900)
-                        
-                        Image(.downArrow)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 12, height: 12)
-                    }
-                }
-                
-                Image(.blackBubble)
-                    .resizable()
-                    .frame(width: 180, height: 30)
-                    .overlay {
-                        VStack(alignment: .center) {
-                            Text("    여기서 축제를 선택할 수 있어요.")
-                                .font(.pretendard(weight: .p5, size: 11))
-                                .foregroundStyle(.white)
-                                .padding(.top, 2)
-                        }
-                    }
-                    .opacity(isInfoTextPresented ? 1 : 0)
-                    .onAppear {
-                        isInfoTextPresented = true
-                    }
-                    .onTapGesture {
-                        isInfoTextPresented = false
-                    }
+                Text("가천대학교")
+                    .font(.pretendard(weight: .p6, size: 18))
+                    .foregroundStyle(.grey900)
                 
                 Spacer()
             }
+            .padding(.top, 25)
             .padding(.horizontal, 18)
             
             Text("")
@@ -210,10 +179,6 @@ struct MapPageHeaderView: View {
         }
         .padding(.top, 60)
         .padding(.bottom)
-        .sheet(isPresented: $isEditFavoriteFestivalViewPresented) {
-            EditFavoriteFestivalView(viewModel: viewModel, mapViewModel: mapViewModel)
-                .presentationDragIndicator(.visible)
-        }
     }
 }
 
