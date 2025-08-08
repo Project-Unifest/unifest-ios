@@ -133,6 +133,29 @@ let festivalMapDataList: [FestivalMapData] = [
             )
         ),
         polygonCoordinates: polygonSangMyung
+    ),
+    FestivalMapData(
+        festivalId: 15,
+        schoolName: "가천대학교",
+        mapCameraBounds: MapCameraBounds(
+            centerCoordinateBounds: MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
+                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+            ),
+            minimumDistance: 0,
+            maximumDistance: 5000
+        ),
+        mapCameraPosition: MapCameraPosition.camera(
+            MapCamera(
+                centerCoordinate: CLLocationCoordinate2D(
+                    latitude: 37.453094641743334, longitude: 127.13249210002502
+                ),
+                distance: 5000, // 클수록 축소
+                heading: 0.0,
+                pitch: 0
+            )
+        ),
+        polygonCoordinates: polygonGachon
     )
 ]
 
