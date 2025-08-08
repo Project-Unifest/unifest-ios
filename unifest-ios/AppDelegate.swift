@@ -14,6 +14,7 @@ import Firebase
 import UserNotifications
 import FirebaseCore
 import FirebaseMessaging
+import Alamofire
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -116,5 +117,36 @@ extension AppDelegate: MessagingDelegate {
         )
         // TODO: If necessary send token to application server.
         // Note: This callback is fired at each app startup and whenever a new token is generated.
+    }
+}
+
+// MARK: 가천대학교 특화기간동안 사용하는 코드입니다.
+extension AppDelegate {
+    func addGachonFavorite() async {
+        let gachonFestivalId = 15
+        let deviceId = DeviceUUIDManager.shared.getDeviceToken()
+
+        let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.addFavoriteFestival(festivalId: gachonFestivalId))
+        let headers: HTTPHeaders = [
+            .accept("application/json"),
+            .contentType("application/json")
+        ]
+        let parameters: [String: Any] = [
+            "deviceId": deviceId
+        ]
+        
+        do {
+            let apiClient = APIClient()
+            let response: AddFavoriteFestivalResponse = try await apiClient.post(
+                url: url,
+                headers: headers,
+                parameters: parameters,
+                responseType: AddFavoriteFestivalResponse.self
+            )
+            print("AddFavoriteFestival request succeeded")
+            print(response)
+        } catch {
+            print("AddFavoriteFestival request failed")
+        }
     }
 }
