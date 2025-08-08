@@ -1,5 +1,5 @@
 //
-//  NoticeImageView.swift
+//  ScalableImageView.swift
 //  unifest-ios
 //
 //  Created by 김영현 on 7/29/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NoticeImageView: View {
+struct ScalableImageView: View {
     
     let imageName: String
     @Environment(\.dismiss) private var dismiss
@@ -41,7 +41,7 @@ struct NoticeImageView: View {
 
 // MARK: - Components
 
-private extension NoticeImageView {
+private extension ScalableImageView {
     
     func zoomableImageView(_ geometry: GeometryProxy) -> some View {
         AsyncImage(url: URL(string: imageName)) { image in
@@ -186,5 +186,5 @@ private extension NoticeImageView {
 }
 
 #Preview {
-    NoticeImageView(imageName: "https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png")
+    ScalableImageView(imageName: "https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png")
 }
