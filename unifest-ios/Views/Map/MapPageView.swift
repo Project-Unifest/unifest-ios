@@ -22,8 +22,11 @@ struct MapPageView: View {
     @ObservedObject var mapViewModel: MapViewModel
     
     @State private var isBoothDetailViewPresented: Bool = false
+    @State private var isBoothMapViewPresented: Bool = false
     @State private var tappedBoothId = 0
     @State private var searchText: String = ""
+    
+    private let boothImageURL: String = "" // URL 그냥 넣어버려
     
     var body: some View {
         GeometryReader { geometry in
@@ -45,6 +48,9 @@ struct MapPageView: View {
                                 topTrailingRadius: 0
                             )
                         )
+                    
+                    boothMapButtonView
+                        .padding(.top, 18)
                     
                     Spacer()
                     
@@ -180,6 +186,32 @@ struct MapPageView: View {
                 BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
                     .presentationDragIndicator(.visible)
             }
+            .fullScreenCover(isPresented: $isBoothMapViewPresented) {
+                ScalableImageView(imageName: boothImageURL)
+            }
+        }
+    }
+}
+
+private extension MapPageView {
+    var boothMapButtonView: some View {
+        HStack {
+            Spacer()
+            
+            Button {
+                isBoothMapViewPresented = true
+            } label: {
+                Circle()
+                    .foregroundStyle(.accent)
+                    .frame(width: 56, height: 56)
+                    .shadow(radius: 8.8, x: 2, y: 2)
+                    .overlay {
+                        Text("부스\n배치도")
+                            .foregroundStyle(.ufWhite)
+                            .font(.pretendard(weight: .p6, size: 13))
+                    }
+            }
+            .padding(.trailing, 22)
         }
     }
 }
@@ -284,6 +316,6 @@ struct BoothBox: View {
 }
 
 #Preview {
-    // MapPageView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
-    BoothBox(rank: -1, title: "test", description: "test", position: "", imageURL: "")
+     MapPageView(viewModel: RootViewModel(), mapViewModel: MapViewModel(viewModel: RootViewModel()))
+//    BoothBox(rank: -1, title: "test", description: "test", position: "", imageURL: "")
 }

@@ -104,8 +104,10 @@ struct MapViewiOS17: View {
             
             HStack(alignment: .center) {
                 Spacer()
+                
                 VStack(alignment: .trailing) {
-                    Spacer().frame(height: 200)
+                    Spacer()
+                    
                     Group {
                         MapPitchToggle(scope: mainMap)
                             .background(RoundedRectangle(cornerRadius: 10).foregroundColor(.ufBackground))
@@ -134,7 +136,9 @@ struct MapViewiOS17: View {
                             .mapControlVisibility(.automatic)
                             .controlSize(.mini)
                     }
+                    
                     Spacer()
+                        .frame(height: 120)
                 }
                 .frame(width: 60)
                 .padding(.horizontal, 5)
@@ -184,6 +188,7 @@ struct MapViewiOS17: View {
         .onDisappear {
             mapViewModel.locationManager?.stopUpdatingLocation()
         }
+        
     }
     
     func makeBoundaries(coordinates: [CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]? {
