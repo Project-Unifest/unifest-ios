@@ -26,8 +26,6 @@ struct MapPageView: View {
     @State private var tappedBoothId = 0
     @State private var searchText: String = ""
     
-    private let boothImageURL: String = "" // URL 그냥 넣어버려
-    
     var body: some View {
         GeometryReader { geometry in
             ZStack {
@@ -187,7 +185,7 @@ struct MapPageView: View {
                     .presentationDragIndicator(.visible)
             }
             .fullScreenCover(isPresented: $isBoothMapViewPresented) {
-                ScalableImageView(imageName: boothImageURL)
+                ScalableImageView(imageName: viewModel.boothModel.boothLayoutURL ?? "")
             }
         }
     }
