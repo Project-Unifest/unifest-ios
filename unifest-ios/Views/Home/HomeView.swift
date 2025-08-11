@@ -68,7 +68,7 @@ struct HomeView: View {
             .padding(.top, -17)
         }
         .fullScreenCover(isPresented: $showNoticeImage) {
-            NoticeImageView(imageName: selectedNoticeImage ?? "")
+            ScalableImageView(imageName: selectedNoticeImage ?? "")
         }
     }
 }
