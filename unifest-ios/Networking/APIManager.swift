@@ -16,7 +16,7 @@ final class APIManager: ObservableObject {
     
     // API 서버 종류별 address
     enum ServerType: String {
-        case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
+        case dev = "http://203.252.131.18:8080"
         case prod = "https://unifest.shop"
     }
     
@@ -159,6 +159,11 @@ final class APIManager: ObservableObject {
                 
                 if api == .fest_today {
                     let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
+                    completion(.success(apiResponse))
+                }
+                
+                if api == .home_info {
+                    let apiResponse = try decoder.decode(HomeModelResponse.self, from: data)
                     completion(.success(apiResponse))
                 }
                 
