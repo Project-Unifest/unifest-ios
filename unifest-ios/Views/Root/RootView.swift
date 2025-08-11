@@ -39,67 +39,90 @@ struct RootView: View {
     
     var body: some View {
         ZStack {
-            ZStack {
-                TabView(selection: $tabSelect.selectedTab) {
-                    Group {
-                        HomeView(viewModel: viewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.homeView)
+            TabView(selection: $tabSelect.selectedTab) {
+                Group {
+                    HomeView(viewModel: viewModel)
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                            GATracking.eventScreenView(GATracking.ScreenNames.homeView)
+                        }
+                        .tabItem {
+                            Label {
+                                Text(StringLiterals.Root.home)
+                            } icon: {
+                                Image(.homeGray)
+                                    .renderingMode(.template)
                             }
-                            .tabItem {
-                                Label(StringLiterals.Root.home, systemImage: "house.circle")
+                        }
+                        .tag(0)
+                    
+                    WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                            GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
+                        }
+                        .tabItem {
+                            Label {
+                                Text(StringLiterals.Root.waiting)
+                            } icon: {
+                                Image(.waitingGray)
+                                    .renderingMode(.template)
                             }
-                            .tag(0)
-                        
-                        WaitingView(viewModel: viewModel, mapViewModel: mapViewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.waitingView)
+                        }
+                        .tag(1)
+                    
+                    MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                            mapViewModel.startUpdatingLocation()
+                            GATracking.eventScreenView(GATracking.ScreenNames.mapView)
+                        }
+                        .onDisappear {
+                            mapViewModel.stopUpdatingLocation()
+                        }
+                        .tabItem {
+                            Label {
+                                Text(StringLiterals.Root.map)
+                            } icon: {
+                                Image(.mapGray)
+                                    .renderingMode(.template)
                             }
-                            .tabItem {
-                                Label(StringLiterals.Root.waiting, systemImage: "hourglass.circle")
+                        }
+                        .tag(2)
+                    
+                    BoothListView(viewModel,
+                                  mapViewModel,
+                                  BoothListViewModel(viewModel.boothModel))
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                        }
+                        .tabItem {
+                            Label {
+                                Text(StringLiterals.Root.booth)
+                            } icon: {
+                                Image(.boothGray)
+                                    .renderingMode(.template)
                             }
-                            .tag(1)
-                        
-                        MapPageView(viewModel: viewModel, mapViewModel: mapViewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                mapViewModel.startUpdatingLocation()
-                                GATracking.eventScreenView(GATracking.ScreenNames.mapView)
+                        }
+                        .tag(3)
+                    
+                    MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
+                        .onAppear {
+                            HapticManager.shared.hapticImpact(style: .light)
+                            GATracking.eventScreenView(GATracking.ScreenNames.menuView)
+                        }
+                        .tabItem {
+                            Label {
+                                Text(StringLiterals.Root.menu)
+                            } icon: {
+                                Image(.menuGray)
+                                    .renderingMode(.template)
                             }
-                            .onDisappear {
-                                mapViewModel.stopUpdatingLocation()
-                            }
-                            .tabItem {
-                                Label(StringLiterals.Root.map, systemImage: "map.circle")
-                            }
-                            .tag(2)
-                        
-                        BoothListView(viewModel,
-                                      mapViewModel,
-                                      BoothListViewModel(viewModel.boothModel))
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                            }
-                            .tabItem {
-                                Label(StringLiterals.Root.booth, systemImage: "star.circle")
-                            }
-                            .tag(3)
-                        
-                        MenuView(viewModel: viewModel, mapViewModel: mapViewModel)
-                            .onAppear {
-                                HapticManager.shared.hapticImpact(style: .light)
-                                GATracking.eventScreenView(GATracking.ScreenNames.menuView)
-                            }
-                            .tabItem {
-                                Label(StringLiterals.Root.menu, systemImage: "line.3.horizontal.circle")
-                            }
-                            .tag(4)
-                    }
-                    .toolbarBackground(Color.ufBackground, for: .tabBar)
-                    .toolbarBackground(.visible, for: .tabBar)
+                        }
+                        .tag(4)
                 }
+                .toolbarBackground(Color.ufBackground, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
             }
             
             if waitingVM.cancelWaiting == true {
