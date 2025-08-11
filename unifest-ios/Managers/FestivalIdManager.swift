@@ -23,8 +23,8 @@ final class FestivalIdManager {
      아래의 defaultMapFestivalId는 서버 API 요청 시 넣을 FestivalId를 저장하는 static 변수,
      defaultFestivalMapDataIndex는 FestivalMapData.swift에 저장된 축제 배열의 index를 저장하는 static 변수입니다.
      */
-    static let defaultMapFestivalId: Int = 13 // 지도탭의 기본 FestivalId
-    static let defaultFestivalMapDataIndex = 2 // unifest-iosViews/Map/FestivalMapData(로컬 파일)
+    static let defaultMapFestivalId: Int = 15 // 지도탭의 기본 FestivalId
+    static let defaultFestivalMapDataIndex = 4 // unifest-iosViews/Map/FestivalMapData(로컬 파일)
     static let defaultStampFestivalId: Int = 13 // 스탬프탭의 기본 FestivalId
     
     // 현재 선택된 축제 ID (지도)
