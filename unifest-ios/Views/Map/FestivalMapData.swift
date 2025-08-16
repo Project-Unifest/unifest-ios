@@ -19,7 +19,33 @@ struct FestivalMapData: Identifiable {
     let mapCameraPosition: MapCameraPosition // 학교의 중심좌표
     let polygonCoordinates: [CLLocationCoordinate2D]
 }
-
+#if DEBUG
+let festivalMapDataList: [FestivalMapData] = [
+    FestivalMapData(
+        festivalId: 1,
+        schoolName: "가천대학교",
+        mapCameraBounds: MapCameraBounds(
+            centerCoordinateBounds: MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
+                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+            ),
+            minimumDistance: 0,
+            maximumDistance: 5000
+        ),
+        mapCameraPosition: MapCameraPosition.camera(
+            MapCamera(
+                centerCoordinate: CLLocationCoordinate2D(
+                    latitude: 37.453094641743334, longitude: 127.13249210002502
+                ),
+                distance: 5000, // 클수록 축소
+                heading: 0.0,
+                pitch: 0
+            )
+        ),
+        polygonCoordinates: polygonGachon
+    )
+]
+#else
 let festivalMapDataList: [FestivalMapData] = [
     FestivalMapData(
         festivalId: 1,
@@ -158,6 +184,7 @@ let festivalMapDataList: [FestivalMapData] = [
         polygonCoordinates: polygonGachon
     )
 ]
+#endif
 
 let polygonKonkuk: [CLLocationCoordinate2D] = [
     CLLocationCoordinate2D(latitude: 37.54508, longitude: 127.07658),
