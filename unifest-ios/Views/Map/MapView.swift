@@ -27,7 +27,7 @@ struct MapViewiOS17: View {
     @State private var lastDistance: Double = 4000
     @State private var isClustering: Bool = false
     
-    @State private var festivalMapDataIndex: Int = 1
+    @State private var festivalMapDataIndex: Int = 0
     
     var body: some View {
         ZStack {
