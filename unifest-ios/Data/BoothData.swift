@@ -21,6 +21,12 @@ struct BoothData: Codable {
     var boothLayoutUrl: String?
 }
 
+struct APIResponseBoothList: Codable {
+    var code: String?
+    var message: String?
+    var data: [BoothItem]?
+}
+
 struct BoothItem: Codable, Hashable, Identifiable {
     var id: Int
     var name: String
