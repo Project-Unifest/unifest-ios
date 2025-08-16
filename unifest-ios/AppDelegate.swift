@@ -126,7 +126,11 @@ extension AppDelegate: MessagingDelegate {
 // MARK: 가천대학교 특화기간동안 사용하는 코드입니다.
 private extension AppDelegate {
     func addGachonFavorite() async {
+        #if DEBUG
+        let gachonFestivalId = 1
+        #else
         let gachonFestivalId = 15
+        #endif
         let deviceId = DeviceUUIDManager.shared.getDeviceToken()
 
         let url = NetworkUtils.buildURL(for: APIEndpoint.FavoriteFestival.addFavoriteFestival(festivalId: gachonFestivalId))
