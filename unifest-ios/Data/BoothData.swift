@@ -270,13 +270,12 @@ class BoothModel: ObservableObject {
             
             do {
                 let decoder = JSONDecoder()
-                let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
+                let apiResponse = try decoder.decode(APIResponseBoothList.self, from: data)
                 
                 if let responseData = apiResponse.data {
-                    // todayFestivalList = responseData
-                    if !responseData.booths.isEmpty {
+                    if !responseData.isEmpty {
                         DispatchQueue.main.async {
-                            self.top5booths = responseData.booths
+                            self.top5booths = responseData
                         }
                         print("top 5 booth loaded: \(self.top5booths.count)")
                     } else {
