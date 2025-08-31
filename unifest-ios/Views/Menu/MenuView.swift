@@ -286,6 +286,10 @@ struct MenuView: View {
                 
                 Divider()
                 
+                WhoAreUMenu()
+                
+                Divider()
+                
                 // 설정
                 HStack {
                     Text("설정")
@@ -783,6 +787,31 @@ struct MenuView: View {
             
             mapViewModel.forceRefreshMapPageView = UUID()
             tabSelect.selectedTab = 2
+        }
+    }
+    
+    func WhoAreUMenu() -> some View {
+        // MARK: 가천대학교 요구사항 중 설문조사로 리디렉션 시키는 메뉴. 가천대 종료시 삭제 예정
+        Button {
+            if let url = URL(string: "https://forms.gle/XuiJcChyazk2Bg3Q6") {
+                UIApplication.shared.open(url, options: [:])
+            }
+        } label: {
+            HStack {
+                Image(.whoAreULogo)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 8)
+                
+                Text("Who Are U 정체 추리")
+                    .font(.pretendard(weight: .p5, size: 15))
+                    .foregroundStyle(.grey900)
+                
+                Spacer()
+            }
+            .frame(height: 60)
+            .padding(.horizontal)
         }
     }
 }
