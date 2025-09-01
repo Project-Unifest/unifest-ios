@@ -27,7 +27,7 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraBounds: MapCameraBounds(
             centerCoordinateBounds: MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
-                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
             ),
             minimumDistance: 0,
             maximumDistance: 5000
@@ -166,7 +166,7 @@ let festivalMapDataList: [FestivalMapData] = [
         mapCameraBounds: MapCameraBounds(
             centerCoordinateBounds: MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
-                span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
+                span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
             ),
             minimumDistance: 0,
             maximumDistance: 5000
