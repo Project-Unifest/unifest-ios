@@ -122,7 +122,7 @@ struct WaitingInfoView: View {
                         .padding() // RoundedRectangle() 안쪽 padding
                     }
                     .sheet(isPresented: $isBoothDetailViewPresented) {
-                        BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: 156)
+                        BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: viewModel.boothModel.selectedBoothID)
                             .presentationDragIndicator(.visible)
                     }
                     .frame(width: geometry.size.width * 0.9) // 중앙 정렬을 위해 frame을 명시적으로 지정
