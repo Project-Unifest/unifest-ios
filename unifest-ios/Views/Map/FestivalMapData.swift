@@ -19,7 +19,33 @@ struct FestivalMapData: Identifiable {
     let mapCameraPosition: MapCameraPosition // 학교의 중심좌표
     let polygonCoordinates: [CLLocationCoordinate2D]
 }
-
+#if DEBUG
+let festivalMapDataList: [FestivalMapData] = [
+    FestivalMapData(
+        festivalId: 1,
+        schoolName: "가천대학교",
+        mapCameraBounds: MapCameraBounds(
+            centerCoordinateBounds: MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
+                span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
+            ),
+            minimumDistance: 0,
+            maximumDistance: 5000
+        ),
+        mapCameraPosition: MapCameraPosition.camera(
+            MapCamera(
+                centerCoordinate: CLLocationCoordinate2D(
+                    latitude: 37.453094641743334, longitude: 127.13249210002502
+                ),
+                distance: 5000, // 클수록 축소
+                heading: 0.0,
+                pitch: 0
+            )
+        ),
+        polygonCoordinates: polygonGachon
+    )
+]
+#else
 let festivalMapDataList: [FestivalMapData] = [
     FestivalMapData(
         festivalId: 1,
@@ -133,8 +159,32 @@ let festivalMapDataList: [FestivalMapData] = [
             )
         ),
         polygonCoordinates: polygonSangMyung
+    ),
+    FestivalMapData(
+        festivalId: 15,
+        schoolName: "가천대학교",
+        mapCameraBounds: MapCameraBounds(
+            centerCoordinateBounds: MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 37.453094641743334, longitude: 127.13249210002502),
+                span: MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
+            ),
+            minimumDistance: 0,
+            maximumDistance: 5000
+        ),
+        mapCameraPosition: MapCameraPosition.camera(
+            MapCamera(
+                centerCoordinate: CLLocationCoordinate2D(
+                    latitude: 37.453094641743334, longitude: 127.13249210002502
+                ),
+                distance: 5000, // 클수록 축소
+                heading: 0.0,
+                pitch: 0
+            )
+        ),
+        polygonCoordinates: polygonGachon
     )
 ]
+#endif
 
 let polygonKonkuk: [CLLocationCoordinate2D] = [
     CLLocationCoordinate2D(latitude: 37.54508, longitude: 127.07658),
@@ -463,4 +513,68 @@ let polygonSangMyung: [CLLocationCoordinate2D] = [
     CLLocationCoordinate2D(latitude: 37.6007211, longitude: 126.9535868),
     CLLocationCoordinate2D(latitude: 37.6009315, longitude: 126.9535037),
     CLLocationCoordinate2D(latitude: 37.6013735, longitude: 126.9533159)
+]
+
+let polygonGachon = [
+    CLLocationCoordinate2D(latitude: 37.4529793, longitude: 127.1268656),
+    CLLocationCoordinate2D(latitude: 37.4530049, longitude: 127.1275227),
+    CLLocationCoordinate2D(latitude: 37.4530134, longitude: 127.1279438),
+    CLLocationCoordinate2D(latitude: 37.4529368, longitude: 127.127968),
+    CLLocationCoordinate2D(latitude: 37.4528622, longitude: 127.127917),
+    CLLocationCoordinate2D(latitude: 37.4527302, longitude: 127.1277292),
+    CLLocationCoordinate2D(latitude: 37.4526493, longitude: 127.1276783),
+    CLLocationCoordinate2D(latitude: 37.4526174, longitude: 127.1276971),
+    CLLocationCoordinate2D(latitude: 37.4527409, longitude: 127.1284829),
+    CLLocationCoordinate2D(latitude: 37.4529943, longitude: 127.129006),
+    CLLocationCoordinate2D(latitude: 37.4532817, longitude: 127.1294941),
+    CLLocationCoordinate2D(latitude: 37.4532924, longitude: 127.1304088),
+    CLLocationCoordinate2D(latitude: 37.4529559, longitude: 127.1312108),
+    CLLocationCoordinate2D(latitude: 37.4529368, longitude: 127.132584),
+    CLLocationCoordinate2D(latitude: 37.4534137, longitude: 127.1335657),
+    CLLocationCoordinate2D(latitude: 37.4538907, longitude: 127.1330347),
+    CLLocationCoordinate2D(latitude: 37.4541717, longitude: 127.1325197),
+    CLLocationCoordinate2D(latitude: 37.45467, longitude: 127.1322085),
+    CLLocationCoordinate2D(latitude: 37.4548999, longitude: 127.1321549),
+    CLLocationCoordinate2D(latitude: 37.4549212, longitude: 127.1320154),
+    CLLocationCoordinate2D(latitude: 37.4554322, longitude: 127.1320583),
+    CLLocationCoordinate2D(latitude: 37.4557005, longitude: 127.1320101),
+    CLLocationCoordinate2D(latitude: 37.4559177, longitude: 127.1321227),
+    CLLocationCoordinate2D(latitude: 37.4560156, longitude: 127.1322622),
+    CLLocationCoordinate2D(latitude: 37.4561051, longitude: 127.1330347),
+    CLLocationCoordinate2D(latitude: 37.4562115, longitude: 127.1331473),
+    CLLocationCoordinate2D(latitude: 37.4566672, longitude: 127.1354808),
+    CLLocationCoordinate2D(latitude: 37.4565777, longitude: 127.1357169),
+    CLLocationCoordinate2D(latitude: 37.4561093, longitude: 127.1358563),
+    CLLocationCoordinate2D(latitude: 37.4560242, longitude: 127.1362318),
+    CLLocationCoordinate2D(latitude: 37.4559858, longitude: 127.1363016),
+    CLLocationCoordinate2D(latitude: 37.4559816, longitude: 127.1366986),
+    CLLocationCoordinate2D(latitude: 37.4568588, longitude: 127.1379806),
+    CLLocationCoordinate2D(latitude: 37.4562924, longitude: 127.1380879),
+    CLLocationCoordinate2D(latitude: 37.4557942, longitude: 127.1382274),
+    CLLocationCoordinate2D(latitude: 37.4552193, longitude: 127.138383),
+    CLLocationCoordinate2D(latitude: 37.4546018, longitude: 127.1386619),
+    CLLocationCoordinate2D(latitude: 37.4539673, longitude: 127.1367415),
+    CLLocationCoordinate2D(latitude: 37.4532774, longitude: 127.1353467),
+    CLLocationCoordinate2D(latitude: 37.4530943, longitude: 127.1349927),
+    CLLocationCoordinate2D(latitude: 37.4529453, longitude: 127.134821),
+    CLLocationCoordinate2D(latitude: 37.4525194, longitude: 127.1343865),
+    CLLocationCoordinate2D(latitude: 37.4517231, longitude: 127.1330078),
+    CLLocationCoordinate2D(latitude: 37.4516123, longitude: 127.1320798),
+    CLLocationCoordinate2D(latitude: 37.4508841, longitude: 127.1313878),
+    CLLocationCoordinate2D(latitude: 37.4504668, longitude: 127.1310874),
+    CLLocationCoordinate2D(latitude: 37.4500771, longitude: 127.1308084),
+    CLLocationCoordinate2D(latitude: 37.4495362, longitude: 127.1303739),
+    CLLocationCoordinate2D(latitude: 37.4492828, longitude: 127.1301271),
+    CLLocationCoordinate2D(latitude: 37.4491955, longitude: 127.1299448),
+    CLLocationCoordinate2D(latitude: 37.4485823, longitude: 127.130154),
+    CLLocationCoordinate2D(latitude: 37.4481649, longitude: 127.1287485),
+    CLLocationCoordinate2D(latitude: 37.4489528, longitude: 127.1283944),
+    CLLocationCoordinate2D(latitude: 37.4489741, longitude: 127.1273752),
+    CLLocationCoordinate2D(latitude: 37.4490635, longitude: 127.1270962),
+    CLLocationCoordinate2D(latitude: 37.4490976, longitude: 127.1269085),
+    CLLocationCoordinate2D(latitude: 37.4493808, longitude: 127.1269112),
+    CLLocationCoordinate2D(latitude: 37.4493744, longitude: 127.1269675),
+    CLLocationCoordinate2D(latitude: 37.4504753, longitude: 127.1269621),
+    CLLocationCoordinate2D(latitude: 37.4529767, longitude: 127.1268656)
+
 ]

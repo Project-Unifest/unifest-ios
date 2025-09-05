@@ -11,12 +11,16 @@ import SwiftUI
 
 final class APIManager: ObservableObject {
     
+#if DEBUG
+    static let shared = APIManager(serverType: .dev)
+#else
     static let shared = APIManager(serverType: .prod)
+#endif
     private var cancellables = Set<AnyCancellable>()
     
     // API 서버 종류별 address
     enum ServerType: String {
-        case dev = "http://ec2-43-200-72-31.ap-northeast-2.compute.amazonaws.com:9090"
+        case dev = "http://203.252.131.18:8082"
         case prod = "https://unifest.shop"
     }
     
@@ -58,6 +62,8 @@ final class APIManager: ObservableObject {
         case booth_top5 = "/api/booths" // 상위 5개 조회
         case booth_specific = "/api/booths/%@" // 특정 부스 조회
         case booth_all = "/api/booths/%@/booths" // 부스 전체 조회
+        
+        case home_info = "/home/info"
     }
     
     // static 인스턴스 생성자 (서버 타입 명시 필요)
@@ -157,6 +163,11 @@ final class APIManager: ObservableObject {
                 
                 if api == .fest_today {
                     let apiResponse = try decoder.decode(APIResponseFestToday.self, from: data)
+                    completion(.success(apiResponse))
+                }
+                
+                if api == .home_info {
+                    let apiResponse = try decoder.decode(HomeModelResponse.self, from: data)
                     completion(.success(apiResponse))
                 }
                 

@@ -11,6 +11,7 @@ enum StringLiterals {
         static let map = "지도"
         static let waiting = "웨이팅"
         static let stamp = "스탬프"
+        static let booth = "부스"
         static let menu = "메뉴"
     }
     
@@ -50,7 +51,7 @@ enum StringLiterals {
     enum Home {
         static let festivalSchedule = "축제 일정"
         static let noFestivalSchedule = "축제 일정 없음"
-        static let noFestivalMessage = "오늘은 축제가 열리는 학교가 없어요"
+        static let noFestivalMessage = "오늘은 축제가 열리지 않아요"
         static let upcomingFestivalSchedule = "다가오는 축제 일정"
         static let noUpcomingFestivalSchedule = "다가오는 축제 일정 없음"
         static let noUpcomingFestivalMessage = "남은 축제 일정이 없어요"

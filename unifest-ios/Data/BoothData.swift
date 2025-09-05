@@ -13,6 +13,17 @@ import UIKit
 struct APIResponseBooth: Codable {
     var code: String?
     var message: String?
+    var data: BoothData?
+}
+
+struct BoothData: Codable {
+    var booths: [BoothItem]
+    var boothLayoutUrl: String?
+}
+
+struct APIResponseBoothList: Codable {
+    var code: String?
+    var message: String?
     var data: [BoothItem]?
 }
 
@@ -26,6 +37,7 @@ struct BoothItem: Codable, Hashable, Identifiable {
     var latitude: Double
     var longitude: Double
     var enabled: Bool
+    var waitingEnabled: Bool
 }
 
 struct APIResponseBoothDetail: Codable {
@@ -179,6 +191,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
+    @Published var boothLayoutURL: String?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -197,9 +210,9 @@ class BoothModel: ObservableObject {
                 let decoder = JSONDecoder()
                 let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
                 
-                if apiResponse.data != nil {
+                if let boothData = apiResponse.data {
                     DispatchQueue.main.async {
-                        self.booths = apiResponse.data!
+                        self.booths = boothData.booths
                         print(self.booths.count)
                     }
                 }
@@ -227,7 +240,8 @@ class BoothModel: ObservableObject {
                 if let response = data as? APIResponseBooth {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
-                            self.booths = boothData
+                            self.booths = boothData.booths
+                            self.boothLayoutURL = boothData.boothLayoutUrl
                             completion()
                         }
                     }
@@ -256,10 +270,9 @@ class BoothModel: ObservableObject {
             
             do {
                 let decoder = JSONDecoder()
-                let apiResponse = try decoder.decode(APIResponseBooth.self, from: data)
+                let apiResponse = try decoder.decode(APIResponseBoothList.self, from: data)
                 
                 if let responseData = apiResponse.data {
-                    // todayFestivalList = responseData
                     if !responseData.isEmpty {
                         DispatchQueue.main.async {
                             self.top5booths = responseData
