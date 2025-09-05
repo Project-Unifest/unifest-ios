@@ -121,7 +121,8 @@ struct WaitingPinView: View {
                             Button {
                                 Task {
                                     isCheckingPin = true
-                                    await waitingVM.checkPinNumber(boothId: boothId, pinNumber: pin)
+                                    print("buttonTapped boothId: \(viewModel.boothModel.selectedBoothID)")
+                                    await waitingVM.checkPinNumber(boothId: viewModel.boothModel.selectedBoothID, pinNumber: pin)
                                     
                                     if waitingVM.isPinNumberValid == true {
                                         isWaitingPinViewPresented = false

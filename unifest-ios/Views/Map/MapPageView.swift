@@ -181,7 +181,7 @@ struct MapPageView: View {
             }
             .ignoresSafeArea()
             .sheet(isPresented: $isBoothDetailViewPresented) {
-                BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
+                BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: viewModel.boothModel.selectedBoothID)
                     .presentationDragIndicator(.visible)
             }
             .fullScreenCover(isPresented: $isBoothMapViewPresented) {

@@ -622,7 +622,7 @@ struct MenuView: View {
             await favoriteFestivalVM.getFavoriteFestivalList(deviceId: DeviceUUIDManager.shared.getDeviceToken())
         }
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: viewModel.boothModel.selectedBoothID)
                 .presentationDragIndicator(.visible)
                 .onAppear {
                     GATracking.eventScreenView(GATracking.ScreenNames.likedBoothListView)

@@ -143,7 +143,7 @@ struct LikeBoothListView: View {
         .dynamicTypeSize(.large)
         .background(.ufBackground)
         .sheet(isPresented: $isDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: tappedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: viewModel.boothModel.selectedBoothID)
                 .presentationDragIndicator(.visible)
         }
     }

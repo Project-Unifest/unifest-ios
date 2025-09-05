@@ -203,7 +203,7 @@ struct RootView: View {
             }
         }
         .sheet(isPresented: $isBoothDetailViewPresented) {
-            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: selectedBoothId)
+            BoothDetailView(viewModel: viewModel, mapViewModel: mapViewModel, currentBoothId: viewModel.boothModel.selectedBoothID)
                 .environmentObject(waitingVM)
                 .environmentObject(networkManager)
                 .presentationDragIndicator(.visible)
