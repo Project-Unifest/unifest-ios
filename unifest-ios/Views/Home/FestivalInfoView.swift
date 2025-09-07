@@ -16,7 +16,7 @@ struct FestivalInfoView: View {
     @Binding var selectedMonth: Int
     @Binding var selectedDay: Int
     @Binding var showNoticeImage: Bool
-    @Binding var selectedNoticeImage: String?
+    @Binding var selectedNoticeImage: String
     
     @State private var upcomingList: [FestivalItem] = []
     @State private var maxLength: Int = 5

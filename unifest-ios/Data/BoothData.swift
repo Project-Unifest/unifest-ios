@@ -191,7 +191,7 @@ class BoothModel: ObservableObject {
             }
         }
     }
-    @Published var boothLayoutURL: String?
+    @Published var boothLayoutURL: String = ""
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -241,7 +241,7 @@ class BoothModel: ObservableObject {
                     if let boothData = response.data {
                         DispatchQueue.main.async {
                             self.booths = boothData.booths
-                            self.boothLayoutURL = boothData.boothLayoutUrl
+                            self.boothLayoutURL = boothData.boothLayoutUrl ?? ""
                             completion()
                         }
                     }
