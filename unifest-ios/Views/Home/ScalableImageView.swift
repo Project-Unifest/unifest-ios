@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScalableImageView: View {
     
-    let imageName: String
+    @Binding var imageName: String
     @Environment(\.dismiss) private var dismiss
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
@@ -185,6 +185,6 @@ private extension ScalableImageView {
     }
 }
 
-#Preview {
-    ScalableImageView(imageName: "https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png")
-}
+//#Preview {
+//    ScalableImageView(imageName: "https://content.foodspring.co.kr/vendor/1781/images/101_4100052181_r.png")
+//}
