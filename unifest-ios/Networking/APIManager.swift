@@ -21,7 +21,7 @@ final class APIManager: ObservableObject {
     // API 서버 종류별 address
     enum ServerType: String {
         case dev = "http://203.252.131.18:8082"
-        case prod = "https://unifest.shop"
+        case prod = "https://sukjoon.kro.kr"
     }
     
     // API Error 종류
