@@ -185,7 +185,7 @@ struct MapPageView: View {
                     .presentationDragIndicator(.visible)
             }
             .fullScreenCover(isPresented: $isBoothMapViewPresented) {
-                ScalableImageView(imageName: viewModel.boothModel.boothLayoutURL ?? "")
+                ScalableImageView(imageName: $viewModel.boothModel.boothLayoutURL)
             }
         }
     }
