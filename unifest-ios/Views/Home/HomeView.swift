@@ -30,7 +30,7 @@ struct HomeView: View {
     @State private var monthPageIndex: Int = 0 // 선택된 월
     
     @State private var showNoticeImage: Bool = false
-    @State private var selectedNoticeImage: String?
+    @State private var selectedNoticeImage: String = ""
     
     // 캘린더를 위아래로 드래그했을 때 week <-> month 전환
     @State private var startOffsetY: CGFloat = 0.0
@@ -68,7 +68,7 @@ struct HomeView: View {
             .padding(.top, -17)
         }
         .fullScreenCover(isPresented: $showNoticeImage) {
-            ScalableImageView(imageName: selectedNoticeImage ?? "")
+            ScalableImageView(imageName: $selectedNoticeImage)
         }
     }
 }
